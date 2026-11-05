@@ -44,7 +44,8 @@ function render(){
 function initHome(){
  /* hero drifts and fades as you scroll away */
  const hg=$('#hgrid');
- fx.push(()=>{const p=clamp(scrollY/innerHeight);hg.style.transform=`translateY(${p*80}px)`;hg.style.opacity=1-p*1.15});
+ /* only on wide screens: on phones the hero is taller than the screen, so fading it would hide content still in view */
+ fx.push(()=>{if(innerWidth<=1020){hg.style.transform='';hg.style.opacity='';return}const p=clamp(scrollY/innerHeight);hg.style.transform=`translateY(${p*80}px)`;hg.style.opacity=1-p*1.15});
 
  /* rotating hero word */
  const rot=$('#rot');let ri=0;
@@ -98,13 +99,13 @@ function initHome(){
  const ao=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('act');ao.unobserve(e.target)}}),{threshold:.33});
  chaps.forEach(c=>ao.observe(c));obs.push(ao);
  fx.push(()=>{chaps.forEach((c,i)=>{const nx=chaps[i+1];if(!nx)return;
-  const p=clamp(1-(nx.getBoundingClientRect().top-parseFloat(getComputedStyle(nx).top))/innerHeight);c.style.setProperty('--dim',(p*.45).toFixed(3));c.firstElementChild.nextElementSibling.style.transform=`scale(${1-p*.05})`})});
+  const p=clamp(1-(nx.getBoundingClientRect().top-parseFloat(getComputedStyle(nx).top))/innerHeight);c.style.setProperty('--dim',(p*.45).toFixed(3));c.style.transform=`scale(${(1-p*.04).toFixed(4)})`})});
 
  /* orbit: hovering a brand (or its legend row) lights it up and fills the centre */
  const nodes=[...$$('.node')],rows=[...$$('#legend li')],lines=[...$$('.ring line')],coreT=$('#coreT'),coreS=$('#coreS');
  const lit=i=>{nodes.forEach((n,j)=>n.classList.toggle('on',j===i));rows.forEach((r,j)=>r.classList.toggle('on',j===i));lines.forEach((l,j)=>l.classList.toggle('on',j===i));
   if(i<0){coreT.textContent=SITE.name;coreT.style.color='';coreS.innerHTML='The parent group.<br>Hover a brand.';return}
-  coreT.textContent=B[i].short;coreT.style.color=B[i].hi;coreS.textContent=B[i].c};
+  coreT.textContent=B[i].short;coreT.style.color=B[i].hi;coreS.textContent=innerWidth<600?B[i].tag:B[i].c};
  [...nodes,...rows].forEach(el=>{el.addEventListener('mouseenter',()=>lit(+el.dataset.i));el.addEventListener('focus',()=>lit(+el.dataset.i));el.addEventListener('mouseleave',()=>lit(-1))});
  /* touch screens have no hover, so the orbit introduces each brand in turn by itself */
  if(!FINE&&!RM){let oi=0;timers.push(setInterval(()=>{lit(oi);oi=(oi+1)%B.length},2200))}

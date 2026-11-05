@@ -106,9 +106,9 @@ home: () => `
 </div></section>
 
 <section class="dk" data-ch="Our brands" style="padding-bottom:60px"><div class="w hs-head"><div><p class="eye rv">Our business portfolio</p><h2 class="rv" ${d(1)}>Five businesses, <span class="mk">one family.</span></h2></div><p class="lead rv" ${d(2)} style="max-width:380px">Keep scrolling. Each one gets the whole screen, because each one is its own thing.</p></div></section>
-<div class="chaps" id="chaps">${B.map((x, i) => `<section class="chap" style="${vars(x)};--i:${i};z-index:${i + 1}"><span class="mg" aria-hidden="true">${x.m}</span><div class="w chin">
+<div class="chaps" id="chaps">${B.map((x, i) => `<section class="chap" style="${vars(x)};--i:${i};z-index:${i + 1}"><div class="w chin">
+ <div class="ctop"><span>${pad(i + 1)} / ${pad(B.length)}</span><span>${x.c}</span></div>
  <div class="ctext">
-  <div class="ctop"><span>${pad(i + 1)} / ${pad(B.length)}</span><span>${x.c}</span></div>
   <h3 class="cname">${x.short}</h3>
   <p class="cdesc">${x.p}</p>
   <div><p class="clab">${x.l.toLowerCase()}</p><ul class="clist">${x.i.map((v, k) => `<li style="--k:${k}">${v}</li>`).join('')}</ul></div>

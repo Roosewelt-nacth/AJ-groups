@@ -61,6 +61,7 @@ footer{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
 .core b{font:800 clamp(18px,2.2vw,28px)/1 var(--disp);letter-spacing:-.03em;transition:color .3s}
 .core small{font-size:13px;color:var(--m);line-height:1.3}
 @keyframes orb{to{rotate:360deg}}
+@media(max-width:600px){.core{width:44%;padding:10px}.core b{font-size:16px}.core small{font-size:11.5px}}
 
 /* ---------- business chapters: full-screen panels that stack as you scroll ---------- */
 .chaps{position:relative;background:var(--ink)}
@@ -172,6 +173,21 @@ figure{margin:0}
   .clist li{white-space:nowrap;font-size:13px}
   .cimg{position:absolute;left:calc(-1 * var(--gut));right:calc(-1 * var(--gut));bottom:0;height:40%;border-radius:0;transform:none;box-shadow:none;z-index:0;-webkit-mask:linear-gradient(transparent,#000 50%);mask:linear-gradient(transparent,#000 50%)}
   .chap .mg{display:none}
+}
+
+/* ---------- brand panel alignment (all sizes) ----------
+   Header row spans the panel; text and photo share one row and the same
+   height; the button sits on the shared bottom edge; the whole panel recedes. */
+.chap{transform-origin:50% 0;will-change:transform}
+.chap .mg{display:none}
+.chin{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);grid-template-rows:auto auto;row-gap:clamp(22px,3.5vh,36px);column-gap:clamp(32px,5vw,72px);align-items:stretch}
+.ctop{grid-column:1 / -1;display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-bottom:14px;border-bottom:1.5px solid color-mix(in srgb,var(--f) 22%,transparent)}
+.ctext{min-width:0}
+.ctext > .btn{margin-top:auto}
+.cimg{height:auto;min-height:min(50vh,440px);align-self:stretch;transform:none;border-radius:24px}
+@media(max-width:860px){
+  .ctop{margin-bottom:16px;padding-bottom:10px}
+  .cimg{height:40%;min-height:0;border-radius:0}
 }
 
 /* ---------- entrance motion inside each brand panel (all devices) ----------
