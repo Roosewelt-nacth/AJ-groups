@@ -99,7 +99,7 @@ function initHome(){
  const ao=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('act');ao.unobserve(e.target)}}),{threshold:.33});
  chaps.forEach(c=>ao.observe(c));obs.push(ao);
  fx.push(()=>{chaps.forEach((c,i)=>{const nx=chaps[i+1];if(!nx)return;
-  const p=clamp(1-(nx.getBoundingClientRect().top-parseFloat(getComputedStyle(nx).top))/innerHeight);c.style.setProperty('--dim',(p*.45).toFixed(3));c.style.transform=`scale(${(1-p*.04).toFixed(4)})`})});
+  const p=clamp(1-(nx.getBoundingClientRect().top-parseFloat(getComputedStyle(nx).top))/innerHeight);c.style.setProperty('--dim',(p*.45).toFixed(3));c.style.transform=innerWidth<=860?'':`scale(${(1-p*.04).toFixed(4)})`})}); /* phones: no shrink, panels keep full size */
 
  /* orbit: hovering a brand (or its legend row) lights it up and fills the centre */
  const nodes=[...$$('.node')],rows=[...$$('#legend li')],lines=[...$$('.ring line')],coreT=$('#coreT'),coreS=$('#coreS');

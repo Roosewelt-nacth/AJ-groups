@@ -225,5 +225,13 @@ figure{margin:0}
   .hint .hd{display:none}.hint .hm{display:inline}
 }
 
+/* ---------- phones & tablets: hide the page scrollbar line ----------
+   Touch scrolling still works; only the thin bar on the right edge is hidden.
+   (Android Chrome honours this; iOS Safari's own brief indicator can't be hidden by sites.) */
+@media(max-width:1020px){
+  html{scrollbar-width:none;-ms-overflow-style:none}
+  html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}
+}
+
 /* ---------- tape banners: red instead of lime (animation unchanged) ---------- */
 .band.a{background:var(--act);color:#fff}
