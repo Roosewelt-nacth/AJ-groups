@@ -155,5 +155,34 @@ figure{margin:0}
 .gal img{transition:transform 1.2s var(--ease)}
 .gal div:hover img{transform:scale(1.05)}
 
+/* ---------- chapters as a stacked "deck of files" on every screen ----------
+   Each panel sticks a little lower than the one before, so earlier panels
+   peek out at the top like folder tabs while the next one slides over. */
+.chap{top:calc(var(--i,0) * 12px);height:calc(100svh - var(--i,0) * 12px)}
+@media(max-width:860px){
+  .chap{position:sticky;top:calc(var(--i,0) * 10px);height:calc(100svh - var(--i,0) * 10px);min-height:0;padding:0;align-items:flex-start;border-radius:26px 26px 0 0}
+  .chin{display:block;margin:0 auto;height:100%;position:relative;padding-top:calc(44px + env(safe-area-inset-top,0px))}
+  .ctext{position:relative;z-index:1;gap:14px}
+  .ctop{font-size:13px}
+  .cname{font-size:clamp(44px,13vw,68px)}
+  .cdesc{font-size:16px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .clab{font-size:22px;margin-bottom:8px}
+  .clist{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:calc(-1 * var(--gut));padding-right:var(--gut)}
+  .clist::-webkit-scrollbar{display:none}
+  .clist li{white-space:nowrap;font-size:13px}
+  .cimg{position:absolute;left:calc(-1 * var(--gut));right:calc(-1 * var(--gut));bottom:0;height:40%;border-radius:0;transform:none;box-shadow:none;z-index:0;-webkit-mask:linear-gradient(transparent,#000 50%);mask:linear-gradient(transparent,#000 50%)}
+  .chap .mg{display:none}
+}
+
+/* ---------- note board on phones: a swipeable row of tilted notes ---------- */
+.hint .hm{display:none}
+@media(max-width:860px){
+  .board{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 calc(-1 * var(--gut));padding:26px var(--gut) 34px}
+  .board::-webkit-scrollbar{display:none}
+  .note,.note.big{flex:0 0 78%;scroll-snap-align:center}
+  .hint{display:block;position:absolute;left:var(--gut);right:auto;bottom:2px;transform:rotate(-2deg)}
+  .hint .hd{display:none}.hint .hm{display:inline}
+}
+
 /* ---------- tape banners: red instead of lime (animation unchanged) ---------- */
 .band.a{background:var(--act);color:#fff}

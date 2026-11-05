@@ -106,7 +106,7 @@ home: () => `
 </div></section>
 
 <section class="dk" data-ch="Our brands" style="padding-bottom:60px"><div class="w hs-head"><div><p class="eye rv">Our business portfolio</p><h2 class="rv" ${d(1)}>Five businesses, <span class="mk">one family.</span></h2></div><p class="lead rv" ${d(2)} style="max-width:380px">Keep scrolling. Each one gets the whole screen, because each one is its own thing.</p></div></section>
-<div class="chaps" id="chaps">${B.map((x, i) => `<section class="chap" style="${vars(x)};z-index:${i + 1}"><span class="mg" aria-hidden="true">${x.m}</span><div class="w chin">
+<div class="chaps" id="chaps">${B.map((x, i) => `<section class="chap" style="${vars(x)};--i:${i};z-index:${i + 1}"><span class="mg" aria-hidden="true">${x.m}</span><div class="w chin">
  <div class="ctext">
   <div class="ctop"><span>${pad(i + 1)} / ${pad(B.length)}</span><span>${x.c}</span></div>
   <h3 class="cname">${x.short}</h3>
@@ -123,7 +123,7 @@ home: () => `
  <div class="board" id="board">
   ${WHY.map(([t, dd], i) => `<div class="note rv" ${d(i)} style="--rot:${BOARD.rot[i % 5]}deg;--tr:${BOARD.tape[i % 5]}deg;--bg:${BOARD.bg[i % 5]};left:${BOARD.left[i % 5]}%;top:${BOARD.top[i % 5]}px"><i class="tape"></i><h3>${t}</h3><p>${dd}</p></div>`).join('')}
   <div class="note big rv" ${d(2)} style="--rot:1.5deg;--tr:-3deg;--bg:#d4ff3f;left:67%;top:120px"><i class="tape"></i><span class="hand">our vision</span><p class="bq">${ABOUT.vision}</p></div>
-  <span class="hint">psst, you can move these around</span>
+  <span class="hint"><span class="hd">psst, you can move these around</span><span class="hm">swipe through these →</span></span>
  </div>
 </div></section>
 

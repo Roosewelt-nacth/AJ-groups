@@ -94,8 +94,8 @@ function initHome(){
 
  /* business chapters: each panel dims and sinks a little as the next one slides over it */
  const chaps=[...$$('.chap')];
- fx.push(()=>{if(innerWidth<760)return;chaps.forEach((c,i)=>{const nx=chaps[i+1];if(!nx)return;
-  const p=clamp(1-nx.getBoundingClientRect().top/innerHeight);c.style.setProperty('--dim',(p*.45).toFixed(3));c.firstElementChild.nextElementSibling.style.transform=`scale(${1-p*.05})`})});
+ fx.push(()=>{chaps.forEach((c,i)=>{const nx=chaps[i+1];if(!nx)return;
+  const p=clamp(1-(nx.getBoundingClientRect().top-parseFloat(getComputedStyle(nx).top))/innerHeight);c.style.setProperty('--dim',(p*.45).toFixed(3));c.firstElementChild.nextElementSibling.style.transform=`scale(${1-p*.05})`})});
 
  /* orbit: hovering a brand (or its legend row) lights it up and fills the centre */
  const nodes=[...$$('.node')],rows=[...$$('#legend li')],lines=[...$$('.ring line')],coreT=$('#coreT'),coreS=$('#coreS');
@@ -103,6 +103,8 @@ function initHome(){
   if(i<0){coreT.textContent=SITE.name;coreT.style.color='';coreS.innerHTML='The parent group.<br>Hover a brand.';return}
   coreT.textContent=B[i].short;coreT.style.color=B[i].hi;coreS.textContent=B[i].c};
  [...nodes,...rows].forEach(el=>{el.addEventListener('mouseenter',()=>lit(+el.dataset.i));el.addEventListener('focus',()=>lit(+el.dataset.i));el.addEventListener('mouseleave',()=>lit(-1))});
+ /* touch screens have no hover, so the orbit introduces each brand in turn by itself */
+ if(!FINE&&!RM){let oi=0;timers.push(setInterval(()=>{lit(oi);oi=(oi+1)%B.length},2200))}
 }
 
 /* chapter guide on the right edge: one dot per section that has data-ch */
