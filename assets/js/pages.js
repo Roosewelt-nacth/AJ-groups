@@ -90,7 +90,7 @@ home: () => `
   <div class="strip" id="strip">${WHY.map(([t, , p], i) => `<button data-i="${i}">${ic(p)}<span>${t}</span></button>`).join('')}</div>
  </div></section>
 
-<section class="bidx" aria-label="Our businesses"><div class="w"><div class="bidx-row">${B.map((x, i) => `<a class="bi rv" ${d(i)} href="#${x.id}" style="${vars(x)}"><small>${pad(i + 1)}</small><b>${x.short}</b><span>${x.tag.toLowerCase()}</span>${x.img ? `<i class="bthumb">${pic(x.img.replace('w=1400', 'w=400'), '')}</i>` : ''}</a>`).join('')}</div></div></section>
+<div class="bands" aria-hidden="true">${band(['build it', 'give it a name', 'watch it grow', 'do it again'], 'b')}${band(B.map(x => x.tag === 'Kids' ? 'Kids’ content' : x.c.split(' & ')[0]), 'a')}</div>
 
 <section class="hl dk" id="hl" data-ch="Who we are"><div class="stk"><div class="w"><p id="hlp">${HERO.statement}</p></div></div></section>
 
