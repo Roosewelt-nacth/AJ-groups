@@ -94,6 +94,9 @@ function initHome(){
 
  /* business chapters: each panel dims and sinks a little as the next one slides over it */
  const chaps=[...$$('.chap')];
+ /* play each panel's entrance once it is a third on screen */
+ const ao=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('act');ao.unobserve(e.target)}}),{threshold:.33});
+ chaps.forEach(c=>ao.observe(c));obs.push(ao);
  fx.push(()=>{chaps.forEach((c,i)=>{const nx=chaps[i+1];if(!nx)return;
   const p=clamp(1-(nx.getBoundingClientRect().top-parseFloat(getComputedStyle(nx).top))/innerHeight);c.style.setProperty('--dim',(p*.45).toFixed(3));c.firstElementChild.nextElementSibling.style.transform=`scale(${1-p*.05})`})});
 

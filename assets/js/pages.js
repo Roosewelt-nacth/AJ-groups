@@ -111,7 +111,7 @@ home: () => `
   <div class="ctop"><span>${pad(i + 1)} / ${pad(B.length)}</span><span>${x.c}</span></div>
   <h3 class="cname">${x.short}</h3>
   <p class="cdesc">${x.p}</p>
-  <div><p class="clab">${x.l.toLowerCase()}</p><ul class="clist">${x.i.map(v => `<li>${v}</li>`).join('')}</ul></div>
+  <div><p class="clab">${x.l.toLowerCase()}</p><ul class="clist">${x.i.map((v, k) => `<li style="--k:${k}">${v}</li>`).join('')}</ul></div>
   <a class="btn" href="#${x.id}">Visit ${x.short} ${AR}</a>
  </div>
  ${x.img ? `<figure class="cimg">${pic(x.img, x.short)}</figure>` : ''}

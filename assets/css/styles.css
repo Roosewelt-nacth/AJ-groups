@@ -18,7 +18,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--ink);-webkit-text-size-adjust:100%}
-body{font:400 17px/1.55 var(--body);letter-spacing:-.01em;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font:400 17px/1.55 var(--body);letter-spacing:-.01em;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-x:clip}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 img,svg{display:block}
@@ -302,7 +302,7 @@ footer li{list-style:none;margin-bottom:9px}
 footer a{transition:color .25s}
 footer a:hover{color:var(--ink)}
 footer .logo{color:var(--ink)}
-.wm{font:800 clamp(64px,19.5vw,300px)/.78 var(--disp);letter-spacing:-.065em;color:var(--ink);margin-top:56px;white-space:nowrap;display:flex}
+.wm{font:800 clamp(46px,18vw,300px)/.78 var(--disp);letter-spacing:-.065em;color:var(--ink);margin-top:56px;white-space:nowrap;display:flex}
 .wm span{display:inline-block;transition:transform .6s var(--ease),color .3s}
 .wm span:hover{transform:translateY(-8%);color:var(--c)}
 .cp{border-top:1px solid rgba(11,11,16,.12);margin-top:24px;padding-top:18px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px}
@@ -400,7 +400,7 @@ footer .logo{color:var(--ink)}
 .lt .eye::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 22' fill='none' stroke='%230b0b10' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 3C12 1 22 6 25 16M19 14l6 3 2-7'/%3E%3C/svg%3E") no-repeat center/contain;box-shadow:none}
 
 /* highlighter-pen sweep on key words */
-.mk{background:linear-gradient(100deg,transparent .15em,var(--volt) .15em,var(--volt) calc(100% - .08em),transparent 0) no-repeat 0 78%/0% 40%;transition:background-size 1.1s var(--ease) .35s;padding:0 .08em;margin:0 -.04em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.mk{background:linear-gradient(100deg,transparent .15em,var(--volt) .15em,var(--volt) calc(100% - .08em),transparent 0) no-repeat 0 78%/0% 40%;transition:background-size 1.1s var(--ease) .35s;padding:0;margin:0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .in .mk,.hs .mk{background-size:100% 40%}
 .hl .wd.k{font-family:inherit;font-style:normal;font-weight:700;letter-spacing:inherit;border-radius:6px;padding:0 .08em;transition:color .4s,background-color .4s}
 .hl .wd.k.on{color:var(--ink);background:var(--volt)}
