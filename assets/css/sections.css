@@ -47,7 +47,9 @@ footer{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
 .legend li b{font-weight:600}
 .legend li small{margin-left:auto;color:var(--m);font-size:13px;text-align:right}
 .legend li.on,.legend li:hover{background:rgba(255,255,255,.07)}
-.orbit{--R:min(520px,86vw);position:relative;width:var(--R);aspect-ratio:1;margin:auto}
+/* overflow:hidden — the ring is a rotating square; at 45° its corners stick out ~40%
+   and would widen the page on phones (black strip on the right). Nodes stay inside. */
+.orbit{--R:min(520px,86vw);position:relative;width:var(--R);aspect-ratio:1;margin:auto;overflow:hidden}
 .ring{position:absolute;inset:0;animation:orb 70s linear infinite}
 .ring::before{content:"";position:absolute;inset:10%;border-radius:50%;border:1.5px dashed rgba(255,255,255,.16)}
 .ring svg{position:absolute;inset:0;width:100%;height:100%}
