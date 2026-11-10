@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AJ GROUPS 3D · The office</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="office.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body data-style="dark">
+<canvas id="c"></canvas>
+<header class="bar">
+  <a class="back" href="./">← All prototypes</a>
+  <div class="sw" role="radiogroup" aria-label="Office style">
+    <button type="button" role="radio" data-s="dark" aria-checked="true">Dark glow</button>
+    <button type="button" role="radio" data-s="mini" aria-checked="false">Miniature</button>
+    <button type="button" role="radio" data-s="real" aria-checked="false">Realistic</button>
+  </div>
+</header>
+<p class="hint" id="hint"></p>
+<div class="card" id="card" aria-live="polite"></div>
+<div class="focus" id="focus" hidden>
+  <p id="focusMsg"></p>
+  <button type="button" id="backBtn">← Back to the office</button>
+</div>
+<noscript><p class="hint">This prototype needs JavaScript and WebGL.</p></noscript>
+<script type="module" src="office.js"></script>
+</body>
+</html>

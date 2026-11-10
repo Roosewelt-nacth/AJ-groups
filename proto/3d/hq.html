@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AJ GROUPS 3D · Headquarters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="office.css">
+<style>
+  .card .now{display:flex;gap:8px;align-items:baseline;margin:10px 2px 0;font-size:13px}
+  .card .now b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:600;flex:none}
+  .card .now b::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#1e7b34;margin-right:6px;animation:live 1.6s ease-in-out infinite}
+  .card .ask{margin:10px 2px 0;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--mute)}
+  @keyframes live{50%{opacity:.3}}
+  .tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+  @media (max-width:760px){.card .now,.card .ask{grid-column:2}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body data-style="real">
+<canvas id="c"></canvas>
+<header class="bar">
+  <a class="back" href="./">← All prototypes</a>
+  <span class="tag">Headquarters · blockout</span>
+</header>
+<p class="hint" id="hint"></p>
+<div class="card" id="card" aria-live="polite"></div>
+<div class="focus" id="focus" hidden>
+  <p id="focusMsg"></p>
+  <button type="button" id="backBtn">← Back to the floor</button>
+</div>
+<noscript><p class="hint">This prototype needs JavaScript and WebGL.</p></noscript>
+<script type="module" src="hq.js"></script>
+</body>
+</html>
