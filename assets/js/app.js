@@ -40,8 +40,10 @@ function render(){
   const step=t=>{const p=clamp((t-t0)/1600);el.textContent=Math.round(n*(1-Math.pow(1-p,4)));if(p<1)requestAnimationFrame(step)};RM?el.textContent=n:requestAnimationFrame(step)}),{threshold:.5});
  $$('.cnt').forEach(el=>co.observe(el));obs.push(co);
  if(h==='home')initHome();
+ if($('#orbit'))initFamily();
  if(h==='businesses')initDirectory();
  if(bx)initGallery(bx);
+ initCarousels();
  buildRail();
  tick();
 }
@@ -66,29 +68,21 @@ function initHome(){
  if(!RM)timers.push(setInterval(()=>{if(!paused&&!document.hidden)push()},4200));
  addEventListener('resize',fit);cleanup.push(()=>removeEventListener('resize',fit));
 
- /* principles strip: one principle at a time, with its line underneath */
- const sb=[...$$('#strip button')],st=$('#stript');let s=0;
- const act=i=>{if(i===s&&sb[i].classList.contains('on'))return;s=i;sb.forEach((b,j)=>b.classList.toggle('on',j===i));st.classList.add('fade');timers.push(setTimeout(()=>{st.textContent=WHY[i][1];st.classList.remove('fade')},300))};
- sb[0].classList.add('on');
- sb.forEach((b,i)=>{b.onmouseenter=()=>act(i);b.onclick=()=>act(i)});
- if(!RM)timers.push(setInterval(()=>act((s+1)%sb.length),4800));
-
  /* ribbons lean very slightly with scroll speed */
  const sks=[...$$('.band .sk')];let sk=0;
  fx.push(()=>{const v=lenis?lenis.velocity:0;sk+=(clamp(v*-.12,-3,3)-sk)*.2;sks.forEach((e,i)=>e.style.transform=`skewX(${i?sk:-sk}deg)`)});
 
- /* statement fills in word by word as you scroll */
- const P=$('#hlp');P.innerHTML=P.textContent.split(/(\*[^*]+\*)/).map(s=>s.startsWith('*')?s.slice(1,-1).split(' ').map(w=>`<span class="wd k">${w}</span>`).join(' '):s.split(' ').map(w=>w?`<span class="wd">${w}</span>`:'').join(' ')).join(' ');
- const W=[...P.querySelectorAll('.wd')],hl=$('#hl');
- fx.push(()=>{const r=hl.getBoundingClientRect(),p=clamp(-r.top/(r.height-innerHeight)*1.15),n=Math.floor(p*W.length);W.forEach((w,i)=>w.classList.toggle('on',i<n||RM))});
-
- /* house folios: each one dims and settles back as the next is laid over it */
+ /* house folios: each one dims as the next is laid over it (no shrinking, so edges and content stay aligned) */
  const chaps=[...$$('.chap')];
  const ao=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('act');ao.unobserve(e.target)}}),{threshold:.33});
  chaps.forEach(c=>ao.observe(c));obs.push(ao);
  fx.push(()=>{chaps.forEach((c,i)=>{const nx=chaps[i+1];if(!nx)return;
-  const p=clamp(1-(nx.getBoundingClientRect().top-parseFloat(getComputedStyle(nx).top))/innerHeight);c.style.setProperty('--dim',(p*.5).toFixed(3));c.style.transform=innerWidth<=860?'':`scale(${(1-p*.04).toFixed(4)})`})});
+  const p=clamp(1-(nx.getBoundingClientRect().top-parseFloat(getComputedStyle(nx).top))/innerHeight);c.style.setProperty('--dim',(p*.5).toFixed(3))})});
 
+}
+
+/* family diagram (about page) */
+function initFamily(){
  /* family diagram: hovering a house (or its row) lights it and names it in the centre */
  const nodes=[...$$('.node')],rows=[...$$('#legend li')],lines=[...$$('.ring line')],coreT=$('#coreT'),coreS=$('#coreS');
  const lit=i=>{nodes.forEach((n,j)=>n.classList.toggle('on',j===i));rows.forEach((r,j)=>r.classList.toggle('on',j===i));lines.forEach((l,j)=>l.classList.toggle('on',j===i));
@@ -98,6 +92,42 @@ function initHome(){
  rows.forEach(r=>r.onclick=()=>location.hash=B[+r.dataset.i].id);
  /* touch screens have no hover, so the diagram introduces each house in turn */
  if(!HOVER&&!RM){let oi=0;timers.push(setInterval(()=>{lit(oi);oi=(oi+1)%B.length},2400))}
+}
+
+/* venture carousels: swipe, drag, arrow keys, buttons and page dots */
+function initCarousels(){
+ $$('[data-car]').forEach(car=>{
+  const tr=car.querySelector('.car-track'),cards=[...tr.children],dots=car.querySelector('.car-dots'),cnt=car.querySelector('.car-n'),pv=car.querySelector('.car-p'),nx=car.querySelector('.car-nx');
+  const step=()=>cards.length>1?cards[1].offsetLeft-cards[0].offsetLeft:tr.clientWidth;
+  const pages=()=>Math.max(1,Math.round((tr.scrollWidth-tr.clientWidth)/step())+1);
+  const cur=()=>Math.round(tr.scrollLeft/step());
+  /* own easing instead of scrollTo smooth: some phones cancel smooth scrolling on snapping rows */
+  let anim=0;
+  const go=i=>{const to=Math.min(clamp(i,0,pages()-1)*step(),tr.scrollWidth-tr.clientWidth),from=tr.scrollLeft,t0=performance.now(),D=RM?0:520,id=++anim;
+   const done=()=>{if(id!==anim)return;tr.scrollLeft=to;tr.classList.remove('anim');upd()};
+   if(!D||Math.abs(to-from)<2){done();return}
+   tr.classList.add('anim');
+   const f=t=>{if(id!==anim)return;const p=clamp((t-t0)/D);tr.scrollLeft=from+(to-from)*(1-Math.pow(1-p,3));p<1?requestAnimationFrame(f):done()};
+   requestAnimationFrame(f);setTimeout(done,D+250)};
+  const upd=()=>{const n=pages(),i=clamp(cur(),0,n-1);[...dots.children].forEach((b,j)=>{b.setAttribute('aria-selected',j===i);b.classList.toggle('on',j===i)});
+   cnt.textContent=`${i+1} / ${n}`;pv.disabled=i<=0;nx.disabled=i>=n-1};
+  const build=()=>{const n=pages();car.classList.toggle('one',n<2);
+   dots.innerHTML=Array.from({length:n},(_,i)=>`<button type="button" role="tab" aria-label="Page ${i+1} of ${n}"></button>`).join('');
+   [...dots.children].forEach((b,i)=>b.onclick=()=>go(i));upd()};
+  pv.onclick=()=>go(cur()-1);nx.onclick=()=>go(cur()+1);
+  let raf=0;tr.addEventListener('scroll',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(upd)},{passive:true});
+  tr.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();go(cur()+1)}if(e.key==='ArrowLeft'){e.preventDefault();go(cur()-1)}});
+  /* mouse drag on desktop (touch screens swipe natively) */
+  let sx=0,sl=0,drag=false,moved=false;
+  tr.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0)return;drag=true;moved=false;sx=e.clientX;sl=tr.scrollLeft});
+  const mv=e=>{if(!drag)return;const dx=e.clientX-sx;if(!moved&&Math.abs(dx)>6){moved=true;tr.classList.add('grab')}if(moved)tr.scrollLeft=sl-dx};
+  const end=()=>{if(!drag)return;drag=false;if(moved){tr.classList.remove('grab');go(Math.round(tr.scrollLeft/step()))}};
+  addEventListener('pointermove',mv,{passive:true});addEventListener('pointerup',end);
+  tr.addEventListener('dragstart',e=>e.preventDefault());
+  tr.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
+  build();const rs=()=>build();addEventListener('resize',rs);
+  cleanup.push(()=>{removeEventListener('resize',rs);removeEventListener('pointermove',mv);removeEventListener('pointerup',end)});
+ });
 }
 
 /* the houses page: a framed photograph follows the pointer over the list */
@@ -148,12 +178,18 @@ function tick(){
  lastY=y;if(!RM)fx.forEach(f=>f());ticking=false}
 addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(tick)}},{passive:true});
 
-/* page changes: a green veil with the crest passes over the page */
-let navSeq=0;
+/* page changes, one per theme (styles in each theme's CSS):
+   Heritage: a parchment leaf turns over the page like a ledger, then turns away.
+   Gallery: a camera-aperture circle opens from where you tapped, then closes back to it. */
+let navSeq=0,tapX=innerWidth/2,tapY=innerHeight/2;
+addEventListener('pointerdown',e=>{tapX=e.clientX;tapY=e.clientY},{passive:true});
+addEventListener('keydown',e=>{if(e.key==='Enter'){tapX=innerWidth/2;tapY=innerHeight/2}});
 function route(){const id=++navSeq;hideLB();
  if(RM||document.hidden){render();return}
- const v=$('#veil');v.classList.remove('away');void v.offsetWidth;v.classList.add('cover');
- setTimeout(()=>{if(id!==navSeq)return;render();v.classList.remove('cover');v.classList.add('away');setTimeout(()=>{if(id===navSeq)v.classList.remove('away')},700)},520)}
+ const v=$('#veil'),IN=620,OUT=700;
+ v.style.setProperty('--vx',tapX+'px');v.style.setProperty('--vy',tapY+'px');
+ v.classList.remove('away');void v.offsetWidth;v.classList.add('cover');
+ setTimeout(()=>{if(id!==navSeq)return;render();v.classList.remove('cover');v.classList.add('away');setTimeout(()=>{if(id===navSeq)v.classList.remove('away')},OUT+60)},IN)}
 addEventListener('hashchange',route);
 
 /* mobile menu */

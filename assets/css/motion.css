@@ -1,0 +1,38 @@
+/* =====================================================================
+   AJ GROUPS — MOTION AND GALLERY STYLES
+   Works with assets/js/motion.js: shared photo transitions, scroll reveals,
+   PhotoSwipe gallery, Embla carousel and blur-up photos.
+   ===================================================================== */
+
+/* ---------- 1. shared-element transitions ---------- */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.2,.7,.1,1)}
+::view-transition-group(hero-photo),::view-transition-group(hero-title){animation-duration:.8s;animation-timing-function:cubic-bezier(.2,.7,.1,1)}
+::view-transition-old(hero-photo),::view-transition-new(hero-photo){height:100%;width:100%;object-fit:cover;overflow:clip}
+::view-transition-image-pair(hero-photo){isolation:isolate}
+@media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+
+/* ---------- 2. GSAP: let GSAP own these properties so CSS transitions don't fight it ---------- */
+.fx .chap .cimg img,.fx .wide img,.fx .bhimg img,.fx .side img,.fx .inv-img img{transition:none!important;will-change:transform}
+.fx .chap .cname{opacity:1!important;transform:none!important}
+.fx h2.sx{opacity:1;transform:none}
+
+/* ---------- 3. PhotoSwipe, styled per theme ---------- */
+.pswp{--pswp-bg:#142820;--pswp-icon-color:#f3ecdd;--pswp-icon-color-secondary:#142820;--pswp-icon-stroke-color:#142820}
+[data-theme=gallery] .pswp{--pswp-bg:#000;--pswp-icon-color:#fff;--pswp-icon-color-secondary:#1d1d1f;--pswp-icon-stroke-color:#1d1d1f}
+.pswp__cap{position:absolute;left:0;right:0;bottom:calc(22px + env(safe-area-inset-bottom,0px));text-align:center;font:italic 18px/1.3 var(--disp);color:#c9a96a;pointer-events:none}
+[data-theme=gallery] .pswp__cap{font:400 14px/1.4 var(--ui);font-style:normal;color:#d2d2d7}
+.pswp__img{filter:none}
+
+/* ---------- 4. Embla carousel ---------- */
+.fx .car-track.emb{display:block;overflow:hidden;scroll-snap-type:none;cursor:grab}
+.fx .car-track.emb:active{cursor:grabbing}
+.fx .emb-c{display:flex;gap:var(--cg);touch-action:pan-y pinch-zoom}
+.fx .emb-c>*{flex:0 0 calc((100% - var(--cg)) / 2);min-width:0}
+@media(max-width:620px){.fx .emb-c>*{flex-basis:100%}}
+
+/* ---------- 5. blur-up photos ---------- */
+.fx main img[data-bu]{background-size:cover;background-position:center}
+.fx main img.bu-in:not(.bu-cached){animation:buIn 1.1s cubic-bezier(.2,.7,.1,1) both}
+.fx{--tone:sepia(.18) saturate(.86) contrast(1.02)}
+.fx[data-theme=gallery]{--tone:saturate(1)}
+@keyframes buIn{from{filter:blur(14px) var(--tone);opacity:.6}to{filter:var(--tone);opacity:1}}

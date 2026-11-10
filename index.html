@@ -18,12 +18,15 @@
 <script>
  (function(){var DEFAULT_THEME='gallery';var t=DEFAULT_THEME;
   try{var q=new URLSearchParams(location.search).get('theme');if(q==='gallery'||q==='heritage')t=q}catch(e){}
-  document.documentElement.setAttribute('data-theme',t);})();
+  document.documentElement.setAttribute('data-theme',t);
+  document.documentElement.classList.add('fx');})();
 </script>
 <!-- ?v= forces browsers (especially phones) to fetch fresh files after each update; bump it when you change CSS/JS -->
-<link rel="stylesheet" href="assets/css/styles.css?v=13">
-<link rel="stylesheet" href="assets/css/sections.css?v=13">
-<link rel="stylesheet" href="assets/css/theme-gallery.css?v=13">
+<link rel="stylesheet" href="assets/css/styles.css?v=24">
+<link rel="stylesheet" href="assets/css/sections.css?v=24">
+<link rel="stylesheet" href="assets/css/theme-gallery.css?v=24">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css">
+<link rel="stylesheet" href="assets/css/motion.css?v=24">
 </head>
 <body>
 <div class="intro" id="intro" aria-hidden="true"><div class="intro-in"><span class="intro-crest" id="introCrest"></span><span class="intro-name">AJ GROUPS</span><span class="intro-est" id="introEst"></span></div></div>
@@ -61,8 +64,16 @@
 </div>
 
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="assets/js/content.js?v=13"></script>
-<script src="assets/js/pages.js?v=13"></script>
-<script src="assets/js/app.js?v=13"></script>
+<script src="assets/js/content.js?v=24"></script>
+<script src="assets/js/pages.js?v=24"></script>
+<script src="assets/js/app.js?v=24"></script>
+<!-- motion and gallery libraries: GSAP (scroll reveals), PhotoSwipe (gallery), Embla (carousel) -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/umd/photoswipe.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/umd/photoswipe-lightbox.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/embla-carousel@8.6.0/embla-carousel.umd.js"></script>
+<script src="assets/js/motion.js?v=24"></script>
 </body>
 </html>

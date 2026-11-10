@@ -3,18 +3,30 @@
    Heritage palette, type, buttons, navigation, footer, forms, overlays.
    Page sections live in sections.css.
    ===================================================================== */
+/* Colour strategy (Heritage), following the 60-30-10 rule:
+   60%  canvas ........ ivory / parchment / card            (analogous warm neutrals)
+   30%  structure ..... racing green: nav, dark sections, footer
+   10%  accent ........ oxblood: buttons and emphasis        (complementary to the green)
+   Gold is split by job: --gold is a darker "ink" gold that is safe for small text on
+   ivory (>= 4.5:1); --gold2 is the light gold used for text on green (>= 4.5:1);
+   --rule is the original antique gold, used only for lines and ornaments.
+   Every text colour below passes WCAG AA on the surfaces it is used on. */
 :root{
- --paper:#f3ecdd;      /* ivory page */
- --paper2:#ebe2cf;     /* parchment, alternate sections */
- --card:#faf6ec;       /* cards and letters */
- --ink:#1d1b16;        /* main text */
- --ink2:#5a5246;       /* secondary text */
- --green:#1e3a2f;      /* racing green */
+ --paper:#f3ecdd;      /* ivory page (canvas) */
+ --paper2:#ebe2cf;     /* parchment, alternate sections (canvas) */
+ --card:#faf6ec;       /* cards and letters (canvas) */
+ --ink:#1d1b16;        /* main text: 15:1 on ivory */
+ --ink2:#5a5246;       /* secondary text: 6.6:1 on ivory */
+ --green:#1e3a2f;      /* racing green (structure) */
  --green2:#142820;
- --ox:#6e1f2a;         /* oxblood: buttons */
+ --ox:#6e1f2a;         /* oxblood: buttons (accent), ivory text 10:1 */
  --ox2:#561520;
- --gold:#a98545;       /* antique gold: rules and accents */
- --gold2:#c9a96a;
+ --gold:#7a5a22;       /* text gold: 5.3:1 on ivory, 4.9:1 on parchment */
+ --gold2:#c9a96a;      /* light gold for text on green: 5.5:1 */
+ --rule:#a98545;       /* decorative gold: lines and ornaments only */
+ --ok:#2f6b3f;         /* success: 5.6:1 on card */
+ --warn:#8a5a00;       /* warning: 5.0:1 on card */
+ --err:#a1262f;        /* error: 6.4:1 on card */
  --line:rgba(29,27,22,.16);
  --disp:'Cormorant Garamond',Georgia,'Times New Roman',serif;
  --body:'EB Garamond',Georgia,'Times New Roman',serif;
@@ -36,7 +48,7 @@ h3{font-size:clamp(22px,2vw,28px);line-height:1.15}
 h1 em,h2 em,h3 em{font-style:italic;color:var(--ox)}
 p{margin:0}
 ::selection{background:var(--gold2);color:var(--ink)}
-:focus-visible{outline:1.5px solid var(--gold);outline-offset:3px}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .w{width:min(var(--max),100% - var(--gut)*2);margin-inline:auto}
 section{padding:clamp(80px,11vw,150px) 0;position:relative}
 .lt{background:var(--paper)}
@@ -53,7 +65,7 @@ section{padding:clamp(80px,11vw,150px) 0;position:relative}
 .note{font-style:italic;color:var(--ink2);font-size:16px}
 
 /* ornament divider */
-.orn{display:flex;align-items:center;gap:14px;color:var(--gold);margin:36px 0 0;max-width:260px}
+.orn{display:flex;align-items:center;gap:14px;color:var(--rule);margin:36px 0 0;max-width:260px}
 .orn i{flex:1;height:1px;background:currentColor;opacity:.6}
 .orn span{font-size:12px}
 
@@ -112,12 +124,12 @@ section{padding:clamp(80px,11vw,150px) 0;position:relative}
 @media(max-width:400px){.logo>span:last-child{display:none}.logo{margin-right:2px}}
 
 /* reading progress: a gold hairline */
-.prog{position:fixed;top:0;left:0;right:0;height:2px;background:var(--gold);transform-origin:0 50%;transform:scaleX(0);z-index:70}
+.prog{position:fixed;top:0;left:0;right:0;height:2px;background:var(--rule);transform-origin:0 50%;transform:scaleX(0);z-index:70}
 
 /* chapter guide on the right edge */
 .chrail{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:12px}
 .chrail a{display:flex;align-items:center;justify-content:flex-end;gap:10px;height:12px}
-.chrail i{width:14px;height:1px;background:var(--gold);opacity:.55;transition:width .4s var(--ease),opacity .3s}
+.chrail i{width:14px;height:1px;background:var(--rule);opacity:.55;transition:width .4s var(--ease),opacity .3s}
 .chrail span{font:500 10.5px/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;color:var(--gold);opacity:0;transform:translateX(6px);transition:opacity .3s,transform .4s var(--ease);background:var(--paper);padding:4px 6px}
 .chrail a.on i{width:30px;opacity:1}
 .chrail:hover span{opacity:1;transform:none}
@@ -173,11 +185,12 @@ footer a:hover{color:var(--paper)}
 .fl input,.fl textarea,.fl select{width:100%;font:400 19px/1.5 var(--body);color:var(--ink);background:transparent;border:0;border-bottom:1px solid rgba(29,27,22,.35);padding:8px 0;border-radius:0;outline:0;transition:border-color .3s}
 .fl textarea{resize:vertical;min-height:136px;background-image:repeating-linear-gradient(transparent 0 33px,rgba(29,27,22,.12) 33px 34px);line-height:34px;padding:0}
 .fl select{appearance:none;-webkit-appearance:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%235a5246' stroke-width='1.4'/%3E%3C/svg%3E") right 4px center no-repeat}
-.fl input:focus,.fl textarea:focus,.fl select:focus,.fl [aria-invalid=true]{border-bottom-color:var(--ox)}
-.er{color:var(--ox);font:italic 15px/1.3 var(--body)}
+.fl input:focus,.fl textarea:focus,.fl select:focus{border-bottom-color:var(--ox)}
+.fl [aria-invalid=true]{border-bottom-color:var(--err)}
+.er{color:var(--err);font:italic 15px/1.3 var(--body)}
 .fm .btn{grid-column:1/-1;justify-self:start;margin-top:6px}
 .fm .st{grid-column:1/-1;font-style:italic;font-size:16px}
-.st.ok{color:var(--green)}.st.bad{color:var(--ox)}
+.st.ok{color:var(--ok)}.st.bad{color:var(--err)}
 @media(max-width:560px){.fm{grid-template-columns:1fr}}
 
 /* ---------- gallery viewer ---------- */

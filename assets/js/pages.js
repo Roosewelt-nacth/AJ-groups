@@ -55,6 +55,11 @@ const invite = (v, i, full) => `<${full ? 'article' : 'a href="#ventures"'} clas
  <h3>${v.name}</h3><p>${v.summary}</p>
  ${full && v.items.length ? `<ul class="inv-list">${v.items.map(t => `<li>${t}</li>`).join('')}</ul>` : ''}
  ${full ? '' : `<span class="lnk">Learn more ${AR}</span>`}</div></${full ? 'article' : 'a'}>`;
+/* swipeable row of cards with previous/next buttons and page dots (app.js wires it up) */
+const carousel = (cards, label, cls = '') => `<div class="car" data-car>
+ <div class="car-track invs ${cls}" tabindex="0" role="region" aria-roledescription="carousel" aria-label="${label}">${cards}</div>
+ <div class="car-ctl"><button class="car-b car-p" type="button" aria-label="Previous">←</button><div class="car-dots" role="tablist" aria-label="Choose a page"></div><span class="car-n" aria-live="polite"></span><button class="car-b car-nx" type="button" aria-label="Next">→</button></div>
+</div>`;
 const socialLinks = () => SITE.socials.map(s => s.url ? `<a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>` : `<a href="#contact" title="Link to be added">${s.label}</a>`).join('');
 
 let fid = 0;
@@ -68,7 +73,24 @@ function form(fields, btn) {
     return `<div class="fl${ty === 'textarea' ? ' wide' : ''}"><label for="${id}">${lb}${r ? ' *' : ''}</label>${c}<small class="er" role="alert"></small></div>`;
   }).join('')}<button class="btn" type="submit">${btn} ${AR}</button><div class="st" role="status" aria-live="polite"></div></form>`;
 }
-const CF = [['name','Full Name','text',1],['email','Email','email',1],['phone','Phone','tel',0],['subject','Subject','text',1],['message','Message','textarea',1]];
+const CF = [['name','Full Name','text',1],['email','Email','email',1],['phone','Phone','tel',0],['type','Enquiry type','select',1,['Business enquiry','General enquiry',...B.map(x => x.short)]],['subject','Subject','text',1],['message','Message','textarea',1]];
+
+/* ---------- sections shared by more than one page ---------- */
+const familySection = () => `<section class="lt" data-ch="The family"><div class="w model">
+ <div><p class="eye rv">How the group fits together</p><h2 class="rv" ${d(1)}>One parent. <em>${B.length}</em> independent houses.</h2>
+  <p class="lead rv" ${d(2)}>${ABOUT.approach}</p>
+  <ol class="legend rv" ${d(3)} id="legend">${B.map((x, i) => `<li data-i="${i}" style="--c1:${x.c1}"><span class="rn">${num(i + 1)}</span><b>${x.short}</b><small>${x.tag}</small></li>`).join('')}</ol></div>
+ <div class="orbit rv" ${d(2)} id="orbit">
+  <div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" class="rg"/><circle cx="50" cy="50" r="46" class="rg2"/>${B.map((x, i) => { const a = (i * 360 / B.length - 90) * Math.PI / 180; return `<line x1="50" y1="50" x2="${(50 + 40 * Math.cos(a)).toFixed(2)}" y2="${(50 + 40 * Math.sin(a)).toFixed(2)}" style="--c:${x.c1}"/>`; }).join('')}</svg>
+   ${B.map((x, i) => `<a class="node" href="#${x.id}" data-i="${i}" style="--a:${i * 360 / B.length - 90}deg;${vars(x)}" aria-label="${x.short}"><span>${x.m}</span></a>`).join('')}</div>
+  <div class="core"><span class="core-c">${crest('mini')}</span><b id="coreT">${SITE.name}</b><small id="coreS">The parent group</small></div>
+ </div>
+</div></section>`;
+const principlesSection = () => `<section class="pa prin" data-ch="How we work"><div class="w prin-g">
+ <div class="prin-l"><p class="eye rv">Why ${SITE.name}</p><h2 class="rv" ${d(1)}>How we conduct <em>business.</em></h2></div>
+ <ol class="prin-list">${WHY.map(([t, dd], i) => `<li class="rv" ${d(i)}><span class="rn">${num(i + 1)}</span><div><h3>${t}</h3><p>${dd}</p></div></li>`).join('')}</ol>
+</div></section>`;
+const STEPS = [['Tell us what you need', 'Send an enquiry with a few lines about what you have in mind.'], ['We talk it through', 'The right team gets back to you to understand the details.'], ['We get to work', 'Once it is agreed, we begin and keep you informed along the way.']];
 
 /* ---------- pages ---------- */
 const PAGES = {
@@ -88,47 +110,25 @@ home: () => `
    <a class="ntf-f" href="#ventures">${VENTURES.length} ventures forthcoming ${AR}</a>
   </aside>
  </div>
- <div class="strip" id="strip">${WHY.map(([t], i) => `<button data-i="${i}"><span class="rn">${num(i + 1)}</span><span>${t}</span></button>`).join('')}</div>
- <p class="strip-t" id="stript" aria-live="polite">${WHY[0][1]}</p>
 </div></section>
 
-<div class="bands" aria-hidden="true">${ribbon(B.map(x => x.c.split(' & ')[0]), 'a')}${ribbon(['Build it', 'Give it a name', 'Watch it grow', 'Do it again'], 'b')}</div>
+<div class="bands" aria-hidden="true">${ribbon(B.map(x => x.c.split(' & ')[0]), 'a')}</div>
 
-<section class="hl" id="hl" data-ch="The group"><div class="stk"><div class="w"><p class="eye">A word on the group</p><p id="hlp">${HERO.statement}</p></div></div></section>
-
-<section class="lt" data-ch="The family"><div class="w model">
- <div><p class="eye rv">How the group fits together</p><h2 class="rv" ${d(1)}>One parent. <em>${B.length}</em> independent houses.</h2>
-  <p class="lead rv" ${d(2)}>${ABOUT.approach}</p>
-  <ol class="legend rv" ${d(3)} id="legend">${B.map((x, i) => `<li data-i="${i}" style="--c1:${x.c1}"><span class="rn">${num(i + 1)}</span><b>${x.short}</b><small>${x.tag}</small></li>`).join('')}</ol></div>
- <div class="orbit rv" ${d(2)} id="orbit">
-  <div class="ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" class="rg"/><circle cx="50" cy="50" r="46" class="rg2"/>${B.map((x, i) => { const a = (i * 360 / B.length - 90) * Math.PI / 180; return `<line x1="50" y1="50" x2="${(50 + 40 * Math.cos(a)).toFixed(2)}" y2="${(50 + 40 * Math.sin(a)).toFixed(2)}" style="--c:${x.c1}"/>`; }).join('')}</svg>
-   ${B.map((x, i) => `<a class="node" href="#${x.id}" data-i="${i}" style="--a:${i * 360 / B.length - 90}deg;${vars(x)}" aria-label="${x.short}"><span>${x.m}</span></a>`).join('')}</div>
-  <div class="core"><span class="core-c">${crest('mini')}</span><b id="coreT">${SITE.name}</b><small id="coreS">The parent group</small></div>
- </div>
-</div></section>
-
-<section class="lt" data-ch="The houses" style="padding-bottom:60px"><div class="w hs-head"><div><p class="eye rv">Our business portfolio</p><h2 class="rv" ${d(1)}>Five houses, <em>one family.</em></h2></div><p class="lead rv" ${d(2)}>Each house keeps its own name, its own craft and its own direction. Scroll on to open each folio.</p></div></section>
+<section class="lt" data-ch="The houses" style="padding-bottom:60px"><div class="w hs-head"><div><p class="eye rv">Our business portfolio</p><h2 class="rv" ${d(1)}>Five houses, <em>one family.</em></h2></div><p class="lead rv" ${d(2)}>Each house keeps its own name, craft and direction.</p></div></section>
 <div class="chaps" id="chaps">${B.map((x, i) => `<section class="chap" style="${vars(x)};--i:${i};z-index:${i + 1}"><div class="w chin">
  <div class="ctop"><span>Folio ${num(i + 1)} of ${num(B.length)}</span><span>${x.c}</span></div>
  <div class="ctext">
   <h3 class="cname">${x.short}</h3>
   <p class="cdesc">${x.p}</p>
-  <div><p class="clab">${x.l}</p><ul class="clist">${x.i.map((v, k) => `<li style="--k:${k}">${v}</li>`).join('')}</ul></div>
+  <div><p class="clab">${x.l}</p><ul class="clist">${x.i.slice(0, 4).map((v, k) => `<li style="--k:${k}">${v}</li>`).join('')}${x.i.length > 4 ? `<li class="more" style="--k:4">+ ${x.i.length - 4} more</li>` : ''}</ul></div>
   <a class="btn inv-b" href="#${x.id}">Visit ${x.short} ${AR}</a>
  </div>
  ${x.img ? `<figure class="cimg">${pic(x.img, x.short)}</figure>` : ''}
 </div></section>`).join('')}</div>
 
-<section class="lt prin" data-ch="Principles"><div class="w prin-g">
- <div class="prin-l"><p class="eye rv">Why ${SITE.name}</p><h2 class="rv" ${d(1)}>How we conduct <em>business.</em></h2>
-  <div class="tally rv" ${d(2)}>${[[B.length, 'Houses'], [VENTURES.length, 'Forthcoming'], [VALUES.length, 'Values']].map(([n, t]) => `<div><b class="cnt" data-n="${n}">0</b><span>${t}</span></div>`).join('')}</div>
-  <blockquote class="vq rv" ${d(3)}><p>${ABOUT.vision}</p><cite>Our vision</cite></blockquote></div>
- <ol class="prin-list">${WHY.map(([t, dd], i) => `<li class="rv" ${d(i)}><span class="rn">${num(i + 1)}</span><div><h3>${t}</h3><p>${dd}</p></div></li>`).join('')}</ol>
-</div></section>
-
 <section class="pa" data-ch="Forthcoming"><div class="w">
  <div class="sec-h"><div><p class="eye rv">Upcoming ventures</p><h2 class="rv" ${d(1)}>Forthcoming <em>from the group.</em></h2></div><a class="lnk rv" ${d(2)} href="#ventures">All ventures ${AR}</a></div>
- <div class="invs">${VENTURES.map((v, i) => invite(v, i, false)).join('')}</div>
+ ${carousel(VENTURES.map((v, i) => invite(v, i, false)).join(''), 'Upcoming ventures')}
 </div></section>
 ${cta('An idea worth <em>discussing?</em>', 'Business enquiry, partnership, or an idea still taking shape. Write to us and we will reply in good time.')}`,
 
@@ -139,9 +139,9 @@ about: () => ph('About us', 'Who <em>we</em> are.', ABOUT.intro) +
   <div class="rv"><span class="rn">I</span><p class="eye">Our mission</p><h3>${ABOUT.mission}</h3></div>
   <div class="rv" ${d(1)}><span class="rn">II</span><p class="eye">Our vision</p><h3>${ABOUT.vision}</h3></div>
  </div></section>
-<section class="dk" data-ch="Our values"><div class="w" style="text-align:center"><p class="eye rv" style="justify-content:center">Our values</p><h2 class="rv" ${d(1)}>What <em>guides</em> us.</h2>
- <div class="vals">${VALUES.map((v, i) => `<span class="rv" ${d(i)}>${v.name}</span>`).join('')}</div></div></section>
-<section class="lt" data-ch="Our approach"><div class="w split"><div><p class="eye rv">Our approach</p><h2 class="rv" ${d(1)}>Independent houses. <em>Shared</em> vision.</h2></div><p class="lead rv" ${d(2)}>${ABOUT.approach}</p></div></section>`
+
+` + familySection() + principlesSection() + `<section class="dk" data-ch="Our values"><div class="w" style="text-align:center"><p class="eye rv" style="justify-content:center">Our values</p><h2 class="rv" ${d(1)}>What <em>guides</em> us.</h2>
+ <div class="vals">${VALUES.map((v, i) => `<span class="rv" ${d(i)}>${v.name}</span>`).join('')}</div></div></section>`
 + cta(`Work with <em>${SITE.name}.</em>`, 'Explore partnership options or send us an enquiry.'),
 
 businesses: () => ph('The houses', 'Our business <em>portfolio.</em>', `Independent brands operating under the ${SITE.name} name. Choose a house to learn more.`) +
@@ -152,7 +152,7 @@ businesses: () => ph('The houses', 'Our business <em>portfolio.</em>', `Independ
 + cta('Interested in one of our <em>houses?</em>', 'Tell us what you need and we will point you to the right team.'),
 
 ventures: () => ph('Our ventures', 'Forthcoming <em>ventures.</em>', `Future initiatives of ${SITE.name}. None of the following are operating yet.`) +
-`<section class="pa" style="padding-top:20px" data-ch="Ventures"><div class="w"><div class="invs full">${VENTURES.map((v, i) => invite(v, i, true)).join('')}</div></div></section>`
+`<section class="pa" style="padding-top:20px" data-ch="Ventures"><div class="w">${carousel(VENTURES.map((v, i) => invite(v, i, true)).join(''), 'Ventures', 'full')}</div></section>`
 + cta('Wish to follow these <em>ventures?</em>', 'Write to us and we will keep you informed as they develop.'),
 
 partnerships: () => ph('Partnerships', `Partner with <em>${SITE.name}.</em>`, 'We welcome people and organisations who share our approach to building businesses.') +
@@ -169,9 +169,10 @@ contact: () => ph('Contact us', 'Write to <em>us.</em>', 'Send a business or gen
   <p class="eye rv" ${d(2)} style="margin-top:40px">Follow the group</p>
   <div class="soc rv" ${d(2)}>${socialLinks()}</div>
  </div>
- <div class="letter rv" ${d(1)}><div class="seg" role="tablist" data-a="0"><button role="tab" aria-selected="true" data-t="0">Business enquiry</button><button role="tab" aria-selected="false" data-t="1">General enquiry</button></div>
- <div data-p="0">${form(CF, 'Send enquiry')}</div><div data-p="1" hidden>${form(CF, 'Send enquiry')}</div></div>
-</div></section>`
+ <div class="letter rv" ${d(1)}><p class="eye">Enquiry</p><h2>Send us a <em>note.</em></h2>${form(CF, 'Send enquiry')}</div>
+</div></section>
+<section class="pa" data-ch="What happens next"><div class="w"><p class="eye rv">What happens next</p><h2 class="rv" ${d(1)}>Three <em>simple</em> steps.</h2>
+ <div class="steps">${STEPS.map(([t, p], i) => `<div class="step rv" ${d(i)}><span class="rn">${num(i + 1)}</span><h3>${t}</h3><p>${p}</p></div>`).join('')}</div></div></section>`
 };
 
 /* ---------- one page per business ---------- */
@@ -183,22 +184,10 @@ B.forEach((x, bi) => PAGES[x.id] = () => { const nx = B[(bi + 1) % B.length]; re
  <p class="lead rv" ${d(3)}>${x.p}</p>
  <div class="row rv" ${d(4)}><a class="btn inv-b" href="#contact">Send an enquiry ${AR}</a><a class="lnk" href="#home">${SITE.name}</a></div></div>
  <div class="bh-art rv" ${d(3)}>${x.img ? `<figure class="frm bhimg">${pic(x.img, x.short)}</figure>` : ''}${seal(x, 'big')}</div></div></section>
-<section class="lt" data-ch="At a glance"><div class="w">
- <dl class="ledger rv">
-  <div><dt>The house</dt><dd>${x.short}</dd></div>
-  <div><dt>Discipline</dt><dd>${x.c}</dd></div>
-  <div><dt>${x.l}</dt><dd>${x.i.length} offered</dd></div>
-  <div><dt>Part of</dt><dd>${SITE.name}</dd></div>
-  <div><dt>Enquiries</dt><dd><a href="#contact">Write to us</a></dd></div>
- </dl></div></section>
-<section class="lt" style="padding-top:0" data-ch="${x.l}"><div class="w">
+<section class="lt" data-ch="${x.l}"><div class="w">
  <div class="menu-card rv"><p class="eye" style="justify-content:center">${x.l}</p><h2>${x.h}</h2>${orn()}
- <ol class="menu">${x.i.map((v, i) => `<li><span class="rn">${num(i + 1)}</span><span class="mi">${v}</span><span class="dots"></span><a href="#contact">Enquire</a></li>`).join('')}</ol></div></div></section>
-<section class="lt" style="padding-top:0" data-ch="Working together"><div class="w"><p class="eye rv">Working together</p><h2 class="rv" ${d(1)}>Three <em>simple</em> steps.</h2>
- <div class="steps">${[['Tell us what you need', 'Send an enquiry with a few lines about what you have in mind.'], ['We talk it through', `The ${x.short} team gets back to you to understand the details.`], ['We get to work', 'Once it is agreed, we begin and keep you informed along the way.']].map(([t, p], i) => `<div class="step rv" ${d(i)}><span class="rn">${num(i + 1)}</span><h3>${t}</h3><p>${p}</p></div>`).join('')}</div></div></section>
+ <ol class="menu">${x.i.map((v, i) => `<li><span class="rn">${num(i + 1)}</span><span class="mi">${v}</span></li>`).join('')}</ol></div></div></section>
 ${x.gal ? `<section class="lt" style="padding-top:0" data-ch="${x.gal}"><div class="w"><div class="sec-h"><div><p class="eye rv">${x.gal}</p><h2 class="rv" ${d(1)}>Selected <em>work.</em></h2></div><p class="note rv" ${d(2)}>Sample photographs for now. Select one to view it larger.</p></div>
  <div class="gal">${x.gl.map((g, i) => `<button class="gi rv" ${d(i % 3)} data-lb="${i}" aria-label="View image ${i + 1}"><span class="frm">${pic(g, `${x.short}, image ${i + 1}`)}</span></button>`).join('')}</div></div></section>` : ''}
-<section class="lt" style="padding-top:0" data-ch="The family"><div class="w"><p class="eye rv">Also from ${SITE.name}</p><h2 class="rv" ${d(1)}>The rest of the <em>family.</em></h2>
- <div class="others">${B.filter(o => o.id !== x.id).map((o, i) => `<a class="other rv" ${d(i)} href="#${o.id}">${seal(o)}<span><small>${o.tag}</small><b>${o.short}</b></span></a>`).join('')}</div></div></section>
 <section class="nextb"><div class="w"><span class="eye">Next house</span><a href="#${nx.id}">${nx.short} ${seal(nx)}</a></div></section>
 ${cta(`Work with <em>${x.short}.</em>`, 'Tell us about your requirement and we will be in touch.')}</div>`; });

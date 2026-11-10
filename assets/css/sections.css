@@ -39,7 +39,7 @@
 .strip{display:flex;flex-wrap:wrap;gap:4px 28px;margin-top:clamp(50px,7vw,90px);padding-top:18px;border-top:1px solid var(--ink)}
 .strip button{display:flex;align-items:baseline;gap:8px;padding:10px 0;font:500 11.5px/1.2 var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--ink2);border-bottom:1px solid transparent;transition:color .3s,border-color .3s}
 .strip button .rn{font-size:15px;letter-spacing:0;text-transform:none}
-.strip button.on{color:var(--ox);border-color:var(--gold)}
+.strip button.on{color:var(--ox);border-color:var(--rule)}
 .strip-t{margin-top:14px;font:italic 400 clamp(19px,1.6vw,23px)/1.4 var(--disp);color:var(--ink2);min-height:2.8em;transition:opacity .35s}
 .strip-t.fade{opacity:0}
 
@@ -76,8 +76,8 @@
 .orbit{--R:min(500px,40vw);position:relative;width:var(--R);aspect-ratio:1;margin:auto;overflow:hidden}
 .ring{position:absolute;inset:0;animation:orb 120s linear infinite}
 .ring svg{position:absolute;inset:0;width:100%;height:100%}
-.ring .rg{fill:none;stroke:var(--gold);stroke-width:.25;opacity:.7}
-.ring .rg2{fill:none;stroke:var(--gold);stroke-width:.2;stroke-dasharray:.6 1.4;opacity:.7}
+.ring .rg{fill:none;stroke:var(--rule);stroke-width:.25;opacity:.7}
+.ring .rg2{fill:none;stroke:var(--rule);stroke-width:.2;stroke-dasharray:.6 1.4;opacity:.7}
 .ring line{stroke:rgba(29,27,22,.16);stroke-width:.25;transition:stroke .3s,stroke-width .3s}
 .ring line.on{stroke:var(--c);stroke-width:.6}
 .orbit:hover .ring,.orbit:hover .node span{animation-play-state:paused}
@@ -143,13 +143,32 @@
 @media(max-width:860px) and (max-height:740px){.cdesc{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}}
 @media(max-width:860px) and (max-height:640px){.clab{display:none}.chin{padding-bottom:76px}}
 @media(max-width:860px) and (max-height:560px){.cimg{display:none}}
+/* alignment: each folio sits 12px lower than the one before, so its content starts
+   12px higher inside it. That keeps the label row, title, button and photo of every
+   folio in exactly the same place on screen; only the colour changes as they stack. */
+.chap{--step:12px;--top:clamp(80px,12vh,124px);--bot:clamp(96px,12vh,124px);align-items:stretch;min-height:560px;transform:none!important}
+.chin{height:100%;padding-top:calc(var(--top) - var(--i,0) * var(--step));padding-bottom:var(--bot);grid-template-rows:auto minmax(0,1fr)}
+.ctext{min-height:0}
+.cimg{min-height:0;height:100%}
+.cname{font-size:clamp(44px,min(6.2vw,9.5vh),96px)}
+@media(max-width:860px){
+ .chap{--step:10px;--top:calc(64px + env(safe-area-inset-top,0px));min-height:0}
+ .chin{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+ .ctext{flex:1 1 auto}
+ .cimg{flex:0 0 auto;height:clamp(150px,27svh,260px)}
+ .cname{font-size:clamp(34px,9.6vw,48px);line-height:1.02}
+}
+@media(max-width:860px) and (max-height:740px){.cimg{height:clamp(130px,23svh,200px)}}
+/* the label row stays on one line so every folio keeps the same layout */
+.ctop span{white-space:nowrap}
+.ctop span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis}
 
 /* ---------- principles ---------- */
 .prin-g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(40px,7vw,100px);align-items:start}
 .tally{display:flex;gap:clamp(24px,4vw,50px);margin-top:40px}
 .tally b{display:block;font:500 clamp(52px,5.5vw,76px)/1 var(--disp);color:var(--ox)}
 .tally span{font:500 10.5px/1 var(--ui);letter-spacing:.22em;text-transform:uppercase;color:var(--ink2)}
-.vq{margin:50px 0 0;padding-left:26px;border-left:1px solid var(--gold)}
+.vq{margin:50px 0 0;padding-left:26px;border-left:1px solid var(--rule)}
 .vq p{font:italic 400 clamp(24px,2.4vw,32px)/1.3 var(--disp)}
 .vq p::before{content:"“"}.vq p::after{content:"”"}
 .vq cite{display:block;margin-top:16px;font:500 10.5px/1 var(--ui);letter-spacing:.22em;text-transform:uppercase;font-style:normal;color:var(--gold)}
@@ -169,7 +188,7 @@
 .inv h3{font-size:clamp(28px,2.6vw,36px);color:var(--c)}
 .inv p{color:var(--ink2);font-size:16.5px}
 .inv-list{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;justify-content:center;font:italic 18px/1.5 var(--disp)}
-.inv-list li:not(:last-child)::after{content:"·";margin:0 .5em;color:var(--gold)}
+.inv-list li:not(:last-child)::after{content:"·";margin:0 .5em;color:var(--rule)}
 .inv .lnk{margin-top:auto;color:var(--c)}
 a.inv:hover{transform:translateY(-6px);box-shadow:0 40px 60px -40px rgba(29,27,22,.7)}
 
@@ -251,7 +270,7 @@ a.inv:hover{transform:translateY(-6px);box-shadow:0 40px 60px -40px rgba(29,27,2
 .card dt{font:500 10px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);flex:none}
 .card dd{margin:0;overflow-wrap:anywhere;font-size:16.5px}
 .soc{display:flex;flex-wrap:wrap;gap:10px 26px}
-.soc a{font:500 11.5px/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;padding:6px 0;border-bottom:1px solid var(--gold)}
+.soc a{font:500 11.5px/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;padding:6px 0;border-bottom:1px solid var(--rule)}
 .seg{display:flex;gap:28px;margin-bottom:34px;border-bottom:1px solid var(--line)}
 .seg button{font:500 11.5px/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;padding:14px 0;margin-bottom:-1px;border-bottom:1.5px solid transparent;color:var(--ink2);transition:color .3s,border-color .3s}
 .seg button[aria-selected=true]{color:var(--ox);border-color:var(--ox)}
@@ -299,7 +318,7 @@ a.inv:hover{transform:translateY(-6px);box-shadow:0 40px 60px -40px rgba(29,27,2
 .other{display:flex;gap:14px;align-items:center;padding:16px;border:1px solid var(--line);background:var(--card);transition:border-color .3s,transform .5s var(--ease)}
 .other small{display:block;font:500 10px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;color:var(--ink2)}
 .other b{display:block;margin-top:6px;font:500 21px/1.1 var(--disp)}
-.other:hover{border-color:var(--gold)}
+.other:hover{border-color:var(--rule)}
 .other .seal{width:46px;height:46px;font-size:17px}
 .nextb{background:var(--paper2);padding:clamp(50px,7vw,80px) 0}
 .nextb .w{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
@@ -339,3 +358,55 @@ a.inv:hover{transform:translateY(-6px);box-shadow:0 40px 60px -40px rgba(29,27,2
  .strip{gap:0 18px}
  .ntf{padding:20px 18px 16px}
 }
+
+/* ---------- venture carousel: swipe on phones, drag or buttons on desktop ---------- */
+.car{--cg:clamp(16px,2.2vw,28px)}
+.car-track.invs{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:calc((100% - var(--cg)) / 2);gap:var(--cg);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;padding:10px 0 34px;margin:-10px 0 -14px;cursor:grab}
+.car-track.invs::-webkit-scrollbar{display:none}
+.car-track.invs>*{scroll-snap-align:start;min-width:0}
+.car-track.grab{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.car-track.anim{scroll-snap-type:none}
+.car-track.grab *{pointer-events:none}
+.car-track:focus-visible{outline-offset:6px}
+.car-ctl{display:flex;align-items:center;gap:14px;margin-top:8px}
+.car-b{width:46px;height:46px;flex:none;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;font:400 18px/1 var(--ui);color:var(--ink);transition:background .3s,color .3s,opacity .3s}
+.car-b:hover:not(:disabled){background:var(--ink);color:var(--paper)}
+.car-b:disabled{opacity:.25;cursor:default}
+.car-dots{display:flex;gap:8px;flex:1}
+.car-dots button{width:28px;height:2px;background:var(--line);transition:background .3s,width .4s var(--ease);position:relative}
+.car-dots button::before{content:"";position:absolute;inset:-10px 0}
+.car-dots button.on{background:var(--ink);width:44px}
+.car-n{font:500 12px/1 var(--ui);letter-spacing:.14em;color:var(--ink2);font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+.car.one .car-ctl{display:none}
+.car.one .car-track{cursor:auto}
+/* phones: one full card per swipe */
+@media(max-width:620px){.car{--cg:14px}.car-track.invs{grid-auto-columns:100%}}
+
+/* "+ N more" at the end of a folio's service list */
+.clist li.more{opacity:.7}
+
+/* ---------- contrast: every piece of text readable on the surface it sits on ---------- */
+/* brand surfaces (folios, business heroes, seals): a single-hue gradient that only gets
+   darker, so ivory text keeps >= 4.5:1 from one end to the other (lightest brand, ochre: 5.9:1) */
+.chap,.bh{background:radial-gradient(ellipse at 15% 0%,rgba(255,255,255,.06),transparent 55%),linear-gradient(160deg,var(--c1),color-mix(in srgb,var(--c1) 78%,#000))}
+.seal,.node span{background:radial-gradient(circle at 35% 30%,var(--c1),color-mix(in srgb,var(--c1) 80%,#000) 75%)}
+/* small labels on brand colour use the ivory text colour itself, not the light tint */
+.ctop,.clab,.back,.bh .eye{color:var(--f)}
+.ctop span:first-child,.clab,.back{opacity:1}
+.cdesc{opacity:1}
+.bh .lead{color:var(--f)}
+.clist li:not(:last-child)::after{color:var(--f);opacity:.7}
+/* labels on dark green use the light gold */
+.dk .eye,.dk .rn,.cta .eye{color:var(--gold2)}
+.dk :focus-visible,.chap :focus-visible,.bh :focus-visible,footer :focus-visible{outline-color:var(--gold2)}
+/* disabled carousel arrows stay visible (about 3.5:1) */
+.car-b:disabled{opacity:.75;border-style:dashed}
+
+/* ---------- page change (Heritage): a parchment leaf turns like a ledger page ---------- */
+[data-theme=heritage] .veil{background:linear-gradient(90deg,#e2d6bc,var(--paper2) 9%,var(--paper) 60%,var(--card));transform-origin:0 50%;transform:perspective(2000px) rotateY(-96deg);box-shadow:-30px 0 80px rgba(29,27,22,.35);transition:none}
+[data-theme=heritage] .veil::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(29,27,22,.22),transparent 40%);opacity:1;transition:opacity .6s}
+[data-theme=heritage] .veil.cover{transform:perspective(2000px) rotateY(0deg);transition:transform .62s cubic-bezier(.62,0,.28,1)}
+[data-theme=heritage] .veil.cover::after{opacity:0}
+[data-theme=heritage] .veil.away{transform-origin:100% 50%;transform:perspective(2000px) rotateY(96deg);transition:transform .7s cubic-bezier(.62,0,.28,1)}
+[data-theme=heritage] .veil .crest .cr-o{fill:var(--green)}
+[data-theme=heritage] .veil span{width:84px}
