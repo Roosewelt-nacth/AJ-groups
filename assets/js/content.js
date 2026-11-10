@@ -40,6 +40,7 @@ const SITE = {
     { label: 'Facebook',  url: '' },
   ],
   footerNote: 'Placeholder contact details. Replace before launch.',
+  founded: 2026,                          // TODO: confirm the year the group was founded (shown as "Est. MMXXVI")
   copyrightYear: 2026,
 };
 
@@ -50,12 +51,12 @@ const HERO = {
   intro: 'We start businesses, give each one its own personality, and help it grow. Right now that’s marketing, photography, software, a bakery and stories for kids.',
   // "Creating ___" cycles through these words. Colour = the brand it stands for.
   rotatingWords: [
-    { word: 'opportunities.', color: '#e5383b' },
-    { word: 'brands.',        color: '#3b5bea' },
-    { word: 'visuals.',       color: '#e08a12' },
-    { word: 'software.',      color: '#0e9f9a' },
-    { word: 'bakes.',         color: '#e8553a' },
-    { word: 'stories.',       color: '#c94a9f' },
+    { word: 'opportunities.', color: '#6e1f2a' },
+    { word: 'brands.',        color: '#22345a' },
+    { word: 'visuals.',       color: '#8a5d1c' },
+    { word: 'software.',      color: '#2c5e55' },
+    { word: 'bakes.',         color: '#8e3b2e' },
+    { word: 'stories.',       color: '#5e3f63' },
   ],
   statement: 'AJ GROUPS is an emerging multi-business group that builds and manages *independent brands* across digital marketing, visual production, technology, food and digital entertainment. *Fashion and digital products* are next.',
 };
@@ -68,9 +69,9 @@ const HERO_NOTES = [
   { business: 'aj-software-solutions',  text: 'Websites and apps that actually fit the business.' },
   { business: 'bun-bun-bakes',          text: 'Brownies, waffles, caramel pudding. Hot chocolate too.' },
   { business: 'aj-little-wonder-world', text: 'Stories and animations for kids, with some learning mixed in.' },
-  { name: 'Clothing Brand',   tag: 'Soon',         monogram: 'CB', colors: ['#a78bfa', '#7c5cf0', '#ffffff'], text: 'A clothing label is in the works.' },
-  { name: 'Digital Products', tag: 'In the works', monogram: 'DP', colors: ['#d4ff3f', '#a8e021', '#0b0b10'], text: 'E-books, planners and templates. Being made now.' },
-  { name: 'Online Courses',   tag: 'Soon',         monogram: 'OC', colors: ['#ff6b4a', '#ffb23f', '#1c0906'], text: 'Courses on design, baking and more.' },
+  { name: 'Clothing Brand',   tag: 'Soon',         monogram: 'CB', colors: ['#3d3554', '#54496f', '#f3ecdd'], text: 'A clothing label is in the works.' },
+  { name: 'Digital Products', tag: 'In the works', monogram: 'DP', colors: ['#2c4a3b', '#3d6150', '#f3ecdd'], text: 'E-books, planners and templates. Being made now.' },
+  { name: 'Online Courses',   tag: 'Soon',         monogram: 'OC', colors: ['#7a3b2c', '#9a5440', '#f3ecdd'], text: 'Courses on design, baking and more.' },
 ];
 
 
@@ -78,7 +79,7 @@ const HERO_NOTES = [
    id ............ used in the page address (#alven-studio). Lowercase, no spaces.
    colors.main / colors.second ... the brand's two colours
    colors.text ... text colour that reads well on those colours
-   colors.light .. lighter tint used on dark backgrounds
+   colors.light .. lighter tint used for small accents on the brand colour
    image ......... cover photo (cards, home-page chapter, business page)
    gallery ....... photos for the gallery section; galleryTitle '' hides it */
 const BUSINESSES = [
@@ -86,7 +87,7 @@ const BUSINESSES = [
     id: 'alven-studio',
     name: 'ALVEN STUDIO', shortName: 'Alven Studio', monogram: 'AS', tag: 'Marketing',
     category: 'Digital Marketing & Creative Solutions',
-    colors: { main: '#4c6fff', second: '#2a3fd8', text: '#ffffff', light: '#8ea2ff' },
+    colors: { main: '#22345a', second: '#2f4675', text: '#f3ecdd', light: '#a9b8d8' },
     summary: 'A creative digital marketing agency helping businesses build their online presence and grow their audience.',
     description: 'A creative digital marketing agency focused on helping businesses build their online presence, strengthen their brand identity and grow their audience.',
     listTitle: 'Services', listHeading: 'What we do.',
@@ -99,7 +100,7 @@ const BUSINESSES = [
     id: 'house-of-fovo',
     name: 'HOUSE OF FOVO', shortName: 'House of Fovo', monogram: 'HF', tag: 'Visuals',
     category: 'Photography & Videography',
-    colors: { main: '#ffb23f', second: '#ff8a1f', text: '#1a1205', light: '#ffc56b' },
+    colors: { main: '#7d5419', second: '#9a6a24', text: '#f3ecdd', light: '#dcbb7f' },
     summary: 'A creative visual production brand capturing meaningful moments and creating engaging visual content.',
     description: 'A creative visual production brand focused on capturing meaningful moments and creating engaging visual content.',
     listTitle: 'Services', listHeading: 'What we capture.',
@@ -112,7 +113,7 @@ const BUSINESSES = [
     id: 'aj-software-solutions',
     name: 'AJ SOFTWARE SOLUTIONS', shortName: 'AJ Software', monogram: 'SW', tag: 'Technology',
     category: 'Technology & Software Development',
-    colors: { main: '#20d3c2', second: '#0e9f9a', text: '#04201d', light: '#4fe3d4' },
+    colors: { main: '#2c5e55', second: '#3a7468', text: '#f3ecdd', light: '#a3c8bd' },
     summary: 'A technology-focused venture delivering practical digital solutions for businesses and individuals.',
     description: 'A technology-focused venture delivering practical digital solutions for businesses and individuals.',
     listTitle: 'Services', listHeading: 'What we build.',
@@ -125,7 +126,7 @@ const BUSINESSES = [
     id: 'bun-bun-bakes',
     name: 'BUN BUN BAKES', shortName: 'Bun Bun Bakes', monogram: 'BB', tag: 'Food',
     category: 'Bakery & Food Products',
-    colors: { main: '#ff6b4a', second: '#ff4f6d', text: '#1c0906', light: '#ff8a70' },
+    colors: { main: '#8e3b2e', second: '#a84c3c', text: '#f3ecdd', light: '#e3a596' },
     summary: 'A food and bakery brand creating delicious baked products, desserts and snack offerings.',
     description: 'A food and bakery brand focused on creating delicious baked products, desserts and snack offerings.',
     listTitle: 'Products', listHeading: 'From our kitchen.',
@@ -138,7 +139,7 @@ const BUSINESSES = [
     id: 'aj-little-wonder-world',
     name: 'AJ LITTLE WONDER WORLD', shortName: 'Little Wonder World', monogram: 'LW', tag: 'Kids',
     category: 'Kids’ Entertainment & Digital Content',
-    colors: { main: '#ff7ad1', second: '#a78bfa', text: '#1b0b24', light: '#ff9adf' },
+    colors: { main: '#5e3f63', second: '#77567d', text: '#f3ecdd', light: '#cdb0d1' },
     summary: 'A children’s content initiative creating entertaining and engaging digital stories, animations and educational content.',
     description: 'A children’s content initiative focused on creating entertaining and engaging digital stories, animations and educational content.',
     listTitle: 'What we create', listHeading: 'Made for young minds.',
@@ -152,12 +153,12 @@ const BUSINESSES = [
 
 /* ---------- 4. Upcoming ventures ---------- */
 const VENTURES = [
-  { name: 'Clothing Brand', status: 'Coming soon', color: '#a78bfa', image: U('photo-1603400521630-9f2de124b33b', 900),
+  { name: 'Clothing Brand', status: 'Coming soon', color: '#3d3554', image: U('photo-1603400521630-9f2de124b33b', 900),
     summary: 'A future fashion and clothing business.', items: [] },
-  { name: 'Digital Products', status: 'In development', color: '#d4ff3f', image: U('photo-1632772998001-cc9bf6f7c852', 900),
+  { name: 'Digital Products', status: 'In development', color: '#2c4a3b', image: U('photo-1632772998001-cc9bf6f7c852', 900),
     summary: 'E-books, planners, templates and personalised digital gifts.',
     items: ['E-books', 'Children’s Storybooks', 'Colouring Books', 'Wedding Planners', 'Financial Planners', 'Digital Templates', 'Printable Products', 'Personalised Digital Gifts'] },
-  { name: 'Online Courses & Training', status: 'Coming soon', color: '#ff6b4a', image: U('photo-1501504905252-473c47e087f8', 900),
+  { name: 'Online Courses & Training', status: 'Coming soon', color: '#7a3b2c', image: U('photo-1501504905252-473c47e087f8', 900),
     summary: 'Graphic design, baking, Microsoft Business Central and more.',
     items: ['Graphic Design', 'Baking', 'Microsoft Business Central', 'Other skill-development courses'] },
 ];
@@ -173,11 +174,11 @@ const ABOUT = {
 };
 
 const VALUES = [
-  { name: 'Innovation',    color: '#4c6fff' },
-  { name: 'Integrity',     color: '#20d3c2' },
-  { name: 'Collaboration', color: '#ff7ad1' },
-  { name: 'Quality',       color: '#ffb23f' },
-  { name: 'Growth',        color: '#d4ff3f' },
+  { name: 'Innovation',    color: '#22345a' },
+  { name: 'Integrity',     color: '#2c5e55' },
+  { name: 'Collaboration', color: '#5e3f63' },
+  { name: 'Quality',       color: '#7d5419' },
+  { name: 'Growth',        color: '#6e1f2a' },
 ];
 
 
