@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AJ GROUPS · Six businesses, one discipline</title>
+<meta name="description" content="A scroll tour of the AJ GROUPS headquarters: six working businesses and the founder's office.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="hq2.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body>
+<canvas id="c" aria-hidden="true"></canvas>
+<div class="load" id="load" aria-hidden="true"><span></span></div>
+
+<header class="top">
+  <a class="mark" href="./">AJ GROUPS</a>
+  <a class="cta" href="#contact">Talk to us</a>
+</header>
+<nav class="dots" id="dots" aria-label="Tour stops"></nav>
+<div class="tip" id="tip" role="status"></div>
+
+<!-- The tour is real content first: this list is what screen readers, search engines and
+     devices without 3D get. With 3D on, each article becomes one stop of the camera tour. -->
+<main class="tour" id="tour">
+  <article class="stop" data-room="intro" aria-labelledby="h-intro">
+    <p class="eyebrow"><span>AJ GROUPS</span><span class="step">01 / 08</span></p>
+    <h1 id="h-intro">Six businesses. <em>One discipline.</em></h1>
+    <p class="line">A group of working companies, built and led by Allwyn. Scroll to walk the floor.</p>
+    <p class="scrollcue">Scroll</p>
+  </article>
+
+  <article class="stop" data-room="alven" aria-labelledby="h-alven">
+    <p class="eyebrow"><span class="dot"></span><span>Alven Studio</span><span class="step">02 / 08</span></p>
+    <h2 id="h-alven">Ideas that <em>get seen.</em></h2>
+    <p class="line">Strategy, social and ads for brands that want to be seen. A busy agency floor, every day.</p>
+    <p class="now"><b>Now</b><span>Reviewing this week&rsquo;s campaign numbers</span></p>
+    <a class="enter" href="#alven">Enter Alven Studio <i aria-hidden="true">→</i></a>
+  </article>
+
+  <article class="stop" data-room="fovo" aria-labelledby="h-fovo">
+    <p class="eyebrow"><span class="dot"></span><span>House of Fovo</span><span class="step">03 / 08</span></p>
+    <h2 id="h-fovo">Light, patience, <em>a good eye.</em></h2>
+    <p class="line">Portraits, events and commercial photography.</p>
+    <p class="now"><b>Now</b><span>Shooting a portrait series</span></p>
+    <a class="enter" href="#fovo">Enter House of Fovo <i aria-hidden="true">→</i></a>
+  </article>
+
+  <article class="stop" data-room="bun" aria-labelledby="h-bun">
+    <p class="eyebrow"><span class="dot"></span><span>Bun Bun Bakes</span><span class="step">04 / 08</span></p>
+    <h2 id="h-bun">Made fresh, <em>made daily.</em></h2>
+    <p class="line">Fresh bread, cakes and bakes, made to order.</p>
+    <p class="now"><b>Now</b><span>Pulling croissants from the oven</span></p>
+    <a class="enter" href="#bun">Enter Bun Bun Bakes <i aria-hidden="true">→</i></a>
+  </article>
+
+  <article class="stop" data-room="soft" aria-labelledby="h-soft">
+    <p class="eyebrow"><span class="dot"></span><span>AJ Softwares</span><span class="step">05 / 08</span></p>
+    <h2 id="h-soft">Built carefully, <em>shipped steadily.</em></h2>
+    <p class="line">Websites, apps and custom software for businesses.</p>
+    <p class="now"><b>Now</b><span>Shipping a website update</span></p>
+    <a class="enter" href="#soft">Enter AJ Softwares <i aria-hidden="true">→</i></a>
+  </article>
+
+  <article class="stop" data-room="wear" aria-labelledby="h-wear">
+    <p class="eyebrow"><span class="dot"></span><span>Clothing (name to be confirmed)</span><span class="step">06 / 08</span></p>
+    <h2 id="h-wear">Cut by hand, <em>finished by eye.</em></h2>
+    <p class="line">Tailored pieces and seasonal collections.</p>
+    <p class="now"><b>Now</b><span>Fitting a new jacket</span></p>
+    <a class="enter" href="#wear">Enter the atelier <i aria-hidden="true">→</i></a>
+  </article>
+
+  <article class="stop" data-room="kids" aria-labelledby="h-kids">
+    <p class="eyebrow"><span class="dot"></span><span>AJ Little World</span><span class="step">07 / 08</span></p>
+    <h2 id="h-kids">Stories worth <em>sitting still for.</em></h2>
+    <p class="line">Stories, learning videos and play for children.</p>
+    <p class="now"><b>Now</b><span>Reading a new story aloud</span></p>
+    <a class="enter" href="#kids">Enter Little World <i aria-hidden="true">→</i></a>
+  </article>
+
+  <article class="stop" data-room="founder" aria-labelledby="h-founder">
+    <p class="eyebrow"><span class="dot"></span><span>The founder</span><span class="step">08 / 08</span></p>
+    <h2 id="h-founder">Built on <em>discipline.</em></h2>
+    <p class="line quote">&ldquo;We build businesses slowly, carefully and to last. Every one of them has to earn its place on this floor.&rdquo;</p>
+    <p class="sig"><span class="signature">Allwyn</span><small>Founder, AJ GROUPS · placeholder statement</small></p>
+    <a class="enter" id="contact" href="#contact">Talk to us <i aria-hidden="true">→</i></a>
+  </article>
+</main>
+
+<div class="spacer" id="spacer" aria-hidden="true"></div>
+<noscript><p class="ns">The 3D tour needs JavaScript. The list above covers every business.</p></noscript>
+<script type="module" src="hq2.js"></script>
+</body>
+</html>
