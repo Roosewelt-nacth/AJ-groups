@@ -131,8 +131,21 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--teal);outline-offse
  .plus{display:none}
 }
 @media (prefers-reduced-motion:reduce){.mq div,.cue svg{animation:none}.rv,.w>span{transition:none}}
+/* each service fills with its own living gradient (mesh of three glows) when hovered or tapped */
+.card::before{background-size:190% 190%;animation:gdrift 7s ease-in-out infinite alternate}
+@keyframes gdrift{from{background-position:0% 100%}to{background-position:100% 0%}}
+.card:nth-child(1)::before{background:radial-gradient(60% 55% at 12% 92%,#ff5a3c 0,transparent 70%),radial-gradient(55% 50% at 88% 68%,#ffbf5e 0,transparent 70%),radial-gradient(60% 50% at 52% 4%,#ff7fb0 0,transparent 70%),#ffb39a;background-size:190% 190%}
+.card:nth-child(2)::before{background:radial-gradient(60% 55% at 12% 88%,#6c4bff 0,transparent 70%),radial-gradient(55% 50% at 88% 62%,#4fe3cf 0,transparent 70%),radial-gradient(60% 50% at 52% 4%,#ffc6f0 0,transparent 70%),#c9bbff;background-size:190% 190%}
+.card:nth-child(3)::before{background:radial-gradient(60% 55% at 12% 90%,#10cf9c 0,transparent 70%),radial-gradient(55% 50% at 88% 64%,#3fb0ff 0,transparent 70%),radial-gradient(60% 50% at 52% 4%,#e6ff9a 0,transparent 70%),#b8ffe4;background-size:190% 190%}
+.card:nth-child(4)::before{background:radial-gradient(60% 55% at 12% 92%,#2f84ff 0,transparent 70%),radial-gradient(55% 50% at 88% 64%,#9473ff 0,transparent 70%),radial-gradient(60% 50% at 52% 4%,#6ff0ff 0,transparent 70%),#bde4ff;background-size:190% 190%}
+.card:nth-child(5)::before{background:radial-gradient(60% 55% at 12% 90%,#ff8e12 0,transparent 70%),radial-gradient(55% 50% at 88% 64%,#ff4f66 0,transparent 70%),radial-gradient(60% 50% at 52% 4%,#fff09a 0,transparent 70%),#ffdf9e;background-size:190% 190%}
+.card:nth-child(6)::before{background:radial-gradient(60% 55% at 12% 88%,#ff3f8e 0,transparent 70%),radial-gradient(55% 50% at 88% 64%,#7f62ff 0,transparent 70%),radial-gradient(60% 50% at 52% 4%,#ffd49a 0,transparent 70%),#ffc2d8;background-size:190% 190%}
+.card:hover,.card.open,.card:focus-visible{--fillink:#0b1020}
+@media (prefers-reduced-motion:reduce){.card::before{animation:none}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
+<link rel="stylesheet" href="../assets/vt.css">
+<script src="../assets/vt.js"></script>
 </head>
 <body>
 <canvas id="c" aria-hidden="true"></canvas>
@@ -206,5 +219,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--teal);outline-offse
 </main>
 <footer><span>© 2026 Alven Studio · part of AJ GROUPS</span><span><a href="../aj-groups/">← Back to AJ GROUPS</a></span></footer>
 <script type="module" src="main.js"></script>
+<script>window.MOTION={accent:'#5fe0cd',par:'.hero .ht,.hero .tag',reveal:'.mo-none',press:'.btn,button,a.enter,.cue',mag:'.btn,.cue',titles:{hero:'Alven Studio',idea:'The idea',services:'Services',process:'Process',contact:'Contact'},dock:[{"l": "Home", "h": "#hero", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 11l8-7 8 7v9H4z\"/></svg>"}, {"l": "Idea", "h": "#idea", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"11\" r=\"5\"/><path d=\"M9 19h6M10 22h4\"/></svg>"}, {"l": "Services", "h": "#services", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"4\" y=\"4\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"13\" y=\"4\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"4\" y=\"13\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"13\" y=\"13\" width=\"7\" height=\"7\" rx=\"1.5\"/></svg>"}, {"l": "Process", "h": "#process", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg>"}, {"l": "Contact", "h": "#contact", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 6h16v12H4z\"/><path d=\"M4 7l8 6 8-6\"/></svg>"}]};</script>
+<script src="../assets/motion.js"></script>
 </body>
 </html>

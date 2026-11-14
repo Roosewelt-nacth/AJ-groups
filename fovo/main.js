@@ -9,8 +9,9 @@ const CAP = ['Torres del Paine', 'Studio portrait', 'Concrete and glass', 'The c
 /* ---------- sliced photographs ---------- */
 const N = 10;
 function slice(ph) {
-  const i = +ph.dataset.i, src = IMG(i);
+  const i = +ph.dataset.i, src = IMG(i), fx = ph.dataset.fx || 'slice';
   const im = new Image(); im.alt = CAP[i] || ''; im.src = src; im.loading = 'lazy'; im.draggable = false; ph.appendChild(im);
+  if (fx !== 'slice') return;
   const sl = document.createElement('div'); sl.className = 'sl'; sl.setAttribute('aria-hidden', 'true');
   for (let k = 0; k < N; k++) {
     const s = document.createElement('i');
@@ -31,20 +32,21 @@ function slice(ph) {
   }
 }
 const grid = $('grid');
-const G = [[0, 'g1 a45'], [3, 'g2 a45'], [8, 'g3 a11'], [11, 'g4 a32'], [6, 'g5 a45'], [9, 'g6 a45'], [12, 'g7 a45']];
-G.forEach(([i, c], n) => {
+/* each photograph gets the entrance that suits it: a curtain for the big frames, a focus pull for the quiet ones, a shutter for the small, slices for portraits */
+const G = [[0, 'g1 a45', 'curtain-l'], [3, 'g2 a45', 'slice'], [8, 'g3 a11', 'shutter'], [11, 'g4 a32', 'curtain-r'], [6, 'g5 a45', 'slice'], [9, 'g6 a45', 'focus'], [12, 'g7 a45', 'curtain-u']];
+G.forEach(([i, c, fx], n) => {
   const f = document.createElement('figure'); f.style.margin = 0; f.className = c.split(' ')[0];
-  f.innerHTML = `<div class="ph ${c.split(' ')[1]}" data-i="${i}"><span class="no mono">${String(n + 1).padStart(2, '0')}</span></div><figcaption class="cap"><span>${CAP[i]}</span><span>${String(i + 1).padStart(2, '0')}</span></figcaption>`;
+  f.innerHTML = `<div class="ph ${c.split(' ')[1]}" data-i="${i}" data-fx="${fx}"><span class="no mono">${String(n + 1).padStart(2, '0')}</span></div><figcaption class="cap"><span>${CAP[i]}</span><span>${String(i + 1).padStart(2, '0')}</span></figcaption>`;
   grid.appendChild(f);
 });
 const Y = [[2023, 4, 'Brand launch, evening fragrance'], [2024, 7, 'Front-row night, live event'], [2025, 10, 'Open sea, editorial series'], [2025, 1, 'Studio portraits, personal brand']];
-$('years').innerHTML = Y.map(([y, i, t]) => `<div><div class="y">${y}</div><div class="ph" data-i="${i}"></div><p>${t}</p></div>`).join('');
+$('years').innerHTML = Y.map(([y, i, t]) => `<div><div class="y">${y}</div><div class="ph" data-i="${i}" data-fx="shutter"></div><p>${t}</p></div>`).join('');
 document.querySelectorAll('.ph').forEach(slice);
 
 const phIO = new IntersectionObserver((es) => es.forEach((e) => {
   if (!e.isIntersecting) return;
   phIO.unobserve(e.target); const ph = e.target;
-  requestAnimationFrame(() => { ph.classList.add('in'); ap.blink = 1; setTimeout(() => ph.classList.add('done'), reduce ? 0 : 1700); });
+  requestAnimationFrame(() => { ph.classList.add('in'); ap.blink = 1; setTimeout(() => ph.classList.add('done'), reduce ? 0 : ({ slice: 1700, focus: 1900, shutter: 1000 }[ph.dataset.fx] || 1600)); });
 }), { threshold: 0.18 });
 document.querySelectorAll('.ph').forEach((p) => phIO.observe(p));
 const rvIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); rvIO.unobserve(e.target); } }), { threshold: 0.2 });
@@ -111,7 +113,7 @@ if (renderer) {
     ap.o += (target - ap.o) * Math.min(1, Math.max(0, dt) * 9); if (!Number.isFinite(ap.o)) ap.o = 0.5; setO(Math.max(0, Math.min(1, ap.o)));
     root.rotation.y = mx * 0.7 + Math.sin(now / 2200) * 0.12; root.rotation.x = my * 0.55 + Math.cos(now / 2600) * 0.08;
     const s0 = small() ? 0.4 : 0.64, s1 = small() ? 0.2 : 0.23, s = s0 + (s1 - s0) * e;
-    const pad = small() ? 14 : 26, cx0 = innerWidth / 2, cy0 = innerHeight * 0.5, cx1 = innerWidth - pad - 40, cy1 = innerHeight - pad - 40;
+    const pad = small() ? 14 : 26, cx0 = innerWidth / 2, cy0 = innerHeight * 0.5, cx1 = innerWidth - pad - 40, cy1 = innerHeight - pad - 40 - (small() ? 84 : 0);
     cvs.style.transform = `translate(${(cx0 + (cx1 - cx0) * e - 180).toFixed(1)}px,${(cy0 + (cy1 - cy0) * e - 180).toFixed(1)}px) scale(${s.toFixed(3)})`;
     cvs.classList.toggle('dock', p > 0.9);
     words.forEach((w, i) => { w.style.transform = `translate(${(mx * (i % 2 ? 28 : -28)).toFixed(1)}px,${(my * 18 * (i % 2 ? 1 : -1) - sy * 0.12 * (1 + i * 0.12)).toFixed(1)}px)`; });
@@ -121,10 +123,43 @@ if (renderer) {
 }
 
 /* hero photograph reveals at once */
-requestAnimationFrame(() => { const h = document.querySelector('.ph1'); if (h) { h.classList.add('in'); setTimeout(() => h.classList.add('done'), 1700); } });
+requestAnimationFrame(() => { const h = document.querySelector('.ph1'); if (h) { h.classList.add('in'); setTimeout(() => h.classList.add('done'), 1900); } });
 
 /* booking form (demo) */
 $('bf').addEventListener('submit', (e) => {
   e.preventDefault(); const f = e.target;
   $('st').textContent = !f.n.value.trim() || !/\S+@\S+\.\S+/.test(f.e.value) ? 'Please add your name and a valid email.' : 'Thank you. Booking requests are not wired up yet, so nothing was sent.';
 });
+
+/* ---------- parallax inside every frame ---------- */
+{ const phs = [...document.querySelectorAll('.ph')]; let tk = false;
+  const run = () => { tk = false; if (reduce) return; const vh = innerHeight;
+    phs.forEach((ph) => { const im = ph.querySelector(':scope > img'); if (!im) return; if (ph.dataset.fx === 'slice' && !ph.classList.contains('done')) return; const r = ph.getBoundingClientRect(); if (r.bottom < -80 || r.top > vh + 80) return;
+      const p = Math.max(-1, Math.min(1, (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2))); im.style.translate = `0 ${(-p * r.height * 0.06).toFixed(1)}px`; }); };
+  addEventListener('scroll', () => { if (!tk) { tk = true; requestAnimationFrame(run); } }, { passive: true }); addEventListener('resize', run); run(); setInterval(() => { if (!document.hidden) run(); }, 400); }
+
+/* ---------- lightbox: the photograph grows out of its frame ---------- */
+{ const items = [...document.querySelectorAll('#grid .ph, #years .ph')], lb = document.createElement('div'); lb.className = 'lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', 'Photograph');
+  lb.innerHTML = '<div class="lb-bg"></div><div class="lb-stage"></div><div class="lb-cap mono"><span id="lbc"></span><span id="lbn"></span></div><button class="lb-x" type="button" aria-label="Close">Close ✕</button><button class="lb-p" type="button" aria-label="Previous">←</button><button class="lb-n" type="button" aria-label="Next">→</button>';
+  document.body.appendChild(lb); const stage = lb.querySelector('.lb-stage'), bg = lb.querySelector('.lb-bg'); let cur = -1, open = false, busy = false, img = null;
+  const fit = () => { const vw = innerWidth, vh = innerHeight, h = Math.min(vh * .8, (vw * .9) / .8), w = h * .8; return { w, h, l: (vw - w) / 2, t: (vh - h) / 2 - 8 }; };
+  const place = (el) => { const T = fit(); Object.assign(el.style, { left: T.l + 'px', top: T.t + 'px', width: T.w + 'px', height: T.h + 'px' }); return T; };
+  const mk = (i) => { const im = new Image(); im.src = IMG(+items[i].dataset.i); im.alt = CAP[+items[i].dataset.i] || ''; im.draggable = false; im.className = 'lb-img'; return im; };
+  const label = () => { lb.querySelector('#lbc').textContent = CAP[+items[cur].dataset.i]; lb.querySelector('#lbn').textContent = String(cur + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0'); };
+  const flip = (el, ph, reverse) => { const T = place(el), R = ph.getBoundingClientRect(), s = Math.max(R.width / T.w, R.height / T.h), dx = R.left + R.width / 2 - (T.l + T.w / 2), dy = R.top + R.height / 2 - (T.t + T.h / 2), ix = Math.max(0, (T.w - R.width / s) / 2), iy = Math.max(0, (T.h - R.height / s) / 2);
+    const a = { transform: `translate(${dx}px,${dy}px) scale(${s})`, clipPath: `inset(${iy}px ${ix}px ${iy}px ${ix}px)` }, b = { transform: 'none', clipPath: 'inset(0px 0px 0px 0px)' };
+    return Promise.race([el.animate(reverse ? [b, a] : [a, b], { duration: 720, easing: 'cubic-bezier(.76,0,.18,1)', fill: 'forwards' }).finished, new Promise((r) => setTimeout(r, 1500))]); };
+  const show = (i) => { cur = i; open = true; busy = true; const ph = items[i]; img = mk(i); stage.innerHTML = ''; stage.appendChild(img); label(); lb.classList.add('on'); document.documentElement.style.overflow = 'hidden'; ph.style.visibility = 'hidden'; ap.blink = 1; ap.hover = 1; bg.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, fill: 'forwards' });
+    (img.decode ? img.decode().catch(() => {}) : Promise.resolve()).then(() => flip(img, ph, false)).then(() => { busy = false; lb.querySelector('.lb-x').focus(); }); };
+  const close = () => { if (!open || busy) return; busy = true; const ph = items[cur], r = ph.getBoundingClientRect(), on = r.bottom > 0 && r.top < innerHeight; ap.hover = 0; ap.blink = 1;
+    const done = () => { ph.style.visibility = ''; lb.classList.remove('on'); stage.innerHTML = ''; document.documentElement.style.overflow = ''; open = false; busy = false; try { ph.focus({ preventScroll: true }); } catch (e) {} };
+    bg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 560, fill: 'forwards' });
+    if (on) flip(img, ph, true).then(done); else Promise.race([img.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: 'forwards' }).finished, new Promise((r) => setTimeout(r, 800))]).then(done); };
+  const go = (d) => { if (!open || busy) return; busy = true; const n = (cur + d + items.length) % items.length, old = img, nxt = mk(n); items[cur].style.visibility = ''; cur = n; items[cur].style.visibility = 'hidden'; ap.blink = 1; place(nxt); nxt.style.opacity = 0; stage.appendChild(nxt); label();
+    old.animate([{ opacity: 1, filter: 'grayscale(1) blur(0)', transform: 'none' }, { opacity: 0, filter: 'grayscale(1) blur(14px)', transform: `translateX(${-d * 60}px) scale(1.04)` }], { duration: 420, easing: 'ease-in', fill: 'forwards' });
+    (nxt.decode ? nxt.decode().catch(() => {}) : Promise.resolve()).then(() => Promise.race([nxt.animate([{ opacity: 0, filter: 'grayscale(1) blur(18px)', transform: `translateX(${d * 60}px) scale(1.06)` }, { opacity: 1, filter: 'grayscale(1) blur(0)', transform: 'none' }], { duration: 620, delay: 120, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }).finished, new Promise((r) => setTimeout(r, 1500))])).then(() => { old.remove(); nxt.style.opacity = ''; img = nxt; busy = false; }); };
+  items.forEach((ph, i) => { ph.tabIndex = 0; ph.setAttribute('role', 'button'); ph.setAttribute('aria-label', 'Open ' + (CAP[+ph.dataset.i] || 'photograph')); ph.addEventListener('click', () => { if (!open && ph.classList.contains('in')) show(i); }); ph.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && !open) { e.preventDefault(); show(i); } }); });
+  lb.querySelector('.lb-x').addEventListener('click', close); bg.addEventListener('click', close); lb.querySelector('.lb-p').addEventListener('click', () => go(-1)); lb.querySelector('.lb-n').addEventListener('click', () => go(1));
+  addEventListener('keydown', (e) => { if (!open) return; if (e.key === 'Escape') close(); else if (e.key === 'ArrowRight') go(1); else if (e.key === 'ArrowLeft') go(-1); });
+  let sx = 0, sy = 0, tr = false; stage.addEventListener('pointerdown', (e) => { sx = e.clientX; sy = e.clientY; tr = true; }); addEventListener('pointerup', (e) => { if (!tr) return; tr = false; if (!open) return; const dx = e.clientX - sx, dy = e.clientY - sy; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1); else if (dy > 90) close(); });
+  addEventListener('resize', () => { if (open && img && !busy) place(img); }); }

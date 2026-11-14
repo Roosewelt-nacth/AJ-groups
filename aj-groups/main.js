@@ -258,7 +258,7 @@ if (!RM) {
   const mag = [...document.querySelectorAll('.enter,.gbtn,.menubtn,.sidetab')];
   mag.forEach(b => { b.addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; const r = b.getBoundingClientRect(); b.style.translate = `${((e.clientX - r.left - r.width / 2) * .28).toFixed(1)}px ${((e.clientY - r.top - r.height / 2) * .38).toFixed(1)}px`; });
     b.addEventListener('pointerleave', () => { b.style.translate = ''; }); });
-  document.querySelectorAll('.enter[href^="../"]').forEach(a => a.addEventListener('click', e => { if (e.metaKey || e.ctrlKey || e.shiftKey) return; e.preventDefault();
+  document.querySelectorAll('.enter[href^="../"]').forEach(a => a.addEventListener('click', e => { if (e.metaKey || e.ctrlKey || e.shiftKey || 'PageRevealEvent' in window) return; e.preventDefault();
     const w = document.createElement('div'), col = getComputedStyle(a.closest('.stop') || a).getPropertyValue('--c') || '#fff'; w.className = 'wipe'; w.style.background = col.trim() || '#fff'; document.body.append(w);
     w.animate([{ clipPath: `circle(0px at ${e.clientX}px ${e.clientY}px)` }, { clipPath: `circle(${Math.hypot(innerWidth, innerHeight) + 40}px at ${e.clientX}px ${e.clientY}px)` }], { duration: 720, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
     setTimeout(() => { location.href = a.href; }, 640); }));

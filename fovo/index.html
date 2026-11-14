@@ -58,8 +58,30 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
  .years{grid-template-columns:1fr 1fr}.about{grid-template-columns:1fr}.book form{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){.ph .sl i{transition:none}.rv{transition:none}}
+/* per-photograph entrances, parallax overscan, lightbox */
+.ph{cursor:zoom-in}.ph1{cursor:default}
+.ph>img{scale:1.14;translate:0 0;transition:opacity .4s,scale 1.3s cubic-bezier(.2,.8,.2,1),filter 1.9s cubic-bezier(.16,1,.3,1),clip-path 1.5s cubic-bezier(.76,0,.18,1)}
+.ph[data-fx="slice"]>img{scale:1}.ph[data-fx="slice"].done>img{scale:1.14}
+.ph:not([data-fx="slice"])>img{opacity:1}
+.ph[data-fx="focus"]>img{filter:grayscale(1) blur(28px) contrast(1.1);scale:1.34}.ph[data-fx="focus"].in>img{filter:grayscale(1) blur(0) contrast(1.06);scale:1.14}
+.ph[data-fx="curtain-l"]>img{clip-path:inset(0 100% 0 0);scale:1.38}.ph[data-fx="curtain-r"]>img{clip-path:inset(0 0 0 100%);scale:1.38}.ph[data-fx="curtain-u"]>img{clip-path:inset(100% 0 0 0);scale:1.38}
+.ph[data-fx^="curtain"].in>img{clip-path:inset(0);scale:1.14}
+.ph[data-fx="shutter"]>img{clip-path:inset(50% 0 50% 0);filter:grayscale(1) brightness(2.4);scale:1.2;transition:clip-path .8s cubic-bezier(.76,0,.18,1),filter 1s ease,scale 1.1s cubic-bezier(.2,.8,.2,1),opacity .4s}.ph[data-fx="shutter"].in>img{clip-path:inset(0);filter:grayscale(1) brightness(1);scale:1.14}
+.ph.done:hover>img{transform:none;scale:1.22}
+.lb{position:fixed;inset:0;z-index:40;visibility:hidden;pointer-events:none}.lb.on{visibility:visible;pointer-events:auto}
+.lb-bg{position:absolute;inset:0;background:rgba(10,10,11,.94);opacity:0}.lb-stage{position:absolute;inset:0;overflow:hidden}
+.lb-img{position:absolute;object-fit:cover;filter:grayscale(1) contrast(1.05);transform-origin:50% 50%;will-change:transform,clip-path;user-select:none;-webkit-user-drag:none}
+.lb-cap{position:absolute;left:var(--pad);right:var(--pad);bottom:max(22px,env(safe-area-inset-bottom));display:flex;justify-content:space-between;color:#f3f3f0;pointer-events:none}
+.lb button{position:absolute;z-index:2;border:1px solid rgba(243,243,240,.3);background:rgba(20,20,22,.55);color:#f3f3f0;border-radius:999px;cursor:pointer;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .3s,transform .3s cubic-bezier(.2,.8,.2,1)}
+.lb button:hover{background:rgba(243,243,240,.18)}.lb button:active{transform:scale(.92)}
+.lb-x{top:max(16px,env(safe-area-inset-top));right:var(--pad);padding:11px 18px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase}
+.lb-p,.lb-n{top:50%;width:48px;height:48px;margin-top:-24px;font-size:18px}.lb-p{left:var(--pad)}.lb-n{right:var(--pad)}
+@media (max-width:760px){.lb-p,.lb-n{top:auto;bottom:62px;margin:0}.lb-p{left:calc(50% - 56px)}.lb-n{right:calc(50% - 56px)}}
+@media (prefers-reduced-motion:reduce){.ph>img{transition:none}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="../assets/vt.css">
+<script src="../assets/vt.js"></script>
 </head>
 <body>
 <header class="nav"><a class="l" href="./">House of Fovo</a><div class="r"><a href="#work">Work</a><a href="#about">About</a><a href="#book" class="k">Book</a><a href="../aj-groups/">AJ GROUPS ↗</a></div></header>
@@ -67,7 +89,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 <main>
 <section class="hero" id="top">
   <div class="word" aria-label="Fovo"><span>f</span><span>o</span><span>v</span><span>o</span></div>
-  <div class="ph1 ph a45" data-i="12"><span class="no mono">Now</span></div>
+  <div class="ph1 ph a45" data-i="12" data-fx="focus"><span class="no mono">Now</span></div>
   <p class="tiny c">A photography house. Portraits, events and commercial work, shot with patience.</p>
   <p class="tiny a">[ Est. 2025 ]<br>Seen properly</p>
   <p class="tiny b">Portrait · Event<br>Commercial</p>
@@ -91,5 +113,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 </main>
 <div class="foot"><span>© 2026 House of Fovo · part of AJ GROUPS</span><span><a href="../aj-groups/">← Back to AJ GROUPS</a> · <a href="draft-mac/">Mac desktop draft</a></span></div>
 <script type="module" src="main.js"></script>
+<script>window.MOTION={accent:'#d9d9d4',par:'.mo-none',reveal:'.mo-none',press:'.nav a,button,.scr',mag:'.mo-none',offset:0,titles:{top:'House of Fovo',work:'Selected work',about:'About',book:'Book a session'},dock:[{"l": "Home", "h": "#top", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 11l8-7 8 7v9H4z\"/></svg>"}, {"l": "Work", "h": "#work", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><circle cx=\"9\" cy=\"11\" r=\"2\"/><path d=\"M21 16l-5-4-7 7\"/></svg>"}, {"l": "About", "h": "#about", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21c1-5 15-5 16 0\"/></svg>"}, {"l": "Book", "h": "#book", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"4\" y=\"5\" width=\"16\" height=\"15\" rx=\"2\"/><path d=\"M8 3v4M16 3v4M4 10h16\"/></svg>"}]};</script>
+<script src="../assets/motion.js"></script>
 </body>
 </html>
