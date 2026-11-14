@@ -30,9 +30,10 @@ const wpLoad = i => WP[i].p || (WP[i].p = new Promise(res => setTimeout(() => {
   const asp = clamp(innerWidth / innerHeight, .5, 2.2), W = asp >= 1 ? Math.round(Math.min(2560, Math.max(1600, innerWidth * Math.min(devicePixelRatio, 2)))) : Math.round(Math.min(1300, innerWidth * Math.min(devicePixelRatio, 2))), H = Math.round(W / asp), c = FovoWP.canvas(i, W, H);
   const t = document.createElement('canvas'); t.width = t.height = 24; const g = t.getContext('2d'); g.drawImage(c, 0, 0, 24, 24); const d = g.getImageData(0, 0, 24, 24).data; let s = 0; for (let k = 0; k < d.length; k += 4) s += (.2126 * d[k] + .7152 * d[k + 1] + .0722 * d[k + 2]) / 255; WP[i].lum = s / 576; WP[i].dark = WP[i].lum < .5;
   c.toBlob(bl => { WP[i].src = URL.createObjectURL(bl); res(); }, 'image/jpeg', .95); }, 0)));
-async function setWp(i) { wpWant = i; if (i === wpCur) return; await wpLoad(i); if (wpWant !== i || i === wpCur) return; wpCur = i; wpSlot ^= 1; const s = slots[wpSlot], o = slots[wpSlot ^ 1], url = `url(${WP[i].src})`; s.querySelectorAll('.l').forEach(l => { l.style.backgroundImage = url; }); s.classList.add('on'); o.classList.remove('on'); tone(i); }
-function syncWp() { if (wpLock != null) return setWp(wpLock); const w = topWin(); let i = 0; if (w) i = w.id === 'toolkit' ? TKMAP[tkSel] : (WPMAP[w.id] != null ? WPMAP[w.id] : (wpCur < 0 ? 0 : wpCur)); setWp(i); }
-setWp(0); WP.forEach((w, i) => setTimeout(() => wpLoad(i), 4000 + i * 3000));
+const WALL = false;   /* for now the wallpaper is a plain gradient; set to true to bring the macOS-style pictures back */
+async function setWp(i) { if (!WALL) return; wpWant = i; if (i === wpCur) return; await wpLoad(i); if (wpWant !== i || i === wpCur) return; wpCur = i; wpSlot ^= 1; const s = slots[wpSlot], o = slots[wpSlot ^ 1], url = `url(${WP[i].src})`; s.querySelectorAll('.l').forEach(l => { l.style.backgroundImage = url; }); s.classList.add('on'); o.classList.remove('on'); tone(i); }
+function syncWp() { if (!WALL) return; if (wpLock != null) return setWp(wpLock); const w = topWin(); let i = 0; if (w) i = w.id === 'toolkit' ? TKMAP[tkSel] : (WPMAP[w.id] != null ? WPMAP[w.id] : (wpCur < 0 ? 0 : wpCur)); setWp(i); }
+if (WALL) { setWp(0); WP.forEach((w, i) => setTimeout(() => wpLoad(i), 4000 + i * 3000)); }
 
 /* ---------- windows ---------- */
 const WINS = {}; let zTop = 20, placed = 0;
