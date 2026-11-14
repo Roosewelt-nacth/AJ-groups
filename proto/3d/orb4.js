@@ -164,7 +164,7 @@ function frame() {
   root.style.setProperty('--ink', `rgb(${c3(NAVY, WH, white)})`); root.style.setProperty('--mute', `rgba(${c3(NAVY, WH, white)},${lerp(.66, .78, white).toFixed(2)})`); root.style.setProperty('--line', `rgba(${c3(NAVY, WH, white)},${lerp(.2, .24, white).toFixed(2)})`);
   root.style.setProperty('--btn', `rgb(${c3(NAVY, WH, white)})`); root.style.setProperty('--btnink', `rgb(${c3(WH, NAVY, white)})`); root.style.setProperty('--sheet', c255(bg.map(v => v * (.72 - themeNow * .3))));
   document.body.style.background = c255(bg); renderer.setClearColor(new THREE.Color(...bg));
-  mark.style.setProperty('--ms', sNow < .2 ? '46px' : '15px'); mark.style.setProperty('--msm', sNow < .2 ? '30px' : '15px');
+  mark.style.setProperty('--ms', sNow < .2 ? '46px' : '17px'); mark.style.setProperty('--msm', sNow < .2 ? '30px' : '17px');
   const near = Math.round(clamp(sNow, 0, NS - 1)), d = Math.abs(sNow - near), op = (1 - sstep(.08, .34, d)) * sstep(.55, 1, app);
   stopEls.forEach((el, k) => { const on = k === near; el.style.setProperty('--o', on ? op.toFixed(3) : 0); el.classList.toggle('cur', on && op > .4); });
   if (near !== curIdx) { curIdx = near; dotBtns.forEach((b, k) => k === near ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current')); }
