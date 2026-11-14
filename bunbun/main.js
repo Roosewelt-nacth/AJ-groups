@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { dessert, berry as dBerry, berryHalf as dHalf, blueberry as dBlue, raspberry as dRasp, textures as dTex } from './desserts.js?v=5';
+import { MENU } from './menu.js?v=5';
 
 const $ = (i) => document.getElementById(i);
 const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -23,7 +25,8 @@ const OCC = [
   { k: 'Festival', style: 'naked', tiers: 2, flavour: 'caramel', frost: 'butter', drip: 'caramel', tops: ['sprinkles', 'pearls'], candles: true, msg: 'Happy celebrations' },
   { k: 'Just because', style: 'naked', tiers: 1, flavour: 'lemon', frost: 'cream', drip: 'none', tops: ['berries', 'strawberry'], candles: false, msg: 'Because you are lovely' }
 ];
-const S = { occ: 'Birthday', style: 'naked', tiers: 2, flavour: 'vanilla', frost: 'cream', drip: 'none', tops: new Set(['strawberry', 'berries']), candles: true, msg: 'Happy Birthday', deco: [], decorate: false, qty: 1, ship: 'home', pinOk: false, km: 0 };
+const bag = new Map(); const STAND = .52; const standParts = [];
+const S = { cakeOn: false, occ: 'Birthday', style: 'naked', tiers: 2, flavour: 'vanilla', frost: 'cream', drip: 'none', tops: new Set(['strawberry', 'berries']), candles: true, msg: 'Happy Birthday', deco: [], decorate: false, qty: 1, ship: 'home', pinOk: false, km: 0 };
 const price = (s = S) => (TIER[s.tiers][2] + (s.drip !== 'none' ? 150 : 0) + [...s.tops].length * 100 + (s.candles ? 50 : 0) + (s.style === 'frosted' ? 200 : 0) + (s.deco ? s.deco.length * 20 : 0)) * (s.qty || 1);
 const preset = (o) => ({ ...S, occ: o.k, style: o.style, tiers: o.tiers, flavour: o.flavour, frost: o.frost, drip: o.drip, tops: new Set(o.tops), candles: o.candles, msg: o.msg, deco: [], decorate: false, qty: 1 });
 
@@ -47,16 +50,16 @@ function ui() {
   $('shipRow').style.display = S.ship === 'home' ? 'flex' : 'none'; $('shipMsg').style.display = S.ship === 'home' ? '' : 'none';
   $('bPack').textContent = packState === 'done' ? 'Design another cake' : S.ship === 'home' ? 'Pack it and send home →' : 'Pack it for pickup →';
   $('bgword').textContent = S.occ;
-  const lines = summary(); $('sum').innerHTML = lines; $('sum2').innerHTML = lines;
+  const lines = summary(); $('sum').innerHTML = lines; $('sum2').innerHTML = orderSummary(); badge();
   $('bDeco').classList.toggle('on', S.decorate); $('viewer').style.cursor = S.decorate ? 'crosshair' : '';
   $('hint').textContent = S.decorate ? 'Tap the top of the cake to place a strawberry or macaron' : 'Drag to rotate';
 }
 function summary() {
   const t = [...S.tops].map((k) => TOPS[k].toLowerCase()); if (S.candles) t.push('candles'); if (S.deco.length) t.push(S.deco.length + ' hand-placed');
-  return `<b>${S.occ} cake</b> · ${TIER[S.tiers][0]} (${TIER[S.tiers][1]}) · ${STYLE[S.style].toLowerCase()}<br>${FL[S.flavour][0]} sponge, ${FR[S.frost][0].toLowerCase()} buttercream${S.drip !== 'none' ? ', ' + DR[S.drip][0].toLowerCase() + ' drip' : ''}<br>${t.length ? 'With ' + t.join(', ') + '<br>' : ''}${S.msg ? 'Message: “' + S.msg.replace(/</g, '&lt;') + '”<br>' : ''}Quantity ${S.qty} · <b>${inr(price())}</b> <span style="opacity:.6">(draft pricing)</span>`;
+  return `<b>${S.occ} cake</b> · ${TIER[S.tiers][0]} (${TIER[S.tiers][1]}) · ${STYLE[S.style].toLowerCase()}<br>${FL[S.flavour][0]} sponge, ${FR[S.frost][0].toLowerCase()} buttercream${S.drip !== 'none' ? ', ' + DR[S.drip][0].toLowerCase() + ' drip' : ''}<br>${t.length ? 'With ' + t.join(', ') + '<br>' : ''}${S.msg ? 'Message: “' + S.msg.replace(/</g, '&lt;') + '”<br>' : ''}Quantity ${S.qty} · <b>${inr(price())}</b> <span style="opacity:.6">(sample pricing)</span>`;
 }
-function refresh() { ui(); build(); }
-function apply(next) { Object.assign(S, next); $('msg').value = S.msg; refresh(); }
+function refresh() { S.cakeOn = true; ui(); build(); }
+function apply(next) { Object.assign(S, next); S.cakeOn = true; $('msg').value = S.msg; refresh(); }
 
 /* ---------- textures that make it read as food ---------- */
 function ctex(w, h, draw, repeat) { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; if (repeat) t.repeat.set(repeat[0], repeat[1]); t.anisotropy = 4; return t; }
@@ -93,9 +96,9 @@ try { renderer = new THREE.WebGLRenderer({ canvas: cvs, alpha: true, antialias: 
 const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(28, 1, .1, 60), root = new THREE.Group(), cakeG = new THREE.Group(), boxG = new THREE.Group();
 let topDisc = null, topY = 0, topR = 1, topper = null, camTarget = { y: 1.5, d: 10 }, cakeH = 2; const flames = [];
 if (renderer) {
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(640, 640, false); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.02;
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(640, 640, false); renderer.toneMapping = THREE.AgXToneMapping; renderer.toneMappingExposure = 1.05;
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new RoomEnvironment(), .04).texture; scene.environmentIntensity = .55;
+  const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new RoomEnvironment(), .04).texture; scene.environmentIntensity = .62;
   const key = new THREE.DirectionalLight(0xfff3e6, 2.4); key.position.set(3.2, 7, 4.5); key.castShadow = true; key.shadow.mapSize.set(1024, 1024); key.shadow.camera.left = -3; key.shadow.camera.right = 3; key.shadow.camera.top = 5; key.shadow.camera.bottom = -2; key.shadow.camera.near = 1; key.shadow.camera.far = 20; key.shadow.bias = -.0004; key.shadow.radius = 5; scene.add(key);
   const rim = new THREE.DirectionalLight(0xdfe8ff, .9); rim.position.set(-4, 3, -3); scene.add(rim); scene.add(new THREE.HemisphereLight(0xffffff, 0xaab6cc, .35));
   const ground = new THREE.Mesh(new THREE.CircleGeometry(4, 48), new THREE.ShadowMaterial({ opacity: .22 })); ground.rotation.x = -Math.PI / 2; ground.position.y = -.005; ground.receiveShadow = true; root.add(ground);
@@ -116,27 +119,30 @@ function rose(col) {
   [[.105, .03], [.08, .045], [.058, .058], [.038, .07], [.02, .08]].forEach(([r, y], i) => { const t = new THREE.Mesh(new THREE.TorusGeometry(r, .03 - i * .003, 8, 22), m); t.rotation.x = Math.PI / 2; t.position.y = y; t.scale.z = 1.25; add(t, g); });
   const c = new THREE.Mesh(new THREE.SphereGeometry(.026, 10, 8), m); c.position.y = .092; add(c, g); return g;
 }
-function strawberry(scale = 1) {
-  const g = new THREE.Group(); const b = new THREE.Mesh(G.berry, MP('#ffffff', { map: T.seed, roughness: .32, clearcoat: .7, clearcoatRoughness: .25 })); b.rotation.x = Math.PI; b.position.y = .28; b.scale.set(1, 1, 1); add(b, g);
-  for (let i = 0; i < 6; i++) { const l = new THREE.Mesh(G.leaf, M('#5d8b3c', { roughness: .6 })); l.scale.setScalar(1.15); const a = i / 6 * Math.PI * 2; l.position.set(Math.cos(a) * .05, .285, Math.sin(a) * .05); l.rotation.set(0, -a, .35); add(l, g, false); }
-  const st = new THREE.Mesh(new THREE.CylinderGeometry(.008, .01, .06, 6), M('#5d8b3c')); st.position.y = .31; add(st, g, false); g.scale.setScalar(scale); return g;
-}
+const strawberry = (s = 1) => dBerry(s);
 function macaron(col) {
   const g = new THREE.Group(); const sh = MP(col, { roughness: .55, clearcoat: .15 });
   const a = new THREE.Mesh(G.mac, sh); a.position.y = .1; add(a, g); const b = new THREE.Mesh(G.mac, sh); b.position.y = .035; b.scale.y = .85; add(b, g);
   const f = new THREE.Mesh(new THREE.CylinderGeometry(.108, .108, .05, 22), M('#fbf5e8', { roughness: .8 })); f.position.y = .066; add(f, g); return g;
+}
+function rosette(mat, s = 1) {
+  const pts = Array.from({ length: 64 }, (_, i) => { const u = i / 63, a = u * Math.PI * 2 * 2.6, r = .095 * (1 - u * .86); return new THREE.Vector3(Math.cos(a) * r, .02 + u * .085, Math.sin(a) * r); });
+  const g = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 90, .034, 10), mat); g.scale.setScalar(s); return g;
 }
 function build() {
   if (!renderer) return;
   while (cakeG.children.length) { const o = cakeG.children.pop(); o.traverse((n) => { if (n.isMesh && n.geometry && !Object.values(G).includes(n.geometry)) n.geometry.dispose(); if (n.material) { const ms = Array.isArray(n.material) ? n.material : [n.material]; ms.forEach((m) => { if (m.map && !Object.values(T).includes(m.map)) m.map.dispose(); m.dispose(); }); } }); }
   flames.length = 0; topper = null; rnd(); let seed = 7;
   const sponge = FL[S.flavour][1], fro = FR[S.frost][1], dripC = DR[S.drip][1];
-  const frostMat = () => MP(fro, { roughness: .52, bumpMap: T.frost, bumpScale: .55, sheen: .45, sheenRoughness: .7, sheenColor: new THREE.Color('#ffffff') });
+  const frostMat = () => MP(fro, { roughness: .62, bumpMap: T.frost, bumpScale: .4, sheen: .16, sheenRoughness: .8, sheenColor: new THREE.Color('#ffffff') });
   const spongeMat = () => M(sponge, { roughness: .92, bumpMap: T.crumb, bumpScale: 1.6, map: T.crumbMap });
-  /* board */
-  const board = new THREE.Mesh(new THREE.CylinderGeometry(1.58, 1.58, .06, 72), M('#f4efe6', { roughness: .45 })); board.position.y = .03; add(board);
-  const rimG = new THREE.Mesh(new THREE.TorusGeometry(1.58, .018, 8, 72), M('#d8b66a', { metalness: .95, roughness: .25 })); rimG.rotation.x = Math.PI / 2; rimG.position.y = .06; add(rimG, cakeG, false);
-  const R = S.tiers === 1 ? [1.12] : S.tiers === 2 ? [1.14, .78] : [1.2, .86, .56]; let y = .06;
+  /* a pedestal cake stand: foot, stem and a white plate with a thin gold rim */
+  standParts.length = 0;
+  const foot = new THREE.Mesh(new THREE.LatheGeometry([[0, 0], [.7, 0], [.76, .03], [.66, .08], [.2, .12], [0, .12]].map(([a, b]) => new THREE.Vector2(a, b)), 64), M('#f4efe6', { roughness: .35 })); add(foot); standParts.push(foot);
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(.09, .13, STAND - .12, 28), M('#f4efe6', { roughness: .35 })); stem.position.y = .12 + (STAND - .12) / 2 - .05; add(stem); standParts.push(stem);
+  const board = new THREE.Mesh(new THREE.CylinderGeometry(1.62, 1.6, .07, 96), M('#f7f3ea', { roughness: .3 })); board.position.y = STAND - .035; add(board);
+  const rimG = new THREE.Mesh(new THREE.TorusGeometry(1.62, .014, 8, 96), M('#d8b66a', { metalness: .95, roughness: .28 })); rimG.rotation.x = Math.PI / 2; rimG.position.y = STAND - .02; add(rimG, cakeG, false);
+  const R = S.tiers === 1 ? [1.12] : S.tiers === 2 ? [1.14, .78] : [1.2, .86, .56]; let y = STAND;
   R.forEach((r, i) => {
     const bottom = y;
     if (S.style === 'frosted') {
@@ -152,8 +158,8 @@ function build() {
     }
     /* top surface: a soft dome of buttercream with a piped border */
     const topPts = [[0, .035], [r - .14, .03], [r - .04, .014], [r, 0]].map(([a, b]) => new THREE.Vector2(a, b));
-    const top = new THREE.Mesh(new THREE.LatheGeometry(topPts, 96), frostMat()); top.position.y = y; add(top); const topSurf = y + .03; y += .0;
-    const n = Math.round(r * 22); for (let d = 0; d < n; d++) { const a = d / n * Math.PI * 2, k = new THREE.Mesh(G.kiss, frostMat()); k.position.set(Math.cos(a) * (r - .045), y, Math.sin(a) * (r - .045)); k.scale.setScalar(.92 - i * .05); add(k); }
+    const ringT = dTex().ridge.clone(); ringT.repeat.set(1, 20); ringT.needsUpdate = true; const topMat = MP(fro, { roughness: .6, bumpMap: ringT, bumpScale: 1.5, sheen: .25, sheenColor: new THREE.Color('#fff') }); const top = new THREE.Mesh(new THREE.LatheGeometry(topPts.map((p) => p), 96), topMat); top.position.y = y; add(top); const topSurf = y + .03; y += .0;
+    const rmat = MP(fro, { roughness: .6, bumpMap: dTex().ridge, bumpScale: 1.1, sheen: .2, sheenColor: new THREE.Color('#fff') }); const n = Math.round(r * 16); for (let d = 0; d < n; d++) { const a = d / n * Math.PI * 2, k = rosette(rmat, 1.45 - i * .1); k.position.set(Math.cos(a) * (r - .09), y - .005, Math.sin(a) * (r - .09)); k.rotation.y = d; add(k); }
     if (dripC) {
       const gm = MP(dripC, { roughness: .12, clearcoat: 1, clearcoatRoughness: .06 });
       const pool = new THREE.Mesh(new THREE.LatheGeometry([[0, .02], [r - .16, .02], [r - .06, .012], [r + .006, -.004], [r + .012, -.03], [0, -.03]].map(([a, b]) => new THREE.Vector2(a, b)), 96), gm); pool.position.y = y + .02; add(pool);
@@ -164,19 +170,20 @@ function build() {
     y += .04;
   });
   cakeH = y; const top = topY, rr = topR; const at = (a, rad, extra = 0) => [Math.cos(a) * rad, top + extra, Math.sin(a) * rad];
-  if (S.tops.has('strawberry')) for (let d = 0; d < 6; d++) { const a = d / 6 * Math.PI * 2 + .3, s = strawberry(1 + (d % 2) * .05); const p = at(a, rr * .64); s.position.set(p[0], top - .012, p[2]); s.rotation.set(.18 * Math.cos(a), a * 3, .18 * Math.sin(a)); add(s, cakeG, false); }
-  if (S.tops.has('berries')) { const cl = ['#3b4a8c', '#37448a', '#d6336c', '#a31d52']; for (let d = 0; d < 11; d++) { const a = d * 2.399, rad = (.2 + (d % 4) * .09) * rr; const b = d % 4 > 1 ? new THREE.Mesh(G.rasp, MP(cl[d % 4], { roughness: .5 })) : new THREE.Mesh(G.blue, MP(cl[d % 4], { roughness: .38, sheen: 1, sheenColor: new THREE.Color('#a9b8e8'), sheenRoughness: .4 })); if (d % 4 > 1) b.scale.setScalar(1.7);
-      b.position.set(Math.cos(a) * rad - rr * .1, top + .05 + (d % 3) * .01, Math.sin(a) * rad + rr * .12); add(b); if (d % 4 < 2) { const cr = new THREE.Mesh(new THREE.TorusGeometry(.014, .005, 6, 10), M('#1f2650')); cr.rotation.x = Math.PI / 2; cr.position.set(b.position.x, b.position.y + .056, b.position.z); add(cr, cakeG, false); } }
-    for (let d = 0; d < 4; d++) { const l = new THREE.Mesh(G.leaf, M('#4f8a4d')); l.scale.setScalar(2.2); const a = d * 1.7 + 1; l.position.set(Math.cos(a) * rr * .3 - rr * .1, top + .02, Math.sin(a) * rr * .3 + rr * .12); l.rotation.y = a; add(l, cakeG, false); } }
+  if (S.tops.has('strawberry')) for (let d = 0; d < 5; d++) { const a = -1.0 + d * .46, s = strawberry(.7 + ((d * 37) % 5) * .05), rad = rr * (.68 - Math.abs(d - 2) * .035); const p = at(a, rad); s.position.set(p[0], top - .012, p[2]); s.rotation.set(.24 * Math.cos(a), a * 3 + d, .24 * Math.sin(a) + (d % 2 ? .12 : -.12)); add(s, cakeG, false); }
+  if (S.tops.has('berries')) {
+    const nr = Math.round(rr * 17); for (let d = 0; d < nr; d++) { const a = d / nr * Math.PI * 2, b = dBlue(1.5 - (d % 3) * .06); b.position.set(Math.cos(a) * (rr - .16), top + .055, Math.sin(a) * (rr - .16)); b.rotation.y = d; add(b, cakeG, false); }
+    for (let d = 0; d < 16; d++) { const a = d * 2.399, rad = Math.sqrt(d / 16) * rr * .42, b = d % 6 === 5 ? dRasp(1.7) : dBlue(1.5 - (d % 4) * .08); b.position.set(Math.cos(a) * rad, top + (d % 6 === 5 ? 0 : .055) + (d > 9 ? .04 : 0), Math.sin(a) * rad); b.rotation.y = d; add(b, cakeG, false); }
+    for (let d = 0; d < 3; d++) { const l = new THREE.Mesh(G.leaf, M('#4f8a4d')); l.scale.setScalar(2.2); const a = d * 2.1; l.position.set(Math.cos(a) * rr * .5, top + .03, Math.sin(a) * rr * .5); l.rotation.y = a; add(l, cakeG, false); } }
   if (S.tops.has('roses')) { const cols = ['#fdf6ec', '#f1cfd6', '#fbeec9']; [[.55, .05], [-.42, -.5], [.1, .62], [-.6, .3]].forEach(([fx, fz], f) => { const r = rose(cols[f % 3]); r.position.set(fx * rr, top, fz * rr); r.rotation.y = f * 1.7; add(r, cakeG, false);
     for (let l = 0; l < 3; l++) { const lf = new THREE.Mesh(G.leaf, M('#5b8a52')); lf.scale.setScalar(1.8); const a = l * 2.1 + f; lf.position.set(fx * rr + Math.cos(a) * .15, top + .012, fz * rr + Math.sin(a) * .15); lf.rotation.y = -a; add(lf, cakeG, false); } }); }
   if (S.tops.has('macarons')) { const cols = ['#f4b8c8', '#bccbe6', '#f6e3a8', '#cfe3c6']; for (let d = 0; d < 4; d++) { const a = d / 4 * Math.PI * 2 + .6, m = macaron(cols[d]); const p = at(a, rr * .55); m.position.set(p[0], top - .01, p[2]); m.rotation.set(.35, a, .1); add(m, cakeG, false); } }
   if (S.tops.has('pearls')) { const pm = M('#e6c36e', { metalness: .95, roughness: .22 }); for (let d = 0; d < 16; d++) { const a = d / 16 * Math.PI * 2, rad = rr * (.85 + (d % 2) * .06); const p = new THREE.Mesh(G.pearl, pm); p.position.set(Math.cos(a) * rad, top + .03, Math.sin(a) * rad); add(p); } for (let d = 0; d < 9; d++) { const a = d * 2.3, rad = (.12 + (d % 3) * .1) * rr; const p = new THREE.Mesh(G.pearl, pm); p.scale.setScalar(.8); p.position.set(Math.cos(a) * rad + rr * .1, top + .028, Math.sin(a) * rad - rr * .1); add(p); } }
   if (S.tops.has('sprinkles')) { const cl = ['#f2a7be', '#f6d37a', '#9fd2c3', '#a9b8e8', '#ffffff']; for (let d = 0; d < 110; d++) { const a = rnd() * 6.283, rad = Math.sqrt(rnd()) * (rr - .16); const s = new THREE.Mesh(G.spr, M(cl[d % 5], { roughness: .5 })); s.position.set(Math.cos(a) * rad, top + .012, Math.sin(a) * rad); s.rotation.set(Math.PI / 2, 0, rnd() * 6.283); add(s, cakeG, false); } }
   if (S.candles) for (let d = 0; d < 5; d++) { const a = d / 5 * Math.PI * 2 + .2, x = Math.cos(a) * (rr * .36), z = Math.sin(a) * (rr * .36);
-    const c = new THREE.Mesh(new THREE.CylinderGeometry(.026, .03, .52, 14), M('#f6efe0', { roughness: .45 })); c.position.set(x, top + .26, z); add(c);
-    const f = new THREE.Mesh(G.flame, new THREE.MeshBasicMaterial({ color: '#ffd37a' })); f.position.set(x, top + .52, z); f.userData.p = d; cakeG.add(f); flames.push(f);
-    const gl = new THREE.Sprite(new THREE.SpriteMaterial({ map: T.glow, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); gl.scale.setScalar(.34); gl.position.set(x, top + .62, z); cakeG.add(gl); }
+    const c = new THREE.Mesh(new THREE.CylinderGeometry(.017, .02, .62, 14), M('#f6efe0', { roughness: .45 })); c.position.set(x, top + .31, z); add(c);
+    const f = new THREE.Mesh(G.flame, new THREE.MeshBasicMaterial({ color: '#ffd37a' })); f.position.set(x, top + .63, z); f.scale.setScalar(.8); f.userData.p = d; cakeG.add(f); flames.push(f);
+    const gl = new THREE.Sprite(new THREE.SpriteMaterial({ map: T.glow, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); gl.scale.setScalar(.14); gl.position.set(x, top + .7, z); cakeG.add(gl); }
   S.deco.forEach((p) => { const m = p.t === 'strawberry' ? strawberry(.85) : macaron(['#f4b8c8', '#bccbe6', '#f6e3a8'][Math.abs(Math.round(p.x * 10)) % 3]); m.position.set(p.x, top - .01, p.z); m.rotation.y = p.x * 9; add(m, cakeG, false); });
   if (S.msg.trim()) { const g = new THREE.Group(); const pl = new THREE.Mesh(new THREE.PlaneGeometry(1.7, .57), new THREE.MeshBasicMaterial({ map: topperTexture(S.msg.trim()), transparent: true, side: THREE.DoubleSide, depthWrite: false })); pl.position.y = .88; g.add(pl);
     [-.35, .35].forEach((sx) => { const st = new THREE.Mesh(new THREE.CylinderGeometry(.011, .011, .64, 6), M('#d8b66a', { metalness: .95, roughness: .25 })); st.position.set(sx, .32, 0); g.add(st); }); g.position.set(0, top, -rr * .08); cakeG.add(g); topper = g; }
@@ -260,8 +267,8 @@ function checkPin() {
   if (!/^\d{6}$/.test(v)) { shipMsg.textContent = 'Enter a 6-digit pincode.'; shipMsg.classList.add('no'); return; }
   const km = 1 + ((+v * 7919) % 1400) / 100; S.km = km;
   if (km > 9.5) { shipMsg.textContent = `That is about ${km.toFixed(1)} km from the kitchen, outside our nearby delivery area. Choose pickup or try another pincode. (Demo estimate)`; shipMsg.classList.add('no'); return; }
-  const eta = Math.round(25 + km * 4), fee = km <= 4 ? 0 : Math.round(30 + km * 8); S.pinOk = true; S.eta = eta;
-  shipMsg.textContent = `Nearby: about ${km.toFixed(1)} km, arrives in ~${eta} min, delivery ${fee ? inr(fee) : 'free'}. (Demo estimate)`; shipMsg.classList.add('ok');
+  const eta = Math.round(25 + km * 4), fee = Math.round(30 + km * 8); S.pinOk = true; S.eta = eta;
+  shipMsg.textContent = `Nearby: about ${km.toFixed(1)} km, arrives in ~${eta} min, delivery ${inr(fee)}. (Demo estimate)`; shipMsg.classList.add('ok');
 }
 
 /* ---------- packing it up and sending it home ---------- */
@@ -274,14 +281,14 @@ async function pack() {
   if (S.ship === 'home' && !S.pinOk) { shipMsg.className = 'shipMsg no'; shipMsg.textContent = 'Check your pincode first so we know you are nearby.'; $('pin').focus(); return; }
   packState = 'busy'; $('bPack').disabled = true; spinning = false; S.decorate = false; ui(); stage.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   if (!renderer) { say('Packed (preview needs 3D)'); packState = 'done'; $('bPack').disabled = false; ui(); return; }
-  say('Packing your cake…'); const bw = 3.2, bh = cakeH + .35, wall = M('#aab6cc', { roughness: .6 }), lidM = M('#c8d1e1', { roughness: .5 }), rib = M('#fff0c1', { roughness: .4 });
+  say('Packing your cake…'); standParts.forEach((p) => { p.visible = false; }); const bw = 3.2, bh = cakeH - STAND + .35, wall = M('#aab6cc', { roughness: .6 }), lidM = M('#c8d1e1', { roughness: .5 }), rib = M('#fff0c1', { roughness: .4 });
   const walls = new THREE.Group(); const w = (sx, sy, sz, x, z) => { const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), wall); m.position.set(x, sy / 2, z); m.castShadow = true; walls.add(m); };
   w(bw, bh, .07, 0, bw / 2); w(bw, bh, .07, 0, -bw / 2); w(.07, bh, bw, bw / 2, 0); w(.07, bh, bw, -bw / 2, 0); walls.scale.y = .001; boxG.add(walls);
   const lid = new THREE.Group(); const lm = new THREE.Mesh(new THREE.BoxGeometry(bw + .16, .34, bw + .16), lidM); lm.position.y = .17; lm.castShadow = true; lid.add(lm);
   const b1 = new THREE.Mesh(new THREE.BoxGeometry(.26, .38, bw + .2), rib), b2 = new THREE.Mesh(new THREE.BoxGeometry(bw + .2, .38, .26), rib); b1.position.y = b2.position.y = .18; lid.add(b1, b2);
   const bow = new THREE.Group(); [-1, 1].forEach((s) => { const t = new THREE.Mesh(new THREE.TorusGeometry(.26, .08, 12, 28), rib); t.position.set(s * .27, .5, 0); t.rotation.set(Math.PI / 2.4, s * .5, s * .6); bow.add(t); }); const kn = new THREE.Mesh(new THREE.SphereGeometry(.13, 16, 12), rib); kn.position.y = .46; bow.add(kn); bow.scale.setScalar(.001); lid.add(bow);
   lid.position.y = bh + 4; boxG.add(lid); b1.scale.x = b2.scale.z = .001;
-  await tween(550, (t) => { cakeG.scale.setScalar(lerp(1, .84, t)); walls.scale.y = Math.max(.001, t); });
+  await tween(550, (t) => { cakeG.scale.setScalar(lerp(1, .84, t)); cakeG.position.y = -STAND * lerp(1, .84, t) * t; walls.scale.y = Math.max(.001, t); });
   await tween(750, (t) => { lid.position.y = lerp(bh + 4, bh + .02, bounce(t)); }, (k) => k);
   say('Tying the ribbon…'); await tween(450, (t) => { b1.scale.x = b2.scale.z = Math.max(.001, t); });
   await tween(450, (t) => { bow.scale.setScalar(Math.max(.001, 1 + Math.sin(t * Math.PI) * .25) * t); }, (k) => k);
@@ -292,7 +299,7 @@ async function pack() {
   await Promise.all([fly, tween(3400, (t) => pos(t), (k) => k * (2 - k) * .6 + k * .4)]);
   root.visible = false; say('Delivered · enjoy! (demo)'); packState = 'done'; $('bPack').disabled = false; ui();
 }
-function reset() { while (boxG.children.length) { const o = boxG.children.pop(); o.traverse((n) => { if (n.geometry) n.geometry.dispose(); }); } root.visible = true; root.position.set(0, 0, 0); root.scale.setScalar(1); root.rotation.z = 0; cakeG.scale.setScalar(1); stage.classList.remove('ship'); say(''); packState = ''; spinning = true; ui(); }
+function reset() { while (boxG.children.length) { const o = boxG.children.pop(); o.traverse((n) => { if (n.geometry) n.geometry.dispose(); }); } root.visible = true; root.position.set(0, 0, 0); root.scale.setScalar(1); root.rotation.z = 0; cakeG.scale.setScalar(1); cakeG.position.y = 0; standParts.forEach((p) => { p.visible = true; }); stage.classList.remove('ship'); say(''); packState = ''; spinning = true; ui(); }
 $('bPack').addEventListener('click', pack);
 
 /* ---------- order form (demo) ---------- */
@@ -304,4 +311,56 @@ const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersec
 document.querySelectorAll('.rv').forEach((r) => io.observe(r));
 
 $('msg').value = S.msg; ui(); build(); requestAnimationFrame(frame);
-(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => { build(); setTimeout(renders, 400); });
+
+
+/* ---------- colour directions A, B, C ---------- */
+{ const root = document.documentElement, meta = document.querySelector('meta[name="theme-color"]'), bg = { a: '#aab6cc', b: '#19253b', c: '#fff0c1' }, btns = [...document.querySelectorAll('.sw button')];
+  const set = (t, save) => { root.dataset.theme = t; if (meta) meta.setAttribute('content', bg[t]); btns.forEach((b) => b.setAttribute('aria-pressed', b.dataset.t === t)); if (save) { try { localStorage.setItem('bbtheme', t); } catch (e) {} } };
+  btns.forEach((b) => b.addEventListener('click', () => set(b.dataset.t, true))); set(root.dataset.theme || 'a'); }
+
+
+/* ---------- the menu: every dessert drawn in 3D from menu.js, plus an order bag ---------- */
+let lock = Promise.resolve(); const exclusive = (fn) => (lock = lock.then(fn).catch((e) => { console.error('render step failed', e); thumbsBusy = false; root.visible = true; }));
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const hash = (s) => [...s].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 9973, 7);
+let menuCat = 'All'; const toast = document.createElement('div'); toast.className = 'toast'; toast.setAttribute('role', 'status'); document.body.appendChild(toast); let toastT = 0;
+const say2 = (t) => { toast.textContent = t; toast.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove('on'), 1800); };
+const ALL = MENU.flatMap((c) => c.items.map((i) => ({ ...i, cat: c.cat })));
+function badge() { const n = [...bag.values()].reduce((a, b) => a + b, 0) + (S.cakeOn ? S.qty : 0); document.querySelectorAll('.bagn').forEach((e) => { e.textContent = n; e.parentElement.classList.toggle('has', n > 0); }); const d = document.querySelector('.mo-dock a[data-h="order"]'); if (d) d.dataset.n = n || ''; }
+function orderSummary() {
+  const rows = [...bag.entries()].map(([id, q]) => { const it = ALL.find((x) => x.id === id); return `<div class="ol"><span>${it.name} <small>${inr(it.price)} / ${it.unit}</small></span><span class="oq"><button type="button" data-o="-${id}" aria-label="One less">−</button><b>${q}</b><button type="button" data-o="+${id}" aria-label="One more">+</button></span><span class="op">${inr(it.price * q)}</span></div>`; });
+  const items = [...bag.entries()].reduce((a, [id, q]) => a + ALL.find((x) => x.id === id).price * q, 0);
+  const cake = S.cakeOn ? `<div class="ol cake"><span>${summary()}</span><span></span><span class="op">${inr(price())}</span></div>` : '';
+  if (!rows.length && !cake) return '<span style="opacity:.7">Nothing here yet. Design a cake above or add items from the menu.</span>';
+  return cake + rows.join('') + `<div class="ol tot"><span>Total <small>(sample pricing)</small></span><span></span><span class="op">${inr(items + (S.cakeOn ? price() : 0))}</span></div>`;
+}
+function changeBag(id, d) { const q = (bag.get(id) || 0) + d; if (q <= 0) bag.delete(id); else bag.set(id, Math.min(20, q)); ui(); renderMenu(); }
+$('sum2').addEventListener('click', (e) => { const b = e.target.closest('button[data-o]'); if (!b) return; const v = b.dataset.o; changeBag(v.slice(1), v[0] === '+' ? 1 : -1); });
+function renderMenu() {
+  const tabs = $('mtabs'); tabs.innerHTML = ['All', ...MENU.map((c) => c.cat)].map((c) => `<button type="button" class="chip${c === menuCat ? ' on' : ''}" data-c="${c}" aria-pressed="${c === menuCat}">${c}</button>`).join('');
+  const grid = $('mgrid'); const keep = {}; grid.querySelectorAll('img[data-id]').forEach((i) => { if (i.src.startsWith('data:')) keep[i.dataset.id] = i.src; });
+  const list = menuCat === 'All' ? ALL : ALL.filter((x) => x.cat === menuCat);
+  grid.innerHTML = list.map((it) => { const q = bag.get(it.id) || 0; const ph = it.photo ? `../assets/bunbun/menu/${it.photo}` : ''; return `<article class="mc rv in" data-id="${it.id}"><div class="mi${ph ? ' photo ok' : ''}"><img data-id="${it.id}" alt="${it.name}" width="420" height="420" ${ph ? `src="${ph}" loading="lazy"` : (keep[it.id] ? `src="${keep[it.id]}"` : '')}></div><div class="mt"><h3>${it.name}</h3><p>${it.desc}</p></div><div class="mb"><span class="mp">${inr(it.price)}<small> / ${it.unit}</small></span>${q ? `<span class="oq"><button type="button" data-a="-${it.id}" aria-label="One less">−</button><b>${q}</b><button type="button" data-a="+${it.id}" aria-label="One more">+</button></span>` : `<button type="button" class="add" data-a="+${it.id}">Add</button>`}</div></article>`; }).join('');
+  fillMenuImages();
+}
+$('mtabs').addEventListener('click', (e) => { const b = e.target.closest('button[data-c]'); if (!b) return; menuCat = b.dataset.c; renderMenu(); });
+$('mgrid').addEventListener('click', (e) => { const b = e.target.closest('button[data-a]'); if (!b) return; const v = b.dataset.a, id = v.slice(1); changeBag(id, v[0] === '+' ? 1 : -1); if (v[0] === '+') say2(ALL.find((x) => x.id === id).name + ' added to your order'); });
+const menuImgs = {};   /* rendered once, kept for the session */
+function fillMenuImages() { document.querySelectorAll('#mgrid img[data-id]').forEach((i) => { if (!i.parentElement.classList.contains('photo') && menuImgs[i.dataset.id]) { i.src = menuImgs[i.dataset.id]; i.parentElement.classList.add('ok'); } }); }
+const dG = new THREE.Group(); let menuDone = false;
+/* frame the food, not the plate: fit the camera to everything except the plate so each dessert fills its card */
+function frameDessert(g) {
+  const box = new THREE.Box3(); g.traverse((n) => { if (n.isMesh && !n.userData.plate) box.expandByObject(n); });
+  const s = box.getSize(new THREE.Vector3()), c = box.getCenter(new THREE.Vector3()), fit = Math.max(s.y * 1.08, s.x * .92, s.z * .92) * 1.28, dist = fit / (2 * Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)));
+  cam.position.set(0, c.y + dist * .42, dist * .91); cam.lookAt(0, c.y - s.y * .04, 0);
+}
+async function menuRenders() {
+  if (!renderer || menuDone) return; menuDone = true; thumbsBusy = true; root.visible = false; scene.add(dG);
+  const gr = new THREE.Mesh(new THREE.CircleGeometry(5, 48), new THREE.ShadowMaterial({ opacity: .22 })); gr.rotation.x = -Math.PI / 2; gr.position.y = -.005; gr.receiveShadow = true; dG.add(gr);
+  const keep = cam.position.clone(), keepExp = renderer.toneMappingExposure; renderer.setPixelRatio(1); renderer.setSize(420, 420, false); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.22;
+  for (const it of ALL) { if (it.photo) continue; const g = dessert(it.type, { ...it.opts, seed: hash(it.id) }); g.rotation.y = .5; dG.add(g); g.updateMatrixWorld(true); frameDessert(g); renderer.render(scene, cam); menuImgs[it.id] = cvs.toDataURL('image/png'); dG.remove(g); g.traverse((n) => { if (n.geometry) n.geometry.dispose(); }); fillMenuImages(); await sleep(16); }
+  scene.remove(dG); renderer.toneMapping = THREE.AgXToneMapping; renderer.toneMappingExposure = keepExp; renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(640, 640, false); cam.position.copy(keep); root.visible = true; thumbsBusy = false;
+}
+renderMenu();
+new IntersectionObserver((es, ob) => { if (es[0].isIntersecting) { ob.disconnect(); exclusive(menuRenders); } }, { rootMargin: '600px 0px' }).observe($('menu'));
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => { build(); exclusive(async () => { await sleep(300); await renders(); }); });
