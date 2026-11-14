@@ -34,6 +34,7 @@ em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:40
 .stop:not(.cur) .tag,.stop:not(.cur) .line,.stop:not(.cur) .enter,.stop:not(.cur) .lead{transition-duration:.35s;transition-delay:0s}
 .enter{position:relative;overflow:hidden;isolation:isolate}.enter::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--c,#fff);transform:translateY(102%);transition:transform .55s cubic-bezier(.2,.8,.2,1)}
 .enter:hover::before{transform:none}.enter:hover{color:#0b1020;box-shadow:0 14px 34px rgba(0,0,0,.22)}
+.toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);z-index:60;padding:12px 20px;border-radius:999px;background:var(--btn);color:var(--btnink);font-size:13px;opacity:0;pointer-events:none;transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1)}.toast.on{opacity:1;transform:translate(-50%,0)}
 .wipe{position:fixed;inset:0;z-index:99;pointer-events:none}
 .stop .tag,.stop .line,.stop .enter,.stop .lead{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
 .stop.cur .tag{opacity:1;transform:none;transition-delay:.05s}.stop.cur .line,.stop.cur .lead{opacity:1;transform:none;transition-delay:.35s}.stop.cur .enter{opacity:1;transform:none;transition-delay:.5s}
@@ -63,7 +64,10 @@ h1 em,h2 em{letter-spacing:-.015em}
 .form input,.form textarea{font:inherit;font-weight:400;font-size:13px;color:#0e1730;padding:11px 14px;border:1px solid rgba(14,23,48,.16);border-radius:12px;background:#fff;width:100%;outline:none}
 .form textarea{height:54px;resize:none}.form button{font:inherit;font-weight:500;font-size:13px;color:#fff;background:#0e1730;border:0;border-radius:999px;padding:12px;cursor:pointer}
 .spacer{height:calc(var(--n) * 100svh)}
-.fade{position:fixed;inset:0;z-index:7;background:#9fb0ba;opacity:0;pointer-events:none;transition:opacity .35s}.fade.on{opacity:1}
+.fade{position:fixed;inset:0;z-index:7;display:flex;pointer-events:none;visibility:hidden}.fade.on{visibility:visible}.fade i{flex:1;margin:0 -2px;transform:scaleY(0);position:relative;overflow:hidden;box-shadow:inset 1px 0 0 rgba(255,255,255,.3),inset -1px 0 0 rgba(0,0,0,.14)}
+.fade i::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);transform:translateX(-120%)}.fade.on i::after{animation:sheen .8s ease-in-out}
+@keyframes sheen{to{transform:translateX(120%)}}
+.tcard{position:absolute;left:0;right:0;top:50%;margin-top:-1.1em;text-align:center;color:#0b1020;opacity:0;pointer-events:none}.tcard small{display:block;font-size:12px;letter-spacing:.2em;text-transform:uppercase;opacity:.65;margin-bottom:10px}.tcard b{display:block;font-weight:300;font-size:clamp(40px,11vw,120px);letter-spacing:-.055em;line-height:1}
 a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:8px}
 
 /* ---- inspiration pass: stacked headlines, orbit lines, crosshairs, counter, glass cards, pill nav, halftone ---- */
@@ -111,7 +115,7 @@ h1,h2{font-size:clamp(34px,min(6.4vw,10.5vh),122px)}
 .stack .body{grid-row:4;display:block;max-width:none;margin:0;width:100%}
 .stack .body .lead,.stack .body .line{margin:0 0 16px;font-size:15px;line-height:1.55;max-width:34ch;color:var(--ink);text-align:left}.stack .body .enter{width:100%;justify-content:center}.stack .body>*:last-child{margin-bottom:0}
 .stack .stop[data-i="0"] .lead{font-size:clamp(26px,8vw,38px);line-height:1.12;font-weight:400;letter-spacing:-.035em;max-width:14ch;margin:0}
-.stack .stop[data-i="8"] .body{display:none}
+.stack .stop[data-i="10"] .body{display:none}
 .svc{display:none}
 .stack .stop::after{content:attr(data-num);position:absolute;top:26px;right:20px;font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
 .stack .svc{display:block;grid-row:3;align-self:end;margin:0 0 20px;padding:0;list-style:none;opacity:0;transform:translateY(14px);transition:opacity .7s ease .35s,transform .8s cubic-bezier(.2,.8,.2,1) .35s}
@@ -142,12 +146,12 @@ h1,h2{font-size:clamp(34px,min(6.4vw,10.5vh),122px)}
 <div class="grid" aria-hidden="true"><i class="v1"></i><i class="h1"></i></div>
 <div class="fade" id="fade"></div>
 <header class="top" id="top"><a class="mark" id="mark" href="./"><i>AJ</i>AJ Groups</a>
-  <nav class="pillnav" aria-label="Main"><a href="#ventures">Ventures</a><a href="#founder">Founder</a><a href="#about">Our story</a><a href="#contact">Contact</a></nav>
-  <div class="right"><a class="gbtn" href="#contact">Talk to us</a><button class="menubtn" id="menubtn" type="button" aria-expanded="false">Menu<i></i></button><button class="theme" id="theme" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></button></div></header><div class="cursor" id="cursor" aria-hidden="true"></div>
+  <nav class="pillnav" aria-label="Main"><a href="#" data-go="1">Ventures</a><a href="#" data-go="8">Founder</a><a href="#" data-go="9">Our story</a><a href="#" data-go="10">Contact</a></nav>
+  <div class="right"><a class="gbtn" href="#" data-go="10">Talk to us</a><button class="menubtn" id="menubtn" type="button" aria-expanded="false">Menu<i></i></button><button class="theme" id="theme" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></button></div></header><div class="cursor" id="cursor" aria-hidden="true"></div>
 <button class="sidetab" id="sidetab" type="button">Talk to us</button>
-<div class="menu" id="menu"><a href="#" data-go="1">Our <em>ventures</em></a><a href="#" data-go="2">Alven Studio</a><a href="#" data-go="3">House of Fovo</a><a href="#" data-go="6">Bun Bun Bakes</a><a href="#" data-go="8">Contact</a><small>AJ GROUPS · built and led by Allwyn</small></div>
+<div class="menu" id="menu"><a href="#" data-go="1">Our <em>ventures</em></a><a href="#" data-go="2">Alven Studio</a><a href="#" data-go="3">House of Fovo</a><a href="#" data-go="6">Bun Bun Bakes</a><a href="#" data-go="8">The founder</a><a href="#" data-go="9">Our story</a><a href="#" data-go="10">Contact</a><small>AJ GROUPS · built and led by Allwyn</small></div>
 <nav class="dots" id="dots" aria-label="Chapters"></nav>
-<div class="count" id="count"><span><b id="countN">01</b> / 09</span><i><u id="countBar"></u></i></div>
+<div class="count" id="count"><span><b id="countN">01</b> / 11</span><i><u id="countBar"></u></i></div>
 <div class="cue" id="cue">↓ Scroll <span style="opacity:.6">down</span></div>
 <main>
   <article class="stop" data-i="0"><p class="lead">A group of working companies, built and led by Allwyn.</p></article>
@@ -158,7 +162,9 @@ h1,h2{font-size:clamp(34px,min(6.4vw,10.5vh),122px)}
   <article class="stop" data-i="5" data-c="#a58bff"><p class="tag"><i></i>AJ Softwares</p><h2>Built carefully, <em>shipped steadily</em></h2><p class="line">Websites, apps and custom software that work when you need them to.</p><a class="enter" href="#soft">Enter AJ Softwares →</a></article>
   <article class="stop" data-i="6" data-c="#f08a4f"><p class="tag"><i></i>Bun Bun Bakes</p><h2>Baked fresh, <em>every morning</em></h2><p class="line">Bread, cakes and bakes, made to order and served warm.</p><a class="enter" href="#bun">Enter Bun Bun Bakes →</a></article>
   <article class="stop" data-i="7" data-c="#ef6f8d"><p class="tag"><i></i>AJ Little World</p><h2>Stories worth <em>sitting still for</em></h2><p class="line">Stories, learning videos and play, made for children and tried out with them.</p><a class="enter" href="#kids">Enter Little World →</a></article>
-  <article class="stop" data-i="8" data-c="#9fd0ff"><p class="tag"><i></i>Contact us</p><h2>How can <em>we help?</em></h2><p class="line">Tell us what you are building. We reply within a working day. <span style="opacity:.7">(placeholder form)</span></p></article>
+  <article class="stop" data-i="8" data-c="#f0c987"><p class="tag"><i></i>The founder</p><h2>Led by <em>Allwyn</em></h2><p class="line">Allwyn builds and leads the group, and holds all six businesses to the same standard of care. <span style="opacity:.7">(placeholder: founder story and portrait to come)</span></p><a class="enter" href="#" data-go="9">Read our story →</a></article>
+  <article class="stop" data-i="9" data-c="#a8e6c9"><p class="tag"><i></i>Our story</p><h2>One standard, <em>six crafts</em></h2><p class="line">AJ GROUPS brings six working companies under one promise: careful work, honest delivery and things built to last. <span style="opacity:.7">(placeholder: full story to come)</span></p><a class="enter" href="#" data-go="1">Meet the ventures →</a></article>
+  <article class="stop" data-i="10" data-c="#9fd0ff"><p class="tag"><i></i>Contact us</p><h2>How can <em>we help?</em></h2><p class="line">Tell us what you are building. We reply within a working day. <span style="opacity:.7">(placeholder form)</span></p></article>
 </main>
 <aside class="card" data-i="1"><small>Six ventures</small><b>The group</b><ul><li>One founder</li><li>One standard</li><li>Built to last</li></ul></aside>
 <aside class="card" data-i="2"><small>01 · What we do</small><b>Alven Studio</b><ul><li>Brand strategy</li><li>Social campaigns</li><li>Performance ads</li></ul></aside>
@@ -166,6 +172,8 @@ h1,h2{font-size:clamp(34px,min(6.4vw,10.5vh),122px)}
 <aside class="card" data-i="4"><small>03 · What we do</small><b>Clothing</b><ul><li>Seasonal collections</li><li>Tailored pieces</li><li>Lookbooks</li></ul></aside>
 <aside class="card" data-i="5"><small>04 · What we do</small><b>AJ Softwares</b><ul><li>Websites and apps</li><li>Custom software</li><li>Support and hosting</li></ul></aside>
 <aside class="card" data-i="6"><small>05 · What we do</small><b>Bun Bun Bakes</b><ul><li>Fresh daily bakes</li><li>Custom cakes</li><li>Orders and catering</li></ul></aside>
+<aside class="card" data-i="8"><small>Founder</small><b>Allwyn</b><ul><li>Builds the group</li><li>Sets the standard</li><li>Hands-on leadership</li></ul></aside>
+<aside class="card" data-i="9"><small>Our story</small><b>The group</b><ul><li>Careful work</li><li>Honest delivery</li><li>Built to last</li></ul></aside>
 <aside class="card" data-i="7"><small>06 · What we do</small><b>AJ Little World</b><ul><li>Stories for children</li><li>Learning videos</li><li>Creative play</li></ul></aside>
 <form class="form" id="form" onsubmit="return false"><h3>Talk <em>to us</em></h3><input placeholder="Name" aria-label="Name"><input type="email" placeholder="E-mail" aria-label="E-mail"><textarea placeholder="Message" aria-label="Message"></textarea><button type="submit">Send message</button></form>
 <div class="spacer" aria-hidden="true"></div>
