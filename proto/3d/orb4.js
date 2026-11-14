@@ -29,7 +29,7 @@ const CH = [
   { s: 7, bg: [.27, .42, .50], w: 1, tint: [.9, .95, 1], ox: .26, sc: 1.05, ps: .74, ext: 1.5, abs: [.5, .5, .45], fe: [0, 0, 1, .1] },
 ];
 const DARK = [[.045, .06, .10], [.05, .065, .11], [.035, .085, .105], [.07, .09, .14], [.115, .085, .065], [.07, .06, .16], [.12, .07, .06], [.09, .07, .125], [.04, .08, .13]];
-let THEME = 0; try { THEME = localStorage.getItem('ajtheme') === 'dark' ? 1 : 0; } catch (e) {} if (q.get('theme')) THEME = q.get('theme') === 'dark' ? 1 : 0;
+const SYS = matchMedia('(prefers-color-scheme: dark)'); let THEME = SYS.matches ? 1 : 0, CHOSEN = false; try { const sv = localStorage.getItem('ajtheme'); if (sv) { THEME = sv === 'dark' ? 1 : 0; CHOSEN = true; } } catch (e) {} if (q.get('theme')) THEME = q.get('theme') === 'dark' ? 1 : 0;
 let themeNow = THEME; root.dataset.theme = THEME ? 'dark' : 'light';
 const U = { uTime: { value: 0 }, uAsp: { value: 1 }, uTan: { value: Math.tan(.5 * 36 * Math.PI / 180) }, uA: { value: 0 }, uB: { value: 0 }, uW: { value: 0 }, uBG: { value: new THREE.Vector3() }, uTA: { value: new THREE.Vector3(1, 1, 1) }, uTB: { value: new THREE.Vector3(1, 1, 1) },
   uOff: { value: new THREE.Vector2() }, uSc: { value: 1 }, uApp: { value: 0 }, uRot: { value: new THREE.Vector2() }, uTheme: { value: 0 }, uAbsA: { value: new THREE.Vector3(3.6, 2.6, 1.3) }, uAbsB: { value: new THREE.Vector3(3.6, 2.6, 1.3) }, uFeA: { value: new THREE.Vector4(0, 0, 1, .07) }, uFeB: { value: new THREE.Vector4(0, 0, 1, .07) }, uSteps: { value: MOBILE ? 46 : 72 }, uInner: { value: MOBILE ? 20 : 34 }, uDark: { value: 0 } };
@@ -134,7 +134,8 @@ let loadDone = true, app = (!isNaN(PIN) || RM) ? 1 : 0;   /* no loading page: th
 const mix3 = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)], c255 = c => `rgb(${Math.round(c[0] * 255)},${Math.round(c[1] * 255)},${Math.round(c[2] * 255)})`;
 /* theme toggle */
 const tbtn = document.getElementById('theme');
-tbtn.addEventListener('click', () => { THEME = THEME ? 0 : 1; root.dataset.theme = THEME ? 'dark' : 'light'; try { localStorage.setItem('ajtheme', THEME ? 'dark' : 'light'); } catch (e) {} tbtn.setAttribute('aria-pressed', THEME ? 'true' : 'false'); });
+SYS.addEventListener && SYS.addEventListener('change', e => { if (CHOSEN) return; THEME = e.matches ? 1 : 0; root.dataset.theme = THEME ? 'dark' : 'light'; tbtn.setAttribute('aria-pressed', THEME ? 'true' : 'false'); });
+tbtn.addEventListener('click', () => { CHOSEN = true; THEME = THEME ? 0 : 1; root.dataset.theme = THEME ? 'dark' : 'light'; try { localStorage.setItem('ajtheme', THEME ? 'dark' : 'light'); } catch (e) {} tbtn.setAttribute('aria-pressed', THEME ? 'true' : 'false'); });
 tbtn.setAttribute('aria-pressed', THEME ? 'true' : 'false');
 /* headlines reveal word by word out of a mask */
 document.querySelectorAll('h1,h2').forEach(hd => { let k = 0; const walk = n => { [...n.childNodes].forEach(c => { if (c.nodeType === 3) { const frag = document.createDocumentFragment(); c.textContent.split(/(\s+)/).forEach(t => { if (!t.trim()) { frag.append(t); return; } const w = document.createElement('span'); w.className = 'w'; const i = document.createElement('span'); i.textContent = t; i.style.setProperty('--k', k++); w.append(i); frag.append(w); }); c.replaceWith(frag); } else if (c.nodeType === 1 && c.tagName !== 'BR') walk(c); }); }; walk(hd); });
