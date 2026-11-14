@@ -13,7 +13,7 @@ const root = document.documentElement;
 const canvas = document.getElementById('c');
 let renderer; try { renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
 if (!renderer) { stopEls.forEach(e => { e.style.visibility = 'visible'; e.style.position = 'static'; e.style.opacity = 1; e.style.transform = 'none'; e.style.padding = '90px 22px 20px'; }); throw new Error('WebGL unavailable'); }
-let PR = Math.min(devicePixelRatio, MOBILE ? 1 : 1.25); renderer.setPixelRatio(PR);
+let PR = Math.min(devicePixelRatio, MOBILE ? 1.75 : 1.25); renderer.setPixelRatio(PR);
 
 /* per chapter: shape, page tone (rgb), text is white (1) or dark (0), orb tint, orb screen position (x offset in screens, 0 = centred) and scale */
 const CH = [
@@ -32,7 +32,7 @@ const DARK = [[.045, .06, .10], [.05, .065, .11], [.035, .085, .105], [.07, .09,
 const SYS = matchMedia('(prefers-color-scheme: dark)'); let THEME = SYS.matches ? 1 : 0, CHOSEN = false; try { const sv = localStorage.getItem('ajtheme'); if (sv) { THEME = sv === 'dark' ? 1 : 0; CHOSEN = true; } } catch (e) {} if (q.get('theme')) THEME = q.get('theme') === 'dark' ? 1 : 0;
 let themeNow = THEME; root.dataset.theme = THEME ? 'dark' : 'light';
 const U = { uTime: { value: 0 }, uAsp: { value: 1 }, uTan: { value: Math.tan(.5 * 36 * Math.PI / 180) }, uA: { value: 0 }, uB: { value: 0 }, uW: { value: 0 }, uBG: { value: new THREE.Vector3() }, uTA: { value: new THREE.Vector3(1, 1, 1) }, uTB: { value: new THREE.Vector3(1, 1, 1) },
-  uOff: { value: new THREE.Vector2() }, uSc: { value: 1 }, uApp: { value: 0 }, uRot: { value: new THREE.Vector2() }, uTheme: { value: 0 }, uAbsA: { value: new THREE.Vector3(3.6, 2.6, 1.3) }, uAbsB: { value: new THREE.Vector3(3.6, 2.6, 1.3) }, uFeA: { value: new THREE.Vector4(0, 0, 1, .07) }, uFeB: { value: new THREE.Vector4(0, 0, 1, .07) }, uSteps: { value: MOBILE ? 46 : 72 }, uInner: { value: MOBILE ? 20 : 34 }, uDark: { value: 0 } };
+  uOff: { value: new THREE.Vector2() }, uSc: { value: 1 }, uApp: { value: 0 }, uRot: { value: new THREE.Vector2() }, uTheme: { value: 0 }, uAbsA: { value: new THREE.Vector3(3.6, 2.6, 1.3) }, uAbsB: { value: new THREE.Vector3(3.6, 2.6, 1.3) }, uFeA: { value: new THREE.Vector4(0, 0, 1, .07) }, uFeB: { value: new THREE.Vector4(0, 0, 1, .07) }, uSteps: { value: MOBILE ? 56 : 72 }, uInner: { value: MOBILE ? 26 : 34 }, uDark: { value: 0 } };
 const frag = /* glsl */`
 precision highp float;
 varying vec2 vUv;
@@ -121,6 +121,11 @@ stopEls.forEach(el => { const items = [...el.querySelectorAll(':scope > .lead, :
 const dotsEl = document.getElementById('dots'); dotsEl.innerHTML = stopEls.map(el => `<button type="button" aria-label="${(el.querySelector('h1,h2,.lead') || el).textContent.replace(/\s+/g, ' ').trim()}"></button>`).join('');
 const dotBtns = [...dotsEl.children], vh = () => innerHeight, fade = document.getElementById('fade'), formEl = document.getElementById('form'), cue = document.getElementById('cue'), top = document.getElementById('top'), mark = document.getElementById('mark');
 stopEls.forEach(el => { if (el.dataset.c) el.style.setProperty('--c', el.dataset.c); }); stopEls.forEach((el, k) => { const t = el.querySelector('.tag'); if (t) t.dataset.ix = k - 1; });
+/* phone only: fill the card with a short list (what each business does, or an index of all six) */
+stopEls.forEach((el, k) => { el.dataset.num = String(k + 1).padStart(2, '0') + ' / 09'; const bd = el.querySelector('.body'); if (!bd) return; let ul;
+  if (k === 0) { ul = document.createElement('ul'); ul.className = 'svc idx'; ['Alven Studio', 'House of Fovo', 'Clothing', 'AJ Softwares', 'Bun Bun Bakes', 'AJ Little World'].forEach((n, i) => { const li = document.createElement('li'), b = document.createElement('button'); b.type = 'button'; b.innerHTML = '<b>0' + (i + 1) + '</b>' + n; b.addEventListener('click', () => go(i + 2)); li.append(b); ul.append(li); }); }
+  else { const src = document.querySelector('.card[data-i="' + k + '"] ul'); if (!src) return; ul = document.createElement('ul'); ul.className = 'svc'; ul.innerHTML = src.innerHTML; }
+  el.insertBefore(ul, bd); });
 let sNow = 0, swF = 0; const go = i => { if (i === Math.round(sNow)) return; fade.classList.add('on'); setTimeout(() => { scrollTo(0, i * vh()); sNow = i; swF = i; fade.classList.remove('on'); }, 360); };
 dotBtns.forEach((b, i) => b.addEventListener('click', () => go(i)));
 const menuEl = document.getElementById('menu'), menuBtn = document.getElementById('menubtn'), sideTab = document.getElementById('sidetab');
@@ -130,12 +135,13 @@ menuEl.querySelectorAll('a').forEach(a => a.addEventListener('click', e => { e.p
 sideTab.addEventListener('click', () => go(8));
 function fit() { const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); U.uAsp.value = w / h; }
 const LY = { stack: false, short: false, zone: [70, 400], zone8: [70, 400] };
+function fitLists() { stopEls.forEach(el => { const sv = el.querySelector('.svc'); if (!sv) return; sv.classList.remove('off'); if (!LY.stack) return; const bd = el.querySelector('.body'), top0 = (el.querySelector('h1,h2') || el.querySelector('.tag') || el).getBoundingClientRect(), svr = sv.getBoundingClientRect(), bdr = bd.getBoundingClientRect(); if (svr.top < (el.querySelector('h1,h2') ? top0.bottom + 150 : top0.top + 70) || svr.bottom > bdr.top) sv.classList.add('off'); }); }
 function layout() {
   const W = innerWidth, H = innerHeight, hb = Math.max(top.offsetHeight, 52);
   LY.stack = W / H < 1 || (W <= 760 && H >= 560); LY.short = !LY.stack && H < 570; root.classList.toggle('stack', LY.stack); root.classList.toggle('short', LY.short);
   if (LY.stack) { const tb = top.getBoundingClientRect().bottom; LY.hb = tb; root.style.setProperty('--hb', tb + 'px'); const cr = stopEls[2].getBoundingClientRect(), cc = (cr.top + cr.bottom) / 2, R = Math.min(W * .58, (cr.bottom - cr.top) * .38); LY.zone = [cc - R, cc + R];
     const h8 = stopEls[8].querySelector('h2').getBoundingClientRect().bottom; LY.zone8 = [h8 + 10, cr.bottom - 14];
-    const z = LY.zone8, zh = Math.max(226, Math.min(340, z[1] - z[0])); formEl.style.setProperty('--zh', zh + 'px'); formEl.style.setProperty('--zy', Math.max(z[0] + zh / 2, (z[0] + z[1]) / 2) + 'px'); }
+    fitLists(); const z = LY.zone8, zh = Math.max(226, Math.min(340, z[1] - z[0])); formEl.style.setProperty('--zh', zh + 'px'); formEl.style.setProperty('--zy', Math.max(z[0] + zh / 2, (z[0] + z[1]) / 2) + 'px'); }
 }
 fit(); addEventListener('resize', () => { fit(); layout(); });
 const ptr = { x: 0, y: 0, tx: 0, ty: 0 }; addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; ptr.tx = e.clientX / innerWidth * 2 - 1; ptr.ty = e.clientY / innerHeight * 2 - 1; }, { passive: true });
