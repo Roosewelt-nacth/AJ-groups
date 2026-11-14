@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alven Studio | Digital marketing that gets seen</title>
+<meta name="description" content="Alven Studio is a digital marketing studio: brand strategy, social campaigns, performance ads, content and websites that make your brand easy to find.">
+<meta name="theme-color" content="#050a0a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{--bg:#050a0a;--ink:#eef6f3;--mute:rgba(238,246,243,.62);--line:rgba(238,246,243,.16);--acc:#ff7a45;--teal:#5fe0cd;--glass:rgba(8,16,15,.38);--fillink:#05101c;--pad:clamp(20px,4vw,64px)}
+:root[data-theme="light"]{--bg:#eef3f1;--ink:#0a1612;--mute:rgba(10,22,18,.62);--line:rgba(10,22,18,.16);--acc:#d9501f;--teal:#0f9f8c;--glass:rgba(255,255,255,.45);--fillink:#fff}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .5s,color .5s}
+em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;letter-spacing:-.02em}
+a{color:inherit}
+#c{position:fixed;inset:0;width:100vw;height:100vh;height:100svh;z-index:0;display:block}
+main,footer{position:relative;z-index:2}
+.lab{font-size:12px;letter-spacing:.06em;color:var(--acc);text-transform:uppercase;display:inline-flex;gap:8px}.lab::before{content:"["}.lab::after{content:"]"}
+/* header */
+.top{position:fixed;z-index:20;top:0;left:0;right:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:18px var(--pad)}
+.top{transition:background .4s,border-color .4s;border-bottom:1px solid transparent}.top.sc{background:color-mix(in srgb,var(--bg) 70%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-color:var(--line)}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:400;font-size:17px;letter-spacing:-.02em;justify-self:start}
+.logo i{width:22px;height:22px;border:1.5px solid currentColor;border-radius:6px;display:grid;place-items:center;font-style:normal;font-size:9px;font-weight:500;letter-spacing:0}
+.pill{display:flex;gap:2px;padding:5px;border:1px solid var(--line);border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.pill a{font-size:12px;color:var(--mute);text-decoration:none;padding:8px 16px;border-radius:999px;transition:background .3s,color .3s}.pill a:hover,.pill a.on{background:var(--line);color:var(--ink)}
+.right{justify-self:end;display:flex;gap:8px;align-items:center}
+.btn{font:inherit;font-size:12px;color:var(--ink);text-decoration:none;padding:10px 16px;border:1px solid var(--line);border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);cursor:pointer;transition:background .3s}.btn:hover{background:var(--line)}
+.theme{width:38px;height:38px;padding:0;display:grid;place-items:center}
+.theme svg{grid-area:1/1;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:opacity .3s,transform .5s}
+:root[data-theme="light"] .theme .moon,:root[data-theme="dark"] .theme .sun{opacity:0;transform:rotate(-60deg) scale(.5)}
+.menubtn,.menu{display:none}
+/* hero */
+.hero{min-height:100vh;min-height:100svh;position:relative;display:flex;flex-direction:column;justify-content:center;padding:110px var(--pad) 120px}
+.tag{position:absolute;top:84px;left:50%;transform:translateX(-50%);text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:300;font-size:clamp(13px,1.05vw,15px);letter-spacing:.005em;line-height:1.4;max-width:24ch;color:var(--mute);margin:0}
+.ht{position:relative}
+.big{margin:0;font-weight:300;letter-spacing:-.055em;line-height:.92;font-size:clamp(52px,10.4vw,188px);display:flex;flex-wrap:wrap;justify-content:center;column-gap:.2em;text-align:center;padding:.1em .12em .3em;margin:-.1em -.12em -.3em}
+.big em{letter-spacing:-.03em}
+.alt{position:absolute;inset:-80px -30px;padding:80px 30px;pointer-events:none;color:var(--teal);clip-path:circle(0 at 50% 50%)}
+.alt .big{color:var(--teal)}
+.cols{position:absolute;left:var(--pad);right:var(--pad);bottom:34px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;font-size:12px;color:var(--mute)}
+.cols b{display:block;color:var(--ink);font-weight:400;margin-bottom:3px}.cols div:nth-child(2){text-align:center}.cols div:nth-child(3){text-align:right}
+.cue{position:absolute;left:var(--pad);bottom:78px;width:84px;height:84px;color:var(--ink);text-decoration:none}
+.cue svg{width:100%;height:100%;animation:spin 18s linear infinite}.cue text{font-size:10.5px;letter-spacing:.2em;fill:currentColor}
+.cue::after{content:"↓";position:absolute;inset:0;display:grid;place-items:center;font-size:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.plus{position:absolute;width:13px;height:13px;opacity:.7}.plus::before,.plus::after{content:"";position:absolute;background:var(--ink)}.plus::before{left:6px;top:0;width:1px;height:13px}.plus::after{top:6px;left:0;height:1px;width:13px}
+.plus.a{left:var(--pad);top:50%}.plus.b{right:var(--pad);top:50%}
+/* marquee */
+.mq{overflow:hidden;border-block:1px solid var(--line);padding:18px 0;background:var(--glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.mq div{display:flex;width:max-content;animation:mq 38s linear infinite;font-size:clamp(34px,6vw,96px);letter-spacing:-.045em;line-height:1;white-space:nowrap;text-transform:uppercase}
+.mq span{padding:0 .35em}.mq span:nth-of-type(even){color:var(--teal)}.mq i{font-style:normal;color:var(--mute);font-size:.45em;vertical-align:middle;padding:0 .4em}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* sections */
+section.s{padding:clamp(80px,14vh,160px) var(--pad)}
+.h2{margin:14px 0 0;font-weight:300;letter-spacing:-.05em;line-height:.96;font-size:clamp(38px,5.6vw,92px);max-width:14ch}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad);align-items:end;margin-bottom:clamp(40px,7vh,80px)}
+.intro p{margin:0;font-size:clamp(14px,1.15vw,17px);line-height:1.6;color:var(--mute);max-width:44ch;justify-self:end}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding:.06em .1em .32em;margin:-.06em -.1em -.32em}
+.w>span{display:inline-block;transform:translateY(112%);transition:transform 1s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--k) * 70ms)}
+.in .w>span,.w.in>span{transform:none}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform 1s cubic-bezier(.2,.8,.2,1)}.rv.in{opacity:1;transform:none}
+/* the idea: a field of people that you light up */
+.idea{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;overflow:hidden;touch-action:pan-y}
+#aud{position:absolute;inset:0;width:100%;height:100%;display:block}
+.idea-in{position:relative;z-index:1;max-width:520px;pointer-events:none}
+.idea-in .h2{max-width:11ch}.idea-in p{margin:20px 0 0;font-size:clamp(14px,1.15vw,17px);line-height:1.6;color:var(--mute);max-width:42ch}
+.meter{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-top:34px;pointer-events:auto;max-width:460px}
+.meter div b{display:block;font-weight:300;font-size:clamp(34px,4vw,56px);letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}.meter div span{font-size:12px;color:var(--mute)}
+.meter i{display:block;height:1px;background:var(--line);position:relative}.meter u{position:absolute;left:0;top:-1px;height:3px;width:100%;background:var(--teal);transform-origin:left;transform:scaleX(0);text-decoration:none}
+.lnk{font:inherit;font-size:12px;color:var(--ink);background:none;border:0;border-bottom:1px solid var(--line);padding:4px 0;cursor:pointer}.lnk:hover{border-color:var(--ink)}
+.done{opacity:0;transform:translateY(8px);transition:opacity .6s,transform .6s;color:var(--teal)!important}.done.on{opacity:1;transform:none}
+/* services */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.card{position:relative;min-height:clamp(300px,29vw,370px);padding:20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;overflow:hidden;background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.card::before{content:"";position:absolute;inset:0;background:linear-gradient(165deg,var(--teal),var(--acc));transform:translateY(101%);transition:transform .6s cubic-bezier(.2,.8,.2,1);-webkit-mask-image:linear-gradient(to top,#000 46%,transparent 88%);mask-image:linear-gradient(to top,#000 46%,transparent 88%)}
+.card{transition:background .4s}.card:hover,.card.open,.card:focus-visible{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+.card::after{content:"";position:absolute;inset:0;background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.28),transparent 60%);opacity:0;transition:opacity .4s}
+.card:hover::before,.card.open::before,.card:focus-visible::before{transform:none}.card:hover::after,.card.open::after{opacity:1}
+.card .n,.card h3,.card p,.card .more li{transition:color .35s}
+.card:hover h3,.card.open h3,.card:focus-visible h3,.card:hover p,.card.open p,.card:focus-visible p,.card:hover .more li,.card.open .more li,.card:focus-visible .more li{color:var(--fillink)}
+.more{list-style:none;margin:0;padding:0;position:relative;max-height:0;opacity:0;overflow:hidden;transform:translateY(10px);transition:max-height .6s cubic-bezier(.2,.8,.2,1),opacity .45s .08s,transform .6s cubic-bezier(.2,.8,.2,1),margin .4s}
+.more{display:flex;flex-wrap:wrap;gap:6px}
+.more li{font-size:12px;line-height:1;padding:7px 11px;border:1px solid rgba(0,0,0,.28);border-radius:999px;color:var(--ink)}.more li:last-child{flex-basis:100%;border:0;border-top:1px solid rgba(0,0,0,.2);border-radius:0;padding:10px 0 0;margin-top:4px;display:flex;justify-content:space-between;font-size:13px;font-weight:400}
+.card:hover .more,.card.open .more,.card:focus-visible .more{max-height:130px;opacity:1;transform:none;margin-top:12px}
+.card:hover .n u,.card.open .n u{transform:translate(3px,-3px) rotate(0deg)}
+.card .n{display:flex;justify-content:space-between;font-size:12px;color:var(--acc);position:relative}.card .n u{text-decoration:none;color:var(--ink);transition:transform .4s}.card:hover .n u{transform:translate(3px,-3px)}
+.card h3{margin:0 0 8px;font-weight:300;font-size:clamp(22px,2.1vw,32px);letter-spacing:-.035em;line-height:1.05;position:relative}
+.card p{margin:0;font-size:13.5px;line-height:1.55;color:var(--mute);max-width:30ch;position:relative}
+/* process */
+.proc{display:grid;grid-template-columns:minmax(220px,.8fr) 1.4fr;gap:var(--pad);align-items:stretch}
+.steps{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.steps button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:44px 1fr;gap:6px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);position:relative;color:var(--mute);transition:color .3s}
+.steps button b{font-weight:400;font-size:12px;color:var(--acc)}.steps button span{font-size:clamp(20px,2vw,30px);letter-spacing:-.035em}
+.steps button.on{color:var(--ink)}.steps button i{position:absolute;left:0;bottom:-1px;height:1px;width:0;background:var(--teal)}.steps button.on i{width:100%;transition:width var(--dur,6s) linear}
+.panel{position:relative;border:1px solid var(--line);border-radius:24px;padding:clamp(22px,3vw,44px);display:flex;flex-direction:column;justify-content:space-between;min-height:clamp(320px,34vw,460px);background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);overflow:hidden}
+.panel .num{font-size:clamp(90px,16vw,260px);letter-spacing:-.07em;line-height:.8;font-weight:300;background:linear-gradient(180deg,var(--ink),transparent 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.panel h3{margin:0 0 10px;font-weight:300;font-size:clamp(26px,3vw,46px);letter-spacing:-.04em;line-height:1}.panel p{margin:0 0 18px;font-size:clamp(14px,1.15vw,17px);line-height:1.6;color:var(--mute);max-width:46ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chips span{font-size:12px;padding:7px 14px;border:1px solid var(--line);border-radius:999px;color:var(--ink)}
+.swap{transition:opacity .35s,transform .45s}.swap.out{opacity:0;transform:translateY(10px)}
+/* contact */
+.ct{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad);align-items:start}
+.big2{margin:14px 0 24px;font-weight:300;letter-spacing:-.06em;line-height:.88;font-size:clamp(64px,12vw,210px)}
+.note{font-size:13px;color:var(--mute);line-height:1.7}.note a{color:var(--ink)}
+form{display:grid;gap:22px}
+.f{display:grid;gap:8px}.f>label,.f .t{font-size:11px;letter-spacing:.06em;color:var(--acc);text-transform:uppercase}
+.f input,.f textarea{font:inherit;font-weight:300;font-size:16px;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line);padding:10px 0;outline:none;border-radius:0;transition:border-color .3s;width:100%}
+.f textarea{height:92px;resize:vertical}.f input:focus,.f textarea:focus{border-color:var(--teal)}.f ::placeholder{color:var(--mute)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}.opts label{position:relative}.opts input{position:absolute;opacity:0;pointer-events:none;width:auto}
+.opts span{display:inline-block;font-size:13px;padding:9px 16px;border:1px solid var(--line);border-radius:999px;cursor:pointer;transition:background .25s,color .25s,border-color .25s;color:var(--ink)}
+.opts input:checked+span{background:var(--ink);color:var(--bg);border-color:var(--ink)}.opts input:focus-visible+span{outline:2px solid var(--teal);outline-offset:2px}
+.send{font:inherit;font-size:14px;color:var(--ink);background:transparent;border:1px solid var(--acc);padding:15px 26px;display:inline-flex;justify-content:space-between;gap:24px;align-items:center;cursor:pointer;transition:background .3s,color .3s;justify-self:start;min-width:210px}.send:hover{background:var(--acc);color:#fff}
+.ok{display:none;font-size:15px;color:var(--teal);margin:0}.ok.on{display:block}
+footer{padding:36px var(--pad) 40px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--line);font-size:12px;color:var(--mute);background:var(--glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}footer a{text-decoration:none;color:var(--ink)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:8px}
+@media (max-width:900px){
+ .top{grid-template-columns:1fr auto}.pill,.btn.aj{display:none}
+ .menubtn{display:inline-flex;align-items:center;height:38px}
+ .menu{display:flex;flex-direction:column;justify-content:center;gap:4px;position:fixed;inset:0;z-index:19;padding:90px 28px 40px;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);opacity:0;pointer-events:none;transition:opacity .35s}
+ .menu.on{opacity:1;pointer-events:auto}.menu a{text-decoration:none;font-size:clamp(38px,12vw,60px);letter-spacing:-.045em;line-height:1.15;border-bottom:1px solid var(--line);padding:6px 0}.menu a em{font-size:.9em}
+ .cards{grid-template-columns:1fr 1fr}.intro,.proc,.ct{grid-template-columns:1fr}.intro p{justify-self:start}
+ .hero{padding-top:130px}.tag{top:78px}
+}
+@media (max-width:560px){
+ .idea-in{align-self:flex-start;margin-top:12vh}.meter{grid-template-columns:auto 1fr}.meter .lnk{grid-column:1/-1;justify-self:start}
+ .cards{grid-template-columns:1fr}.card{min-height:200px}.big{font-size:clamp(46px,17.5vw,90px);flex-direction:column;align-items:center;row-gap:0}.cols{font-size:11px;gap:10px}.cue{width:70px;height:70px;bottom:92px}
+ .steps{flex-direction:row;overflow-x:auto;border-top:0;gap:8px;padding-bottom:4px}.steps button{grid-template-columns:auto;padding:10px 16px;border:1px solid var(--line);border-radius:999px;white-space:nowrap;flex:none}.steps button span{display:none}.steps button b{color:inherit;font-size:13px}.steps button.on{background:var(--ink);color:var(--bg)}.steps button i{display:none}
+ .plus{display:none}
+}
+@media (prefers-reduced-motion:reduce){.mq div,.cue svg{animation:none}.rv,.w>span{transition:none}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
+</head>
+<body>
+<canvas id="c" aria-hidden="true"></canvas>
+<header class="top" id="top">
+  <a class="logo" href="#hero"><i>AS</i>Alven Studio</a>
+  <nav class="pill" aria-label="Main"><a href="#idea">Idea</a><a href="#services">Services</a><a href="#process">Process</a><a href="#contact">Contact</a></nav>
+  <div class="right"><a class="btn aj" href="../aj-groups/">AJ GROUPS ↗</a>
+    <button class="btn theme" id="theme" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></button>
+    <button class="btn menubtn" id="menubtn" type="button" aria-expanded="false">Menu</button></div>
+</header>
+<div class="menu" id="menu"><a href="#idea">The <em>idea</em></a><a href="#services">Our <em>services</em></a><a href="#process">Process</a><a href="#contact">Contact</a><a href="../aj-groups/">AJ GROUPS ↗</a></div>
+<main>
+  <section class="hero" id="hero">
+    <p class="tag">Marketing that does not miss a beat</p>
+    <div class="ht" id="ht">
+      <h1 class="big"><span>Ideas that</span> <em>get seen</em></h1>
+      <div class="alt" id="alt" aria-hidden="true"><h1 class="big"><span>Ideas that</span> <em>get sold</em></h1></div>
+    </div>
+    <i class="plus a"></i><i class="plus b"></i>
+    <a class="cue" href="#services" aria-label="Scroll down"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="cp" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><text><textPath href="#cp">SCROLL DOWN · SCROLL DOWN · </textPath></text></svg></a>
+    <div class="cols"><div><b>Strategy</b>Brand and positioning</div><div><b>Social and content</b>Made for the feed</div><div><b>Ads and growth</b>Judged by what they return</div></div>
+  </section>
+  <div class="mq" aria-hidden="true"><div><span>Strategy</span><i>○</i><span>Social</span><i>○</i><span>Performance ads</span><i>○</i><span>Content</span><i>○</i><span>Websites</span><i>○</i><span>Strategy</span><i>○</i><span>Social</span><i>○</i><span>Performance ads</span><i>○</i><span>Content</span><i>○</i><span>Websites</span><i>○</i></div></div>
+
+  <section class="s idea" id="idea">
+    <canvas id="aud" aria-hidden="true"></canvas>
+    <div class="idea-in">
+      <span class="lab">The idea</span>
+      <h2 class="h2">Most brands go <em>unseen</em></h2>
+      <p class="rv">Every dot is a person. Move across the field and light up the ones who notice you. That is the whole job: putting your brand in front of the people who matter.</p>
+      <div class="meter rv"><div><b id="seen">0</b><span>people seen</span></div><i><u id="seenBar"></u></i><button class="lnk" id="audReset" type="button">Start again</button></div>
+      <p class="done" id="audDone">That is what we do for a brand. Every light is a customer.</p>
+    </div>
+  </section>
+
+  <section class="s" id="services">
+    <div class="intro"><div class="rv"><span class="lab">Services</span><h2 class="h2">Everything a brand needs to be <em>found</em></h2></div>
+      <p class="rv">Six services under one roof, planned together so your message stays the same on every screen your customers use.</p></div>
+    <div class="cards" id="cards">
+      <a class="card rv" href="#contact"><div class="n"><span>[ 01 ]</span><u>↗</u></div><div><h3>Brand strategy</h3><p>Positioning, voice and a story people repeat.</p></div></a>
+      <a class="card rv" href="#contact"><div class="n"><span>[ 02 ]</span><u>↗</u></div><div><h3>Social campaigns</h3><p>Content and community that earn attention.</p></div></a>
+      <a class="card rv" href="#contact"><div class="n"><span>[ 03 ]</span><u>↗</u></div><div><h3>Performance ads</h3><p>Paid search and social, judged by what they return.</p></div></a>
+      <a class="card rv" href="#contact"><div class="n"><span>[ 04 ]</span><u>↗</u></div><div><h3>Content and video</h3><p>Shoots, reels and edits made for the feed.</p></div></a>
+      <a class="card rv" href="#contact"><div class="n"><span>[ 05 ]</span><u>↗</u></div><div><h3>Websites and landing pages</h3><p>Pages built to turn visits into enquiries.</p></div></a>
+      <a class="card rv" href="#contact"><div class="n"><span>[ 06 ]</span><u>↗</u></div><div><h3>Analytics and reporting</h3><p>Plain reports on what worked and what comes next.</p></div></a>
+    </div>
+  </section>
+
+  <section class="s" id="process">
+    <div class="intro"><div class="rv"><span class="lab">Process</span><h2 class="h2">From first call to <em>steady growth</em></h2></div>
+      <p class="rv">Five clear steps, the same for a small shop and a growing brand. You always know what is happening and what comes next.</p></div>
+    <div class="proc rv">
+      <div class="steps" id="steps" role="tablist" aria-label="Process steps"></div>
+      <div class="panel" id="panel" aria-live="polite"><div class="num swap" id="pnum">01</div><div class="swap" id="ptxt"><h3 id="pt"></h3><p id="pp"></p><div class="chips" id="pc"></div></div></div>
+    </div>
+  </section>
+
+  <section class="s" id="contact">
+    <div class="ct">
+      <div class="rv"><span class="lab">Contact</span><h2 class="big2">Let’s <em>talk</em></h2><p class="note">Tell us what you want people to see. We reply within a working day.<br><br>hello@alvenstudio.example<br>+00 00000 00000<br><span style="opacity:.7">(placeholder contact details)</span></p></div>
+      <form class="rv" id="form" onsubmit="return false" novalidate>
+        <div class="f"><label for="nm">Name</label><input id="nm" placeholder="Your name" autocomplete="name"></div>
+        <div class="f"><label for="em">E-mail</label><input id="em" type="email" placeholder="you@company.com" autocomplete="email"></div>
+        <div class="f"><span class="t">What do you need?</span><div class="opts"><label><input type="checkbox"><span>Strategy</span></label><label><input type="checkbox"><span>Social</span></label><label><input type="checkbox"><span>Ads</span></label><label><input type="checkbox"><span>Content</span></label><label><input type="checkbox"><span>Website</span></label></div></div>
+        <div class="f"><label for="ms">Message</label><textarea id="ms" placeholder="A few lines about your business and goals"></textarea></div>
+        <button class="send" type="submit"><span>Send brief</span><span>↗</span></button>
+        <p class="ok" id="ok">Thank you. This is a placeholder form, so nothing was sent yet.</p>
+      </form>
+    </div>
+  </section>
+</main>
+<footer><span>© 2026 Alven Studio · part of AJ GROUPS</span><span><a href="../aj-groups/">← Back to AJ GROUPS</a></span></footer>
+<script type="module" src="main.js"></script>
+</body>
+</html>
