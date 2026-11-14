@@ -35,6 +35,19 @@ em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:40
 .enter{position:relative;overflow:hidden;isolation:isolate}.enter::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--c,#fff);transform:translateY(102%);transition:transform .55s cubic-bezier(.2,.8,.2,1)}
 .enter:hover::before{transform:none}.enter:hover{color:#0b1020;box-shadow:0 14px 34px rgba(0,0,0,.22)}
 .toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);z-index:60;padding:12px 20px;border-radius:999px;background:var(--btn);color:var(--btnink);font-size:13px;opacity:0;pointer-events:none;transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1)}.toast.on{opacity:1;transform:translate(-50%,0)}
+/* every control answers a touch, and lists build in rather than appear */
+button,.enter,.gbtn,.menu a{-webkit-tap-highlight-color:transparent}
+.menubtn,.sidetab,.theme,.gbtn,.enter,.form button{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .3s,background .3s,color .3s,opacity .4s}
+.menubtn:active,.sidetab:active,.theme:active,.gbtn:active,.enter:active,.form button:active{transform:scale(.94)}
+.menubtn i{transition:transform .45s cubic-bezier(.2,.8,.2,1),border-width .3s,height .3s}.menubtn[aria-expanded="true"] i{height:0;border-bottom-width:0;transform:rotate(0)}
+.stack .menu a,.menu a{opacity:0;transform:translateY(34px);filter:blur(6px);transition:opacity .5s ease,transform .8s cubic-bezier(.16,1,.3,1),filter .5s ease,padding-left .35s cubic-bezier(.2,.8,.2,1),color .3s}
+.menu.on a{opacity:1;transform:none;filter:none}.menu.on a:nth-child(1){transition-delay:.05s}.menu.on a:nth-child(2){transition-delay:.1s}.menu.on a:nth-child(3){transition-delay:.15s}.menu.on a:nth-child(4){transition-delay:.2s}.menu.on a:nth-child(5){transition-delay:.25s}.menu.on a:nth-child(6){transition-delay:.3s}.menu.on a:nth-child(7){transition-delay:.35s}
+.menu a:hover,.menu a:focus-visible{padding-left:14px}.menu small{opacity:0;transition:opacity .6s .5s}.menu.on small{opacity:1}
+.dots button{transition:transform .3s cubic-bezier(.2,.8,.2,1)}.dots button:hover{transform:scale(1.5)}.dots button:hover::after{opacity:.9}
+.stack .stop.cur .svc li{animation:li .6s cubic-bezier(.16,1,.3,1) both}.stack .stop.cur .svc li:nth-child(2){animation-delay:.08s}.stack .stop.cur .svc li:nth-child(3){animation-delay:.16s}.stack .stop.cur .svc li:nth-child(4){animation-delay:.24s}.stack .stop.cur .svc li:nth-child(5){animation-delay:.32s}.stack .stop.cur .svc li:nth-child(6){animation-delay:.4s}
+@keyframes li{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+.stack .svc li button,.stack .svc li{transition:background .3s,padding-left .3s}.stack .svc li:active{padding-left:8px}
+@media (prefers-reduced-motion:reduce){.menu a{opacity:1;transform:none;filter:none}.stack .stop.cur .svc li{animation:none}}
 .wipe{position:fixed;inset:0;z-index:99;pointer-events:none}
 .stop .tag,.stop .line,.stop .enter,.stop .lead{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
 .stop.cur .tag{opacity:1;transform:none;transition-delay:.05s}.stop.cur .line,.stop.cur .lead{opacity:1;transform:none;transition-delay:.35s}.stop.cur .enter{opacity:1;transform:none;transition-delay:.5s}
@@ -63,6 +76,34 @@ h1 em,h2 em{letter-spacing:-.015em}
 .form h3{margin:0 0 4px;text-align:center;font-weight:500;font-size:21px;letter-spacing:-.02em}.form h3 em{font-size:1.1em}
 .form input,.form textarea{font:inherit;font-weight:400;font-size:13px;color:#0e1730;padding:11px 14px;border:1px solid rgba(14,23,48,.16);border-radius:12px;background:#fff;width:100%;outline:none}
 .form textarea{height:54px;resize:none}.form button{font:inherit;font-weight:500;font-size:13px;color:#fff;background:#0e1730;border:0;border-radius:999px;padding:12px;cursor:pointer}
+.form{--fs:min(60vh,440px);width:var(--fs);height:var(--fs);padding:calc(var(--fs)*.15) calc(var(--fs)*.17);grid-template-columns:minmax(0,1fr);align-content:center;justify-content:stretch}
+@media (max-height:820px){.form{gap:7px}.form input,.form select{padding:9px 14px}.form textarea{height:42px;padding:9px 14px}.form button{padding:10px}}
+.form .f input,.form .f select,.form .f textarea{display:block}
+.form{scale:.84;transition:opacity .5s,scale 1.1s cubic-bezier(.16,1,.3,1)}.form.on{scale:1;animation:fbob 7s ease-in-out 1.2s infinite}
+@keyframes fbob{50%{translate:0 -9px}}
+.form>h3,.form>.f,.form>button{opacity:0;transform:translateY(22px) scale(.96);filter:blur(7px);transition:opacity .6s ease,transform .9s cubic-bezier(.16,1,.3,1),filter .7s ease}
+.form.on>h3,.form.on>.f,.form.on>button{opacity:1;transform:none;filter:none}
+.form.on>h3{transition-delay:.25s}.form.on>.f:nth-of-type(1){transition-delay:.38s}.form.on>.f:nth-of-type(2){transition-delay:.46s}.form.on>.f:nth-of-type(3){transition-delay:.54s}.form.on>.f:nth-of-type(4){transition-delay:.62s}.form.on>button{transition-delay:.72s}
+.form:not(.on)>h3,.form:not(.on)>.f,.form:not(.on)>button{transition-duration:.25s;transition-delay:0s}
+.form::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(240px circle at var(--gx,50%) var(--gy,25%),rgba(95,224,205,.26),rgba(165,139,255,.1) 45%,transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none}.form:hover::after{opacity:1}
+.form.on::before{animation:fspin 7s linear infinite,fpop 1.4s cubic-bezier(.16,1,.3,1)}@keyframes fpop{from{opacity:0;padding:14px}to{opacity:1;padding:2px}}
+@media (prefers-reduced-motion:reduce){.form,.form.on{animation:none;scale:1}.form>h3,.form>.f,.form>button{transition:none;filter:none;transform:none}}
+@property --fa{syntax:'<angle>';inherits:false;initial-value:0deg}
+.form{background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3)}
+.form::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;background:conic-gradient(from var(--fa),rgba(95,224,205,0),rgba(95,224,205,.95),rgba(165,139,255,.85),rgba(240,138,79,.7),rgba(95,224,205,0) 80%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:fspin 7s linear infinite;pointer-events:none}
+@keyframes fspin{to{--fa:360deg}}
+.form .f{position:relative;display:block;transition:transform .4s cubic-bezier(.2,.8,.2,1)}.form .f:focus-within{transform:translateY(-2px)}
+.form .f::after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;border-radius:2px;background:linear-gradient(90deg,#5fe0cd,#a58bff);transform:scaleX(0);transform-origin:0 50%;transition:transform .45s cubic-bezier(.2,.8,.2,1)}.form .f:focus-within::after{transform:scaleX(1)}
+.form input,.form textarea,.form select{border-color:rgba(14,23,48,.12);background:rgba(255,255,255,.7);transition:border-color .3s,box-shadow .3s,background .3s}
+.form select{font:inherit;font-weight:400;font-size:13px;color:#0e1730;padding:11px 14px;border:1px solid rgba(14,23,48,.12);border-radius:12px;width:100%;outline:none;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#0e1730 50%),linear-gradient(135deg,#0e1730 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 15px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+.form input:focus,.form textarea:focus,.form select:focus{box-shadow:0 6px 20px rgba(14,23,48,.1);background:#fff}
+.form .bad input,.form .bad select{border-color:#e0556b}.form .shake{animation:shk .45s}@keyframes shk{20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+.form button{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .3s}.form button i{font-style:normal;display:inline-block;transition:transform .35s}.form button:hover{box-shadow:0 10px 24px rgba(14,23,48,.28)}.form button:hover i{transform:translateX(5px)}
+.form.sending button span::after{content:"…"}.form .thx{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:6px;text-align:center;background:inherit;border-radius:inherit;opacity:0;pointer-events:none;transition:opacity .5s}.form.sent .thx{opacity:1}
+.thx svg{width:56px;height:56px;fill:none;stroke:#0e1730;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}.thx svg circle{stroke:#5fe0cd;stroke-dasharray:145;stroke-dashoffset:145}.thx svg path{stroke-dasharray:40;stroke-dashoffset:40}
+.form.sent .thx circle{animation:draw .7s .1s forwards}.form.sent .thx path{animation:draw .4s .6s forwards}@keyframes draw{to{stroke-dashoffset:0}}
+.thx b{font-weight:500;font-size:22px;letter-spacing:-.03em}.thx p{margin:0;font-size:13px;line-height:1.5}.thx span{opacity:.6;font-size:11px}
+@media (prefers-reduced-motion:reduce){.form::before{animation:none}}
 .spacer{height:calc(var(--n) * 100svh)}
 .fade{position:fixed;inset:0;z-index:7;display:flex;pointer-events:none;visibility:hidden}.fade.on{visibility:visible}.fade i{flex:1;margin:0 -2px;transform:scaleY(0);position:relative;overflow:hidden;box-shadow:inset 1px 0 0 rgba(255,255,255,.3),inset -1px 0 0 rgba(0,0,0,.14)}
 .fade i::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);transform:translateX(-120%)}.fade.on i::after{animation:sheen .8s ease-in-out}
@@ -130,11 +171,11 @@ h1,h2{font-size:clamp(34px,min(6.4vw,10.5vh),122px)}
 .stack .dots{flex-direction:row;right:auto;left:50%;top:auto;bottom:calc(10px + env(safe-area-inset-bottom));transform:translateX(-50%);gap:0}
 .stack .dots button{width:26px;height:34px}.stack .dots button[aria-current="step"]::after{width:18px;border-radius:3px;box-shadow:none}
 .stack .form{left:50%;top:var(--zy,36%);width:min(88vw,380px);height:var(--zh,300px);border-radius:28px;padding:16px 22px;gap:8px}
-.stack .form input{padding:9px 14px}.stack .form textarea{height:40px}.stack .form h3{font-size:19px;margin:0}
+.stack .form input,.stack .form select{padding:9px 14px}.stack .form textarea{height:40px}.stack .form h3{font-size:19px;margin:0}
 /* short landscape windows */
 .short .top{padding:8px var(--pad);grid-template-columns:1fr auto}.short .pillnav{display:none}.short .card{display:none}@media (max-height:360px){.count{display:none}}.short .line{display:none}.short .tag{margin-bottom:8px}
 .short h1,.short h2{font-size:min(6vw,13vh);margin-bottom:12px}.short .stop[data-i="0"]{bottom:10vh}
-.short .form{top:57%;height:min(72vh,440px);width:min(72vh,440px);gap:6px;padding:12% 15%}.short .form input{padding:7px 12px}.short .form textarea{display:none}.short .stop{top:56%}
+.short .form{top:57%;--fs:min(72vh,440px);gap:6px;padding:calc(var(--fs)*.12) calc(var(--fs)*.15)}.short .form input{padding:7px 12px}.short .form textarea,.short .form select{display:none}.short .stop{top:56%}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
 </head>
@@ -175,7 +216,7 @@ h1,h2{font-size:clamp(34px,min(6.4vw,10.5vh),122px)}
 <aside class="card" data-i="8"><small>Founder</small><b>Allwyn</b><ul><li>Builds the group</li><li>Sets the standard</li><li>Hands-on leadership</li></ul></aside>
 <aside class="card" data-i="9"><small>Our story</small><b>The group</b><ul><li>Careful work</li><li>Honest delivery</li><li>Built to last</li></ul></aside>
 <aside class="card" data-i="7"><small>06 · What we do</small><b>AJ Little World</b><ul><li>Stories for children</li><li>Learning videos</li><li>Creative play</li></ul></aside>
-<form class="form" id="form" onsubmit="return false"><h3>Talk <em>to us</em></h3><input placeholder="Name" aria-label="Name"><input type="email" placeholder="E-mail" aria-label="E-mail"><textarea placeholder="Message" aria-label="Message"></textarea><button type="submit">Send message</button></form>
+<form class="form" id="form" novalidate><h3>Talk <em>to us</em></h3><label class="f"><input name="n" placeholder="Name" aria-label="Name" autocomplete="name" required></label><label class="f"><input name="e" type="email" placeholder="E-mail" aria-label="E-mail" autocomplete="email" required></label><label class="f"><select name="b" aria-label="Which business"><option value="">Which business?</option><option>Alven Studio</option><option>House of Fovo</option><option>Clothing</option><option>AJ Softwares</option><option>Bun Bun Bakes</option><option>AJ Little World</option><option>Something else</option></select></label><label class="f"><textarea name="m" placeholder="Message" aria-label="Message"></textarea></label><button type="submit"><span>Send message</span><i aria-hidden="true">→</i></button><div class="thx" aria-live="polite"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23"/><path d="M15 27l8 8 14-17"/></svg><b>Thank you</b><p>We reply within a working day.<br><span>(Demo: nothing is sent yet)</span></p></div></form>
 <div class="spacer" aria-hidden="true"></div>
 <script type="module" src="main.js"></script>
 </body>

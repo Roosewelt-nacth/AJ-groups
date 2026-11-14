@@ -246,7 +246,7 @@ if (q.has('audit')) setTimeout(() => {
     if (!phone && inter(S, ct) && k > 0) notes.push('text/counter overlap'); if (C && !phone && inter(C, ct)) notes.push('card/counter overlap');
     if (O.left < -2 || O.right > W + 2 || O.top < -2 || O.bottom > H + 2) notes.push(`orb cut off (${Math.round(O.left)},${Math.round(O.top)},${Math.round(O.right)},${Math.round(O.bottom)})`);
     if (phone && k > 0 && O.bottom > S.top + 40) notes.push('orb hidden by text sheet by ' + Math.round(O.bottom - S.top));
-    if (!phone && k > 1 && k < 8 && S.right > O.left + r * .6) notes.push('text over orb by ' + Math.round(S.right - O.left));
+    if (!phone && k > 1 && k < LAST - 2 && S.right > O.left + r * .6) notes.push('text over orb by ' + Math.round(S.right - O.left));
     if (F && inter(S, F)) notes.push('text/form overlap'); if (F && (F.left < 0 || F.right > W || F.top < hb || F.bottom > H)) notes.push('form off screen');
     if (notes.length) out.push(k + ': ' + notes.join('; '));
   });
@@ -275,3 +275,11 @@ if (!RM) {
 /* pages that are not built yet say so instead of doing nothing */
 { const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); document.body.append(t); let tt = 0;
   document.querySelectorAll('.enter[href^="#"]:not([data-go])').forEach(a => a.addEventListener('click', e => { e.preventDefault(); t.textContent = 'This page is being built next. Check back soon.'; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2600); })); }
+
+/* contact form: checks, gentle error shake, a sending beat and a drawn tick (nothing is sent yet) */
+{ const f = document.getElementById('form'); f.addEventListener('submit', e => { e.preventDefault(); const n = f.elements.n, em = f.elements.e; let ok = true;
+    [[n, !n.value.trim()], [em, !/^\S+@\S+\.\S+$/.test(em.value.trim())]].forEach(([el, bad]) => { const w = el.closest('.f'); w.classList.toggle('bad', bad); if (bad) { ok = false; w.classList.remove('shake'); void w.offsetWidth; w.classList.add('shake'); } });
+    if (!ok) { (n.value.trim() ? em : n).focus(); return; } f.classList.add('sending'); setTimeout(() => { f.classList.remove('sending'); f.classList.add('sent'); f.reset(); setTimeout(() => f.classList.remove('sent'), 6000); }, 700); }); }
+
+/* contact form: a soft light follows the pointer across the glass */
+{ const f = document.getElementById('form'); f.addEventListener('pointermove', e => { const r = f.getBoundingClientRect(); f.style.setProperty('--gx', (e.clientX - r.left) + 'px'); f.style.setProperty('--gy', (e.clientY - r.top) + 'px'); }); }
