@@ -159,7 +159,7 @@ const ring = document.getElementById('cursor'), fine = matchMedia('(hover: hover
 if (fine) addEventListener('pointermove', e => { cx = e.clientX; cy = e.clientY; big = e.target.closest('a,button,input,textarea') ? 1 : 0; }, { passive: true }); else ring.remove();
 const countEl = document.getElementById('count'), countN = document.getElementById('countN'), countBar = document.getElementById('countBar'), cards = [...document.querySelectorAll('.card')];
 const orbit = document.getElementById('orbit'), oc1 = orbit.querySelector('.c1'), oc2 = orbit.querySelector('.c2'), od = orbit.querySelector('.dot');
-const clock = new THREE.Clock(); let first = true, curIdx = -1, fa = 0, fn = 0; const PRMAX = PR, FIXED = q.has('fixedres');
+const clock = new THREE.Clock(); let first = true, curIdx = -1, fa = 0, fn = 0, svPrev = 0, svS = 0; const PRMAX = PR, FIXED = q.has('fixedres');
 function frame() {
   const dt = Math.min(clock.getDelta(), .05), T = !isNaN(TFIX) ? TFIX : (RM ? 0 : clock.elapsedTime);
   if (!FIXED && !first) { fa += dt; fn++; if (fn >= 40) { const av = fa / fn; if (av > .027 && PR > .5) { PR = Math.max(.5, PR * .82); renderer.setPixelRatio(PR); fit(); } else if (av < .019 && PR < PRMAX) { PR = Math.min(PRMAX, PR * 1.1); renderer.setPixelRatio(PR); fit(); } fa = 0; fn = 0; } }
@@ -174,7 +174,8 @@ function frame() {
   if (st) { const z = sNow > 7.5 ? LY.zone8 : LY.zone, zc = (z[0] + z[1]) / 2, zr = Math.min((z[1] - z[0]) / 2 * .96, innerWidth * .56), ext = lerp(A.ext, B.ext, ww); U.uOff.value.set(0, (1 - 2 * zc / innerHeight) * 4.6 * .32492); U.uSc.value = zr / ext / (.615 * innerHeight / 2); }
   else { const oxx = lerp(A.ox, B.ox, ww) * .8, ex = lerp(A.ext, B.ext, ww), cxp = (.5 + .5 * 1.67 * oxx) * innerWidth; U.uOff.value.set(oxx, 0); U.uSc.value = Math.min(lerp(A.sc, B.sc, ww) * (asp < 1.3 ? clamp(asp / 1.3 + .25) : 1), (innerWidth - 10 - cxp) / (.615 * innerHeight / 2 * ex)); }
   { } U.uApp.value = sstep(0, 1, app); U.uTime.value = T;
-  ptr.x += (ptr.tx - ptr.x) * Math.min(1, dt * 3); ptr.y += (ptr.ty - ptr.y) * Math.min(1, dt * 3); U.uRot.value.set(ptr.x * .5, ptr.y * .3);
+  { const sv = (target - svPrev) / Math.max(dt, .001); svPrev = target; svS += (clamp(sv * .09, -1, 1) - svS) * Math.min(1, dt * 6); }
+  ptr.x += (ptr.tx - ptr.x) * Math.min(1, dt * 3); ptr.y += (ptr.ty - ptr.y) * Math.min(1, dt * 3); U.uRot.value.set(ptr.x * .5, ptr.y * .3 + (RM ? 0 : svS * .6));
   /* page tone and type colour: every value is blended, so changing chapter or theme is a cross-fade, never a jump */
   const white = lerp(lerp(A.w, B.w, ww), 1, themeNow), c3 = (a, b, t) => `${Math.round(lerp(a[0], b[0], t))},${Math.round(lerp(a[1], b[1], t))},${Math.round(lerp(a[2], b[2], t))}`, NAVY = [14, 23, 48], WH = [255, 255, 255];
   root.style.setProperty('--ink', `rgb(${c3(NAVY, WH, white)})`); root.style.setProperty('--mute', `rgba(${c3(NAVY, WH, white)},${lerp(.66, .78, white).toFixed(2)})`); root.style.setProperty('--line', `rgba(${c3(NAVY, WH, white)},${lerp(.2, .24, white).toFixed(2)})`);
@@ -183,6 +184,8 @@ function frame() {
   mark.style.setProperty('--ms', sNow < .2 ? '46px' : '17px'); mark.style.setProperty('--msm', sNow < .2 ? '30px' : '17px');
   const near = Math.round(clamp(sNow, 0, NS - 1)), d = Math.abs(sNow - near), op = (1 - sstep(.08, .34, d)) * sstep(.55, 1, app);
   stopEls.forEach((el, k) => { const on = k === near; el.style.setProperty('--o', on ? op.toFixed(3) : 0); el.classList.toggle('cur', on && op > .4); });
+  { const st2 = LY.stack; stopEls.forEach((el, k) => { el.classList.toggle('past', k < near); el.classList.toggle('next', k > near);
+      if (k === near && !RM && !st2) { el.style.translate = `0 ${(-(sNow - near) * 150).toFixed(1)}px`; el.style.filter = d > .02 ? `blur(${(d * 18).toFixed(1)}px)` : 'none'; } else { el.style.translate = ''; el.style.filter = ''; } }); }
   if (near !== curIdx) { curIdx = near; dotBtns.forEach((b, k) => k === near ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current')); }
   top.style.opacity = sstep(.25, .8, app); cue.textContent = LY.stack ? 'Swipe to explore  →' : '↓ Scroll down'; cue.style.opacity = sNow < .1 ? 1 : 0; countEl.style.opacity = sNow > .3 ? 1 : 0; countN.textContent = String(Math.round(sNow) + 1).padStart(2, '0'); countBar.style.transform = `scaleY(${clamp(sNow / (NS - 1)).toFixed(3)})`; formEl.classList.toggle('on', sNow > 7.55);
   if (fine) { rx += (cx - rx) * Math.min(1, dt * 14); ry += (cy - ry) * Math.min(1, dt * 14); ring.style.transform = `translate(${rx}px,${ry}px) scale(${1 + big * 1.4})`; ring.style.opacity = loadDone ? .9 : 0; }
@@ -232,3 +235,22 @@ if (q.has('audit')) setTimeout(() => {
   });
   document.title = 'AUDIT ' + W + 'x' + H + ' => ' + (out.length ? out.join(' | ') : 'clean');
 }, 1800);
+
+/* ---------- motion layer: magnetic buttons, circular page wipe, and a settle that lands each scroll on a chapter ---------- */
+if (!RM) {
+  const mag = [...document.querySelectorAll('.enter,.gbtn,.menubtn,.sidetab')];
+  mag.forEach(b => { b.addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; const r = b.getBoundingClientRect(); b.style.translate = `${((e.clientX - r.left - r.width / 2) * .28).toFixed(1)}px ${((e.clientY - r.top - r.height / 2) * .38).toFixed(1)}px`; });
+    b.addEventListener('pointerleave', () => { b.style.translate = ''; }); });
+  document.querySelectorAll('.enter[href^="../"]').forEach(a => a.addEventListener('click', e => { if (e.metaKey || e.ctrlKey || e.shiftKey) return; e.preventDefault();
+    const w = document.createElement('div'), col = getComputedStyle(a.closest('.stop') || a).getPropertyValue('--c') || '#fff'; w.className = 'wipe'; w.style.background = col.trim() || '#fff'; document.body.append(w);
+    w.animate([{ clipPath: `circle(0px at ${e.clientX}px ${e.clientY}px)` }, { clipPath: `circle(${Math.hypot(innerWidth, innerHeight) + 40}px at ${e.clientX}px ${e.clientY}px)` }], { duration: 720, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
+    setTimeout(() => { location.href = a.href; }, 640); }));
+  addEventListener('pageshow', e => { if (e.persisted) document.querySelectorAll('.wipe').forEach(w => w.remove()); });
+  let idleT = 0, anim = 0, settled = 0; const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const cancel = () => { cancelAnimationFrame(anim); anim = 0; };
+  ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(ev => addEventListener(ev, cancel, { passive: true }));
+  addEventListener('scroll', () => { if (anim || LY.stack || menuEl.classList.contains('on')) return; clearTimeout(idleT); idleT = setTimeout(() => {
+    const H = vh(), pos = scrollY / H, dl = pos - settled; let tgt = Math.abs(dl) > 1.25 ? Math.round(pos) : (Math.abs(dl) > .05 ? settled + Math.sign(dl) : settled); tgt = clamp(tgt, 0, NS - 1);
+    const from = scrollY, to = tgt * H; settled = tgt; if (Math.abs(to - from) < 2) return; const t0 = performance.now(), dur = 700 + Math.min(500, Math.abs(to - from) / H * 160);
+    const step = now => { const k = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ease(k)); if (k < 1) anim = requestAnimationFrame(step); else anim = 0; }; anim = requestAnimationFrame(step); }, 140); }, { passive: true });
+}
