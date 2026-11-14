@@ -180,13 +180,15 @@ audInit(); (document.fonts && document.fonts.ready || Promise.resolve()).then(au
 const ptr = { x: innerWidth * .62, y: innerHeight * .46, tx: innerWidth * .62, ty: innerHeight * .46, last: 0, touch: MOBILE };
 addEventListener('pointermove', e => { ptr.tx = e.clientX; ptr.ty = e.clientY; ptr.last = performance.now(); if (e.pointerType === 'touch') ptr.touch = true; else ptr.touch = false; }, { passive: true });
 addEventListener('pointerdown', e => { ptr.tx = e.clientX; ptr.ty = e.clientY; ptr.last = performance.now(); }, { passive: true });
-const topEl = $('top'), ht = $('ht'), base = ht.querySelector('.big'), alt = $('alt'), clock = new THREE.Clock(); let fa = 0, fn = 0, first = true, sy = 0, lensOn = 0, Rcur = 0; const eye = { a: 0, b: 0, w: 1, want: 0, gx: 0, gy: 0 }, cardEls = [...document.querySelectorAll('#cards .card')];
+const topEl = $('top'), ht = $('ht'), base = ht.querySelector('.big'), alt = $('alt'), clock = new THREE.Clock(); let fa = 0, fn = 0, first = true, sy = 0, lensOn = 0, Rcur = 0; const wan = { x: innerWidth * .6, y: innerHeight * .45, next: 0 }; const eye = { a: 0, b: 0, w: 1, want: 0, gx: 0, gy: 0 }, cardEls = [...document.querySelectorAll('#cards .card')];
 function frame() {
   const dt = Math.min(clock.getDelta(), .05), now = performance.now(), T = !isNaN(TFIX) ? TFIX : (RM ? 0 : clock.elapsedTime);
   if (renderer && !first) { fa += dt; fn++; if (fn >= 40) { const av = fa / fn; if (av > .027 && PR > .6) { PR = Math.max(.6, PR * .82); renderer.setPixelRatio(PR); fit(); } else if (av < .019 && PR < PRMAX) { PR = Math.min(PRMAX, PR * 1.1); renderer.setPixelRatio(PR); fit(); } fa = 0; fn = 0; } }
   /* on a phone the lens drifts on its own until a finger moves it */
   const idle = now - ptr.last > 2600;
-  if (ptr.touch && idle) { ptr.tx = innerWidth * (.5 + .3 * Math.sin(T * .32)); ptr.ty = innerHeight * (.46 + .2 * Math.cos(T * .27 + 1)); }
+  if (ptr.touch && idle) { if (now > wan.next) { wan.next = now + 2400 + Math.random() * 2400; const ir = audVis ? document.querySelector('.idea-in').getBoundingClientRect() : null;
+      for (let k = 0; k < 8; k++) { const x = innerWidth * (.12 + .76 * Math.random()), y = innerHeight * (.2 + .62 * Math.random()); wan.x = x; wan.y = y; if (!ir || !(x > ir.left - 70 && x < ir.right + 70 && y > ir.top - 70 && y < ir.bottom + 70)) break; } }
+    ptr.tx = wan.x; ptr.ty = wan.y; }
   let dockRect = null; { let hc0 = hoverCard; if (touchOnly) { const oi = [...document.querySelectorAll('#cards .card')].findIndex(c => c.classList.contains('open')); if (oi >= 0) hc0 = oi; }
     if (hc0 >= 0) { dockRect = document.querySelectorAll('#cards .card')[hc0].getBoundingClientRect(); ptr.tx = dockRect.left + dockRect.width / 2; ptr.ty = dockRect.top + dockRect.height * .27; ptr.last = now; } }
   ptr.x += (ptr.tx - ptr.x) * Math.min(1, dt * 7); ptr.y += (ptr.ty - ptr.y) * Math.min(1, dt * 7);
