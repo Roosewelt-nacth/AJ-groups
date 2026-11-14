@@ -1,0 +1,3 @@
+Universal Animation Library [Standard] (UAL1_Standard.glb: rigged mannequin and 43 animations)
+By Quaternius. Source: https://quaternius.itch.io/universal-animation-library
+Licence: CC0 1.0 Universal (public domain dedication), per the licence file in the pack.

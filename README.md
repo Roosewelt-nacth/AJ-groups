@@ -113,3 +113,7 @@ Libraries load from jsDelivr at fixed versions (GSAP 3.13.0, PhotoSwipe 5.4.4, E
 ## Accessibility and motion
 
 Visitors with "reduce motion" turned on get a calm version: no intro, smooth scrolling, scroll effects or page veil. The photo that follows the pointer on the houses page only turns on for mouse or trackpad users. The gallery viewer works with arrow keys, Escape and swipes.
+
+## AJ GROUPS page (final version 1)
+
+The AJ GROUPS hero page lives in `aj-groups/` (open `aj-groups/index.html`): one glass orb that morphs into each business as you scroll on a laptop, or swipe on a phone. It follows the system light or dark theme and has a theme switch. The earlier design experiments are kept in `proto/3d/`. Each brand page (Alven Studio next) gets its own design.

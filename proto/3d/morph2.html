@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AJ GROUPS · One object (prototype 2)</title>
+<meta name="description" content="Prototype: one sculpted object that becomes each of the group's businesses.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{--ink:#eef1f8;--mute:#a9b2c8;--line:rgba(255,255,255,.16);--pad:clamp(22px,6vw,84px)}
+html,body{margin:0;background:#04081a;color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
+#c{position:fixed;inset:0;width:100vw;height:100vh;height:100svh;display:block;z-index:0}
+body::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 66% 50%,rgba(0,0,0,0) 48%,rgba(2,4,12,.7) 100%)}
+.top{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:18px var(--pad)}
+.mark{font-size:13px;font-weight:700;letter-spacing:.22em;color:var(--ink);text-decoration:none}
+.cta{font-size:13px;color:var(--ink);text-decoration:none;padding:10px 18px;border:1px solid var(--line);border-radius:999px;background:rgba(8,12,28,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);min-height:40px;display:inline-flex;align-items:center}
+.stop{position:fixed;z-index:3;left:var(--pad);top:50%;width:min(40vw,520px);transform:translateY(-50%);opacity:var(--o,0);pointer-events:none;visibility:hidden}
+.stop.cur{visibility:visible;pointer-events:auto}
+.eyebrow{display:flex;gap:12px;margin:0 0 16px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.eyebrow b{margin-left:auto;font-weight:400;font-variant-numeric:tabular-nums}
+h1,h2{margin:0 0 14px;font-weight:700;letter-spacing:-.03em;line-height:1.02;font-size:clamp(36px,5vw,78px)}
+.line{margin:0 0 24px;color:var(--mute);font-size:clamp(15px,1.3vw,19px);line-height:1.55;max-width:40ch}
+.enter{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 22px;border-radius:999px;background:#fff;color:#0a0d1a;text-decoration:none;font-weight:600;font-size:14px}
+.cue{position:fixed;left:var(--pad);bottom:28px;z-index:3;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mute);transition:opacity .6s}
+.dots{position:fixed;right:max(14px,2.4vw);top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;gap:6px}
+.dots button{width:30px;height:22px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.dots button::after{content:"";width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35);transition:all .25s}
+.dots button[aria-current="step"]::after{background:#fff;box-shadow:0 0 0 5px rgba(255,255,255,.16)}
+.spacer{height:calc(var(--n) * 100svh)}
+a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:8px}
+@media (max-width:760px){
+ .stop{left:0;right:0;top:auto;bottom:0;width:auto;transform:none;padding:34px 22px calc(20px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(4,8,22,.96) 70%,rgba(4,8,22,0))}
+ h1,h2{font-size:clamp(30px,9vw,42px)}
+ .line{font-size:14px;margin-bottom:14px}
+ .cue{display:none}
+}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
+</head>
+<body>
+<canvas id="c" aria-hidden="true"></canvas>
+<header class="top"><a class="mark" href="./">AJ GROUPS</a><a class="cta" href="#contact">Talk to us</a></header>
+<nav class="dots" id="dots" aria-label="Stops"></nav>
+<p class="cue" id="cue">Scroll</p>
+
+<main>
+  <article class="stop" data-i="0"><p class="eyebrow"><span>AJ GROUPS</span><b>01 / 03</b></p>
+    <h1>Six businesses. <em>One discipline.</em></h1><p class="line">A group of working companies, built and led by Allwyn. Keep scrolling and watch what it becomes.</p></article>
+  <article class="stop" data-i="1"><p class="eyebrow"><span>House of Fovo</span><b>02 / 03</b></p>
+    <h2>Photography, <em>seen properly.</em></h2><p class="line">Portraits, events and commercial work, shot with patience and a good eye.</p><a class="enter" href="#fovo">Enter House of Fovo →</a></article>
+  <article class="stop" data-i="2"><p class="eyebrow"><span>Bun Bun Bakes</span><b>03 / 03</b></p>
+    <h2>Baked fresh, <em>every morning.</em></h2><p class="line">Bread, cakes and bakes, made to order and served warm.</p><a class="enter" href="#bun">Enter Bun Bun Bakes →</a></article>
+</main>
+<div class="spacer" id="spacer" aria-hidden="true"></div>
+<script type="module" src="morph2.js"></script>
+</body>
+</html>

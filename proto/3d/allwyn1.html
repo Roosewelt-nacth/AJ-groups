@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AJ GROUPS · Allwyn (character prototype)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0d0d0d;color:#f3f0ea;font-family:Inter,system-ui,sans-serif;overflow:hidden}
+#c{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+.hd{position:fixed;left:32px;top:28px;z-index:2}
+.hd h1{margin:0;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:44px;letter-spacing:-.01em}
+.hd p{margin:6px 0 0;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#a9a8a4}
+.bar{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:2;display:flex;gap:8px;padding:6px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(14,14,14,.7);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.bar button{font:inherit;font-size:12px;color:#f3f0ea;background:none;border:0;padding:9px 16px;border-radius:999px;cursor:pointer}
+.bar button[aria-pressed="true"]{background:#f3f0ea;color:#0d0d0d}
+.hint{position:fixed;right:32px;bottom:34px;z-index:2;font-size:11px;color:#a9a8a4;letter-spacing:.06em}
+@media (max-width:760px){.hd{left:18px;top:18px}.hd h1{font-size:34px}.hint{display:none}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="hd"><h1>Allwyn</h1><p>Character · traveller · explorer</p></div>
+<div class="bar" id="bar"><button data-v="front" aria-pressed="true">Front</button><button data-v="side" aria-pressed="false">Side</button><button data-v="back" aria-pressed="false">Back</button><button data-v="orbit" aria-pressed="false">Turn</button></div>
+<div class="hint">Drag to turn · Scroll to zoom</div>
+<script type="module" src="allwyn1.js"></script>
+</body>
+</html>

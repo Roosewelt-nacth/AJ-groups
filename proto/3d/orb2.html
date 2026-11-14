@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AJ GROUPS · One orb, six businesses (light and dark)</title>
+<meta name="description" content="AJ GROUPS: one glass orb that becomes each of the group's six businesses as you scroll.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{--ink:#ffffff;--mute:rgba(255,255,255,.78);--line:rgba(255,255,255,.28);--pill:rgba(255,255,255,.14);--btn:#0e1730;--btnink:#fff;--pad:clamp(22px,4.2vw,64px)}
+html,body{margin:0;background:#9fb0ba;color:var(--ink);font-family:Inter,system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
+em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
+#c{position:fixed;inset:0;width:100vw;height:100vh;height:100svh;display:block;z-index:0}
+.grid{position:fixed;inset:0;z-index:1;pointer-events:none}
+.grid i{position:absolute;background:var(--line);opacity:.8}
+.grid .v1{left:50%;top:0;bottom:0;width:1px}.grid .h1{top:50%;left:0;right:0;height:1px}
+.top{position:fixed;top:0;left:0;right:0;z-index:6;display:flex;align-items:flex-start;justify-content:space-between;padding:22px var(--pad);transition:opacity 1s}
+.mark{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:400;letter-spacing:-.02em;font-size:var(--ms,46px);line-height:1;transition:font-size .6s cubic-bezier(.2,.7,.2,1)}
+.mark i{width:.62em;height:.62em;border:1.5px solid currentColor;border-radius:.2em;display:grid;place-items:center;font-style:normal;font-size:.2em;letter-spacing:0;font-weight:500}
+.right{display:flex;align-items:center;gap:22px}.nav{display:flex;gap:26px;font-size:12px;color:var(--mute)}
+.theme{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:background .3s,transform .3s}.theme:hover{background:var(--line);transform:rotate(18deg)}
+.theme svg{grid-area:1/1;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:opacity .35s,transform .5s}
+:root[data-theme="light"] .theme .moon,:root[data-theme="dark"] .theme .sun{opacity:0;transform:rotate(-60deg) scale(.5)}
+.cursor{position:fixed;left:-14px;top:-14px;width:28px;height:28px;border:1px solid var(--ink);border-radius:50%;z-index:30;pointer-events:none;opacity:0;transition:opacity .4s}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
+.w>span{display:inline-block;transform:translateY(112%);transition:transform 1s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--k) * 70ms)}
+.stop.cur .w>span{transform:none}
+.stop .tag,.stop .line,.stop .enter,.stop .lead{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.stop.cur .tag{opacity:1;transform:none;transition-delay:.05s}.stop.cur .line,.stop.cur .lead{opacity:1;transform:none;transition-delay:.35s}.stop.cur .enter{opacity:1;transform:none;transition-delay:.5s}
+.enter:hover{box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.form h3{white-space:nowrap}.form input,.form textarea{min-width:0}.form button{white-space:nowrap}
+.nav a{color:inherit;text-decoration:none}.nav a:hover{color:var(--ink)}
+.stop{position:fixed;z-index:4;left:var(--pad);top:50%;width:min(40vw,560px);transform:translateY(-50%);opacity:var(--o,0);pointer-events:none;visibility:hidden}
+.stop.cur{visibility:visible;pointer-events:auto}
+.stop[data-i="0"]{top:auto;bottom:16vh;transform:none;width:min(26ch,40vw)}
+.stop[data-i="1"]{left:0;right:0;width:auto;text-align:center;top:50%;padding:0 var(--pad)}
+.stop[data-i="1"] .line{margin-inline:auto}
+.tag{margin:0 0 18px;font-size:12px;color:var(--mute);display:inline-flex;align-items:center;gap:9px;letter-spacing:.02em}
+.tag i{width:7px;height:7px;border-radius:50%;background:var(--c,#fff)}
+h1,h2{margin:0 0 20px;font-weight:300;letter-spacing:-.04em;line-height:1.02;font-size:clamp(42px,6.2vw,104px)}
+h1 em,h2 em{letter-spacing:-.015em}
+.lead{font-size:clamp(14px,1.15vw,17px);line-height:1.55;color:var(--ink)}
+.line{margin:0 0 26px;color:var(--mute);font-size:clamp(13px,1.05vw,16px);line-height:1.65;max-width:38ch}
+.enter{display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 20px;border-radius:999px;background:var(--btn);color:var(--btnink);text-decoration:none;font-size:13px;font-weight:400}
+.dots{position:fixed;right:max(16px,2vw);top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:2px}
+.dots button{width:28px;height:18px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.dots button::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--ink);opacity:.35;transition:all .25s}
+.dots button[aria-current="step"]::after{opacity:1;box-shadow:0 0 0 4px var(--line)}
+.cue{position:fixed;right:var(--pad);bottom:26px;z-index:5;font-size:12px;color:var(--mute);transition:opacity .6s}
+.form{position:fixed;z-index:5;left:67vw;top:50%;width:min(60vh,440px);height:min(60vh,440px);overflow:hidden;transform:translate(-50%,-50%);border-radius:50%;background:rgba(255,255,255,.94);color:#0e1730;box-shadow:0 30px 90px rgba(14,23,48,.25);display:grid;place-content:center;gap:10px;padding:14% 16%;opacity:0;pointer-events:none;transition:opacity .5s}
+.form.on{opacity:1;pointer-events:auto}
+.form h3{margin:0 0 4px;text-align:center;font-weight:500;font-size:21px;letter-spacing:-.02em}.form h3 em{font-size:1.1em}
+.form input,.form textarea{font:inherit;font-weight:400;font-size:13px;color:#0e1730;padding:11px 14px;border:1px solid rgba(14,23,48,.16);border-radius:12px;background:#fff;width:100%;outline:none}
+.form textarea{height:54px;resize:none}.form button{font:inherit;font-weight:500;font-size:13px;color:#fff;background:#0e1730;border:0;border-radius:999px;padding:12px;cursor:pointer}
+.load{position:fixed;inset:0;z-index:20;background:#586573;display:grid;place-items:center;transition:opacity .9s .15s}
+.load.done{opacity:0;pointer-events:none}
+.ring{position:relative;width:150px;height:150px;display:grid;place-items:center;color:#fff}
+.ring svg{position:absolute;inset:0}.ring b{font-weight:300;font-size:21px;font-variant-numeric:tabular-nums}
+.spacer{height:calc(var(--n) * 100svh)}
+.fade{position:fixed;inset:0;z-index:7;background:#9fb0ba;opacity:0;pointer-events:none;transition:opacity .35s}.fade.on{opacity:1}
+a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:8px}
+@media (max-width:760px){
+ .top{padding:18px}.nav{display:none}.mark{font-size:var(--msm,30px)}
+ .stop,.stop[data-i="0"],.stop[data-i="1"]{left:0;right:0;top:auto;bottom:0;width:auto;transform:none;text-align:left;padding:34px 22px calc(24px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--sheet,rgba(60,75,90,.9)) 68%,transparent)}
+ .stop[data-i="1"] .line{margin-inline:0}.cue{display:none}
+ h1,h2{font-size:clamp(34px,11vw,48px);margin-bottom:10px}.line{font-size:14px;margin-bottom:14px}
+ .form{left:50%;top:36%;width:min(78vw,330px);height:min(78vw,330px)}.dots{right:2px}
+}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
+</head>
+<body>
+<canvas id="c" aria-hidden="true"></canvas>
+<div class="grid" aria-hidden="true"><i class="v1"></i><i class="h1"></i></div>
+<div class="load" id="load"><div class="ring"><svg viewBox="0 0 150 150" aria-hidden="true"><g id="ticks" stroke="rgba(255,255,255,.4)" stroke-width="1.4"></g><circle cx="75" cy="75" r="60" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.5"/><circle id="arc" cx="75" cy="75" r="60" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" transform="rotate(-90 75 75)" stroke-dasharray="377" stroke-dashoffset="377"/></svg><b id="lpct">0%</b></div></div>
+<div class="fade" id="fade"></div>
+<header class="top" id="top"><a class="mark" id="mark" href="./"><i>AJ</i>AJ Groups</a><div class="right"><nav class="nav" aria-label="Main"><a href="#ventures">ventures</a><a href="#founder">founder</a><a href="#about">our story</a><a href="#contact">contact</a></nav><button class="theme" id="theme" type="button" aria-label="Switch between light and dark theme"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg></button></div></header><div class="cursor" id="cursor" aria-hidden="true"></div>
+<nav class="dots" id="dots" aria-label="Chapters"></nav>
+<div class="cue" id="cue">↓ Scroll <span style="opacity:.6">down</span></div>
+<main>
+  <article class="stop" data-i="0"><p class="lead">A group of working companies, built and led by Allwyn.</p></article>
+  <article class="stop" data-i="1"><h1>Six businesses,<br><em>one discipline</em></h1><p class="line">Marketing, photography, clothing, software, baking and children’s stories, built to the same standard.</p></article>
+  <article class="stop" data-i="2" data-c="#5fe0cd"><p class="tag"><i></i>Alven Studio</p><h2>Ideas that <em>get seen</em></h2><p class="line">Strategy, social and advertising that make your brand easy to find.</p><a class="enter" href="#alven">Enter Alven Studio →</a></article>
+  <article class="stop" data-i="3" data-c="#dfe7ff"><p class="tag"><i></i>House of Fovo</p><h2>Photography, <em>seen properly</em></h2><p class="line">Portraits, events and commercial work, shot with patience and a good eye.</p><a class="enter" href="#fovo">Enter House of Fovo →</a></article>
+  <article class="stop" data-i="4" data-c="#e9a24a"><p class="tag"><i></i>Clothing</p><h2>Cut by hand, <em>finished by eye</em></h2><p class="line">Tailored pieces and seasonal collections, fitted to the person who wears them.</p><a class="enter" href="#wear">Enter the atelier →</a></article>
+  <article class="stop" data-i="5" data-c="#a58bff"><p class="tag"><i></i>AJ Softwares</p><h2>Built carefully, <em>shipped steadily</em></h2><p class="line">Websites, apps and custom software that work when you need them to.</p><a class="enter" href="#soft">Enter AJ Softwares →</a></article>
+  <article class="stop" data-i="6" data-c="#f08a4f"><p class="tag"><i></i>Bun Bun Bakes</p><h2>Baked fresh, <em>every morning</em></h2><p class="line">Bread, cakes and bakes, made to order and served warm.</p><a class="enter" href="#bun">Enter Bun Bun Bakes →</a></article>
+  <article class="stop" data-i="7" data-c="#ef6f8d"><p class="tag"><i></i>AJ Little World</p><h2>Stories worth <em>sitting still for</em></h2><p class="line">Stories, learning videos and play, made for children and tried out with them.</p><a class="enter" href="#kids">Enter Little World →</a></article>
+  <article class="stop" data-i="8" data-c="#9fd0ff"><p class="tag"><i></i>Contact us</p><h2>How can <em>we help?</em></h2><p class="line">Tell us what you are building. We reply within a working day. <span style="opacity:.7">(placeholder form)</span></p></article>
+</main>
+<form class="form" id="form" onsubmit="return false"><h3>Talk <em>to us</em></h3><input placeholder="Name" aria-label="Name"><input type="email" placeholder="E-mail" aria-label="E-mail"><textarea placeholder="Message" aria-label="Message"></textarea><button type="submit">Send message</button></form>
+<div class="spacer" aria-hidden="true"></div>
+<script type="module" src="orb2.js"></script>
+</body>
+</html>

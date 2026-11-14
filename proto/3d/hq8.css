@@ -1,0 +1,113 @@
+*{box-sizing:border-box}
+:root{--bg:#050506;--ink:#f1f1f4;--mute:#b4b4bd;--line:rgba(255,255,255,.16);--c:#2de2c8;--pad:clamp(20px,5vw,72px)}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
+
+/* ---- always-on chrome ---- */
+.top{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:16px var(--pad)}
+.mark{font-size:13px;font-weight:700;letter-spacing:.22em;text-decoration:none}
+.cta{font-size:13px;text-decoration:none;padding:10px 18px;border:1px solid var(--line);border-radius:999px;background:rgba(10,10,14,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);min-height:40px;display:inline-flex;align-items:center}
+.cta:hover{border-color:rgba(255,255,255,.5)}
+a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:8px}
+
+/* ---- the tour as plain content (no 3D / no JS): stacked, readable cards ---- */
+.tour{display:grid;gap:14px;padding:84px var(--pad) 56px;max-width:760px;margin:0 auto}
+.stop{border:1px solid var(--line);border-radius:18px;padding:22px;background:rgba(255,255,255,.03)}
+.eyebrow{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.eyebrow .dot{width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c);flex:none}
+.eyebrow .step{margin-left:auto;font-variant-numeric:tabular-nums}
+h1,h2{margin:0 0 12px;font-weight:700;letter-spacing:-.025em;line-height:1.04;font-size:clamp(32px,4.4vw,60px)}
+h1{font-size:clamp(38px,5.4vw,76px)}
+h1 em,h2 em{font-weight:400;letter-spacing:-.01em}
+.line{margin:0 0 18px;color:var(--mute);font-size:clamp(15px,1.25vw,18px);line-height:1.55;max-width:44ch}
+.line.quote{color:var(--ink);font-size:clamp(16px,1.4vw,20px);font-style:italic}
+.flow{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:8px}
+.flow li{display:grid;grid-template-columns:92px 1fr;gap:12px;align-items:baseline;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font-size:14px;transition:border-color .3s,background .3s}
+.flow b{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.flow li.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent)}
+.flow li.on b{color:var(--ink)}
+.now{display:flex;gap:10px;align-items:baseline;margin:0 0 18px;font-size:14px}
+.now b{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:600;flex:none}
+.now b::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#3ddc84;margin-right:7px;animation:live 1.6s ease-in-out infinite}
+@keyframes live{50%{opacity:.3}}
+.enter{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 22px;border-radius:999px;background:#fff;color:#0a0a0d;text-decoration:none;font-weight:600;font-size:14px}
+.enter:hover i{transform:translateX(3px)}
+.enter i{font-style:normal;transition:transform .2s}
+.sig{margin:0 0 20px;display:grid;gap:2px}
+.signature{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:44px;line-height:1}
+.sig small{color:var(--mute);font-size:12px;letter-spacing:.06em}
+.scrollcue{margin:20px 0 0;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mute)}
+.ns{padding:16px var(--pad);color:var(--mute)}
+.dots,.load,.tip,.spacer{display:none}
+
+/* ---- 3D mode: each article becomes one stop of the camera tour ---- */
+body.on{overflow-x:hidden}
+body.on #c{position:fixed;inset:0;width:100vw;height:100vh;height:100svh;display:block;z-index:0;opacity:0;transition:opacity .9s}
+body.on.ready #c{opacity:1}
+body.on .spacer{display:block;height:calc(var(--n) * 100svh)}
+body.on .tour{position:static;display:block;padding:0;max-width:none;margin:0}
+body.on .stop{position:fixed;z-index:3;left:var(--pad);top:50%;width:min(36vw,470px);transform:translateY(calc(-50% + var(--ty,0px)));border:0;border-radius:0;padding:0;background:none;opacity:var(--o,0);pointer-events:none;visibility:hidden}
+body.on .stop.cur{pointer-events:auto;visibility:visible}
+body.on .stop[data-room="intro"]{width:min(46vw,640px)}
+body.on::before{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;background:linear-gradient(to right,rgba(5,5,6,.92) 0,rgba(5,5,6,.78) 26%,rgba(5,5,6,0) 52%)}
+body.on .top{background:linear-gradient(to bottom,rgba(5,5,6,.75),transparent)}
+.stop .dot{background:var(--c)}
+body.on .load{display:block;position:fixed;left:0;right:0;top:0;height:2px;z-index:9;background:transparent;transition:opacity .5s}
+body.on .load span{display:block;height:100%;width:30%;background:#fff;animation:ld 1.2s ease-in-out infinite}
+@keyframes ld{0%{margin-left:-30%}100%{margin-left:100%}}
+body.on.ready .load{opacity:0}
+body.on .dots{display:flex;flex-direction:column;gap:6px;position:fixed;right:max(14px,2vw);top:50%;transform:translateY(-50%);z-index:5}
+body.on .dots button{width:30px;height:22px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+body.on .dots button::after{content:"";width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35);transition:all .25s}
+body.on .dots button[aria-current="step"]::after{height:7px;width:7px;background:#fff;box-shadow:0 0 0 5px rgba(255,255,255,.18)}
+body.on .tip{display:block;position:fixed;left:0;top:0;z-index:4;padding:9px 13px;border:1px solid var(--line);border-radius:10px;background:rgba(14,14,18,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-size:13px;opacity:0;pointer-events:none;transition:opacity .15s;white-space:nowrap}
+body.on .tip.show{opacity:1}
+body.on .tip i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px}
+body.on .tip small{display:block;color:var(--mute);margin-top:2px}
+
+/* ---- phones: floor on top, the stop's text as a sheet at the bottom ---- */
+@media (max-width:760px){
+  body.on::before{background:none}
+  .top{padding:12px 16px}
+  body.on .stop,body.on .stop[data-room="intro"]{left:0;right:0;top:auto;bottom:0;width:auto;transform:translateY(var(--ty,0px));padding:30px 20px calc(18px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(5,5,6,.97) 72%,rgba(5,5,6,0))}
+  body.on .eyebrow{margin-bottom:10px}
+  body.on h1,body.on h2{font-size:clamp(28px,8.6vw,38px);margin-bottom:8px}
+  body.on .line{font-size:14px;margin-bottom:12px}
+  body.on .flow{margin-bottom:12px;gap:6px}
+  body.on .flow li{padding:7px 10px;grid-template-columns:78px 1fr;font-size:13px}
+  body.on .now{margin-bottom:12px;font-size:13px}
+  body.on .scrollcue{margin-top:8px}
+  body.on .dots{right:4px}
+  body.on .dots button{width:24px;height:18px}
+}
+@media (prefers-reduced-motion:reduce){body.on .load span{animation:none;width:100%}.now b::before{animation:none}}
+
+/* cinematic vignette */
+body.on::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 62% 52%,rgba(0,0,0,0) 52%,rgba(2,3,10,.6) 100%)}
+
+/* refined: deeper vignette and a trace of film grain */
+body.on::after{background:radial-gradient(ellipse at 62% 52%,rgba(0,0,0,0) 48%,rgba(2,3,8,.72) 100%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");background-blend-mode:normal,soft-light;opacity:1}
+
+/* ---- film layer: designed opening, room-to-room sweep, speech bubble, work viewer ---- */
+body.on:not(.hello) .stop[data-room="intro"]{visibility:hidden!important}
+body.on:not(.hello) .top,body.on:not(.hello) .dots{opacity:0}
+body.on .top,body.on .dots{transition:opacity 1.2s .2s}
+body.on .stop[data-room="intro"] h1,body.on .stop[data-room="intro"] .line,body.on .stop[data-room="intro"] .eyebrow,body.on .stop[data-room="intro"] .scrollcue{opacity:0;transform:translateY(18px);transition:opacity 1.1s,transform 1.1s}
+body.on.hello .stop[data-room="intro"] .eyebrow{opacity:1;transform:none;transition-delay:.1s}
+body.on.hello .stop[data-room="intro"] h1{opacity:1;transform:none;transition-delay:.35s}
+body.on.hello .stop[data-room="intro"] .line{opacity:1;transform:none;transition-delay:.75s}
+body.on.hello .stop[data-room="intro"] .scrollcue{opacity:1;transform:none;transition-delay:1.2s}
+.sweep{position:fixed;inset:0;z-index:4;pointer-events:none;opacity:0;transform:translateX(-110%);background:linear-gradient(100deg,transparent 0,color-mix(in srgb,var(--c,#fff) 30%,transparent) 46%,color-mix(in srgb,var(--c,#fff) 12%,transparent) 54%,transparent 100%);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.sweep.go{animation:swp 1.1s cubic-bezier(.65,0,.3,1)}
+@keyframes swp{0%{opacity:1;transform:translateX(-110%)}85%{opacity:1}100%{opacity:0;transform:translateX(110%)}}
+.bubble{position:fixed;left:0;top:0;z-index:6;max-width:230px;padding:10px 14px;border-radius:14px;background:rgba(244,242,236,.97);color:#14161c;font-size:13px;line-height:1.4;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;transform:translate(-50%,-100%) translateY(6px);transition:opacity .2s,transform .2s}
+.bubble.on{opacity:1;transform:translate(-50%,-100%)}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:12px;background:inherit;transform:translateX(-50%) rotate(45deg)}
+.bubble small{display:block;margin-bottom:3px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6a6f7b}
+.work{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(4,5,9,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.work[hidden]{display:none}
+.work img{max-width:min(88vw,900px);max-height:74vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.work p{margin:0;color:#b9bcc6;font-size:13px;letter-spacing:.06em}
+.work button{position:absolute;top:18px;right:22px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(10,10,14,.7);color:#fff;font-size:24px;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.sweep.go{animation:none}}
