@@ -200,7 +200,7 @@ function frame() {
     const ink = lightNow > .5 ? .55 : 1, c2 = curPal[1].map(v => Math.round(clamp(v * ink) * 255)), c3 = curPal[2].map(v => Math.round(clamp(v * (lightNow > .5 ? .78 : 1)) * 255));
     root.style.setProperty('--teal', `rgb(${c2})`); root.style.setProperty('--acc', `rgb(${c3})`); U.uHue.value = 1.1; }
   { let hc = hoverCard; if (touchOnly) { const oi = cardEls.findIndex(c => c.classList.contains('open')); if (oi >= 0) hc = oi; }
-    const want = hc >= 0 ? hc + 1 : [0, 7, 0, 7, 0][clamp(Math.round(secP), 0, 4)];
+    const want = 0;   /* the orb keeps one shape: the sphere */
     if (want !== eye.want) { eye.want = want; eye.a = eye.w > .5 ? eye.b : eye.a; eye.b = want; eye.w = 0; }
     eye.w = Math.min(1, eye.w + dt * 2.2); const sw = sst(0, 1, eye.w); U.uSA.value = eye.a; U.uSB.value = eye.b; U.uSW.value = sw; U.uSph.value = (eye.a === 0 ? 1 - sw : 0) + (eye.b === 0 ? sw : 0);
     eye.gx += (clamp((ptr.tx - ptr.x) / 160, -1, 1) - eye.gx) * Math.min(1, dt * 4); eye.gy += (clamp(-(ptr.ty - ptr.y) / 160, -1, 1) - eye.gy) * Math.min(1, dt * 4); U.uGaze.value.set(eye.gx, eye.gy); }
@@ -208,8 +208,8 @@ function frame() {
   U.uM.value.set(ptr.x * pr, (H - ptr.y) * pr); U.uR.value = R * pr; U.uOn.value = lensOn;
   /* the second headline shows only inside the lens, and only while the hero is on screen */
   const hr = ht.getBoundingClientRect(), vis = hr.bottom > 0 && hr.top < H, ar = alt.getBoundingClientRect(), br = base.getBoundingClientRect(), RR = (R * .985 * U.uSph.value).toFixed(1);
-  { const m = vis ? `radial-gradient(circle ${RR}px at ${(ptr.x - br.left).toFixed(1)}px ${(ptr.y - br.top).toFixed(1)}px, transparent ${(R * .97 * U.uSph.value).toFixed(1)}px, #000 ${RR}px)` : 'none'; base.style.webkitMaskImage = m; base.style.maskImage = m; }
-  alt.style.clipPath = vis ? `circle(${RR}px at ${(ptr.x - ar.left).toFixed(1)}px ${(ptr.y - ar.top).toFixed(1)}px)` : 'circle(0 at 0 0)';
+  { const m = vis && R * U.uSph.value > 8 ? `radial-gradient(circle ${RR}px at ${(ptr.x - br.left).toFixed(1)}px ${(ptr.y - br.top).toFixed(1)}px, transparent ${(R * .97 * U.uSph.value).toFixed(1)}px, #000 ${RR}px)` : 'none'; base.style.webkitMaskImage = m; base.style.maskImage = m; }
+  alt.style.clipPath = vis && R * U.uSph.value > 8 ? `circle(${RR}px at ${(ptr.x - ar.left).toFixed(1)}px ${(ptr.y - ar.top).toFixed(1)}px)` : 'circle(0 at 0 0)';
   if (audVis) drawAud(T, ptr.x, ptr.y, lightNow > .5, curPal[1].map(v => Math.round(clamp(v * (lightNow > .5 ? .55 : 1)) * 255)));
   topEl.classList.toggle('sc', scrollY > 40);
   /* the nav shows where you are */
