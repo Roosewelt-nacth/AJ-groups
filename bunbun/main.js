@@ -129,23 +129,24 @@ function rosette(mat, s = 1) {
   const pts = Array.from({ length: 64 }, (_, i) => { const u = i / 63, a = u * Math.PI * 2 * 2.6, r = .095 * (1 - u * .86); return new THREE.Vector3(Math.cos(a) * r, .02 + u * .085, Math.sin(a) * r); });
   const g = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 90, .034, 10), mat); g.scale.setScalar(s); return g;
 }
-function build() {
-  if (!renderer) return;
-  while (cakeG.children.length) { const o = cakeG.children.pop(); o.traverse((n) => { if (n.isMesh && n.geometry && !Object.values(G).includes(n.geometry)) n.geometry.dispose(); if (n.material) { const ms = Array.isArray(n.material) ? n.material : [n.material]; ms.forEach((m) => { if (m.map && !Object.values(T).includes(m.map)) m.map.dispose(); m.dispose(); }); } }); }
-  flames.length = 0; topper = null; rnd(); let seed = 7;
-  const sponge = FL[S.flavour][1], fro = FR[S.frost][1], dripC = DR[S.drip][1];
+function build(target, state) {
+  if (!renderer) return; const vis = !target, CG = target || cakeG, ST = state || S, add = (mesh, parent = CG, cast = true) => { mesh.castShadow = cast; mesh.receiveShadow = true; parent.add(mesh); return mesh; };
+  let topDiscL = null, topYL = 0, topRL = 1;
+  while (CG.children.length) { const o = CG.children.pop(); o.traverse((n) => { if (n.isMesh && n.geometry && !Object.values(G).includes(n.geometry)) n.geometry.dispose(); if (n.material) { const ms = Array.isArray(n.material) ? n.material : [n.material]; ms.forEach((m) => { if (m.map && !Object.values(T).includes(m.map)) m.map.dispose(); m.dispose(); }); } }); }
+  if (vis) { flames.length = 0; topper = null; } rnd(); let seed = 7;
+  const sponge = FL[ST.flavour][1], fro = FR[ST.frost][1], dripC = DR[ST.drip][1];
   const frostMat = () => MP(fro, { roughness: .62, bumpMap: T.frost, bumpScale: .4, sheen: .16, sheenRoughness: .8, sheenColor: new THREE.Color('#ffffff') });
   const spongeMat = () => M(sponge, { roughness: .92, bumpMap: T.crumb, bumpScale: 1.6, map: T.crumbMap });
   /* a pedestal cake stand: foot, stem and a white plate with a thin gold rim */
-  standParts.length = 0;
-  const foot = new THREE.Mesh(new THREE.LatheGeometry([[0, 0], [.7, 0], [.76, .03], [.66, .08], [.2, .12], [0, .12]].map(([a, b]) => new THREE.Vector2(a, b)), 64), M('#f4efe6', { roughness: .35 })); add(foot); standParts.push(foot);
-  const stem = new THREE.Mesh(new THREE.CylinderGeometry(.09, .13, STAND - .12, 28), M('#f4efe6', { roughness: .35 })); stem.position.y = .12 + (STAND - .12) / 2 - .05; add(stem); standParts.push(stem);
+  if (vis) standParts.length = 0;
+  const foot = new THREE.Mesh(new THREE.LatheGeometry([[0, 0], [.7, 0], [.76, .03], [.66, .08], [.2, .12], [0, .12]].map(([a, b]) => new THREE.Vector2(a, b)), 64), M('#f4efe6', { roughness: .35 })); add(foot); if (vis) standParts.push(foot);
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(.09, .13, STAND - .12, 28), M('#f4efe6', { roughness: .35 })); stem.position.y = .12 + (STAND - .12) / 2 - .05; add(stem); if (vis) standParts.push(stem);
   const board = new THREE.Mesh(new THREE.CylinderGeometry(1.62, 1.6, .07, 96), M('#f7f3ea', { roughness: .3 })); board.position.y = STAND - .035; add(board);
-  const rimG = new THREE.Mesh(new THREE.TorusGeometry(1.62, .014, 8, 96), M('#d8b66a', { metalness: .95, roughness: .28 })); rimG.rotation.x = Math.PI / 2; rimG.position.y = STAND - .02; add(rimG, cakeG, false);
-  const R = S.tiers === 1 ? [1.12] : S.tiers === 2 ? [1.14, .78] : [1.2, .86, .56]; let y = STAND;
+  const rimG = new THREE.Mesh(new THREE.TorusGeometry(1.62, .014, 8, 96), M('#d8b66a', { metalness: .95, roughness: .28 })); rimG.rotation.x = Math.PI / 2; rimG.position.y = STAND - .02; add(rimG, CG, false);
+  const R = ST.tiers === 1 ? [1.12] : ST.tiers === 2 ? [1.14, .78] : [1.2, .86, .56]; let y = STAND;
   R.forEach((r, i) => {
     const bottom = y;
-    if (S.style === 'frosted') {
+    if (ST.style === 'frosted') {
       const hgt = .98, pts = [[0, 0], [r - .04, 0], [r - .012, .006], [r, .04], [r, hgt - .05], [r - .012, hgt - .014], [r - .05, hgt], [0, hgt]].map(([a, b]) => new THREE.Vector2(a, b));
       const body = new THREE.Mesh(new THREE.LatheGeometry(pts, 96), frostMat()); body.position.y = y; add(body); y += hgt;
       const nb = Math.round(r * 24); for (let d = 0; d < nb; d++) { const a = d / nb * Math.PI * 2, k = new THREE.Mesh(G.kiss, frostMat()); k.position.set(Math.cos(a) * (r - .02), bottom, Math.sin(a) * (r - .02)); k.scale.setScalar(.8); add(k); }
@@ -166,28 +167,28 @@ function build() {
       const nd = Math.round(r * 14); for (let d = 0; d < nd; d++) { const a = (d / nd) * Math.PI * 2 + .15 * Math.sin(d * 2.3), L = .1 + ((d * 53) % 17) / 17 * .36 + (i === 0 ? .06 : 0), w = .045 + ((d * 29) % 7) / 7 * .02;
         const dr = new THREE.Mesh(new THREE.CapsuleGeometry(w, L, 4, 10), gm); dr.position.set(Math.cos(a) * (r + .018), y - .015 - L / 2, Math.sin(a) * (r + .018)); add(dr); }
     }
-    if (i === R.length - 1) { topDisc = top; topY = y + .04; topR = r; }
+    if (i === R.length - 1) { topDiscL = top; topYL = y + .04; topRL = r; }
     y += .04;
   });
-  cakeH = y; const top = topY, rr = topR; const at = (a, rad, extra = 0) => [Math.cos(a) * rad, top + extra, Math.sin(a) * rad];
-  if (S.tops.has('strawberry')) for (let d = 0; d < 5; d++) { const a = -1.0 + d * .46, s = strawberry(.7 + ((d * 37) % 5) * .05), rad = rr * (.68 - Math.abs(d - 2) * .035); const p = at(a, rad); s.position.set(p[0], top - .012, p[2]); s.rotation.set(.24 * Math.cos(a), a * 3 + d, .24 * Math.sin(a) + (d % 2 ? .12 : -.12)); add(s, cakeG, false); }
-  if (S.tops.has('berries')) {
-    const nr = Math.round(rr * 17); for (let d = 0; d < nr; d++) { const a = d / nr * Math.PI * 2, b = dBlue(1.5 - (d % 3) * .06); b.position.set(Math.cos(a) * (rr - .16), top + .055, Math.sin(a) * (rr - .16)); b.rotation.y = d; add(b, cakeG, false); }
-    for (let d = 0; d < 16; d++) { const a = d * 2.399, rad = Math.sqrt(d / 16) * rr * .42, b = d % 6 === 5 ? dRasp(1.7) : dBlue(1.5 - (d % 4) * .08); b.position.set(Math.cos(a) * rad, top + (d % 6 === 5 ? 0 : .055) + (d > 9 ? .04 : 0), Math.sin(a) * rad); b.rotation.y = d; add(b, cakeG, false); }
-    for (let d = 0; d < 3; d++) { const l = new THREE.Mesh(G.leaf, M('#4f8a4d')); l.scale.setScalar(2.2); const a = d * 2.1; l.position.set(Math.cos(a) * rr * .5, top + .03, Math.sin(a) * rr * .5); l.rotation.y = a; add(l, cakeG, false); } }
-  if (S.tops.has('roses')) { const cols = ['#fdf6ec', '#f1cfd6', '#fbeec9']; [[.55, .05], [-.42, -.5], [.1, .62], [-.6, .3]].forEach(([fx, fz], f) => { const r = rose(cols[f % 3]); r.position.set(fx * rr, top, fz * rr); r.rotation.y = f * 1.7; add(r, cakeG, false);
-    for (let l = 0; l < 3; l++) { const lf = new THREE.Mesh(G.leaf, M('#5b8a52')); lf.scale.setScalar(1.8); const a = l * 2.1 + f; lf.position.set(fx * rr + Math.cos(a) * .15, top + .012, fz * rr + Math.sin(a) * .15); lf.rotation.y = -a; add(lf, cakeG, false); } }); }
-  if (S.tops.has('macarons')) { const cols = ['#f4b8c8', '#bccbe6', '#f6e3a8', '#cfe3c6']; for (let d = 0; d < 4; d++) { const a = d / 4 * Math.PI * 2 + .6, m = macaron(cols[d]); const p = at(a, rr * .55); m.position.set(p[0], top - .01, p[2]); m.rotation.set(.35, a, .1); add(m, cakeG, false); } }
-  if (S.tops.has('pearls')) { const pm = M('#e6c36e', { metalness: .95, roughness: .22 }); for (let d = 0; d < 16; d++) { const a = d / 16 * Math.PI * 2, rad = rr * (.85 + (d % 2) * .06); const p = new THREE.Mesh(G.pearl, pm); p.position.set(Math.cos(a) * rad, top + .03, Math.sin(a) * rad); add(p); } for (let d = 0; d < 9; d++) { const a = d * 2.3, rad = (.12 + (d % 3) * .1) * rr; const p = new THREE.Mesh(G.pearl, pm); p.scale.setScalar(.8); p.position.set(Math.cos(a) * rad + rr * .1, top + .028, Math.sin(a) * rad - rr * .1); add(p); } }
-  if (S.tops.has('sprinkles')) { const cl = ['#f2a7be', '#f6d37a', '#9fd2c3', '#a9b8e8', '#ffffff']; for (let d = 0; d < 110; d++) { const a = rnd() * 6.283, rad = Math.sqrt(rnd()) * (rr - .16); const s = new THREE.Mesh(G.spr, M(cl[d % 5], { roughness: .5 })); s.position.set(Math.cos(a) * rad, top + .012, Math.sin(a) * rad); s.rotation.set(Math.PI / 2, 0, rnd() * 6.283); add(s, cakeG, false); } }
-  if (S.candles) for (let d = 0; d < 5; d++) { const a = d / 5 * Math.PI * 2 + .2, x = Math.cos(a) * (rr * .36), z = Math.sin(a) * (rr * .36);
+  const cakeHL = y; const top = topYL, rr = topRL; const at = (a, rad, extra = 0) => [Math.cos(a) * rad, top + extra, Math.sin(a) * rad];
+  if (ST.tops.has('strawberry')) for (let d = 0; d < 5; d++) { const a = -1.0 + d * .46, s = strawberry(.7 + ((d * 37) % 5) * .05), rad = rr * (.68 - Math.abs(d - 2) * .035); const p = at(a, rad); s.position.set(p[0], top - .012, p[2]); s.rotation.set(.24 * Math.cos(a), a * 3 + d, .24 * Math.sin(a) + (d % 2 ? .12 : -.12)); add(s, CG, false); }
+  if (ST.tops.has('berries')) {
+    const nr = Math.round(rr * 17); for (let d = 0; d < nr; d++) { const a = d / nr * Math.PI * 2, b = dBlue(1.5 - (d % 3) * .06); b.position.set(Math.cos(a) * (rr - .16), top + .055, Math.sin(a) * (rr - .16)); b.rotation.y = d; add(b, CG, false); }
+    for (let d = 0; d < 16; d++) { const a = d * 2.399, rad = Math.sqrt(d / 16) * rr * .42, b = d % 6 === 5 ? dRasp(1.7) : dBlue(1.5 - (d % 4) * .08); b.position.set(Math.cos(a) * rad, top + (d % 6 === 5 ? 0 : .055) + (d > 9 ? .04 : 0), Math.sin(a) * rad); b.rotation.y = d; add(b, CG, false); }
+    for (let d = 0; d < 3; d++) { const l = new THREE.Mesh(G.leaf, M('#4f8a4d')); l.scale.setScalar(2.2); const a = d * 2.1; l.position.set(Math.cos(a) * rr * .5, top + .03, Math.sin(a) * rr * .5); l.rotation.y = a; add(l, CG, false); } }
+  if (ST.tops.has('roses')) { const cols = ['#fdf6ec', '#f1cfd6', '#fbeec9']; [[.55, .05], [-.42, -.5], [.1, .62], [-.6, .3]].forEach(([fx, fz], f) => { const r = rose(cols[f % 3]); r.position.set(fx * rr, top, fz * rr); r.rotation.y = f * 1.7; add(r, CG, false);
+    for (let l = 0; l < 3; l++) { const lf = new THREE.Mesh(G.leaf, M('#5b8a52')); lf.scale.setScalar(1.8); const a = l * 2.1 + f; lf.position.set(fx * rr + Math.cos(a) * .15, top + .012, fz * rr + Math.sin(a) * .15); lf.rotation.y = -a; add(lf, CG, false); } }); }
+  if (ST.tops.has('macarons')) { const cols = ['#f4b8c8', '#bccbe6', '#f6e3a8', '#cfe3c6']; for (let d = 0; d < 4; d++) { const a = d / 4 * Math.PI * 2 + .6, m = macaron(cols[d]); const p = at(a, rr * .55); m.position.set(p[0], top - .01, p[2]); m.rotation.set(.35, a, .1); add(m, CG, false); } }
+  if (ST.tops.has('pearls')) { const pm = M('#e6c36e', { metalness: .95, roughness: .22 }); for (let d = 0; d < 16; d++) { const a = d / 16 * Math.PI * 2, rad = rr * (.85 + (d % 2) * .06); const p = new THREE.Mesh(G.pearl, pm); p.position.set(Math.cos(a) * rad, top + .03, Math.sin(a) * rad); add(p); } for (let d = 0; d < 9; d++) { const a = d * 2.3, rad = (.12 + (d % 3) * .1) * rr; const p = new THREE.Mesh(G.pearl, pm); p.scale.setScalar(.8); p.position.set(Math.cos(a) * rad + rr * .1, top + .028, Math.sin(a) * rad - rr * .1); add(p); } }
+  if (ST.tops.has('sprinkles')) { const cl = ['#f2a7be', '#f6d37a', '#9fd2c3', '#a9b8e8', '#ffffff']; for (let d = 0; d < 110; d++) { const a = rnd() * 6.283, rad = Math.sqrt(rnd()) * (rr - .16); const s = new THREE.Mesh(G.spr, M(cl[d % 5], { roughness: .5 })); s.position.set(Math.cos(a) * rad, top + .012, Math.sin(a) * rad); s.rotation.set(Math.PI / 2, 0, rnd() * 6.283); add(s, CG, false); } }
+  if (ST.candles) for (let d = 0; d < 5; d++) { const a = d / 5 * Math.PI * 2 + .2, x = Math.cos(a) * (rr * .36), z = Math.sin(a) * (rr * .36);
     const c = new THREE.Mesh(new THREE.CylinderGeometry(.017, .02, .62, 14), M('#f6efe0', { roughness: .45 })); c.position.set(x, top + .31, z); add(c);
-    const f = new THREE.Mesh(G.flame, new THREE.MeshBasicMaterial({ color: '#ffd37a' })); f.position.set(x, top + .63, z); f.scale.setScalar(.8); f.userData.p = d; cakeG.add(f); flames.push(f);
-    const gl = new THREE.Sprite(new THREE.SpriteMaterial({ map: T.glow, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); gl.scale.setScalar(.14); gl.position.set(x, top + .7, z); cakeG.add(gl); }
-  S.deco.forEach((p) => { const m = p.t === 'strawberry' ? strawberry(.85) : macaron(['#f4b8c8', '#bccbe6', '#f6e3a8'][Math.abs(Math.round(p.x * 10)) % 3]); m.position.set(p.x, top - .01, p.z); m.rotation.y = p.x * 9; add(m, cakeG, false); });
-  if (S.msg.trim()) { const g = new THREE.Group(); const pl = new THREE.Mesh(new THREE.PlaneGeometry(1.7, .57), new THREE.MeshBasicMaterial({ map: topperTexture(S.msg.trim()), transparent: true, side: THREE.DoubleSide, depthWrite: false })); pl.position.y = .88; g.add(pl);
-    [-.35, .35].forEach((sx) => { const st = new THREE.Mesh(new THREE.CylinderGeometry(.011, .011, .64, 6), M('#d8b66a', { metalness: .95, roughness: .25 })); st.position.set(sx, .32, 0); g.add(st); }); g.position.set(0, top, -rr * .08); cakeG.add(g); topper = g; }
-  camTarget = { y: cakeH * .5 + .3, d: 8.8 + S.tiers * 1.0 };
+    const f = new THREE.Mesh(G.flame, new THREE.MeshBasicMaterial({ color: '#ffd37a' })); f.position.set(x, top + .63, z); f.scale.setScalar(.8); f.userData.p = d; CG.add(f); if (vis) flames.push(f);
+    const gl = new THREE.Sprite(new THREE.SpriteMaterial({ map: T.glow, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); gl.scale.setScalar(.14); gl.position.set(x, top + .7, z); CG.add(gl); }
+  ST.deco.forEach((p) => { const m = p.t === 'strawberry' ? strawberry(.85) : macaron(['#f4b8c8', '#bccbe6', '#f6e3a8'][Math.abs(Math.round(p.x * 10)) % 3]); m.position.set(p.x, top - .01, p.z); m.rotation.y = p.x * 9; add(m, CG, false); });
+  if (ST.msg.trim()) { const g = new THREE.Group(); const pl = new THREE.Mesh(new THREE.PlaneGeometry(1.7, .57), new THREE.MeshBasicMaterial({ map: topperTexture(ST.msg.trim()), transparent: true, side: THREE.DoubleSide, depthWrite: false })); pl.position.y = .88; g.add(pl);
+    [-.35, .35].forEach((sx) => { const st = new THREE.Mesh(new THREE.CylinderGeometry(.011, .011, .64, 6), M('#d8b66a', { metalness: .95, roughness: .25 })); st.position.set(sx, .32, 0); g.add(st); }); g.position.set(0, top, -rr * .08); CG.add(g); if (vis) topper = g; }
+  const ct = { y: cakeHL * .5 + .3, d: 8.8 + ST.tiers * 1.0 }; if (vis) { camTarget = ct; cakeH = cakeHL; topDisc = topDiscL; topY = topYL; topR = topRL; } return { ct, cakeH: cakeHL };
 }
 
 /* ---------- drag to spin, tap to decorate ---------- */
@@ -245,11 +246,26 @@ addEventListener('pointerup', () => { if (!arcDrag) return; arcDrag = false; arc
 $('arcp').addEventListener('click', () => { arcT = Math.round(arcT) - 1; arcIdle = 0; }); $('arcn').addEventListener('click', () => { arcT = Math.round(arcT) + 1; arcIdle = 0; });
 $('arcpill').addEventListener('click', () => choose(Math.round(arcT)));
 /* photograph each preset with the same camera and light, then put the cakes back */
+/* a second, hidden canvas draws every thumbnail, so the visible cake is never resized, cleared or rebuilt */
+let rig = null;
+function thumbRig() {
+  if (rig) return rig;
+  const c = document.createElement('canvas'), r = new THREE.WebGLRenderer({ canvas: c, alpha: true, antialias: true, preserveDrawingBuffer: true }); r.setPixelRatio(1); r.setSize(420, 420, false); r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
+  const sc = new THREE.Scene(), cm = new THREE.PerspectiveCamera(28, 1, .1, 60), pm = new THREE.PMREMGenerator(r); sc.environment = pm.fromScene(new RoomEnvironment(), .04).texture; sc.environmentIntensity = .62;
+  const key = new THREE.DirectionalLight(0xfff3e6, 2.4); key.position.set(3.2, 7, 4.5); key.castShadow = true; key.shadow.mapSize.set(1024, 1024); Object.assign(key.shadow.camera, { left: -3, right: 3, top: 5, bottom: -2, near: 1, far: 20 }); key.shadow.bias = -.0004; sc.add(key);
+  const rim = new THREE.DirectionalLight(0xdfe8ff, .9); rim.position.set(-4, 3, -3); sc.add(rim); sc.add(new THREE.HemisphereLight(0xffffff, 0xaab6cc, .35));
+  const gr = new THREE.Mesh(new THREE.CircleGeometry(5, 48), new THREE.ShadowMaterial({ opacity: .22 })); gr.rotation.x = -Math.PI / 2; gr.position.y = -.005; gr.receiveShadow = true; sc.add(gr);
+  const cakeT = new THREE.Group(), dT = new THREE.Group(); sc.add(cakeT, dT); return (rig = { r, c, sc, cam: cm, cakeT, dT });
+}
+const idle = () => new Promise((res) => (window.requestIdleCallback ? requestIdleCallback(() => res(), { timeout: 250 }) : setTimeout(res, 40)));
 async function renders() {
-  if (!renderer) return; thumbsBusy = true; const keep = { ...S, tops: new Set(S.tops), deco: [...S.deco] }, ry = root.rotation.y, cp = cam.position.clone();
-  renderer.setPixelRatio(1); renderer.setSize(360, 360, false);
-  for (let i = 0; i < OCC.length; i++) { Object.assign(S, preset(OCC[i])); build(); root.rotation.set(0, .55, 0); root.position.set(0, 0, 0); if (topper) topper.rotation.y = -.55; cam.position.set(0, camTarget.y + 1.55, camTarget.d * .84); cam.lookAt(0, camTarget.y, 0); renderer.render(scene, cam); cards[i].querySelector('img').src = cvs.toDataURL('image/png'); await new Promise((r) => setTimeout(r, 30)); }
-  Object.assign(S, keep); renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(640, 640, false); root.rotation.y = ry; cam.position.copy(cp); build(); thumbsBusy = false; ui();
+  if (!renderer) return; const k = thumbRig(); k.r.toneMapping = THREE.AgXToneMapping; k.r.toneMappingExposure = 1.05;
+  for (let i = 0; i < OCC.length; i++) {
+    while (k.cakeT.children.length) { const o = k.cakeT.children.pop(); o.traverse((n) => { if (n.isMesh && n.geometry && !Object.values(G).includes(n.geometry)) n.geometry.dispose(); }); }
+    const info = build(k.cakeT, preset(OCC[i])); k.cakeT.rotation.set(0, .55, 0); k.cakeT.updateMatrixWorld(true);
+    k.cam.position.set(0, info.ct.y + 1.55, info.ct.d * .84); k.cam.lookAt(0, info.ct.y, 0); k.r.render(k.sc, k.cam); cards[i].querySelector('img').src = k.c.toDataURL('image/png'); await idle();
+  }
+  while (k.cakeT.children.length) { const o = k.cakeT.children.pop(); o.traverse((n) => { if (n.isMesh && n.geometry && !Object.values(G).includes(n.geometry)) n.geometry.dispose(); }); }
 }
 
 /* ---------- quantity, message, tools ---------- */
@@ -310,7 +326,7 @@ $('form').addEventListener('submit', (e) => { e.preventDefault(); const f = e.ta
 const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { const sib = [...e.target.parentElement.children].filter((x) => x.classList.contains('rv') && !x.classList.contains('in')); e.target.style.setProperty('--rd', (Math.min(4, Math.max(0, sib.indexOf(e.target))) * .09).toFixed(2) + 's'); e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .08, rootMargin: '0px 0px -4% 0px' });
 document.querySelectorAll('.rv').forEach((r) => io.observe(r));
 
-$('msg').value = S.msg; ui(); build(); requestAnimationFrame(frame);
+$('msg').value = S.msg; ui(); requestAnimationFrame(frame);
 
 
 /* ---------- colour directions A, B, C ---------- */
@@ -349,18 +365,15 @@ const menuImgs = {};   /* rendered once, kept for the session */
 function fillMenuImages() { document.querySelectorAll('#mgrid img[data-id]').forEach((i) => { if (!i.parentElement.classList.contains('photo') && menuImgs[i.dataset.id]) { i.src = menuImgs[i.dataset.id]; i.parentElement.classList.add('ok'); } }); }
 const dG = new THREE.Group(); let menuDone = false;
 /* frame the food, not the plate: fit the camera to everything except the plate so each dessert fills its card */
-function frameDessert(g) {
+function frameDessert(g, cm) {
   const box = new THREE.Box3(); g.traverse((n) => { if (n.isMesh && !n.userData.plate) box.expandByObject(n); });
-  const s = box.getSize(new THREE.Vector3()), c = box.getCenter(new THREE.Vector3()), fit = Math.max(s.y * 1.08, s.x * .92, s.z * .92) * 1.28, dist = fit / (2 * Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)));
-  cam.position.set(0, c.y + dist * .42, dist * .91); cam.lookAt(0, c.y - s.y * .04, 0);
+  const s = box.getSize(new THREE.Vector3()), c = box.getCenter(new THREE.Vector3()), fit = Math.max(s.y * 1.08, s.x * .92, s.z * .92) * 1.28, dist = fit / (2 * Math.tan(THREE.MathUtils.degToRad(cm.fov / 2)));
+  cm.position.set(0, c.y + dist * .42, dist * .91); cm.lookAt(0, c.y - s.y * .04, 0);
 }
 async function menuRenders() {
-  if (!renderer || menuDone) return; menuDone = true; thumbsBusy = true; root.visible = false; scene.add(dG);
-  const gr = new THREE.Mesh(new THREE.CircleGeometry(5, 48), new THREE.ShadowMaterial({ opacity: .22 })); gr.rotation.x = -Math.PI / 2; gr.position.y = -.005; gr.receiveShadow = true; dG.add(gr);
-  const keep = cam.position.clone(), keepExp = renderer.toneMappingExposure; renderer.setPixelRatio(1); renderer.setSize(420, 420, false); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.22;
-  for (const it of ALL) { if (it.photo) continue; const g = dessert(it.type, { ...it.opts, seed: hash(it.id) }); g.rotation.y = .5; dG.add(g); g.updateMatrixWorld(true); frameDessert(g); renderer.render(scene, cam); menuImgs[it.id] = cvs.toDataURL('image/png'); dG.remove(g); g.traverse((n) => { if (n.geometry) n.geometry.dispose(); }); fillMenuImages(); await sleep(16); }
-  scene.remove(dG); renderer.toneMapping = THREE.AgXToneMapping; renderer.toneMappingExposure = keepExp; renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(640, 640, false); cam.position.copy(keep); root.visible = true; thumbsBusy = false;
+  if (!renderer || menuDone) return; menuDone = true; const k = thumbRig(); k.r.toneMapping = THREE.ACESFilmicToneMapping; k.r.toneMappingExposure = 1.22;
+  for (const it of ALL) { if (it.photo) continue; const g = dessert(it.type, { ...it.opts, seed: hash(it.id) }); g.rotation.y = .5; k.dT.add(g); g.updateMatrixWorld(true); frameDessert(g, k.cam); k.r.render(k.sc, k.cam); menuImgs[it.id] = k.c.toDataURL('image/png'); k.dT.remove(g); g.traverse((n) => { if (n.geometry) n.geometry.dispose(); }); fillMenuImages(); await idle(); }
 }
 renderMenu();
 new IntersectionObserver((es, ob) => { if (es[0].isIntersecting) { ob.disconnect(); exclusive(menuRenders); } }, { rootMargin: '600px 0px' }).observe($('menu'));
-(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => { build(); exclusive(async () => { await sleep(300); await renders(); }); });
+Promise.race([document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve(), sleep(1200)]).then(() => { build(); addEventListener('load', () => setTimeout(() => exclusive(renders), 900), { once: true }); if (document.readyState === 'complete') setTimeout(() => exclusive(renders), 900); });
