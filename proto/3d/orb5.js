@@ -133,8 +133,8 @@ const LY = { stack: false, short: false, zone: [70, 400], zone8: [70, 400] };
 function layout() {
   const W = innerWidth, H = innerHeight, hb = Math.max(top.offsetHeight, 52);
   LY.stack = W / H < 1 || (W <= 760 && H >= 560); LY.short = !LY.stack && H < 570; root.classList.toggle('stack', LY.stack); root.classList.toggle('short', LY.short);
-  if (LY.stack) { const tb = top.getBoundingClientRect().bottom; LY.hb = tb; let ft = H; stopEls.forEach((el, k) => { if (k >= 8) return; const e = el.querySelector('.tag, h1, h2, .body'); if (e) ft = Math.min(ft, e.getBoundingClientRect().top); });
-    LY.zone = [tb + 8, ft + 34]; const t8 = stopEls[8].querySelector('.tag').getBoundingClientRect().top; LY.zone8 = [tb + 10, t8 - 8];
+  if (LY.stack) { const tb = top.getBoundingClientRect().bottom; LY.hb = tb; root.style.setProperty('--hb', tb + 'px'); const cr = stopEls[2].getBoundingClientRect(), cc = (cr.top + cr.bottom) / 2, R = Math.min(W * .58, (cr.bottom - cr.top) * .38); LY.zone = [cc - R, cc + R];
+    const h8 = stopEls[8].querySelector('h2').getBoundingClientRect().bottom; LY.zone8 = [h8 + 10, cr.bottom - 14];
     const z = LY.zone8, zh = Math.max(226, Math.min(340, z[1] - z[0])); formEl.style.setProperty('--zh', zh + 'px'); formEl.style.setProperty('--zy', Math.max(z[0] + zh / 2, (z[0] + z[1]) / 2) + 'px'); }
 }
 fit(); addEventListener('resize', () => { fit(); layout(); });
@@ -165,7 +165,7 @@ function frame() {
   themeNow += (THEME - themeNow) * Math.min(1, dt * 3.2); const iA = sNow >= NS - 1 ? NS - 1 : i0, iB = sNow >= NS - 1 ? NS - 1 : i0 + 1;
   const bg = mix3(mix3(A.bg, B.bg, ww), mix3(DARK[iA], DARK[iB], ww), themeNow); U.uBG.value.set(...bg); U.uTA.value.set(...A.tint); U.uTB.value.set(...B.tint); U.uAbsA.value.set(...A.abs); U.uAbsB.value.set(...B.abs); U.uFeA.value.set(...A.fe); U.uFeB.value.set(...B.fe); U.uTheme.value = themeNow; U.uDark.value = 1 - lerp(A.w, B.w, ww);
   const asp = innerWidth / innerHeight, st = LY.stack;
-  if (st) { const z = sNow > 7.5 ? LY.zone8 : LY.zone, zc = (z[0] + z[1]) / 2, zr = Math.min((z[1] - z[0]) / 2 * .96, innerWidth * .5), ext = lerp(A.ext, B.ext, ww); U.uOff.value.set(0, (1 - 2 * zc / innerHeight) * 4.6 * .32492); U.uSc.value = zr / ext / (.615 * innerHeight / 2); }
+  if (st) { const z = sNow > 7.5 ? LY.zone8 : LY.zone, zc = (z[0] + z[1]) / 2, zr = Math.min((z[1] - z[0]) / 2 * .96, innerWidth * .56), ext = lerp(A.ext, B.ext, ww); U.uOff.value.set(0, (1 - 2 * zc / innerHeight) * 4.6 * .32492); U.uSc.value = zr / ext / (.615 * innerHeight / 2); }
   else { const oxx = lerp(A.ox, B.ox, ww) * .8, ex = lerp(A.ext, B.ext, ww), cxp = (.5 + .5 * 1.67 * oxx) * innerWidth; U.uOff.value.set(oxx, 0); U.uSc.value = Math.min(lerp(A.sc, B.sc, ww) * (asp < 1.3 ? clamp(asp / 1.3 + .25) : 1), (innerWidth - 10 - cxp) / (.615 * innerHeight / 2 * ex)); }
   { } U.uApp.value = sstep(0, 1, app); U.uTime.value = T;
   ptr.x += (ptr.tx - ptr.x) * Math.min(1, dt * 3); ptr.y += (ptr.ty - ptr.y) * Math.min(1, dt * 3); U.uRot.value.set(ptr.x * .5, ptr.y * .3);
@@ -206,13 +206,13 @@ if (q.has('audit')) setTimeout(() => {
   if (document.documentElement.scrollWidth > W + 1) out.push('horizontal scroll ' + document.documentElement.scrollWidth);
   stopEls.forEach((el, k) => {
     stopEls.forEach((o, j) => o.classList.toggle('cur', j === k)); cards.forEach(c => c.classList.toggle('cur', +c.dataset.i === k)); formEl.classList.toggle('on', k === 8);
-    const c = CH[k], z = k === 8 ? LY.zone8 : LY.zone, uSc = phone ? Math.min((z[1] - z[0]) / 2 * .96, W * .5) / c.ext / (.615 * H / 2) : Math.min(c.sc * (asp < 1.3 ? clamp(asp / 1.3 + .25) : 1), (W - 10 - (.5 + .5 * 1.67 * c.ox * .8) * W) / (.615 * H / 2 * c.ext)), ox = phone ? 0 : c.ox * .8, oy = phone ? (1 - (z[0] + z[1]) / H) * 4.6 * .32492 : 0;
+    const c = CH[k], z = k === 8 ? LY.zone8 : LY.zone, uSc = phone ? Math.min((z[1] - z[0]) / 2 * .96, W * .56) / c.ext / (.615 * H / 2) : Math.min(c.sc * (asp < 1.3 ? clamp(asp / 1.3 + .25) : 1), (W - 10 - (.5 + .5 * 1.67 * c.ox * .8) * W) / (.615 * H / 2 * c.ext)), ox = phone ? 0 : c.ox * .8, oy = phone ? (1 - (z[0] + z[1]) / H) * 4.6 * .32492 : 0;
     const cx = (.5 + .5 * 1.67 * ox) * W, cy = (.5 - .5 * oy / (4.6 * .32492)) * H, r = .615 * uSc * (H / 2) * c.ext, O = { left: cx - r, right: cx + r, top: cy - r, bottom: cy + r };
     if (phone) { const h2 = el.querySelector('h1,h2'), bd = el.querySelector('.body'), H2 = h2 && R(h2), BD = bd && getComputedStyle(bd).display !== 'none' ? R(bd) : null, nt = [];
       if (H2) { const sp = [...h2.querySelectorAll('.w')].map(R); if (sp.some(r => r.right > W - 6 || r.left < 6)) nt.push('headline off sides'); if (H2.top < hb) nt.push('headline under header'); if (BD && H2.bottom > BD.top + 2) nt.push('headline over panel'); }
-      if (BD && (BD.bottom > H - 40 || BD.left < 6 || BD.right > W - 6)) nt.push('panel off/under dots');
-      if (k === 8) { const F = R(formEl); const tg = el.querySelector('.tag, h2'); if (tg && F.bottom > tg.getBoundingClientRect().top + 2) nt.push('form over headline'); if (F.bottom > H - 56 || F.left < 4 || F.right > W - 4) nt.push('form off'); }
-      if (O.left < -2 || O.right > W + 2 || O.top < hb - 6 || O.bottom > H - 40) nt.push(`orb cut off (${Math.round(O.left)},${Math.round(O.top)},${Math.round(O.right)},${Math.round(O.bottom)})`);
+      if (BD && (BD.bottom > H - 60 || BD.left < 6 || BD.right > W - 6)) nt.push('panel off/under dots'); { const SR = R(el); if (H2 && BD && H2.bottom > BD.top - 8) nt.push('headline touches text'); if (SR.top < hb) nt.push('card under header'); }
+      if (k === 8) { const F = R(formEl); const hh = el.querySelector('h2'), SC = R(el); if (hh && F.top < hh.getBoundingClientRect().bottom - 2) nt.push('form over headline'); if (F.bottom > SC.bottom - 8) nt.push('form past card'); if (F.bottom > H - 56 || F.left < 4 || F.right > W - 4) nt.push('form off'); }
+      if (O.top < hb - 6 || O.bottom > H - 40) nt.push(`orb cut off (${Math.round(O.left)},${Math.round(O.top)},${Math.round(O.right)},${Math.round(O.bottom)})`);
       if (nt.length) out.push(k + ': ' + nt.join('; ')); return; }
     const S = R(el), cd = cards.find(x => +x.dataset.i === k), C = cd && getComputedStyle(cd).display !== 'none' ? R(cd) : null, ct = R(document.getElementById('count')), F = k === 8 ? R(formEl) : null, notes = [];
     if (S.left < 0 || S.right > W) notes.push('text off sides'); if (S.top < hb + 6 && !phone) notes.push('text under header'); if (S.bottom > H + (phone ? 1 : -6)) notes.push('text below fold');
