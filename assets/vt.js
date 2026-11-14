@@ -19,7 +19,7 @@
       '<i style="position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.3) 50%,transparent 70%);transform:translateX(-120%)"></i>';
     return el;
   }
-  function sheen(el) { var i = el.querySelector('i'); if (i && i.animate) i.animate([{ transform: 'translateX(-120%)' }, { transform: 'translateX(120%)' }], { duration: 900, easing: 'ease-in-out' }); }
+  function sheen(el) { var i = el.querySelector('i'); if (i && i.animate) i.animate([{ transform: 'translateX(-120%)' }, { transform: 'translateX(120%)' }], { duration: 520, easing: 'ease-in-out' }); }
 
   var leaving = false;
   /* arriving: cover the page straight away, then lift once it is ready */
@@ -28,12 +28,12 @@
     var s = sheet(inc.c, inc.n, '0'); root.appendChild(s); var lifted = false;
     var lift = function () { if (lifted) return; lifted = true; var to = inc.d === 'back' ? '100%' : '-100%';
       if (!s.animate) { s.remove(); return; }
-      var a = s.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(' + to + ')' }], { duration: 760, easing: EASE, fill: 'forwards' });
-      sheen(s); var fin = function () { s.remove(); }; a.finished.then(fin, fin); setTimeout(fin, 1800); };
-    var ready = function () { var go = function () { requestAnimationFrame(function () { requestAnimationFrame(function () { setTimeout(lift, 420); }); }); };
-      (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(go, go); };
-    if (document.readyState === 'complete') ready(); else addEventListener('load', ready, { once: true });
-    setTimeout(lift, 3200);   /* never stay covered */
+      var a = s.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(' + to + ')' }], { duration: 440, easing: EASE, fill: 'forwards' });
+      sheen(s); var fin = function () { s.remove(); }; a.finished.then(fin, fin); setTimeout(fin, 1200); };
+    var ready = function () { var go = function () { requestAnimationFrame(function () { requestAnimationFrame(function () { setTimeout(lift, 60); }); }); };
+      Promise.race([document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve(), new Promise(function (r) { setTimeout(r, 450); })]).then(go, go); };
+    if (document.readyState !== 'loading') ready(); else addEventListener('DOMContentLoaded', ready, { once: true });
+    setTimeout(lift, 1800);   /* never stay covered */
   }
   addEventListener('pageshow', function (e) { if (e.persisted) { ['ajvt-sheet', 'ajvt-dim'].forEach(function (id) { var o = document.getElementById(id); if (o) o.remove(); }); leaving = false; } });
 
@@ -47,10 +47,10 @@
     e.preventDefault(); e.stopImmediatePropagation(); leaving = true;
     var back = dest === 'aj-groups', info = SITES[dest], s = sheet(info[0], info[1], back ? '-100%' : '100%'); root.appendChild(s);
     var dim = document.createElement('div'); dim.id = 'ajvt-dim'; dim.style.cssText = 'position:fixed;inset:0;z-index:2147482999;background:#000;opacity:0;pointer-events:none'; root.appendChild(dim);
-    dim.animate([{ opacity: 0 }, { opacity: .45 }], { duration: 560, fill: 'forwards', easing: 'ease-out' });
+    dim.animate([{ opacity: 0 }, { opacity: .45 }], { duration: 340, fill: 'forwards', easing: 'ease-out' });
     var go = function () { try { sessionStorage.setItem(KEY, JSON.stringify({ c: info[0], n: info[1], d: back ? 'back' : 'in', t: Date.now() })); } catch (x) {} location.href = u.href; };
-    var a2 = s.animate([{ transform: 'translateY(' + (back ? '-100%' : '100%') + ')' }, { transform: 'translateY(0)' }], { duration: 600, easing: EASE, fill: 'forwards' });
-    sheen(s); a2.finished.then(go, go); setTimeout(go, 1400);
+    var a2 = s.animate([{ transform: 'translateY(' + (back ? '-100%' : '100%') + ')' }, { transform: 'translateY(0)' }], { duration: 360, easing: EASE, fill: 'forwards' });
+    sheen(s); a2.finished.then(go, go); setTimeout(go, 800);
   }, true);
 
   /* nav: away on scroll down, back on scroll up or when the pointer visits the top edge */

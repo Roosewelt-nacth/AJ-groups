@@ -26,7 +26,7 @@ em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:40
 :root[data-theme="light"] .theme .moon,:root[data-theme="dark"] .theme .sun{opacity:0;transform:rotate(-60deg) scale(.5)}
 .cursor{position:fixed;left:-14px;top:-14px;width:28px;height:28px;border:1px solid var(--ink);border-radius:50%;z-index:30;pointer-events:none;opacity:0;transition:opacity .4s}
 .w{display:inline-block;overflow:hidden;vertical-align:top;padding:.06em .1em .32em;margin:-.06em -.1em -.32em}
-.w>span{display:inline-block;transform:translateY(112%) rotate(6deg);transform-origin:0 100%;opacity:0;filter:blur(7px);transition:transform 1.15s cubic-bezier(.16,1,.3,1),opacity .7s ease,filter .9s ease;transition-delay:calc(var(--k) * 85ms)}
+.w>span{display:inline-block;transform:translateY(112%) rotate(6deg);transform-origin:0 100%;opacity:0;filter:blur(7px);transition:transform .75s cubic-bezier(.16,1,.3,1),opacity .45s ease,filter .6s ease;transition-delay:calc(var(--k) * 50ms)}
 .stop.cur .w>span{transform:none;opacity:1;filter:none}
 .stop.past:not(.cur) .w>span{transform:translateY(-70%) rotate(-4deg)}.stop.next:not(.cur) .w>span{transform:translateY(112%) rotate(6deg)}
 .stop:not(.cur) .w>span{transition-duration:.5s,.35s,.35s;transition-delay:0s}
@@ -50,7 +50,7 @@ button,.enter,.gbtn,.menu a{-webkit-tap-highlight-color:transparent}
 @media (prefers-reduced-motion:reduce){.menu a{opacity:1;transform:none;filter:none}.stack .stop.cur .svc li{animation:none}}
 .wipe{position:fixed;inset:0;z-index:99;pointer-events:none}
 .stop .tag,.stop .line,.stop .enter,.stop .lead{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
-.stop.cur .tag{opacity:1;transform:none;transition-delay:.05s}.stop.cur .line,.stop.cur .lead{opacity:1;transform:none;transition-delay:.35s}.stop.cur .enter{opacity:1;transform:none;transition-delay:.5s}
+.stop.cur .tag{opacity:1;transform:none;transition-delay:.05s}.stop.cur .line,.stop.cur .lead{opacity:1;transform:none;transition-delay:.2s}.stop.cur .enter{opacity:1;transform:none;transition-delay:.3s}
 .enter:hover{box-shadow:0 10px 30px rgba(0,0,0,.2)}
 .form h3{white-space:nowrap}.form input,.form textarea{min-width:0}.form button{white-space:nowrap}
 .nav a{color:inherit;text-decoration:none}.nav a:hover{color:var(--ink)}

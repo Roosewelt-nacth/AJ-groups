@@ -136,11 +136,11 @@ const go = i => { if (i === Math.round(sNow) || jumping) return; if (RM) { scrol
   const col = stopEls[i].dataset.c || '#9fd0ff', mid = (NB - 1) / 2, fwd = i > sNow, sk = fwd ? -9 : 9; fade.classList.add('on'); tsm.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(NS).padStart(2, '0'); tb.textContent = i === 0 ? 'AJ Groups' : TITLES[i];
   blades.forEach((b, k) => { const t = k / (NB - 1); b.style.background = `linear-gradient(${180 + (fwd ? -8 : 8)}deg, color-mix(in srgb, ${col} 82%, #fff) 0%, ${col} 38%, color-mix(in srgb, ${col} 48%, #0b1020) 100%)`; b.style.setProperty('--sh', (t * 100).toFixed(0) + '%'); });
   const ord = k => fwd ? k : NB - 1 - k;
-  const up = blades.map((b, k) => b.animate([{ transform: `skewX(${sk}deg) scaleY(0)`, transformOrigin: '50% 100%' }, { transform: `skewX(0deg) scaleY(1)`, transformOrigin: '50% 100%' }], { duration: 360, delay: ord(k) * 20 + Math.abs(k - mid) * 9, easing: 'cubic-bezier(.76,0,.18,1)', fill: 'forwards' }));
-  const ci = tcard.animate([{ opacity: 0, transform: 'translateY(26px) scale(.96)', filter: 'blur(8px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }], { duration: 320, delay: 240, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' });
+  const up = blades.map((b, k) => b.animate([{ transform: `skewX(${sk}deg) scaleY(0)`, transformOrigin: '50% 100%' }, { transform: `skewX(0deg) scaleY(1)`, transformOrigin: '50% 100%' }], { duration: 240, delay: ord(k) * 11 + Math.abs(k - mid) * 5, easing: 'cubic-bezier(.76,0,.18,1)', fill: 'forwards' }));
+  const ci = tcard.animate([{ opacity: 0, transform: 'translateY(26px) scale(.96)', filter: 'blur(8px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }], { duration: 220, delay: 140, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' });
   Promise.all(up.map(a => a.finished).concat(ci.finished)).then(() => { scrollTo(0, i * vh()); sNow = i; swF = i;
-    const co = tcard.animate([{ opacity: 1, transform: 'none', filter: 'blur(0)' }, { opacity: 0, transform: 'translateY(-30px) scale(1.04)', filter: 'blur(8px)' }], { duration: 280, delay: 150, easing: 'cubic-bezier(.6,0,.4,1)', fill: 'forwards' });
-    const dn = blades.map((b, k) => b.animate([{ transform: 'skewX(0deg) scaleY(1)', transformOrigin: '50% 0%' }, { transform: `skewX(${-sk}deg) scaleY(0)`, transformOrigin: '50% 0%' }], { duration: 420, delay: 170 + ord(k) * 18, easing: 'cubic-bezier(.65,0,.2,1)', fill: 'forwards' }));
+    const co = tcard.animate([{ opacity: 1, transform: 'none', filter: 'blur(0)' }, { opacity: 0, transform: 'translateY(-30px) scale(1.04)', filter: 'blur(8px)' }], { duration: 190, delay: 80, easing: 'cubic-bezier(.6,0,.4,1)', fill: 'forwards' });
+    const dn = blades.map((b, k) => b.animate([{ transform: 'skewX(0deg) scaleY(1)', transformOrigin: '50% 0%' }, { transform: `skewX(${-sk}deg) scaleY(0)`, transformOrigin: '50% 0%' }], { duration: 280, delay: 100 + ord(k) * 10, easing: 'cubic-bezier(.65,0,.2,1)', fill: 'forwards' }));
     Promise.all(dn.map(a => a.finished).concat(co.finished)).then(() => { fade.classList.remove('on'); blades.concat(tcard).forEach(b => b.getAnimations().forEach(a => a.cancel())); jumping = false; }); }); };
 dotBtns.forEach((b, i) => b.addEventListener('click', () => go(i)));
 const menuEl = document.getElementById('menu'), menuBtn = document.getElementById('menubtn'), sideTab = document.getElementById('sidetab');
@@ -181,7 +181,7 @@ function frame() {
   if (!FIXED && !first) { fa += dt; fn++; if (fn >= 40) { const av = fa / fn; if (av > .027 && PR > .5) { PR = Math.max(.5, PR * .82); renderer.setPixelRatio(PR); fit(); } else if (av < .019 && PR < PRMAX) { PR = Math.min(PRMAX, PR * 1.1); renderer.setPixelRatio(PR); fit(); } fa = 0; fn = 0; } }
   if (app < 1) app = Math.min(1, app + dt * .6);
   const target = !isNaN(PIN) ? clamp(PIN, 0, NS - 1) : LY.stack ? clamp(swF, 0, NS - 1) : clamp(scrollY / vh(), 0, NS - 1);
-  sNow = first ? target : sNow + (target - sNow) * Math.min(1, dt * 4.5);
+  sNow = first ? target : sNow + (target - sNow) * Math.min(1, dt * (LY.stack ? 8 : 5.5));
   const i0 = Math.min(NS - 2, Math.floor(clamp(sNow, 0, NS - 1))), f = clamp(sNow - i0, 0, 1), w = sstep(.15, .85, f), A = CH[sNow >= NS - 1 ? NS - 1 : i0], B = CH[sNow >= NS - 1 ? NS - 1 : i0 + 1], ww = sNow >= NS - 1 ? 0 : w;
   U.uA.value = A.s; U.uB.value = B.s; U.uW.value = A.s === B.s ? 0 : ww;
   themeNow += (THEME - themeNow) * Math.min(1, dt * 3.2); const iA = sNow >= NS - 1 ? NS - 1 : i0, iB = sNow >= NS - 1 ? NS - 1 : i0 + 1;
