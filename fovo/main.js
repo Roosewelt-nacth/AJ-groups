@@ -18,6 +18,22 @@ const META = Array.from({ length: 18 }, (_, i) => { const k = KINDS[i % KINDS.le
 const noise = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'), im = g.createImageData(128, 128); for (let i = 0; i < im.data.length; i += 4) { const v = 120 + Math.random() * 135; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; } g.putImageData(im, 0, 0); return c; })();
 document.addEventListener('error', e => { const t = e.target; if (t && t.tagName === 'IMG' && !t.dataset.retry) { t.dataset.retry = 1; setTimeout(() => { t.src = t.src; }, 600); } }, true);
 
+
+/* ---------- wallpapers: they follow the app in front, and the page follows their tone ---------- */
+const WP = FovoWP.names.map(n => ({ name: n, src: null, dark: false, p: null }));
+const WPMAP = { about: 0, frames: 5, develop: 3, story: 2, services: 4, book: 1 }, TKMAP = { retouch: 1, vector: 2, motion: 3, cut: 5 };
+const wpEl = document.querySelector('.wp'); const slots = [0, 1].map(() => { const s = document.createElement('div'); s.className = 'slot'; s.innerHTML = '<div class="l soft"></div><div class="shw"><div class="l sharp"></div></div>'; wpEl.appendChild(s); return s; });
+let wpCur = -1, wpSlot = 0, wpLock = null, wpWant = -1;
+const tone = i => { document.body.dataset.wp = WP[i].dark ? 'dark' : 'light'; const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', WP[i].dark ? '#1a1a1f' : '#e9e9e6'); };
+/* each wallpaper is drawn once, at the size of this screen, then kept */
+const wpLoad = i => WP[i].p || (WP[i].p = new Promise(res => setTimeout(() => {
+  const asp = clamp(innerWidth / innerHeight, .5, 2.2), W = asp >= 1 ? Math.round(Math.min(2560, Math.max(1600, innerWidth * Math.min(devicePixelRatio, 2)))) : Math.round(Math.min(1300, innerWidth * Math.min(devicePixelRatio, 2))), H = Math.round(W / asp), c = FovoWP.canvas(i, W, H);
+  const t = document.createElement('canvas'); t.width = t.height = 24; const g = t.getContext('2d'); g.drawImage(c, 0, 0, 24, 24); const d = g.getImageData(0, 0, 24, 24).data; let s = 0; for (let k = 0; k < d.length; k += 4) s += (.2126 * d[k] + .7152 * d[k + 1] + .0722 * d[k + 2]) / 255; WP[i].lum = s / 576; WP[i].dark = WP[i].lum < .5;
+  c.toBlob(bl => { WP[i].src = URL.createObjectURL(bl); res(); }, 'image/jpeg', .95); }, 0)));
+async function setWp(i) { wpWant = i; if (i === wpCur) return; await wpLoad(i); if (wpWant !== i || i === wpCur) return; wpCur = i; wpSlot ^= 1; const s = slots[wpSlot], o = slots[wpSlot ^ 1], url = `url(${WP[i].src})`; s.querySelectorAll('.l').forEach(l => { l.style.backgroundImage = url; }); s.classList.add('on'); o.classList.remove('on'); tone(i); }
+function syncWp() { if (wpLock != null) return setWp(wpLock); const w = topWin(); let i = 0; if (w) i = w.id === 'toolkit' ? TKMAP[tkSel] : (WPMAP[w.id] != null ? WPMAP[w.id] : (wpCur < 0 ? 0 : wpCur)); setWp(i); }
+setWp(0); WP.forEach((w, i) => setTimeout(() => wpLoad(i), 4000 + i * 3000));
+
 /* ---------- windows ---------- */
 const WINS = {}; let zTop = 20, placed = 0;
 function makeWin(id, title, w, h, build, hooks = {}) {
@@ -32,14 +48,14 @@ function makeWin(id, title, w, h, build, hooks = {}) {
   tb.addEventListener('pointerup', () => { drag = null; }); tb.addEventListener('dblclick', () => zoomWin(id));
   return W;
 }
-function front(id) { WINS[id].el.style.zIndex = ++zTop; }
+function front(id) { WINS[id].el.style.zIndex = ++zTop; syncWp(); }
 function openWin(id) {
   const W = WINS[id]; if (!W) return; if (!W.built) { W.build(W.body, W); W.built = true; }
   if (!W.placed) { const ww = Math.min(W.w, innerWidth - 24), hh = Math.min(W.h, innerHeight - 140), off = (placed++ % 5) * 26; W.el.style.width = ww + 'px'; W.el.style.height = hh + 'px'; W.el.style.left = Math.max(12, (innerWidth - ww) / 2 + off - 40) + 'px'; W.el.style.top = Math.max(42, (innerHeight - hh) / 2 - 30 + off) + 'px'; W.placed = true; }
   W.el.style.display = 'flex'; front(id); setTimeout(() => { W.el.classList.remove('min'); W.el.classList.add('on'); }, 30); W.open = true; W.min = false; W.hooks.open && W.hooks.open(W); dockState();
 }
-function closeWin(id) { const W = WINS[id]; W.el.classList.remove('on'); setTimeout(() => { if (!W.open) W.el.style.display = 'none'; }, 260); W.open = false; W.hooks.close && W.hooks.close(W); dockState(); }
-function minWin(id) { const W = WINS[id]; W.el.classList.add('min'); W.min = true; dockState(); }
+function closeWin(id) { const W = WINS[id]; W.el.classList.remove('on'); setTimeout(() => { if (!W.open) W.el.style.display = 'none'; }, 260); W.open = false; W.hooks.close && W.hooks.close(W); dockState(); syncWp(); }
+function minWin(id) { const W = WINS[id]; W.el.classList.add('min'); W.min = true; dockState(); syncWp(); }
 function zoomWin(id) { const W = WINS[id]; if (SMALL()) return; const el = W.el; if (!W.max) { const r = el.getBoundingClientRect(); W.rect = [r.left, r.top, r.width, r.height]; el.style.left = '10px'; el.style.top = '40px'; el.style.width = innerWidth - 20 + 'px'; el.style.height = innerHeight - 130 + 'px'; W.max = true; el.classList.add('max'); } else { el.style.left = W.rect[0] + 'px'; el.style.top = W.rect[1] + 'px'; el.style.width = W.rect[2] + 'px'; el.style.height = W.rect[3] + 'px'; W.max = false; el.classList.remove('max'); } }
 const toggleWin = id => { const W = WINS[id]; if (W.open && !W.min) { front(id); } else if (W.open && W.min) { W.el.classList.remove('min'); W.min = false; front(id); dockState(); } else openWin(id); };
 const topWin = () => Object.values(WINS).filter(w => w.open && !w.min).sort((a, b) => (+b.el.style.zIndex || 0) - (+a.el.style.zIndex || 0))[0];
@@ -138,6 +154,22 @@ makeWin('book', 'New booking', 560, 560, b => {
 makeWin('preview', 'Preview', 640, 560, b => { b.innerHTML = `<div class="pv"><div class="im"><img id="pvi" alt=""></div><div class="pi"><span class="lab" id="pvn"></span><h3 id="pvt"></h3><div class="rows mono" id="pvr"></div><p class="mono" style="margin-top:14px;color:var(--mute)">Stock photograph</p></div></div>`; });
 function showPhoto(i) { const open = () => { $('pvi').src = IMG[i]; $('pvn').textContent = `[ Frame ${String(i + 1).padStart(3, '0')} ]`; $('pvt').textContent = CAP[i]; $('pvr').innerHTML = exifRows(i); WINS.preview.el.querySelector('.tt').textContent = CAP[i]; }; if (!WINS.preview.built) { WINS.preview.build(WINS.preview.body, WINS.preview); WINS.preview.built = true; } open(); openWin('preview'); }
 
+/* Toolkit: how each editing tool is used (placeholder wording) */
+const TKD = {
+  retouch: ['Retouch', 'Clean skin, keep the texture. Dodge and burn by hand, never a plastic finish.', ['Skin and texture', 'Dodge and burn', 'Object clean-up'], () => `<div class="vs" id="tkv"><img class="a" src="${IMG[1]}" alt=""><img class="b" src="${IMG[1]}" alt=""><i class="h"></i><span class="mono">Before</span><span class="mono r">After</span></div>`],
+  vector: ['Vector', 'Logos, albums and lookbooks, drawn with real curves and set with care.', ['Logos and marks', 'Albums and lookbooks', 'Print layouts'], () => `<div class="vv"><svg viewBox="0 0 320 140" aria-hidden="true"><path class="dr" d="M20 112C70 10 130 150 190 56S280 30 302 96" fill="none" stroke="#fb923c" stroke-width="4" stroke-linecap="round"/><g stroke="#8a8a90" stroke-width="1"><path d="M20 112l50-102M190 56l-40 56M190 56l40-44"/></g><g fill="#fff"><rect x="15" y="107" width="10" height="10"/><rect x="185" y="51" width="10" height="10"/></g><g fill="#fb923c"><circle cx="70" cy="10" r="4"/><circle cx="150" cy="112" r="4"/><circle cx="230" cy="12" r="4"/></g></svg></div>`],
+  motion: ['Motion', 'Titles, reels and slow motion, timed to the music.', ['Reels and titles', 'Slow motion', 'Transitions'], () => `<div class="vv"><svg viewBox="0 0 320 140" aria-hidden="true"><path id="mp" d="M20 110C70 20 120 130 170 60S270 30 302 40" fill="none" stroke="#a78bfa" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/><g fill="#a78bfa"><path d="M20 102l8 8-8 8-8-8z"/><path d="M170 52l8 8-8 8-8-8z"/><path d="M302 32l8 8-8 8-8-8z"/></g><circle r="8" fill="#fff"><animateMotion dur="3.6s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.85;1" calcMode="linear"><mpath href="#mp"/></animateMotion></circle></svg></div>`],
+  cut: ['Cut', 'Highlight films and wedding edits, cut to a beat.', ['Highlight films', 'Wedding edits', 'Social cut-downs'], () => `<div class="cuts"><div class="trk">${[3, 12, 7, 1, 6, 10, 0].map(k => `<img src="${IMG[k]}" alt="">`).join('')}</div><i class="ph"></i></div>`]
+};
+let tkSel = 'retouch';
+makeWin('toolkit', 'Toolkit', 700, 500, b => {
+  b.innerHTML = `<div class="tk"><div class="tkl"><small>Tools</small>${TOOL_KEYS.map(k => `<button type="button" data-k="${k}"><svg viewBox="0 0 100 100" aria-hidden="true">${ICON[k]}</svg>${TKD[k][0]}</button>`).join('')}</div><div class="tkm" id="tkm"></div></div>`;
+  b.querySelectorAll('.tkl button').forEach(x => x.addEventListener('click', () => selectTool(x.dataset.k)));
+});
+function selectTool(k) { tkSel = k; const t = TKD[k], b = WINS.toolkit.body; b.querySelectorAll('.tkl button').forEach(x => x.classList.toggle('on', x.dataset.k === k)); $('tkm').innerHTML = `<span class="lab">[ ${t[0]} ]</span><h3>${t[0]}</h3><p>${t[1]}</p><ul>${t[2].map(u => `<li>${u}</li>`).join('')}</ul>${t[3]()}<p class="mono" style="margin-top:12px;color:var(--mute)">Placeholder wording. Replace with the studio's own workflow.</p>`;
+  const v = $('tkv'); if (v) v.addEventListener('pointermove', e => { const r = v.getBoundingClientRect(); v.style.setProperty('--x', clamp((e.clientX - r.left) / r.width, 0, 1) * 100 + '%'); }); dockState(); syncWp(); }
+function openTool(k) { tkSel = k; if (!WINS.toolkit.built) { WINS.toolkit.build(WINS.toolkit.body, WINS.toolkit); WINS.toolkit.built = true; } selectTool(k); openWin('toolkit'); }
+
 /* ---------- desktop icons ---------- */
 const desk = $('desk'), POS = [[62, 12], [26, 24], [8, 34], [24, 50], [38, 62], [46, 20], [58, 30], [76, 18], [80, 40], [90, 28], [72, 56], [60, 64], [47, 44], [92, 54]];
 desk.insertAdjacentHTML('beforeend', POS.map((p, i) => `<div class="ico" data-i="${i}" style="left:${p[0]}%;top:${p[1]}%;--d:${(-(i * 1.3) % 7).toFixed(1)}s;--is:${SMALL() ? 44 : 62}px" tabindex="0" role="button" aria-label="${CAP[i]}"><img src="${IMG[i]}" alt=""><span>${CAP[i]}</span></div>`).join(''));
@@ -156,6 +188,7 @@ const ICON_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidd
 <linearGradient id="g-cam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#48484c"/><stop offset="1" stop-color="#0f0f11"/></linearGradient>
 <linearGradient id="g-cbody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1f1f4"/><stop offset="1" stop-color="#a3a3aa"/></linearGradient>
 <radialGradient id="g-lens" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#7fb0ff"/><stop offset=".45" stop-color="#1c3f94"/><stop offset="1" stop-color="#050b20"/></radialGradient>
+<linearGradient id="g-dk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1b26"/><stop offset="1" stop-color="#050509"/></linearGradient>
 <linearGradient id="g-dev" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b3b3f"/><stop offset="1" stop-color="#0d0d0f"/></linearGradient>
 <linearGradient id="g-nt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ececef"/></linearGradient>
 <linearGradient id="g-nty" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe46b"/><stop offset="1" stop-color="#ffc400"/></linearGradient>
@@ -175,10 +208,19 @@ const ICON = {
   book: sq('url(#g-ml)') + '<rect x="16" y="28" width="68" height="46" rx="7" fill="#fff"/><path d="M16 35l34 23 34-23" fill="none" stroke="#a9d3ff" stroke-width="3.2" stroke-linejoin="round"/><path d="M16 74l24-20M84 74L60 54" stroke="#e1efff" stroke-width="2.4"/>' + shine,
   aj: sq('url(#g-aj)') + '<circle cx="50" cy="50" r="32" fill="#fff" stroke="#b9b9c2" stroke-width="3"/><g stroke="#9a9aa4" stroke-width="2" stroke-linecap="round"><path d="M50 21v6M50 73v6M21 50h6M73 50h6"/></g><path d="M50 50 62 30 56 56z" fill="#ff3b30"/><path d="M50 50 38 70 44 44z" fill="#2a2a2f"/><circle cx="50" cy="50" r="3.2" fill="#fff" stroke="#6b6b72"/>' + shine
 };
-const DOCK = [['services', 'Services'], ['frames', 'Frames'], ['develop', 'Develop'], ['about', 'About'], ['story', 'Story'], ['book', 'Book a session'], ['aj', 'AJ GROUPS']];
-const dock = $('dock'); dock.innerHTML = DOCK.map(d => d[0] === 'aj' ? `<hr><a href="../aj-groups/" data-l="${d[1]}" aria-label="${d[1]}"><svg viewBox="0 0 100 100" aria-hidden="true">${ICON[d[0]]}</svg></a>` : `<a href="#" data-k="${d[0]}" data-l="${d[1]}" aria-label="${d[1]}"><svg viewBox="0 0 100 100" aria-hidden="true">${ICON[d[0]]}</svg></a>`).join('');
-const dks = [...dock.querySelectorAll('a')]; dks.forEach(a => { if (a.dataset.k) a.addEventListener('click', e => { e.preventDefault(); a.classList.remove('bounce'); void a.offsetWidth; a.classList.add('bounce'); toggleWin(a.dataset.k); }); });
-function dockState() { dks.forEach(a => { const W = WINS[a.dataset.k]; a.classList.toggle('run', !!(W && W.open)); }); }
+
+  const rim = c => `<rect x="3.5" y="3.5" width="93" height="93" rx="19.5" fill="none" stroke="${c}" stroke-width="3"/>`;
+  ICON.retouch = sq('url(#g-dk)') + rim('#38bdf8') + '<g fill="none" stroke="#38bdf8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M68 24 38 54"/><path d="M38 54c-8 0-12 5-12 12 0 3-2 5-5 5 8 6 22 4 25-8 1-4-1-7-8-9z" fill="#38bdf8" fill-opacity=".25"/></g><g fill="#38bdf8"><path d="M72 62l2.4 6.2 6.2 2.4-6.2 2.4L72 79l-2.4-6-6.2-2.4 6.2-2.4z"/><path d="M28 28l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z" fill-opacity=".7"/></g>' + shine;
+  ICON.vector = sq('url(#g-dk)') + rim('#fb923c') + '<path d="M26 74C34 40 52 30 74 34" fill="none" stroke="#fb923c" stroke-width="4" stroke-linecap="round"/><path d="M50 22 62 36 56 62 44 62 38 36z" transform="rotate(38 50 44) translate(6 4)" fill="#fb923c"/><circle cx="50" cy="50" r="3" fill="#05050a" transform="translate(6 4)"/><g fill="#05050a" stroke="#fb923c" stroke-width="3"><rect x="22" y="70" width="8" height="8"/><rect x="70" y="30" width="8" height="8"/></g>' + shine;
+  ICON.motion = sq('url(#g-dk)') + rim('#a78bfa') + '<path d="M20 70C34 30 52 78 66 40S80 36 82 30" fill="none" stroke="#a78bfa" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 9"/><g fill="#a78bfa"><path d="M28 62l7 7-7 7-7-7z"/><path d="M64 38l7 7-7 7-7-7z"/></g><path d="M50 18v64" stroke="#a78bfa" stroke-opacity=".5" stroke-width="2"/><circle cx="50" cy="54" r="5.5" fill="#fff"/>' + shine;
+  ICON.cut = sq('url(#g-dk)') + rim('#fb7185') + '<g fill="#fb7185"><rect x="16" y="30" width="26" height="14" rx="3"/><rect x="46" y="30" width="38" height="14" rx="3" fill-opacity=".55"/><rect x="16" y="50" width="40" height="14" rx="3" fill-opacity=".55"/><rect x="60" y="50" width="24" height="14" rx="3"/></g><path d="M48 20v52" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M42 18h12l-6 8z" fill="#fff"/><path d="M16 76h68" stroke="#fb7185" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/>' + shine;
+
+const TOOL_KEYS = ['retouch', 'vector', 'motion', 'cut'];
+const DOCK = [['services', 'Services'], ['frames', 'Frames'], ['about', 'About'], ['story', 'Story'], ['book', 'Book a session'], ['sep'], ['develop', 'Develop'], ['retouch', 'Retouch'], ['vector', 'Vector'], ['motion', 'Motion'], ['cut', 'Cut'], ['sep2'], ['aj', 'AJ GROUPS']];
+const svgOf = k => `<svg viewBox="0 0 100 100" aria-hidden="true">${ICON[k]}</svg>`;
+const dock = $('dock'); dock.innerHTML = DOCK.map(d => d[0] === 'sep' ? '<hr>' : d[0] === 'sep2' ? '<hr class="xt">' : d[0] === 'aj' ? `<a href="../aj-groups/" data-l="${d[1]}" aria-label="${d[1]}">${svgOf('aj')}</a>` : `<a href="#" data-k="${d[0]}" data-l="${d[1]}" aria-label="${d[1]}" class="${TOOL_KEYS.includes(d[0]) ? 'xt' : ''}">${svgOf(d[0])}</a>`).join('');
+const dks = [...dock.querySelectorAll('a')]; dks.forEach(a => { if (a.dataset.k) a.addEventListener('click', e => { e.preventDefault(); a.classList.remove('bounce'); void a.offsetWidth; a.classList.add('bounce'); if (TOOL_KEYS.includes(a.dataset.k)) openTool(a.dataset.k); else toggleWin(a.dataset.k); }); });
+function dockState() { dks.forEach(a => { const k = a.dataset.k, W = WINS[k]; a.classList.toggle('run', TOOL_KEYS.includes(k) ? !!(WINS.toolkit && WINS.toolkit.open && tkSel === k) : !!(W && W.open)); }); }
 dock.addEventListener('pointermove', e => { if (TOUCH) return; dks.forEach(a => { const r = a.getBoundingClientRect(), d = Math.abs(e.clientX - (r.left + r.width / 2)); a.style.transform = `scale(${(1 + .5 * Math.exp(-(d * d) / 6500)).toFixed(3)})`; }); });
 dock.addEventListener('pointerleave', () => dks.forEach(a => { a.style.transform = ''; }));
 document.addEventListener('click', e => { const t = e.target.closest('[data-open]'); if (t && WINS[t.dataset.open]) openWin(t.dataset.open); });
@@ -187,8 +229,8 @@ document.addEventListener('click', e => { const t = e.target.closest('[data-open
 const dd = $('dd'), MENUS = {
   Fovo: [['About House of Fovo', () => openWin('about')], ['Book a session', () => openWin('book')], 'hr', ['AJ GROUPS ↗', () => { location.href = '../aj-groups/'; }]],
   File: [['New booking', () => openWin('book')], ['Open the roll', () => openWin('frames')], 'hr', ['Close window', () => { const w = topWin(); if (w) closeWin(w.id); }]],
-  View: [['Show desktop', () => Object.values(WINS).forEach(w => { if (w.open) minWin(w.id); })], ['Close all windows', () => Object.values(WINS).forEach(w => { if (w.open) closeWin(w.id); })]],
-  Go: [['Services', () => openWin('services')], ['Frames', () => openWin('frames')], ['Develop', () => openWin('develop')], ['Story', () => openWin('story')], ['About', () => openWin('about')], ['Book', () => openWin('book')]],
+  View: [['Show desktop', () => Object.values(WINS).forEach(w => { if (w.open) minWin(w.id); })], ['Close all windows', () => Object.values(WINS).forEach(w => { if (w.open) closeWin(w.id); })], 'hr', ['Wallpaper: follow the app', () => { wpLock = null; syncWp(); }], ...WP.map((w, i) => ['Wallpaper: ' + w.name, () => { wpLock = i; setWp(i); }])],
+  Go: [['Services', () => openWin('services')], ['Frames', () => openWin('frames')], ['Develop', () => openWin('develop')], ['Toolkit', () => openTool('retouch')], ['Story', () => openWin('story')], ['About', () => openWin('about')], ['Book', () => openWin('book')]],
   Window: [['Minimise', () => { const w = topWin(); if (w) minWin(w.id); }], ['Zoom', () => { const w = topWin(); if (w) zoomWin(w.id); }]],
   Help: [['Drag the photographs around', () => { }], ['Tap one to open it in Preview', () => { }], ['Open apps from the dock', () => { }]]
 };
@@ -201,7 +243,7 @@ const clock = $('clock'), fmt = new Intl.DateTimeFormat('en-GB', { weekday: 'sho
 const tickClock = () => { clock.textContent = fmt.format(new Date()).replace(',', ''); }; tickClock(); setInterval(tickClock, 15000);
 
 /* ---------- the wallpaper comes into focus under the cursor ---------- */
-const wpS = $('wpS'), wpH = $('wpH'), ring = $('ring'); wpS.style.backgroundImage = $('wpSh').style.backgroundImage = `url(${IMG[6]})`;
+const ring = $('ring');
 const ptr = { x: innerWidth * .6, y: innerHeight * .5, tx: innerWidth * .6, ty: innerHeight * .5, last: 0, over: true }, wan = { x: 0, y: 0, next: 0 };
 addEventListener('pointermove', e => { ptr.tx = e.clientX; ptr.ty = e.clientY; ptr.last = performance.now(); ptr.over = !e.target.closest('.win,.dock,.mbar,.dd,.ico'); }, { passive: true });
 let lastEx = '';
@@ -212,7 +254,7 @@ function frame(now) { const dt = Math.min(.05, (now - prev) / 1000); prev = now;
   ptr.x += (ptr.tx - ptr.x) * Math.min(1, dt * 8); ptr.y += (ptr.ty - ptr.y) * Math.min(1, dt * 8);
   const R = SMALL() ? 62 : 85, on = ptr.over && ptr.y > 34 && !openMenu;
   ring.style.width = ring.style.height = R * 2 + 'px'; ring.style.margin = `${-R}px 0 0 ${-R}px`; ring.style.transform = `translate(${ptr.x}px,${ptr.y}px)`; ring.classList.toggle('on', on);
-  wpH.style.clipPath = on ? `circle(${R}px at ${ptr.x.toFixed(1)}px ${ptr.y.toFixed(1)}px)` : 'circle(0 at 0 0)';
+  { const cp = on ? `circle(${R}px at ${ptr.x.toFixed(1)}px ${ptr.y.toFixed(1)}px)` : 'circle(0 at 0 0)'; slots.forEach(s => { s.querySelector('.shw').style.clipPath = cp; }); }
   if (on) { const a = APS[Math.round(clamp(ptr.x / innerWidth) * 7)], s = SHS[Math.round(clamp(ptr.y / innerHeight) * 6)]; if (a + s !== lastEx) { lastEx = a + s; $('exA').textContent = a; $('exS').textContent = s; } }
   rollTick(now, dt); storyTick(now, dt, RM ? 0 : T);
   requestAnimationFrame(frame); }
