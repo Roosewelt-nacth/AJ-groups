@@ -5,171 +5,183 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bun Bun Bakes | Cakes baked for your moment</title>
 <meta name="description" content="Bun Bun Bakes: homemade-taste cakes for every occasion, designed by you and baked to order by real bakers. Part of AJ GROUPS. (Draft)">
-<meta name="theme-color" content="#f7d6e0">
+<meta name="theme-color" content="#aab6cc">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/vt.css?v=4">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Inter:wght@300;400;500&family=Cormorant+Garamond:ital,wght@1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/vt.css?v=5">
 <script src="../assets/vt.js?v=5"></script>
 <style>
 *{box-sizing:border-box}
-:root{--pink:#f7d6e0;--pink2:#f2b9cc;--rose:#e98fb0;--taupe:#8a7467;--ink:#4a3a33;--cream:#fff7f4;--glass:rgba(255,255,255,.34);--line:rgba(138,116,103,.28);--disp:'Comfortaa','Inter',system-ui,sans-serif;--pad:clamp(18px,3.6vw,56px)}
+/* palette sampled from the branding document, Option 5 (blue) and Option 3 (navy) */
+:root{--blue:#aab6cc;--blue-l:#c8d1e1;--blue-xl:#e8edf5;--blue-d:#7f90b0;--blue-dd:#4d6290;--navy:#19253b;--cream:#fff0c1;--ink:#19253b;--mute:rgba(25,37,59,.72);--glass:rgba(255,255,255,.3);--line:rgba(25,37,59,.2);--disp:'Jost','Inter',system-ui,sans-serif;--pad:clamp(18px,3.6vw,56px)}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--pink);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 50% at 18% 12%,#fff3f6 0,transparent 70%),radial-gradient(55% 55% at 88% 30%,#f6b7cd 0,transparent 70%),radial-gradient(70% 60% at 40% 100%,#f1a9c3 0,transparent 70%),var(--pink)}
+body{margin:0;background:var(--blue);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 50% at 16% 10%,#f0f3f9 0,transparent 70%),radial-gradient(55% 55% at 90% 32%,#8c9dbd 0,transparent 70%),radial-gradient(70% 60% at 40% 100%,#97a8c6 0,transparent 70%),var(--blue)}
 a{color:inherit}button,input,select,textarea{font:inherit;color:inherit}
 .mono{font-family:Inter,sans-serif;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+/* the real logo: exact artwork from the branding document, used as a mask so it can take any brand colour */
+.mk,.wm{display:block;background:var(--c,var(--cream));-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
+.mk{-webkit-mask-image:url(../assets/bunbun/logo-mark.png?v=2);mask-image:url(../assets/bunbun/logo-mark.png?v=2);aspect-ratio:453/354}
+.wm{-webkit-mask-image:url(../assets/bunbun/logo-word.png?v=2);mask-image:url(../assets/bunbun/logo-word.png?v=2);aspect-ratio:955/280}
 /* header */
 .top{position:fixed;z-index:30;top:0;left:0;right:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:14px var(--pad)}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--taupe);font-family:var(--disp);font-weight:700;font-size:22px;letter-spacing:-.02em}
-.logo svg{height:28px;width:auto}
-.pill{display:flex;gap:2px;padding:5px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),0 10px 30px rgba(138,60,90,.1)}
-.pill a{font-size:12px;text-decoration:none;color:var(--taupe);padding:8px 16px;border-radius:999px;transition:background .3s,color .3s}.pill a:hover{background:rgba(255,255,255,.6);color:var(--ink)}
+.top::before{content:"";position:absolute;inset:0 0 -18px;background:linear-gradient(180deg,rgba(170,182,204,.78),rgba(170,182,204,0));pointer-events:none;z-index:-1}
+.logo{display:flex;align-items:center;gap:14px;text-decoration:none}.logo .mk{width:38px;--c:var(--navy)}.logo .wm{width:104px;--c:var(--navy)}
+.pill{display:flex;gap:2px;padding:5px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),0 10px 30px rgba(25,37,59,.1)}
+.pill a{font-size:12px;text-decoration:none;color:var(--navy);padding:8px 16px;border-radius:999px;transition:background .3s}.pill a:hover{background:rgba(255,255,255,.55)}
 .right{justify-self:end;display:flex;gap:10px;align-items:center}
-.btn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 20px;border:0;border-radius:999px;background:var(--taupe);color:var(--cream);font-size:13px;font-weight:500;text-decoration:none;cursor:pointer;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .3s,background .3s}
-.btn:hover{box-shadow:0 12px 28px rgba(110,70,80,.3)}.btn.ghost{background:var(--glass);color:var(--taupe);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-/* hero */
-.hero{position:relative;min-height:100vh;min-height:100svh;overflow:hidden;display:grid;place-items:center;text-align:center}
-.hero .grid{position:absolute;inset:0;pointer-events:none}
-.hero .grid i{position:absolute;background:rgba(138,116,103,.22)}
-.hero .grid .v1{left:14%;top:0;bottom:0;width:1px}.hero .grid .v2{right:14%;top:0;bottom:0;width:1px}.hero .grid .h1{left:0;right:0;bottom:22%;height:1px}
-.hero .grid b{position:absolute;width:14px;height:14px;border:1px solid var(--taupe);transform:rotate(45deg);opacity:.6}
-.word{position:absolute;left:0;right:0;top:50%;transform:translateY(-52%);font-family:var(--disp);font-weight:700;font-size:clamp(96px,21vw,340px);line-height:.8;letter-spacing:-.075em;color:var(--taupe);white-space:nowrap;user-select:none;pointer-events:none}
-.word span{display:inline-block;will-change:transform}
-#heroSlot{position:relative;width:min(78vw,540px);aspect-ratio:1;z-index:2;cursor:grab;touch-action:pan-y}
-.hero .tiny{position:absolute;z-index:3;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;line-height:1.9;color:var(--taupe);font-weight:500}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 20px;border:0;border-radius:999px;background:var(--navy);color:var(--cream);font-size:13px;font-weight:500;text-decoration:none;cursor:pointer;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .3s,background .3s}
+.btn:hover{box-shadow:0 12px 28px rgba(25,37,59,.32)}.btn.ghost{background:var(--glass);color:var(--navy);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+/* hero: the identity, no product, just the mark */
+.hero{position:relative;min-height:100vh;min-height:100svh;overflow:hidden;display:grid;place-items:center;text-align:center;padding:110px var(--pad) 120px}
+.hero .grid{position:absolute;inset:0;pointer-events:none}.hero .grid i{position:absolute;background:rgba(25,37,59,.16)}
+.hero .grid .v1{left:14%;top:0;bottom:0;width:1px}.hero .grid .v2{right:14%;top:0;bottom:0;width:1px}.hero .grid .h1{left:0;right:0;bottom:20%;height:1px}
+.hero .grid b{position:absolute;width:14px;height:14px;border:1px solid var(--navy);transform:rotate(45deg);opacity:.45}
+.lock{position:relative;z-index:2;display:grid;justify-items:center;gap:clamp(18px,3vw,34px)}
+.lock .disc{position:relative;width:min(70vw,440px);aspect-ratio:1;display:grid;place-items:center}
+.lock .disc::before{content:"";position:absolute;inset:6%;border-radius:50%;background:radial-gradient(70% 70% at 32% 26%,#dde4f0,#bcc7da 60%,#aab6cc);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 40px 100px rgba(25,37,59,.2)}
+.lock .disc .mk{position:relative;width:62%;filter:drop-shadow(0 12px 22px rgba(25,37,59,.22))}
+.lock .disc svg{position:absolute;inset:-2%;width:104%;height:104%;animation:spin 46s linear infinite}
+.lock .disc text{font:600 12.6px Inter,sans-serif;letter-spacing:.3em;fill:var(--navy);opacity:.8}
+.lock .wm{width:min(70vw,520px);--c:var(--cream);filter:drop-shadow(0 6px 14px rgba(25,37,59,.18))}
+@keyframes spin{to{rotate:360deg}}
+.hero .tiny{position:absolute;z-index:3;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;line-height:1.9;color:var(--navy);font-weight:500}
 .t-a{left:var(--pad);top:110px;max-width:26ch;text-align:left}.t-b{right:var(--pad);bottom:96px;text-align:right}.t-c{left:var(--pad);bottom:96px;text-align:left}
 .cta-row{position:absolute;z-index:4;left:50%;bottom:34px;transform:translateX(-50%);display:flex;gap:10px;white-space:nowrap}
 #cake{position:fixed;left:0;top:0;width:640px;height:640px;z-index:9;pointer-events:none;will-change:transform,opacity}
 /* sections */
 .sec{position:relative;padding:clamp(70px,10vw,150px) var(--pad) 0}
-.lab{display:inline-flex;align-items:center;gap:9px;color:var(--taupe)}.lab::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--rose)}
-h2{margin:12px 0 0;font-family:var(--disp);font-weight:600;font-size:clamp(32px,5vw,76px);letter-spacing:-.05em;line-height:1;color:var(--taupe)}
-h2 em{font-style:normal;color:var(--rose)}
-.sub{max-width:52ch;margin:16px 0 0;color:rgba(74,58,51,.75);line-height:1.65;font-size:clamp(14px,1.2vw,17px)}
-/* builder */
+.lab{display:inline-flex;align-items:center;gap:9px;color:var(--navy)}.lab::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--navy)}
+h2{margin:12px 0 0;font-family:var(--disp);font-weight:400;font-size:clamp(34px,5.2vw,80px);letter-spacing:-.03em;line-height:1;color:var(--navy)}
+h2 em{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;color:var(--blue-dd);letter-spacing:-.02em}
+.sub{max-width:52ch;margin:16px 0 0;color:var(--mute);line-height:1.65;font-size:clamp(14px,1.2vw,17px)}
+/* studio */
 .builder{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(16px,2.4vw,36px);margin-top:clamp(26px,4vw,56px);align-items:start}
-.stage{position:sticky;top:78px;height:min(76vh,720px);border-radius:36px;overflow:hidden;background:radial-gradient(90% 80% at 50% 38%,rgba(255,255,255,.7),rgba(255,255,255,.12) 62%),linear-gradient(160deg,rgba(255,255,255,.4),rgba(255,255,255,.12));-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),inset 0 1.5px 0 #fff,0 30px 80px rgba(138,60,90,.16)}
-.stage .grid{position:absolute;inset:0;pointer-events:none}.stage .grid i{position:absolute;background:rgba(138,116,103,.2)}.stage .g1{left:12%;top:0;bottom:0;width:1px}.stage .g2{right:12%;top:0;bottom:0;width:1px}.stage .g3{left:0;right:0;bottom:16%;height:1px}
+.stage{position:sticky;top:78px;height:min(76vh,720px);border-radius:36px;overflow:hidden;background:radial-gradient(90% 80% at 50% 38%,rgba(255,255,255,.62),rgba(255,255,255,.1) 62%),linear-gradient(160deg,rgba(255,255,255,.4),rgba(255,255,255,.1));-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),inset 0 1.5px 0 #fff,0 30px 80px rgba(25,37,59,.16)}
+.stage .grid{position:absolute;inset:0;pointer-events:none}.stage .grid i{position:absolute;background:rgba(25,37,59,.14)}.stage .g1{left:12%;top:0;bottom:0;width:1px}.stage .g2{right:12%;top:0;bottom:0;width:1px}.stage .g3{left:0;right:0;bottom:16%;height:1px}
 #viewer{position:absolute;inset:0;cursor:grab;touch-action:pan-y}#viewer.drag{cursor:grabbing}
-.stage .corner{position:absolute;left:18px;top:16px;color:var(--taupe)}.stage .hint{position:absolute;left:0;right:0;bottom:18px;text-align:center;color:var(--taupe);pointer-events:none}
-.price{position:absolute;right:16px;top:12px;text-align:right;color:var(--taupe);pointer-events:none}.price b{display:block;font-family:var(--disp);font-size:clamp(24px,3vw,38px);letter-spacing:-.04em;font-weight:700}
-.tools{position:absolute;right:14px;bottom:14px;display:flex;gap:8px;z-index:3}
-.tools button{height:38px;padding:0 14px;border-radius:999px;border:0;background:rgba(255,255,255,.7);color:var(--taupe);font-size:12px;font-weight:500;cursor:pointer;box-shadow:inset 0 0 0 1px #fff;transition:background .3s,transform .3s cubic-bezier(.2,.8,.2,1)}.tools button:active{transform:scale(.94)}.tools button.on{background:var(--taupe);color:var(--cream)}
-.panel{border-radius:36px;padding:clamp(18px,2.2vw,32px);background:linear-gradient(160deg,rgba(255,255,255,.5),rgba(255,255,255,.18));-webkit-backdrop-filter:blur(26px) saturate(1.6);backdrop-filter:blur(26px) saturate(1.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),inset 0 1.5px 0 #fff,0 30px 80px rgba(138,60,90,.14)}
-.step{padding:16px 0;border-top:1px solid rgba(138,116,103,.2)}.step:first-child{border-top:0;padding-top:0}
-.step h3{margin:0 0 10px;display:flex;justify-content:space-between;align-items:baseline;font-family:var(--disp);font-weight:600;font-size:15px;color:var(--taupe);letter-spacing:-.02em}.step h3 small{font:500 10.5px Inter;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.stage .corner{position:absolute;left:18px;top:16px;color:var(--navy)}.stage .hint{position:absolute;left:0;right:0;bottom:18px;text-align:center;color:var(--navy);pointer-events:none}
+.price{position:absolute;right:16px;top:12px;text-align:right;color:var(--navy);pointer-events:none;z-index:4}.price b{display:block;font-family:var(--disp);font-size:clamp(26px,3vw,40px);letter-spacing:-.03em;font-weight:500}
+.tools{position:absolute;right:14px;bottom:14px;display:flex;gap:8px;z-index:4}
+.tools button{height:38px;padding:0 14px;border-radius:999px;border:0;background:rgba(255,255,255,.7);color:var(--navy);font-size:12px;font-weight:500;cursor:pointer;box-shadow:inset 0 0 0 1px #fff;transition:background .3s,transform .3s cubic-bezier(.2,.8,.2,1)}.tools button:active{transform:scale(.94)}.tools button.on{background:var(--navy);color:var(--cream)}
+.panel{border-radius:36px;padding:clamp(18px,2.2vw,32px);background:linear-gradient(160deg,rgba(255,255,255,.5),rgba(255,255,255,.16));-webkit-backdrop-filter:blur(26px) saturate(1.6);backdrop-filter:blur(26px) saturate(1.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),inset 0 1.5px 0 #fff,0 30px 80px rgba(25,37,59,.14)}
+.step{padding:16px 0;border-top:1px solid rgba(25,37,59,.16)}.step:first-child{border-top:0;padding-top:0}
+.step h3{margin:0 0 10px;display:flex;justify-content:space-between;align-items:baseline;font-family:var(--disp);font-weight:500;font-size:15px;color:var(--navy);letter-spacing:-.01em}.step h3 small{font:500 10.5px Inter;letter-spacing:.14em;text-transform:uppercase;opacity:.65}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:0;padding:9px 14px;border-radius:999px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9);color:var(--taupe);font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .3s,transform .35s cubic-bezier(.2,.8,.2,1),color .3s,box-shadow .3s}
-.chip:hover{transform:translateY(-2px)}.chip:active{transform:scale(.95)}.chip.on{background:var(--taupe);color:var(--cream);box-shadow:0 8px 20px rgba(110,70,80,.28)}
-.chip i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)}
-.msg{width:100%;padding:12px 16px;border:0;border-radius:16px;background:rgba(255,255,255,.65);box-shadow:inset 0 0 0 1px #fff;outline:0;font-size:14px}.msg:focus{box-shadow:inset 0 0 0 2px var(--rose)}
-.sum{margin-top:6px;padding:16px;border-radius:20px;background:rgba(255,255,255,.55);font-size:13px;line-height:1.6;color:var(--ink)}
+.chip{border:0;padding:9px 14px;border-radius:999px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9);color:var(--navy);font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .3s,transform .35s cubic-bezier(.2,.8,.2,1),color .3s,box-shadow .3s}
+.chip:hover{transform:translateY(-2px)}.chip:active{transform:scale(.95)}.chip.on{background:var(--navy);color:var(--cream);box-shadow:0 8px 20px rgba(25,37,59,.3)}
+.chip i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)}
+.msg{width:100%;padding:12px 16px;border:0;border-radius:16px;background:rgba(255,255,255,.65);box-shadow:inset 0 0 0 1px #fff;outline:0;font-size:14px}.msg:focus{box-shadow:inset 0 0 0 2px var(--blue-dd)}
+.sum{margin-top:6px;padding:16px;border-radius:20px;background:rgba(255,255,255,.55);font-size:13px;line-height:1.6}
 .go{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
-/* occasions */
-.occ{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:clamp(26px,4vw,50px)}
-.oc{position:relative;min-height:clamp(220px,24vw,320px);padding:18px;border-radius:30px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;cursor:pointer;border:0;text-align:left;background:linear-gradient(160deg,rgba(255,255,255,.55),rgba(255,255,255,.16));-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.75),0 20px 50px rgba(138,60,90,.12);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
-.oc::before{content:"";position:absolute;inset:0;background:var(--g);opacity:0;transition:opacity .5s}.oc:hover::before,.oc.on::before{opacity:1}.oc:hover{transform:translateY(-6px)}
-.oc>*{position:relative}.oc span{font:500 11px Inter;letter-spacing:.16em;color:var(--taupe)}.oc b{font-family:var(--disp);font-weight:700;font-size:clamp(20px,2vw,28px);letter-spacing:-.04em;color:var(--taupe);line-height:1}.oc p{margin:6px 0 0;font-size:12.5px;line-height:1.5;color:rgba(74,58,51,.78)}
-.oc .em{font-size:44px;line-height:1}
-/* how */
-.how{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:clamp(26px,4vw,50px);border-top:1px solid var(--line)}
-.hw{padding:22px 18px 0 0;position:relative}.hw::before{content:"";position:absolute;left:0;top:-5px;width:9px;height:9px;border-radius:50%;background:var(--rose)}
-.hw b{font-family:var(--disp);font-size:clamp(34px,4vw,56px);font-weight:700;color:rgba(138,116,103,.35);letter-spacing:-.06em}.hw h3{margin:8px 0 6px;font-family:var(--disp);font-size:18px;color:var(--taupe);letter-spacing:-.03em}.hw p{margin:0;font-size:13.5px;line-height:1.6;color:rgba(74,58,51,.78)}
-/* bakers */
+/* stage dressing */
+.bgword{position:absolute;left:0;right:0;top:22%;text-align:center;font-family:var(--disp);font-weight:300;font-size:clamp(70px,13vw,190px);letter-spacing:-.05em;line-height:.8;color:rgba(255,255,255,.55);white-space:nowrap;pointer-events:none}
+.hill{position:absolute;left:-10%;right:-10%;bottom:-30%;height:58%;border-radius:50% 50% 0 0/38% 38% 0 0;background:radial-gradient(80% 90% at 50% 0,#c4cee1,#9eaccb 70%);box-shadow:inset 0 10px 30px rgba(255,255,255,.55)}
+.float{position:absolute;inset:0;pointer-events:none;overflow:hidden}.float i{position:absolute;width:8px;height:8px;border-radius:50% 50% 50% 0;background:var(--c,#fff);opacity:.8;animation:fl var(--t,7s) ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes fl{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-26px) rotate(160deg)}}
+.route{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none;transition:opacity .5s;z-index:2}.stage.ship .route{opacity:1}
+.status{position:absolute;left:50%;top:56px;translate:-50% 0;padding:9px 16px;border-radius:999px;background:var(--navy);color:var(--cream);opacity:0;transition:opacity .4s;white-space:nowrap;pointer-events:none;z-index:4}.status.on{opacity:1}
+.qty{display:inline-flex;align-items:center;gap:6px;padding:4px;border-radius:999px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px #fff}.qty button{width:36px;height:36px;border-radius:50%;border:0;background:var(--navy);color:var(--cream);font-size:18px;cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1)}.qty button:active{transform:scale(.88)}.qty b{min-width:32px;text-align:center;font-family:var(--disp)}
+.shipRow{display:flex;gap:8px;margin-top:10px}.shipRow .msg{flex:1}.shipMsg{margin:10px 0 0;font-size:13px;line-height:1.5;min-height:1.5em}.shipMsg.ok{color:#2f6b52}.shipMsg.no{color:#a2405a}
+.go .btn[disabled]{opacity:.6;pointer-events:none}
+/* occasions arc, each card a render of the real cake */
+.arc{position:relative;height:clamp(440px,52vw,610px);margin-top:clamp(18px,3vw,40px);overflow:hidden;border-radius:44px;touch-action:pan-y;cursor:grab;user-select:none;background:linear-gradient(160deg,rgba(255,255,255,.4),rgba(255,255,255,.1));box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
+.arc.drag{cursor:grabbing}
+.arcblob{position:absolute;left:50%;bottom:-38%;width:min(120%,1100px);aspect-ratio:1;translate:-50% 0;border-radius:50%;background:radial-gradient(60% 60% at 50% 30%,#cdd6e6,#a9b7d0 60%,#93a3c3)}
+.arcring{position:absolute;left:50%;bottom:-62%;width:min(150%,1200px);aspect-ratio:1;translate:-50% 0;animation:spin 60s linear infinite reverse;pointer-events:none}
+.arcring text{font:600 17px Inter,sans-serif;letter-spacing:.34em;fill:rgba(255,240,193,.95)}
+.arcrail{position:absolute;inset:0}
+.ac{position:absolute;left:50%;top:44%;width:clamp(150px,17vw,210px);aspect-ratio:.78;margin:calc(clamp(150px,17vw,210px)*-.64) 0 0 calc(clamp(150px,17vw,210px)*-.5);border-radius:28px;border:0;padding:10px 10px 14px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;cursor:pointer;background:linear-gradient(160deg,rgba(255,255,255,.72),rgba(255,255,255,.34));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 0 0 1px #fff,0 24px 50px rgba(25,37,59,.2);will-change:transform;transition:box-shadow .4s}
+.ac img{width:100%;flex:1;min-height:0;object-fit:contain;pointer-events:none}.ac b{font-family:var(--disp);font-weight:500;font-size:clamp(14px,1.4vw,18px);color:var(--navy);letter-spacing:-.01em}.ac small{display:block;font:500 10px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-top:2px}
+.ac.on{box-shadow:inset 0 0 0 2px #fff,0 30px 70px rgba(25,37,59,.32)}
+.arcpill{position:absolute;left:50%;bottom:20px;translate:-50% 0;z-index:5;height:42px;padding:0 20px;border:0;border-radius:999px;background:var(--navy);color:var(--cream);font-size:13px;font-weight:500;cursor:pointer;box-shadow:0 14px 30px rgba(25,37,59,.3);transition:transform .35s cubic-bezier(.2,.8,.2,1)}.arcpill:active{transform:scale(.94)}
+.arcnav{position:absolute;left:16px;right:16px;top:50%;display:flex;justify-content:space-between;pointer-events:none;z-index:4}.arcnav button{pointer-events:auto;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.7);color:var(--navy);font-size:18px;cursor:pointer;box-shadow:inset 0 0 0 1px #fff;transition:transform .3s cubic-bezier(.2,.8,.2,1)}.arcnav button:active{transform:scale(.9)}
+/* how, bakers, order */
+.how{display:grid;grid-template-columns:repeat(4,1fr);margin-top:clamp(26px,4vw,50px);border-top:1px solid var(--line)}
+.hw{padding:22px 18px 0 0;position:relative}.hw::before{content:"";position:absolute;left:0;top:-5px;width:9px;height:9px;border-radius:50%;background:var(--navy)}
+.hw b{font-family:var(--disp);font-weight:300;font-size:clamp(34px,4vw,56px);color:rgba(25,37,59,.3);letter-spacing:-.05em}.hw h3{margin:8px 0 6px;font-family:var(--disp);font-weight:500;font-size:18px;letter-spacing:-.01em}.hw p{margin:0;font-size:13.5px;line-height:1.6;color:var(--mute)}
 .bakers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(26px,4vw,50px)}
-.bk{padding:24px;border-radius:30px;background:linear-gradient(160deg,rgba(255,255,255,.5),rgba(255,255,255,.16));-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.75),0 20px 50px rgba(138,60,90,.1)}
-.bk .av{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#f6b7cd,#fff3f6);font-family:var(--disp);font-weight:700;font-size:24px;color:var(--taupe);box-shadow:inset 0 0 0 2px #fff}
-.bk h3{margin:16px 0 4px;font-family:var(--disp);font-size:20px;color:var(--taupe);letter-spacing:-.03em}.bk p{margin:0;font-size:13.5px;line-height:1.6;color:rgba(74,58,51,.78)}
-/* order */
+.bk{padding:24px;border-radius:30px;background:linear-gradient(160deg,rgba(255,255,255,.5),rgba(255,255,255,.16));-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.75),0 20px 50px rgba(25,37,59,.1)}
+.bk .av{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#dfe6f2,var(--blue-l));font-family:var(--disp);font-weight:500;font-size:24px;box-shadow:inset 0 0 0 2px #fff}
+.bk h3{margin:16px 0 4px;font-family:var(--disp);font-weight:500;font-size:20px}.bk p{margin:0;font-size:13.5px;line-height:1.6;color:var(--mute)}
 .order{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,50px);align-items:start;margin-top:clamp(26px,4vw,50px)}
-form.f{display:grid;gap:12px}.f label span{display:block;margin:0 0 6px;color:var(--taupe)}.f input,.f select,.f textarea{width:100%;padding:13px 16px;border:0;border-radius:16px;background:rgba(255,255,255,.65);box-shadow:inset 0 0 0 1px #fff;outline:0}.f input:focus,.f select:focus,.f textarea:focus{box-shadow:inset 0 0 0 2px var(--rose)}.f textarea{min-height:90px;resize:vertical}.f .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+form.f{display:grid;gap:12px}.f label span{display:block;margin:0 0 6px}.f input,.f select,.f textarea{width:100%;padding:13px 16px;border:0;border-radius:16px;background:rgba(255,255,255,.65);box-shadow:inset 0 0 0 1px #fff;outline:0}.f input:focus,.f select:focus,.f textarea:focus{box-shadow:inset 0 0 0 2px var(--blue-dd)}.f textarea{min-height:90px;resize:vertical}.f .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .thanks{display:none;padding:18px;border-radius:20px;background:rgba(255,255,255,.7);font-size:14px;line-height:1.6}.thanks.on{display:block}
-.foot{margin-top:clamp(70px,10vw,140px);padding:26px var(--pad) 120px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);font-size:12px;color:var(--taupe)}.foot a{text-decoration:none;color:var(--ink)}
-.draft{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:29;padding:6px 14px;border-radius:999px;background:rgba(74,58,51,.82);color:var(--cream);font:500 10.5px Inter;letter-spacing:.16em;text-transform:uppercase;pointer-events:none;white-space:nowrap}
-@media (max-width:760px){.draft{font-size:9px;padding:5px 11px}}
+.foot{margin-top:clamp(70px,10vw,140px);padding:26px var(--pad) 120px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);font-size:12px}.foot a{text-decoration:none}
+.draft{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:29;padding:6px 14px;border-radius:999px;background:rgba(25,37,59,.86);color:var(--cream);font:500 10.5px Inter;letter-spacing:.16em;text-transform:uppercase;pointer-events:none;white-space:nowrap}
 .rv{opacity:0;transform:translateY(40px);filter:blur(8px);transition:opacity .7s ease,transform .95s cubic-bezier(.16,1,.3,1),filter .7s ease;transition-delay:var(--rd,0s)}.rv.in{opacity:1;transform:none;filter:none}
-a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--taupe);outline-offset:3px}
-@media (max-width:1000px){.pill{display:none}.top{grid-template-columns:1fr auto}.occ{grid-template-columns:repeat(2,1fr)}.how{grid-template-columns:1fr 1fr;row-gap:30px}.bakers{grid-template-columns:1fr}.order{grid-template-columns:1fr}}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--navy);outline-offset:3px}
+@media (max-width:1000px){.pill{display:none}.top{grid-template-columns:1fr auto}.how{grid-template-columns:1fr 1fr;row-gap:30px}.bakers{grid-template-columns:1fr}.order{grid-template-columns:1fr}}
 @media (max-width:760px){
  .builder{grid-template-columns:1fr;gap:0}
- .stage{top:62px;height:44vh;border-radius:28px;z-index:5}
- .panel{margin-top:-20px;padding-top:34px;border-radius:30px 30px 36px 36px}
- .t-a{top:96px;max-width:20ch}.t-b{display:none}.t-c{display:none}
- .cta-row{bottom:92px}.draft{top:62px}
- .tools{right:10px;bottom:10px}.price{right:12px}
- .occ{grid-template-columns:1fr 1fr}.how{grid-template-columns:1fr}
- .logo span{display:none}
+ .stage{top:62px;height:44vh;border-radius:28px;z-index:5}.panel{margin-top:-20px;padding-top:34px;border-radius:30px 30px 36px 36px}
+ .t-a{top:96px;max-width:20ch}.t-b,.t-c{display:none}.cta-row{bottom:92px}.draft{top:62px;font-size:9px;padding:5px 11px}
+ .tools{right:10px;bottom:10px}.price{right:12px}.arc{height:470px;border-radius:32px}.ac{top:42%}.arcnav{display:none}.how{grid-template-columns:1fr}
+ .logo .wm{display:none}.status{top:50px}.bgword{top:26%}.lock .disc{width:min(78vw,360px)}
 }
-@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none;transition:none}.lock .disc svg,.arcring{animation:none}}
 
-/* hero ring and blob */
-.blob{position:absolute;left:50%;top:52%;width:min(92vw,760px);aspect-ratio:1.1;transform:translate(-50%,-50%) rotate(-8deg);background:radial-gradient(70% 70% at 30% 25%,#f4a9c3,#e98fb0 55%,#dd7aa0);border-radius:46% 54% 52% 48% / 55% 45% 55% 45%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 40px 100px rgba(200,90,130,.3);animation:blobm 14s ease-in-out infinite alternate;pointer-events:none}
-@keyframes blobm{to{border-radius:52% 48% 44% 56% / 46% 56% 44% 54%;transform:translate(-50%,-50%) rotate(6deg)}}
-.ring{position:absolute;left:50%;top:52%;width:min(88vw,640px);aspect-ratio:1;translate:-50% -50%;animation:spin 40s linear infinite;pointer-events:none;overflow:visible}
-.ring text,.arcring text{font:600 17px Inter,sans-serif;letter-spacing:.34em;fill:rgba(255,247,244,.9)}
-@keyframes spin{to{rotate:360deg}}
-/* occasions arc */
-.arc{position:relative;height:clamp(420px,52vw,600px);margin-top:clamp(18px,3vw,40px);overflow:hidden;border-radius:44px;touch-action:pan-y;cursor:grab;user-select:none;background:linear-gradient(160deg,rgba(255,255,255,.4),rgba(255,255,255,.1));box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
-.arc.drag{cursor:grabbing}
-.arcblob{position:absolute;left:50%;bottom:-38%;width:min(120%,1100px);aspect-ratio:1;translate:-50% 0;border-radius:50%;background:radial-gradient(60% 60% at 50% 30%,#f2a6c1,#e58aad 60%,#d97299)}
-.arcring{position:absolute;left:50%;bottom:-62%;width:min(150%,1200px);aspect-ratio:1;translate:-50% 0;animation:spin 60s linear infinite reverse;pointer-events:none}
-.arcrail{position:absolute;inset:0}
-.ac{position:absolute;left:50%;top:44%;width:clamp(150px,17vw,210px);aspect-ratio:.78;margin:calc(clamp(150px,17vw,210px)*-.64) 0 0 calc(clamp(150px,17vw,210px)*-.5);border-radius:28px;border:0;padding:14px 12px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;cursor:pointer;background:linear-gradient(160deg,rgba(255,255,255,.7),rgba(255,255,255,.32));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 0 0 1px #fff,0 24px 50px rgba(138,60,90,.22);will-change:transform;transition:box-shadow .4s}
-.ac svg{width:78%;height:auto;flex:1;min-height:0}.ac b{font-family:var(--disp);font-weight:700;font-size:clamp(14px,1.4vw,18px);color:var(--taupe);letter-spacing:-.03em}.ac small{display:block;font:500 10px Inter;letter-spacing:.14em;text-transform:uppercase;color:rgba(74,58,51,.7);margin-top:2px}
-.ac.on{box-shadow:inset 0 0 0 2px #fff,0 30px 70px rgba(138,60,90,.35)}
-.arcpill{position:absolute;left:50%;bottom:20px;translate:-50% 0;z-index:5;height:42px;padding:0 20px;border:0;border-radius:999px;background:var(--taupe);color:var(--cream);font-size:13px;font-weight:500;cursor:pointer;box-shadow:0 14px 30px rgba(110,70,80,.3);transition:transform .35s cubic-bezier(.2,.8,.2,1)}.arcpill:active{transform:scale(.94)}
-.arcnav{position:absolute;left:16px;right:16px;top:50%;display:flex;justify-content:space-between;pointer-events:none;z-index:4}.arcnav button{pointer-events:auto;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.7);color:var(--taupe);font-size:18px;cursor:pointer;box-shadow:inset 0 0 0 1px #fff;transition:transform .3s cubic-bezier(.2,.8,.2,1)}.arcnav button:active{transform:scale(.9)}
-@media (max-width:760px){.arc{height:470px;border-radius:32px}.ac{top:42%}.arcnav{display:none}.ring text{font-size:15px}}
-@media (prefers-reduced-motion:reduce){.blob,.ring,.arcring{animation:none}}
-
-/* studio: product-on-a-hill staging */
-.bgword{position:absolute;left:0;right:0;top:22%;text-align:center;font-family:var(--disp);font-weight:700;font-size:clamp(70px,13vw,190px);letter-spacing:-.07em;line-height:.8;color:rgba(255,255,255,.55);white-space:nowrap;pointer-events:none;transition:opacity .4s}
-.hill{position:absolute;left:-10%;right:-10%;bottom:-30%;height:58%;border-radius:50% 50% 0 0/38% 38% 0 0;background:radial-gradient(80% 90% at 50% 0,#f6b4cb,#e98fb0 70%);box-shadow:inset 0 10px 30px rgba(255,255,255,.5)}
-.float{position:absolute;inset:0;pointer-events:none;overflow:hidden}.float i{position:absolute;width:9px;height:9px;border-radius:50% 50% 50% 0;background:var(--c,#fff);opacity:.85;animation:fl var(--t,7s) ease-in-out infinite;animation-delay:var(--d,0s)}
-@keyframes fl{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-26px) rotate(160deg)}}
-.stage .tools{z-index:4}.stage .price{z-index:4}
-.route{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none;transition:opacity .5s;z-index:2}.stage.ship .route{opacity:1}
-.status{position:absolute;left:50%;top:56px;translate:-50% 0;padding:9px 16px;border-radius:999px;background:var(--taupe);color:var(--cream);opacity:0;transition:opacity .4s;white-space:nowrap;pointer-events:none;z-index:4}.status.on{opacity:1}
-.qty{display:inline-flex;align-items:center;gap:6px;padding:4px;border-radius:999px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px #fff}.qty button{width:36px;height:36px;border-radius:50%;border:0;background:var(--taupe);color:var(--cream);font-size:18px;cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1)}.qty button:active{transform:scale(.88)}.qty b{min-width:32px;text-align:center;font-family:var(--disp)}
-.shipRow{display:flex;gap:8px;margin-top:10px}.shipRow .msg{flex:1}.shipMsg{margin:10px 0 0;font-size:13px;line-height:1.5;color:var(--ink);min-height:1.5em}.shipMsg.ok{color:#3f7a58}.shipMsg.no{color:#b04a62}
-.go .btn[disabled]{opacity:.6;pointer-events:none}
-@media (max-width:760px){.status{top:50px}.bgword{top:26%}}
+/* readjustments */
+.dtag{padding:7px 11px;border-radius:999px;background:var(--navy);color:var(--cream);font-size:9.5px}
+.arcring{bottom:-78%;width:min(170%,1360px);opacity:.5}.arcring text{font-size:15px}
+.hero .lock{margin-top:-2vh}
+.stage{top:84px}
+.panel{min-width:0}
+@media (min-width:1001px){.builder{align-items:start}.stage{height:min(calc(100vh - 110px),720px)}}
+@media (max-width:760px){
+ .dtag{padding:6px 9px;font-size:9px}
+ .stage{top:66px;height:40vh;min-height:300px}
+ .stage .hint{display:none}
+ .tools{left:50%;right:auto;bottom:10px;translate:-50% 0;gap:6px;width:max-content;max-width:calc(100% - 20px)}
+ .tools button{height:32px;padding:0 12px;font-size:11px}
+ .price b{font-size:24px}.bgword{top:20%}
+ .panel{margin-top:-16px;padding-top:30px}
+ .arcring{bottom:-60%;width:min(200%,900px)}
+ .cta-row{bottom:96px}
+ .step h3{margin-bottom:8px}
+}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 </head>
 <body>
 <header class="top" id="top">
-  <a class="logo" href="#hero" aria-label="Bun Bun Bakes home"><svg viewBox="0 0 108 60" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8v24a14 14 0 0 0 28 0V8"/><path d="M12 54h20"/><path d="M62 52V28a14 14 0 0 1 28 0v24"/><path d="M66 8h20"/></svg><span>Bun Bun</span></a>
-  <nav class="pill" aria-label="Main"><a href="#build">Design a cake</a><a href="#occasions">Occasions</a><a href="#how">How it works</a><a href="#order">Order</a></nav>
-  <div class="right"><a class="btn ghost" href="../aj-groups/">AJ GROUPS ↗</a></div>
+  <a class="logo" href="#hero" aria-label="Bun Bun Bakes home"><i class="mk"></i><i class="wm"></i></a>
+  <nav class="pill" aria-label="Main"><a href="#occasions">Occasions</a><a href="#build">Design a cake</a><a href="#how">How it works</a><a href="#order">Order</a></nav>
+  <div class="right"><span class="dtag mono" title="Draft: blue palette, logo option 4">Draft</span><a class="btn ghost" href="../aj-groups/">AJ GROUPS ↗</a></div>
 </header>
-<div class="draft">Draft · pink · logo option 4</div>
 <canvas id="cake" width="640" height="640" aria-hidden="true"></canvas>
 <main>
   <section class="hero" id="hero">
-    <div class="grid" aria-hidden="true"><i class="v1"></i><i class="v2"></i><i class="h1"></i><b style="left:calc(14% - 7px);top:22%"></b><b style="right:calc(14% - 7px);bottom:calc(22% - 7px)"></b></div>
-    <div class="blob" aria-hidden="true"></div>
-    <svg class="ring" viewBox="0 0 400 400" aria-hidden="true"><defs><path id="rp" d="M200,200 m-170,0 a170,170 0 1,1 340,0 a170,170 0 1,1 -340,0"/></defs><text><textPath href="#rp">BAKED FRESH · HOMEMADE TASTE · BAKED WITH LOVE · MADE TO ORDER · </textPath></text></svg>
-    <div class="word" aria-hidden="true"><span>B</span><span>u</span><span>n</span><span>B</span><span>u</span><span>n</span></div>
-    <div id="heroSlot" aria-label="A cake you can spin"></div>
+    <div class="grid" aria-hidden="true"><i class="v1"></i><i class="v2"></i><i class="h1"></i><b style="left:calc(14% - 7px);top:22%"></b><b style="right:calc(14% - 7px);bottom:calc(20% - 7px)"></b></div>
+    <div class="lock">
+      <div class="disc"><svg viewBox="0 0 400 400" aria-hidden="true"><defs><path id="rp" d="M200,200 m-186,0 a186,186 0 1,1 372,0 a186,186 0 1,1 -372,0"/></defs><text><textPath href="#rp">BAKED FRESH · HOMEMADE TASTE · MADE TO ORDER · BAKED WITH LOVE · </textPath></text></svg><i class="mk" role="img" aria-label="Bun Bun mark"></i></div>
+      <i class="wm" role="img" aria-label="Bun Bun"></i>
+    </div>
     <p class="tiny t-a">Homemade taste.<br>Baked to order.<br>Designed by you.</p>
     <p class="tiny t-b">Birthdays · Weddings<br>Anniversaries · Baby showers</p>
-    <p class="tiny t-c">[ Drag to spin ]</p>
-    <div class="cta-row"><a class="btn" href="#build">Design your cake</a><a class="btn ghost" href="#occasions">Browse occasions</a></div>
+    <p class="tiny t-c">[ Cakes for every occasion ]</p>
+    <div class="cta-row"><a class="btn" href="#occasions">Choose an occasion</a><a class="btn ghost" href="#build">Go to the studio</a></div>
+  </section>
+
+  <section class="sec" id="occasions">
+    <span class="lab mono">Occasions</span>
+    <h2>Start with the <em>moment</em></h2>
+    <p class="sub">Drag the arc or use the arrows and pick an occasion. The cake studio sets itself up for it, and then you can change anything: tiers, sponge, buttercream, decoration and the message.</p>
+    <div class="arc" id="arc" role="listbox" aria-label="Occasions"><div class="arcblob" aria-hidden="true"></div><svg class="arcring" viewBox="0 0 400 400" aria-hidden="true"><defs><path id="rp2" d="M200,200 m-176,0 a176,176 0 1,1 352,0 a176,176 0 1,1 -352,0"/></defs><text><textPath href="#rp2">CHOOSE YOUR MOMENT · CHOOSE YOUR MOMENT · CHOOSE YOUR MOMENT · </textPath></text></svg><div class="arcrail" id="arcrail"></div><button class="arcpill" id="arcpill" type="button">Design this cake →</button><div class="arcnav"><button type="button" id="arcp" aria-label="Previous">←</button><button type="button" id="arcn" aria-label="Next">→</button></div></div>
   </section>
 
   <section class="sec" id="build">
     <span class="lab mono">Cake studio</span>
     <h2>Make it <em>yours,</em><br>we bake it.</h2>
-    <p class="sub">Pick the occasion, stack the tiers, choose flavour, frosting and toppings. Switch on Decorate and tap the cake to place cherries and stars wherever you like. A baker confirms every order by call.</p>
+    <p class="sub">Your occasion is already set. Change the tiers, sponge, finish and decoration, or switch occasion below. Switch on Decorate and tap the cake to place strawberries and macarons wherever you like. A baker confirms every order by call.</p>
     <div class="builder">
       <div class="stage">
         <div class="grid" aria-hidden="true"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
         <div class="bgword" id="bgword" aria-hidden="true">Birthday</div>
         <div class="hill" aria-hidden="true"></div>
         <div class="float" id="float" aria-hidden="true"></div>
-        <svg class="route" id="route" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path id="routep" d="M60 236 C 130 250, 150 120, 230 140 S 330 70, 346 78" fill="none" stroke="#8a7467" stroke-width="2.4" stroke-dasharray="3 9" stroke-linecap="round"/><g id="pinA"><circle cx="60" cy="236" r="7" fill="#e98fb0"/><text x="60" y="262" text-anchor="middle" font-size="11" fill="#8a7467" font-family="Inter" font-weight="600" letter-spacing="1.5">KITCHEN</text></g><g id="pinB"><path d="M346 62l14 12v16h-9v-9h-10v9h-9V74z" fill="#8a7467"/><text x="346" y="112" text-anchor="middle" font-size="11" fill="#8a7467" font-family="Inter" font-weight="600" letter-spacing="1.5">HOME</text></g><g id="scoot"><circle r="13" fill="#fff7f4" stroke="#8a7467" stroke-width="2"/><path d="M-6 3h12M-4 3l2-7h5" stroke="#8a7467" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
+        <svg class="route" id="route" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path id="routep" d="M60 236 C 130 250, 150 120, 230 140 S 330 70, 346 78" fill="none" stroke="#19253b" stroke-width="2.4" stroke-dasharray="3 9" stroke-linecap="round"/><g id="pinA"><circle cx="60" cy="236" r="7" fill="#19253b"/><text x="60" y="262" text-anchor="middle" font-size="11" fill="#19253b" font-family="Inter" font-weight="600" letter-spacing="1.5">KITCHEN</text></g><g id="pinB"><path d="M346 62l14 12v16h-9v-9h-10v9h-9V74z" fill="#19253b"/><text x="346" y="112" text-anchor="middle" font-size="11" fill="#19253b" font-family="Inter" font-weight="600" letter-spacing="1.5">HOME</text></g><g id="scoot"><circle r="13" fill="#fff0c1" stroke="#19253b" stroke-width="2"/><path d="M-6 3h12M-4 3l2-7h5" stroke="#19253b" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
         <div class="status mono" id="status" role="status"></div>
         <div id="viewer" aria-label="Your cake. Drag to rotate."></div>
         <span class="corner mono">Your cake</span>
@@ -180,25 +192,20 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
       <div class="panel">
         <div class="step"><h3>Occasion <small>1</small></h3><div class="chips" id="c-occ"></div></div>
         <div class="step"><h3>Tiers <small id="serves">2</small></h3><div class="chips" id="c-tiers"></div></div>
-        <div class="step"><h3>Sponge <small>3</small></h3><div class="chips" id="c-flavour"></div></div>
-        <div class="step"><h3>Frosting <small>4</small></h3><div class="chips" id="c-frost"></div></div>
-        <div class="step"><h3>Drip <small>5</small></h3><div class="chips" id="c-drip"></div></div>
-        <div class="step"><h3>Toppings <small>6</small></h3><div class="chips" id="c-tops"></div></div>
-        <div class="step"><h3>Message <small>7</small></h3><input class="msg" id="msg" maxlength="22" placeholder="Happy Birthday" aria-label="Cake message"></div>
-        <div class="step"><h3>Quantity <small>8</small></h3><div class="qty"><button type="button" id="qm" aria-label="One less">−</button><b id="qn">1</b><button type="button" id="qp" aria-label="One more">+</button></div></div>
-        <div class="step"><h3>Delivery <small>9</small></h3><div class="chips" id="c-ship"></div><div class="shipRow" id="shipRow"><input class="msg" id="pin" inputmode="numeric" maxlength="6" placeholder="Your 6-digit pincode" aria-label="Pincode"><button type="button" class="btn ghost" id="pinGo">Check</button></div><p class="shipMsg" id="shipMsg"></p></div>
+        <div class="step"><h3>Finish <small>3</small></h3><div class="chips" id="c-style"></div></div>
+        <div class="step"><h3>Sponge <small>4</small></h3><div class="chips" id="c-flavour"></div></div>
+        <div class="step"><h3>Buttercream <small>5</small></h3><div class="chips" id="c-frost"></div></div>
+        <div class="step"><h3>Drip <small>6</small></h3><div class="chips" id="c-drip"></div></div>
+        <div class="step"><h3>Decoration <small>7</small></h3><div class="chips" id="c-tops"></div></div>
+        <div class="step"><h3>Message <small>8</small></h3><input class="msg" id="msg" maxlength="22" placeholder="Happy Birthday" aria-label="Cake message"></div>
+        <div class="step"><h3>Quantity <small>9</small></h3><div class="qty"><button type="button" id="qm" aria-label="One less">−</button><b id="qn">1</b><button type="button" id="qp" aria-label="One more">+</button></div></div>
+        <div class="step"><h3>Delivery <small>10</small></h3><div class="chips" id="c-ship"></div><div class="shipRow" id="shipRow"><input class="msg" id="pin" inputmode="numeric" maxlength="6" placeholder="Your 6-digit pincode" aria-label="Pincode"><button type="button" class="btn ghost" id="pinGo">Check</button></div><p class="shipMsg" id="shipMsg"></p></div>
         <div class="sum" id="sum"></div>
         <div class="go"><button class="btn" id="bPack" type="button">Pack it and send home →</button><a class="btn ghost" href="#order">Order details</a></div>
       </div>
     </div>
   </section>
 
-  <section class="sec" id="occasions">
-    <span class="lab mono">Occasions</span>
-    <h2>A cake for <em>every</em> moment</h2>
-    <p class="sub">Drag the arc or use the arrows. Pick a moment and the cake studio sets itself up for it. Change anything you like after.</p>
-    <div class="arc" id="arc" role="listbox" aria-label="Occasions"><div class="arcblob" aria-hidden="true"></div><svg class="arcring" viewBox="0 0 400 400" aria-hidden="true"><defs><path id="rp2" d="M200,200 m-176,0 a176,176 0 1,1 352,0 a176,176 0 1,1 -352,0"/></defs><text><textPath href="#rp2">CHOOSE YOUR MOMENT · CHOOSE YOUR MOMENT · CHOOSE YOUR MOMENT · </textPath></text></svg><div class="arcrail" id="arcrail"></div><button class="arcpill" id="arcpill" type="button">Design this cake →</button><div class="arcnav"><button type="button" id="arcp" aria-label="Previous">←</button><button type="button" id="arcn" aria-label="Next">→</button></div></div>
-  </section>
 
   <section class="sec" id="how">
     <span class="lab mono">How it works</span>
@@ -236,9 +243,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     </div>
   </section>
 </main>
-<footer class="foot"><span>© 2026 Bun Bun Bakes · part of AJ GROUPS · draft (logo option 4, pink)</span><a href="../aj-groups/">← Back to AJ GROUPS</a></footer>
-<script>window.MOTION={accent:'#e98fb0',par:'.mo-none',reveal:'.mo-none',press:'.btn,.chip,.tools button,.oc',mag:'.btn',titles:{hero:'Bun Bun Bakes',build:'Cake studio',occasions:'Occasions',how:'How it works',bakers:'The bakers',order:'Order'},dock:[{l:'Home',h:'#hero',i:'<svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/></svg>'},{l:'Design',h:'#build',i:'<svg viewBox="0 0 24 24"><path d="M5 20h14M7 20v-7h10v7M9 13V9h6v4M12 9V5"/></svg>'},{l:'Occasions',h:'#occasions',i:'<svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9v11M4 14h16M12 9c-2-4-6-3-5 0M12 9c2-4 6-3 5 0"/></svg>'},{l:'Order',h:'#order',i:'<svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7zM9 8a3 3 0 0 1 6 0"/></svg>'}]};</script>
-<script src="../assets/motion.js?v=4"></script>
-<script type="module" src="main.js?v=1"></script>
+<footer class="foot"><span>© 2026 Bun Bun Bakes · part of AJ GROUPS · draft (option 4 logo, blue palette)</span><a href="../aj-groups/">← Back to AJ GROUPS</a></footer>
+<script>window.MOTION={accent:'#aab6cc',par:'.mo-none',reveal:'.mo-none',press:'.btn,.chip,.tools button,.ac',mag:'.btn',titles:{hero:'Bun Bun Bakes',occasions:'Occasions',build:'Cake studio',how:'How it works',bakers:'The bakers',order:'Order'},dock:[{l:'Home',h:'#hero',i:'<svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/></svg>'},{l:'Occasions',h:'#occasions',i:'<svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9v11M4 14h16M12 9c-2-4-6-3-5 0M12 9c2-4 6-3 5 0"/></svg>'},{l:'Design',h:'#build',i:'<svg viewBox="0 0 24 24"><path d="M5 20h14M7 20v-7h10v7M9 13V9h6v4M12 9V5"/></svg>'},{l:'Order',h:'#order',i:'<svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7zM9 8a3 3 0 0 1 6 0"/></svg>'}]};</script>
+<script src="../assets/motion.js?v=5"></script>
+<script type="module" src="main.js?v=5"></script>
 </body>
 </html>
