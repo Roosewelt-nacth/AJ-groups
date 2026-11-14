@@ -1,14 +1,1 @@
-/* Whole-page stack transition between the AJ GROUPS sites (cross-document view transitions).
-   Going in: the new page rises from below and stacks over the old one, which shrinks and dims.
-   Going back to AJ GROUPS: the page slides down and away, and the one beneath comes back up to full size. */
-@view-transition { navigation: auto; }
-::view-transition-old(root), ::view-transition-new(root) { mix-blend-mode: normal; animation-duration: .85s; animation-fill-mode: both; animation-timing-function: cubic-bezier(.7, 0, .2, 1); }
-::view-transition-old(root) { animation-name: vt-stack-out; transform-origin: 50% 0; z-index: 1; }
-::view-transition-new(root) { animation-name: vt-stack-in; z-index: 2; filter: drop-shadow(0 -26px 50px rgba(0, 0, 0, .35)); }
-@keyframes vt-stack-out { from { transform: none; filter: none; border-radius: 0 } to { transform: scale(.9) translateY(-1.5%); filter: brightness(.5); border-radius: 30px } }
-@keyframes vt-stack-in { from { transform: translateY(100%); border-radius: 34px 34px 0 0 } to { transform: none; border-radius: 0 } }
-.vt-back::view-transition-old(root) { animation-name: vt-back-out; transform-origin: 50% 100%; z-index: 2; filter: drop-shadow(0 -26px 50px rgba(0, 0, 0, .35)); }
-.vt-back::view-transition-new(root) { animation-name: vt-back-in; transform-origin: 50% 0; z-index: 1; filter: none; }
-@keyframes vt-back-out { from { transform: none; border-radius: 0 } to { transform: translateY(100%); border-radius: 34px 34px 0 0 } }
-@keyframes vt-back-in { from { transform: scale(.9) translateY(-1.5%); filter: brightness(.5); border-radius: 30px } to { transform: none; filter: none; border-radius: 0 } }
-@media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; } }
+/* The page-to-page transition is now a glass sheet drawn by vt.js (it works in every browser). Nothing is needed here. */

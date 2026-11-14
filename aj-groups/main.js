@@ -202,7 +202,16 @@ function frame() {
   const near = Math.round(clamp(sNow, 0, NS - 1)), d = Math.abs(sNow - near), op = (1 - sstep(.08, .34, d)) * sstep(.55, 1, app);
   stopEls.forEach((el, k) => { const on = k === near; el.style.setProperty('--o', on ? op.toFixed(3) : 0); el.classList.toggle('cur', on && op > .4); });
   { const st2 = LY.stack; stopEls.forEach((el, k) => { el.classList.toggle('past', k < near); el.classList.toggle('next', k > near);
-      if (k === near && !RM && !st2) { el.style.translate = `0 ${(-(sNow - near) * 150).toFixed(1)}px`; el.style.filter = d > .02 ? `blur(${(d * 18).toFixed(1)}px)` : 'none'; } else if (st2 && k === near && !RM && Math.abs(dragS) > .3) { el.style.translate = `${dragS.toFixed(1)}px 0`; el.style.rotate = `${(dragS * .03).toFixed(2)}deg`; el.style.filter = ''; } else { el.style.translate = ''; el.style.rotate = ''; el.style.filter = ''; } }); }
+      const off = k - sNow, a = Math.abs(off);
+      if (st2) {
+        if (!RM && a < 1.02) { const out = off < 0; el.classList.add('peek');
+          el.style.translate = `${(out ? off * 36 : off * 104).toFixed(1)}% 0`; el.style.scale = out ? (1 - .09 * a).toFixed(3) : '1'; el.style.rotate = `${(off * (out ? 3 : 1.4)).toFixed(2)}deg`;
+          el.style.opacity = (out ? 1 - Math.min(1, a * 1.25) : Math.min(1, 1.2 - a * .4)).toFixed(3); el.style.zIndex = out ? 4 : 5;
+          el.style.filter = out && a > .02 ? `brightness(${(1 - .3 * a).toFixed(2)}) blur(${(a * 5).toFixed(1)}px)` : ''; }
+        else { el.classList.remove('peek'); el.style.translate = ''; el.style.scale = ''; el.style.rotate = ''; el.style.opacity = ''; el.style.zIndex = ''; el.style.filter = ''; }
+        return; }
+      el.classList.remove('peek'); el.style.scale = ''; el.style.opacity = ''; el.style.zIndex = '';
+      if (k === near && !RM) { el.style.translate = `0 ${(-(sNow - near) * 150).toFixed(1)}px`; el.style.filter = d > .02 ? `blur(${(d * 18).toFixed(1)}px)` : 'none'; } else { el.style.translate = ''; el.style.rotate = ''; el.style.filter = ''; } }); }
   if (near !== curIdx) { if (curIdx >= 0 && LY.stack && navigator.vibrate) { try { navigator.vibrate(9); } catch (e) {} } curIdx = near; dotBtns.forEach((b, k) => k === near ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current')); }
   top.style.opacity = sstep(.25, .8, app); cue.textContent = LY.stack ? 'Swipe to explore  →' : '↓ Scroll down'; cue.style.opacity = sNow < .1 ? 1 : 0; countEl.style.opacity = sNow > .3 ? 1 : 0; countN.textContent = String(Math.round(sNow) + 1).padStart(2, '0'); countBar.style.transform = `scaleY(${clamp(sNow / (NS - 1)).toFixed(3)})`; formEl.classList.toggle('on', sNow > LAST - .45);
   if (fine) { rx += (cx - rx) * Math.min(1, dt * 14); ry += (cy - ry) * Math.min(1, dt * 14); ring.style.transform = `translate(${rx}px,${ry}px) scale(${1 + big * 1.4})`; ring.style.opacity = loadDone ? .9 : 0; }
