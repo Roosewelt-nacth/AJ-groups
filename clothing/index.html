@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier | Cut by hand, finished by eye</title>
+<meta name="description" content="Atelier (working name): tailored pieces and seasonal collections, fitted to the person who wears them. Part of AJ GROUPS.">
+<meta name="theme-color" content="#8fb4dc">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{--cream:#f7f1e6;--ink:#1d1812;--mute:rgba(29,24,18,.58);--line:rgba(29,24,18,.16);--serif:'Instrument Serif',Georgia,serif;--mono:'IBM Plex Mono',ui-monospace,monospace;--pad:clamp(16px,3vw,44px)}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+em{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.02em}
+a{color:inherit}button{font:inherit;color:inherit}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+/* top bar: small and quiet, white on the poster */
+.tb{position:fixed;z-index:30;top:0;left:0;right:0;height:62px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--pad);color:#fff;transition:color .4s}
+.tb.dark{color:var(--ink)}
+.tb button,.tb a{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;background:none;border:0;cursor:pointer;padding:0}
+.tb .m{justify-self:start}.tb .b{font-family:var(--serif);font-style:italic;font-size:26px;letter-spacing:-.02em;text-transform:none;justify-self:center}.tb .r{justify-self:end;display:flex;gap:20px}
+.menu{position:fixed;inset:0;z-index:29;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:90px var(--pad) 60px;background:rgba(247,241,230,.96);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);opacity:0;pointer-events:none;transition:opacity .35s}.menu.on{opacity:1;pointer-events:auto}
+.menu a{text-decoration:none;font-family:var(--serif);font-size:clamp(46px,9vw,110px);letter-spacing:-.045em;line-height:1.05;border-bottom:1px solid var(--line);padding:6px 0}
+/* the poster */
+.poster{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:linear-gradient(180deg,#a8c8e8 0%,#86addb 52%,#c9dbed 100%);cursor:crosshair}
+.poster .bands{position:absolute;inset:-10% -20%;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(255,255,255,0) 0 38px,rgba(255,255,255,.1) 38px 54px,rgba(40,80,140,.07) 54px 92px);filter:blur(10px);animation:bnd 22s ease-in-out infinite alternate}
+@keyframes bnd{from{transform:translateX(-4%)}to{transform:translateX(4%)}}
+.poster .glow{position:absolute;left:50%;top:46%;width:70vmin;height:70vmin;margin:-35vmin 0 0 -35vmin;background:radial-gradient(closest-side,rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none}
+.sub{position:absolute;left:0;right:0;top:9vh;height:82vh;pointer-events:none}
+.sub img{position:absolute;left:50%;top:0;height:100%;width:auto;max-width:86vw;object-fit:contain;transform-origin:50% 60%;will-change:transform,filter,opacity}
+.sub .main{filter:drop-shadow(0 30px 40px rgba(20,50,100,.35))}
+.poster::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.28;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#gl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.bigword{position:absolute;left:0;right:0;top:34%;text-align:center;font-family:var(--serif);font-weight:400;font-size:clamp(120px,27vw,430px);line-height:.8;letter-spacing:-.06em;color:rgba(255,255,255,.9);pointer-events:none;white-space:nowrap;user-select:none;will-change:transform}
+.tiny{position:absolute;color:#fff;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;line-height:1.9;font-weight:400;text-shadow:0 0 14px rgba(40,80,140,.35);pointer-events:none}
+.t1{right:15%;top:15%;text-align:center;max-width:22ch}.t3{left:20%;bottom:15%;max-width:12ch}
+.mid{position:absolute;left:0;right:0;top:50%;display:flex;justify-content:space-between;padding:0 17%;pointer-events:none}.mid span{color:#fff;font-size:10.5px;letter-spacing:.42em;text-transform:uppercase;font-weight:400;text-shadow:0 0 14px rgba(40,80,140,.35)}
+.sig{position:absolute;right:20%;bottom:13%;color:#fff;pointer-events:none}.sig b{display:block;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(28px,3.4vw,46px);letter-spacing:-.03em;line-height:1}.sig i{display:block;height:1.5px;width:150%;margin-top:4px;background:#fff;transform-origin:left;border-radius:2px}
+.pn{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);color:#fff;text-align:center;pointer-events:none}.pn .nm{font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;font-weight:400;transition:opacity .35s}
+.cue{position:absolute;left:var(--pad);bottom:26px;color:#fff;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none}
+/* the stack: a cream canvas of floating pieces */
+.stackSec{position:relative;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:var(--cream);touch-action:pan-y}
+.stackSec .head{position:absolute;left:var(--pad);top:84px;z-index:3;pointer-events:none;max-width:300px}.stackSec .head h2{margin:8px 0 0;font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.6vw,52px);letter-spacing:-.045em;line-height:.96}.stackSec .head p{margin:10px 0 0;color:var(--mute);font-size:13px;line-height:1.55}
+.cv{position:absolute;inset:0}
+.pc{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;will-change:transform}
+.pc .fl{animation:drift 7s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes drift{0%,100%{transform:translateY(-5px) rotate(-.6deg)}50%{transform:translateY(6px) rotate(.6deg)}}
+.pc img{display:block;height:var(--h,170px);width:auto;max-width:42vw;object-fit:contain;filter:drop-shadow(16px 16px 14px rgba(70,50,20,.22));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.pc:hover img{transform:scale(1.08) rotate(-1.5deg)}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:5px 11px;border:1px solid var(--ink);border-radius:999px;background:var(--cream);font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;white-space:nowrap;transition:background .25s,color .25s}
+.pc.in .pill{background:var(--ink);color:var(--cream)}.pc .pill::after{content:"+";opacity:.55}.pc.in .pill::after{content:"✓";opacity:1}
+.fig{position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none}
+.fig svg{height:min(48vh,420px);width:auto;overflow:visible;filter:drop-shadow(24px 18px 16px rgba(70,50,20,.2))}
+.fig .pill{background:var(--ink);color:var(--cream);pointer-events:auto;cursor:pointer}.fig .pill::after{content:"+";color:var(--cream)}
+.cta{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:4;min-width:210px;padding:20px 34px;border:0;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,.2),rgba(220,212,196,.95) 40%);font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--ink);cursor:pointer;box-shadow:0 10px 26px rgba(70,50,20,.14);transition:transform .3s}.cta:hover{transform:translateX(-50%) translateY(-3px)}
+.drawer{position:fixed;z-index:40;right:var(--pad);bottom:96px;width:min(360px,calc(100vw - 2*var(--pad)));padding:18px;border-radius:18px;background:rgba(255,252,246,.94);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);box-shadow:0 24px 60px rgba(70,50,20,.22);transform:translateY(20px);opacity:0;pointer-events:none;transition:opacity .3s,transform .4s cubic-bezier(.2,.8,.2,1)}.drawer.on{opacity:1;transform:none;pointer-events:auto}
+.drawer h3{margin:0 0 10px;font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:-.04em;line-height:1}.drawer ul{list-style:none;margin:0 0 12px;padding:0;max-height:34vh;overflow:auto}.drawer li{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}.drawer li img{height:46px;width:34px;object-fit:contain}.drawer li span{flex:1}.drawer li button{background:none;border:0;cursor:pointer;opacity:.5;font-size:16px}
+.drawer .tot{display:flex;justify-content:space-between;margin:6px 0 12px}.drawer .btn{width:100%;padding:13px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.drawer .note{margin:10px 0 0;color:var(--mute);font-size:11px;line-height:1.5}.drawer .empty{color:var(--mute);font-size:13px;padding:6px 0 12px}
+.foot{padding:26px var(--pad) 90px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:12px;color:var(--mute);border-top:1px solid var(--line)}.foot a{text-decoration:none;color:var(--ink)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+@media (max-width:760px){
+ .tb .r a{display:none}.tb .b{font-size:23px}
+ .t1{right:8%;top:14%}.t3{left:8%;bottom:17%}.mid{padding:0 8%}.sig{right:9%;bottom:15%}
+ .stackSec .head{top:72px}.stackSec .head p{display:none}.fig svg{height:34vh}
+}
+@media (prefers-reduced-motion:reduce){.poster .bands,.pc .fl{animation:none}}
+</style>
+</head>
+<body>
+<header class="tb" id="tb"><button class="m" id="menubtn" type="button" aria-expanded="false">Menu</button><a class="b" href="./">Atelier</a><div class="r"><a href="../aj-groups/">AJ GROUPS ↗</a><button id="bagbtn" type="button">Stack (<b id="bagn">0</b>)</button></div></header>
+<nav class="menu" id="menu" aria-label="Main"><a href="#hero">The edit</a><a href="#stack">The stack</a><a href="../aj-groups/">AJ GROUPS ↗</a></nav>
+<main>
+  <section class="poster" id="hero" aria-label="The edit">
+    <div class="bands" aria-hidden="true"></div><div class="glow" aria-hidden="true"></div>
+    <div class="bigword" aria-hidden="true">Atelier</div>
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="sub" id="sub" aria-hidden="true"></div>
+    <p class="tiny t1">Raw materials,<br>elevated.<br>Precise fit</p>
+    <div class="mid" aria-hidden="true"><span>Line</span><span>Supreme</span><span>Atelier</span></div>
+    <p class="tiny t3">And pieces that speak for themselves.</p>
+    <div class="sig" aria-hidden="true"><b>Atelier</b><i></i></div>
+    <div class="pn"><div class="nm" id="pnm">Washed tee</div></div>
+    <a class="cue" href="#stack">Enter the stack ↓</a>
+  </section>
+  <section class="stackSec" id="stack" aria-label="The stack">
+    <div class="head"><span class="mono" style="color:var(--mute)">[ The stack ]</span><h2>Pick pieces, <em>build your look.</em></h2><p>Tap a piece to add it to your stack. Placeholder range.</p></div>
+    <div class="cv" id="cv"></div>
+    <div class="fig" id="fig"><svg viewBox="0 0 120 300" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d9cfbd"/><stop offset=".5" stop-color="#efe7d7"/><stop offset="1" stop-color="#cdc2ac"/></linearGradient></defs><ellipse cx="60" cy="30" rx="17" ry="21" fill="url(#mg)"/><path d="M52 48h16v10c18 4 34 10 36 26l6 80c1 8-12 8-13 0l-6-62-3 78 4 98c0 8-14 8-14 0l-6-96-6 96c0 8-14 8-14 0l4-98-3-78-6 62c-1 8-14 8-13 0l6-80c2-16 18-22 36-26z" fill="url(#mg)"/></svg><button class="pill" id="figp" type="button">Your stack</button></div>
+    <button class="cta" id="cta" type="button">Create your stack</button>
+  </section>
+</main>
+<aside class="drawer" id="drawer" aria-label="Your stack"><h3>Your stack</h3><ul id="dl"></ul><div class="tot mono"><span>Total</span><span id="dtot">₹0</span></div><button class="btn" id="dreq" type="button">Request a fitting</button><p class="note" id="dnote">Placeholder prices and form. Nothing is sent yet.</p></aside>
+<div class="foot"><span>© 2026 Atelier (working name) · part of AJ GROUPS</span><span><a href="../aj-groups/">← Back to AJ GROUPS</a></span></div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
+<script type="module" src="main.js"></script>
+</body>
+</html>
