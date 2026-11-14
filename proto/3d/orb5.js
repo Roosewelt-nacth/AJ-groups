@@ -120,7 +120,7 @@ stopEls.forEach(el => { const items = [...el.querySelectorAll(':scope > .lead, :
 /* ---------- chrome ---------- */
 const dotsEl = document.getElementById('dots'); dotsEl.innerHTML = stopEls.map(el => `<button type="button" aria-label="${(el.querySelector('h1,h2,.lead') || el).textContent.replace(/\s+/g, ' ').trim()}"></button>`).join('');
 const dotBtns = [...dotsEl.children], vh = () => innerHeight, fade = document.getElementById('fade'), formEl = document.getElementById('form'), cue = document.getElementById('cue'), top = document.getElementById('top'), mark = document.getElementById('mark');
-stopEls.forEach(el => { if (el.dataset.c) el.style.setProperty('--c', el.dataset.c); });
+stopEls.forEach(el => { if (el.dataset.c) el.style.setProperty('--c', el.dataset.c); }); stopEls.forEach((el, k) => { const t = el.querySelector('.tag'); if (t) t.dataset.ix = k - 1; });
 let sNow = 0, swF = 0; const go = i => { if (i === Math.round(sNow)) return; fade.classList.add('on'); setTimeout(() => { scrollTo(0, i * vh()); sNow = i; swF = i; fade.classList.remove('on'); }, 360); };
 dotBtns.forEach((b, i) => b.addEventListener('click', () => go(i)));
 const menuEl = document.getElementById('menu'), menuBtn = document.getElementById('menubtn'), sideTab = document.getElementById('sidetab');
