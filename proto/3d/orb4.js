@@ -13,7 +13,7 @@ const root = document.documentElement;
 const canvas = document.getElementById('c');
 let renderer; try { renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
 if (!renderer) { stopEls.forEach(e => { e.style.visibility = 'visible'; e.style.position = 'static'; e.style.opacity = 1; e.style.transform = 'none'; e.style.padding = '90px 22px 20px'; }); throw new Error('WebGL unavailable'); }
-let PR = Math.min(devicePixelRatio, MOBILE ? .75 : 1.25); renderer.setPixelRatio(PR);
+let PR = Math.min(devicePixelRatio, MOBILE ? 1 : 1.25); renderer.setPixelRatio(PR);
 
 /* per chapter: shape, page tone (rgb), text is white (1) or dark (0), orb tint, orb screen position (x offset in screens, 0 = centred) and scale */
 const CH = [
