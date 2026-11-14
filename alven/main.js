@@ -118,7 +118,7 @@ const split = hd => { let k = 0; const walk = n => { [...n.childNodes].forEach(c
 document.querySelectorAll('.h2,.big2').forEach(split);
 /* the hero headline reveals as a unit */
 document.querySelectorAll('.hero .big').forEach(h => { h.style.opacity = 0; h.style.transform = 'translateY(24px)'; h.style.transition = 'opacity 1.1s ease .15s,transform 1.2s cubic-bezier(.2,.8,.2,1) .15s'; requestAnimationFrame(() => requestAnimationFrame(() => { h.style.opacity = 1; h.style.transform = 'none'; })); });
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15, rootMargin: '0px 0px -6% 0px' });
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const sib = [...(e.target.parentElement ? e.target.parentElement.children : [])].filter(x => x.classList.contains('rv') && !x.classList.contains('in')); e.target.style.setProperty('--rd', (Math.min(5, Math.max(0, sib.indexOf(e.target))) * .08).toFixed(2) + 's'); e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .06, rootMargin: '0px 0px -4% 0px' });
 document.querySelectorAll('.rv,.h2,.big2').forEach(el => io.observe(el));
 if (RM) document.querySelectorAll('.rv,.h2,.big2').forEach(el => el.classList.add('in'));
 

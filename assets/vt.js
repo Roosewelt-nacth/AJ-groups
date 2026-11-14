@@ -10,12 +10,12 @@
   var site = function (path) { var m = /\/(aj-groups|alven|fovo|clothing)\/?/.exec(path); return m ? m[1] : null; };
   var EASE = 'cubic-bezier(.76,0,.18,1)';
 
-  function sheet(color, title, y) {
+  function sheet(color, title, y, back) {
     var el = document.createElement('div'); el.setAttribute('aria-hidden', 'true'); el.id = 'ajvt-sheet';
     el.style.cssText = 'position:fixed;left:0;top:0;width:100%;height:100%;z-index:2147483000;pointer-events:all;display:grid;place-items:center;overflow:hidden;will-change:transform;' +
       'background:linear-gradient(180deg,color-mix(in srgb,' + color + ' 84%,#fff),' + color + ' 40%,color-mix(in srgb,' + color + ' 46%,#0b1020));' +
       'box-shadow:0 -30px 80px rgba(0,0,0,.35);transform:translateY(' + y + ')';
-    el.innerHTML = '<div style="text-align:center;color:#0b1020;font-family:Inter,system-ui,sans-serif;pointer-events:none"><div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;margin-bottom:12px;font-weight:500">AJ GROUPS</div><div style="font-weight:300;font-size:clamp(40px,12vw,104px);letter-spacing:-.055em;line-height:1">' + title + '</div></div>' +
+    el.innerHTML = '<div style="text-align:center;color:#0b1020;font-family:Inter,system-ui,sans-serif;pointer-events:none"><div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;margin-bottom:12px;font-weight:500">' + (back ? 'Back to' : 'Entering') + '</div><div style="font-weight:300;font-size:clamp(40px,12vw,104px);letter-spacing:-.055em;line-height:1">' + title + '</div></div>' +
       '<i style="position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.3) 50%,transparent 70%);transform:translateX(-120%)"></i>';
     return el;
   }
@@ -25,7 +25,7 @@
   /* arriving: cover the page straight away, then lift once it is ready */
   var inc = null; try { inc = JSON.parse(sessionStorage.getItem(KEY) || 'null'); sessionStorage.removeItem(KEY); } catch (e) {}
   if (inc && !RM && Date.now() - inc.t < 8000) {
-    var s = sheet(inc.c, inc.n, '0'); root.appendChild(s); var lifted = false;
+    var s = sheet(inc.c, inc.n, '0', inc.d === 'back'); root.appendChild(s); var lifted = false;
     var lift = function () { if (lifted) return; lifted = true; var to = inc.d === 'back' ? '100%' : '-100%';
       if (!s.animate) { s.remove(); return; }
       var a = s.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(' + to + ')' }], { duration: 440, easing: EASE, fill: 'forwards' });
@@ -45,7 +45,7 @@
     var dest = site(u.pathname); if (!dest || leaving) return;
     if (RM || !document.documentElement.animate) return;   /* plain navigation */
     e.preventDefault(); e.stopImmediatePropagation(); leaving = true;
-    var back = dest === 'aj-groups', info = SITES[dest], s = sheet(info[0], info[1], back ? '-100%' : '100%'); root.appendChild(s);
+    var back = dest === 'aj-groups', info = SITES[dest], s = sheet(info[0], info[1], back ? '-100%' : '100%', back); root.appendChild(s);
     var dim = document.createElement('div'); dim.id = 'ajvt-dim'; dim.style.cssText = 'position:fixed;inset:0;z-index:2147482999;background:#000;opacity:0;pointer-events:none'; root.appendChild(dim);
     dim.animate([{ opacity: 0 }, { opacity: .45 }], { duration: 340, fill: 'forwards', easing: 'ease-out' });
     var go = function () { try { sessionStorage.setItem(KEY, JSON.stringify({ c: info[0], n: info[1], d: back ? 'back' : 'in', t: Date.now() })); } catch (x) {} location.href = u.href; };

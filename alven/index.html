@@ -142,10 +142,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--teal);outline-offse
 .card:nth-child(6)::before{background:radial-gradient(60% 55% at 12% 88%,#ff3f8e 0,transparent 70%),radial-gradient(55% 50% at 88% 64%,#7f62ff 0,transparent 70%),radial-gradient(60% 50% at 52% 4%,#ffd49a 0,transparent 70%),#ffc2d8;background-size:190% 190%}
 .card:hover,.card.open,.card:focus-visible{--fillink:#0b1020}
 @media (prefers-reduced-motion:reduce){.card::before{animation:none}}
+/* scroll reveals: blur-rise with stagger. Cards had lost their transition to the hover rule, so they popped in; both are now listed together. */
+.rv{opacity:0;transform:translateY(44px) scale(.985);filter:blur(9px);transition:opacity .7s ease,transform .95s cubic-bezier(.16,1,.3,1),filter .7s ease;transition-delay:var(--rd,0s)}
+.rv.in{opacity:1;transform:none;filter:none}
+.card.rv{transition:background .4s,opacity .7s ease,transform .95s cubic-bezier(.16,1,.3,1),filter .7s ease;transition-delay:0s,var(--rd,0s),var(--rd,0s),var(--rd,0s)}
+.card.rv.in{filter:none}
+@media (max-width:760px){.rv{transform:translateY(34px) scale(.98)}}
+@media (prefers-reduced-motion:reduce){.rv,.card.rv{filter:none;transition:none}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
-<link rel="stylesheet" href="../assets/vt.css">
-<script src="../assets/vt.js"></script>
+<link rel="stylesheet" href="../assets/vt.css?v=4">
+<script src="../assets/vt.js?v=4"></script>
 </head>
 <body>
 <canvas id="c" aria-hidden="true"></canvas>
@@ -218,8 +225,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--teal);outline-offse
   </section>
 </main>
 <footer><span>© 2026 Alven Studio · part of AJ GROUPS</span><span><a href="../aj-groups/">← Back to AJ GROUPS</a></span></footer>
-<script type="module" src="main.js"></script>
+<script type="module" src="main.js?v=4"></script>
 <script>window.MOTION={accent:'#5fe0cd',par:'.hero .ht,.hero .tag',reveal:'.mo-none',press:'.btn,button,a.enter,.cue',mag:'.btn,.cue',titles:{hero:'Alven Studio',idea:'The idea',services:'Services',process:'Process',contact:'Contact'},dock:[{"l": "Home", "h": "#hero", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 11l8-7 8 7v9H4z\"/></svg>"}, {"l": "Idea", "h": "#idea", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"11\" r=\"5\"/><path d=\"M9 19h6M10 22h4\"/></svg>"}, {"l": "Services", "h": "#services", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"4\" y=\"4\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"13\" y=\"4\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"4\" y=\"13\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"13\" y=\"13\" width=\"7\" height=\"7\" rx=\"1.5\"/></svg>"}, {"l": "Process", "h": "#process", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg>"}, {"l": "Contact", "h": "#contact", "i": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 6h16v12H4z\"/><path d=\"M4 7l8 6 8-6\"/></svg>"}]};</script>
-<script src="../assets/motion.js"></script>
+<script src="../assets/motion.js?v=4"></script>
 </body>
 </html>

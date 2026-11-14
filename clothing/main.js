@@ -120,3 +120,8 @@ $('dreq').onclick=function(){if(!count()){$('dnote').textContent='Add at least o
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){dr.classList.remove('on');menu.classList.remove('on');mb.textContent='Menu'}});
 render();
 })();
+
+/* build the stack canvas when it scrolls into view */
+{ const sec = document.getElementById('stack'); if (sec) {
+  [...sec.querySelectorAll('.pc')].forEach((p, i) => p.style.setProperty('--rd', (0.25 + i * 0.1).toFixed(2) + 's'));
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { sec.classList.add('go'); io.disconnect(); } }), { threshold: 0.2 }); io.observe(sec); } }

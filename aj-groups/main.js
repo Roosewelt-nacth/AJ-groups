@@ -205,9 +205,9 @@ function frame() {
       const off = k - sNow, a = Math.abs(off);
       if (st2) {
         if (!RM && a < 1.02) { const out = off < 0; el.classList.add('peek');
-          el.style.translate = `${(out ? off * 36 : off * 104).toFixed(1)}% 0`; el.style.scale = out ? (1 - .09 * a).toFixed(3) : '1'; el.style.rotate = `${(off * (out ? 3 : 1.4)).toFixed(2)}deg`;
-          el.style.opacity = (out ? 1 - Math.min(1, a * 1.25) : Math.min(1, 1.2 - a * .4)).toFixed(3); el.style.zIndex = out ? 4 : 5;
-          el.style.filter = out && a > .02 ? `brightness(${(1 - .3 * a).toFixed(2)}) blur(${(a * 5).toFixed(1)}px)` : ''; }
+          /* cards ahead slide over from the right; cards behind stay solid and recede, so swiping back is the same motion in reverse */
+          el.style.translate = `${(out ? off * 30 : off * 104).toFixed(1)}% 0`; el.style.scale = out ? (1 - .06 * a).toFixed(3) : '1'; el.style.rotate = `${(off * (out ? 2 : 1.2)).toFixed(2)}deg`;
+          el.style.opacity = out ? (1 - Math.min(1, Math.max(0, (a - .62) / .38))).toFixed(3) : '1'; el.style.zIndex = out ? 4 : 5; el.style.filter = ''; }
         else { el.classList.remove('peek'); el.style.translate = ''; el.style.scale = ''; el.style.rotate = ''; el.style.opacity = ''; el.style.zIndex = ''; el.style.filter = ''; }
         return; }
       el.classList.remove('peek'); el.style.scale = ''; el.style.opacity = ''; el.style.zIndex = '';
