@@ -11,7 +11,7 @@ The websites for **AJ GROUPS**, founded and led by **Allwyn**. A group of small 
 - **Official site:** `https://ajgroups.co/` (domain bought at Cloudflare; DNS records set to DNS-only, four GitHub A records plus a www CNAME; fallback address `https://ajgroups2026.github.io/AJ-groups/`) (GitHub Pages, branch `main`, repo root), repo `https://github.com/AjGroups2026/AJ-groups`. Git remote name: `official`.
 - **Testing copy:** `https://roosewelt-nacth.github.io/AJ-groups/`, repo `https://github.com/Roosewelt-nacth/AJ-groups` (remote `origin`). Try changes here first, then push the same `main` to `official`. Sign-in is through `gh auth login` for each account; never share or store passwords here.
 - Both repos are public. Anything committed is public, so **never commit secrets, access codes, phone numbers or customer data.**
-- Target launch: **22 Nov 2026** (AJ GROUPS, Bun Bun Bakes, Fovo, Alven first). Do not publish this date on the sites until Allwyn approves it.
+- Target launch: **22 Nov 2026** (AJ GROUPS, Fovo, Alven first; Bun Bun was moved to "upcoming" on 22 Nov). Do not publish this date on the sites until Allwyn approves it.
 
 ## Folder map
 | Folder | What it is |
@@ -81,10 +81,10 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 - Mobile "swipe card" redesign for the group page (dark glass card stack with a stats row, tag chip, ✓/✕ actions, floating pill nav) was **prototyped and then reverted by request** to keep the page simple. The prototype is not in the repo. If it is wanted again, rebuild it as a separate mobile-only layout and do not show internal facts such as the launch date or chapter count as "stats".
 
 ## Added 19 Nov 2026
-- **Group page order:** Home, About, Meet the founder, A note from the founder, Vision, Ventures, then Bun Bun Cafe, Alven Studio, House of Fovo, AJ Little Wonder World, Clothing Brand, AJ Software Solutions, Online Course, Digital Products, Contact. Every venture card jumps to that brand's own slide; only Bun Bun's slide links out to `/bunbun/`. The others show "Coming soon" until they launch. Slide numbers in `data-go` match the slide order in `index.html`, so renumber them if slides move.
+- **Group page order:** Home, About, Meet the founder, A note from the founder, Vision, Ventures, then Bun Bun Cafe, Alven Studio, House of Fovo, AJ Little Wonder World, Clothing Brand, AJ Software Solutions, Online Course, Digital Products, Contact. Every venture card jumps to that brand's own slide; no slide links out to a brand site any more (Bun Bun's link was removed on 22 Nov, see below). The others show "Coming soon" until they launch. Slide numbers in `data-go` match the slide order in `index.html`, so renumber them if slides move.
 - **Forms** (group contact, Alven brief, Fovo booking) send by e-mail to `ajgroups.official2026@gmail.com` through FormSubmit (`assets/send.js`). The address must confirm the one-time activation e-mail from FormSubmit before messages arrive. Bun Bun orders use their own system (see Order flow).
 - **Legal:** `privacy/` and `terms/` pages, a footer on the contact slide and on every brand page, `THIRD-PARTY.md` (licence check), `sitemap.xml`.
-- **Social:** Instagram `https://www.instagram.com/aj_dynamics_software_sol/?hl=en` is linked. **A Facebook page link has not been given yet.**
+- **Social:** Instagram `https://www.instagram.com/aj_dynamics_software_sol/?hl=en` is linked from the page footers (not from the phone menu since 22 Nov). **A Facebook page link has not been given yet.**
 - **Speed:** venture photos are WebP (about 190 KB in total), Inter and Instrument Serif are self-hosted on the group page, three.js loads the minified build with a preload.
 - **Size check:** open `/?audit=1`; the page title then reports overlaps for that screen size (checked 320 to 1920 wide plus landscape phones).
 - **Still to do:** founder photo (the slide has a monogram placeholder, put `<img>` inside `.fphoto`), Facebook link, real contact phone, names to confirm (Bun Bun Cafe on the group page against Bun Bun Bakes on the Bun Bun site), lawyer review of the legal pages.
@@ -97,7 +97,7 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 - **Do not use** the "Compact lock-up (blue)": it reads "Software Solutions" and belongs to AJ Software Solutions, not the group.
 - Sub-brand sites (Bun Bun, Alven, Fovo, Atelier) keep their own looks; they only pick up the new favicon through the shared files.
 - **The orb is now the logo (3D).** Shape id `9` in the `shape()` function of the shader is the AJ monogram as a rounded 3D slab. `assets/brand/logo-silhouette.png` (white logo on black, 1024px) is turned into a signed-distance texture once on load (`main.js`, block just above `const frag`; about 50 to 250 ms), and the shader extrudes it (depth `h`, edge rounding `r`, stroke weight offset `.032`). Until the texture is ready the shape is the plain orb. It is used on the Home, Our story and Vision chapters (the `s: 9` entries in `CH`). **Ventures keeps the plain orb** (`s: 0`) because the cards and headline sit on top of it. Glass absorption is multiplied for this shape (3.3, or eased to 1.4 in dark theme on chapters that have a dark-theme glass setting) because the slab is thinner than the sphere and needed more to stay gold rather than copper. Gold glass on dark pages, navy glass on light ones follows the existing tint settings.
-- `main.js` is at `?v=85`.
+- `main.js` was at `?v=85` after the rebrand; it is now `?v=88`. Bump it whenever `main.js` changes.
 
 ## Open items (waiting on people, not on code)
 1. **Allwyn:** pick and buy the domain in his own registrar account, turn on two-step login, set up email. Then the site needs: a `CNAME` file, the Pages custom domain with HTTPS, canonical links, `sitemap.xml`, and `ALLOW_ORIGIN` set to the new domain.
@@ -125,8 +125,27 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 - Check every page and every screen size (phone included) before calling work done.
 - Say plainly what was not verified. Prefer free options and explain costs in plain words.
 
-## Notes (22 Nov 2026)
-- Bun Bun is closed as upcoming: the venture card and chapter say Coming soon with no link; `bunbun/index.html` carries noindex and redirects to the home page; it is out of `sitemap.xml` and the 404 page. Remove the two lines at the top of `bunbun/index.html` to reopen it.
-- The Bun Bun chapter's 3D object is shape 10: the Bun Bun mark (`assets/bunbun/logo-silhouette.png`) built into a second SDF texture (`uLogo2`) by `buildLogoSDF`, same slab treatment as the AJ logo (shape 9).
-- Phones: on the landing the logo sits in `LY.zone0`, the space between the page counter and the hero card. The hero stop never gets the frosted peek blur, the counter and the swipe hint fade in last, and an inline head script sets `--bg0` from the theme so the first frame does not flash.
-- Hero headline and page title: "Diverse ventures, one vision". Use `?audit` to get a layout report in the tab title, and `?s=<chapter>&t=3` to pin a chapter for screenshots.
+## Changes, 21 to 22 Nov 2026
+**Home page (`index.html`, `main.js`, now `main.js?v=88`)**
+- **Hero headline** and page/share title: "Diverse ventures, one vision" (was "One-stop solution"). The JSON-LD slogan matches.
+- **Landing intro:** an inline script in `<head>` sets `--bg0` from the saved or system theme so the first frame does not flash; the hero stop never gets the frosted `.peek` blur (it used to blur the 3D logo for the first two seconds); the "01 / 15" counter and "Swipe to explore" fade in last (`html.ready:not(.settled)`, `settled` is added 4.5 s after `ready`). On phones the logo sits in `LY.zone0`, the space between the page counter and the hero card (falls back to the normal zone if there is less than about 80 px).
+- **Phone menu:** only About us, The founder, Vision and mission, Our ventures, Contact, then "© 2026 AJ GROUPS · Terms". Bun Bun, Instagram and Privacy were removed from the menu on request; the page footers still link Privacy, Terms and Instagram.
+- **Founder card** is in Allwyn's first person (three short paragraphs starting "My journey began in 2022 with AJ Dynamics"). The button still says "A note from him" and the note slide is titled "In his words"; change them if Allwyn wants first person there too.
+- **Ventures chapter:** smaller headline on phones (about 26 px at 390 wide) and laptops (about 58 px at 1440×900); phone cards are equal (photo on top, name in a bar below, category hidden); laptop cards start every glass panel at the same line and show number, name and category only. Heading text-shadows were removed everywhere (they drew dark boxes behind the word masks); laptops use a soft `drop-shadow` on headings instead. "distinct identities" uses a brighter gold (`#e3c48f`).
+- **Small screens:** the founder's note quote shrinks on phones shorter than 700 px so its button stays inside the card; the founder chapter text is smaller on laptops shorter than 800 px.
+
+**Bun Bun (closed as upcoming)**
+- Venture card and chapter say "Coming soon" (card class `vc soon`, chapter button is a disabled `span.enter`). No link to `/bunbun/` remains on the home page, in the 404 page or in `sitemap.xml`.
+- `bunbun/index.html` has `noindex` and redirects to the home page. Delete those two lines at the top of the file (and restore the links) to reopen it. The Bun Bun code is untouched otherwise.
+- Card photo `assets/ventures/bun.webp` is cookie dough in an oven, supplied by the client (credit line updated).
+- The chapter's 3D object is **shape 10**: the Bun Bun mark (`assets/bunbun/logo-silhouette.png`, made from `assets/bunbun/logo-mark.png`) turned into a second SDF texture (`uLogo2`) by `buildLogoSDF()`, same slab treatment as the AJ logo (shape 9). `kLogo` absorption applies to both.
+
+**Checking tools**
+- `?audit` puts a layout report in the tab title for the current screen size. Known, accepted results: on laptops "5: text over orb" (the ventures grid sits over the centred orb by design); on phones "1: headline off sides; panel off/under dots" (measured mid-transition, the About chapter is fine once settled).
+- `?s=<chapter>&t=3` pins a chapter (0 to 14) with a fixed time, for screenshots.
+- Checked on 22 Nov in headless Chrome at 360×640, 375×667, 390×844, 414×896, 768×1024, 844×390, 1024×768, 1280×720, 1440×900 and 1920×1080, light and dark; every page loads without script errors, broken images or dead links. **Not yet checked on a real phone.**
+
+**Reels (testing repo only, `reels/`)**
+- `reels/video/`: `AJ-Groups-Reel-Laptop.mp4` and `AJ-Groups-Reel-iPad.mp4` (20 s), `AJ-Groups-Reel-Ventures.mp4` (25 s), all 1080×1920 with original synthesised soundtracks, and `AJ-Groups-Signal-Poster.png`. Made for Allwyn to review and share.
+- Sources, frozen site copies, the soundtrack script (`reels/audio/score.py`) and the stepped-clock recorder (`reels/rec/rec.cjs`) are alongside; `reels/README.md` explains preview, re-render and adding the sound. `/reels/` is disallowed in `robots.txt`. The official repo does not carry the reels.
+- The videos were rendered on 20 to 21 Nov, so they still show "One-stop solution" and Bun Bun as open. Re-render if they must match the current site.
