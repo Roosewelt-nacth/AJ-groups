@@ -385,6 +385,12 @@ if (!RM) {
       const fail = () => { f.classList.remove('sending'); const t = document.querySelector('.toast'); if (t) { t.textContent = 'Sorry, that did not send. Please email ajgroups.official2026@gmail.com instead.'; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 6000); } };
       fetch('https://formsubmit.co/ajax/ajgroups.official2026@gmail.com', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()).then(d => (d.success === true || d.success === 'true') ? done() : fail()).catch(fail); }); }
 
+/* WhatsApp: opens a chat with what is already typed in the form, so nothing has to be written twice */
+{ const f = document.getElementById('form'), wa = document.getElementById('wa'); if (f && wa) { const base = wa.getAttribute('href').split('?')[0];
+  const build = () => { const n = f.elements.n.value.trim(), t = f.elements.b ? f.elements.b.value : '', m = f.elements.m ? f.elements.m.value.trim() : '';
+    wa.href = base + '?text=' + encodeURIComponent('Hello AJ GROUPS' + (n ? ', I am ' + n : '') + '.' + (t ? ' About: ' + t + '.' : '') + (m ? ' ' + m : '')); };
+  ['pointerdown', 'focus', 'keydown', 'touchstart'].forEach(ev => wa.addEventListener(ev, build, { passive: true })); build(); } }
+
 /* contact form: a soft light follows the pointer across the glass */
 { const f = document.getElementById('form'); f.addEventListener('pointermove', e => { const r = f.getBoundingClientRect(); f.style.setProperty('--gx', (e.clientX - r.left) + 'px'); f.style.setProperty('--gy', (e.clientY - r.top) + 'px'); }); }
 

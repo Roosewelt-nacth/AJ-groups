@@ -10,7 +10,7 @@ The websites for **AJ GROUPS**, founded and led by **Allwyn**. A group of small 
 - Static HTML, CSS and vanilla JavaScript. **No build step.**
 - **Official site:** `https://ajgroups.co/` (domain bought at Cloudflare; DNS records set to DNS-only, four GitHub A records plus a www CNAME; fallback address `https://ajgroups2026.github.io/AJ-groups/`) (GitHub Pages, branch `main`, repo root), repo `https://github.com/AjGroups2026/AJ-groups`. Git remote name: `official`.
 - **Testing copy:** `https://roosewelt-nacth.github.io/AJ-groups/`, repo `https://github.com/Roosewelt-nacth/AJ-groups` (remote `origin`). Try changes here first, then push the same `main` to `official`. Sign-in is through `gh auth login` for each account; never share or store passwords here.
-- Both repos are public. Anything committed is public, so **never commit secrets, access codes, phone numbers or customer data.**
+- Both repos are public. Anything committed is public, so **never commit secrets, access codes, personal phone numbers or customer data.** (The one business WhatsApp number above is public by the owner's choice.)
 - Target launch: **22 Nov 2026** (AJ GROUPS, Fovo, Alven first; Bun Bun was moved to "upcoming" on 22 Nov). Do not publish this date on the sites until Allwyn approves it.
 
 ## Folder map
@@ -84,10 +84,10 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 - **Group page order:** Home, About, Meet the founder, A note from the founder, Vision, Ventures, then Bun Bun Cafe, Alven Studio, House of Fovo, AJ Little Wonder World, Clothing Brand, AJ Software Solutions, Online Course, Digital Products, Contact. Every venture card jumps to that brand's own slide; no slide links out to a brand site any more (Bun Bun's link was removed on 22 Nov, see below). The others show "Coming soon" until they launch. Slide numbers in `data-go` match the slide order in `index.html`, so renumber them if slides move.
 - **Forms** (group contact, Alven brief, Fovo booking) send by e-mail to `ajgroups.official2026@gmail.com` through FormSubmit (`assets/send.js`). The address must confirm the one-time activation e-mail from FormSubmit before messages arrive. Bun Bun orders use their own system (see Order flow).
 - **Legal:** `privacy/` and `terms/` pages, a footer on the contact slide and on every brand page, `THIRD-PARTY.md` (licence check), `sitemap.xml`.
-- **Social:** Instagram `https://www.instagram.com/aj_dynamics_software_sol/?hl=en` is linked from the page footers (not from the phone menu since 22 Nov). **A Facebook page link has not been given yet.**
+- **Social and contact:** Instagram `https://www.instagram.com/aj_dynamics_software_sol/?hl=en`, Facebook `https://www.facebook.com/share/1C9cMXEbwd/`, and WhatsApp (+91 88078 93624, owner-approved for public use; the contact form has a "Chat on WhatsApp" button that pre-fills the message). These are in the group page footer, contact form, structured data and the legal pages, and deliberately not in the shortened phone menu.
 - **Speed:** venture photos are WebP (about 190 KB in total), Inter and Instrument Serif are self-hosted on the group page, three.js loads the minified build with a preload.
 - **Size check:** open `/?audit=1`; the page title then reports overlaps for that screen size (checked 320 to 1920 wide plus landscape phones).
-- **Still to do:** founder photo (the slide has a monogram placeholder, put `<img>` inside `.fphoto`), Facebook link, real contact phone, names to confirm (Bun Bun Cafe on the group page against Bun Bun Bakes on the Bun Bun site), lawyer review of the legal pages.
+- **Still to do:** founder photo (the slide has a monogram placeholder, put `<img>` inside `.fphoto`), names to confirm (Bun Bun Cafe on the group page against Bun Bun Bakes on the Bun Bun site), lawyer review of the legal pages.
 
 ## Rebrand, 20 Nov 2026 (AJ GROUPS identity)
 - **Logo kit** (from Allwyn, "AJ Dynamics rebranding.zip"): a calligraphic A and J monogram with a looping tail, a serif wordmark "AJ GROUPS" and the tagline **"INFINITE POSSIBILITIES"**. Two colourways: **beige** (a cream-to-gold gradient, for dark backgrounds) and **blue** (flat navy `#2d3041`, for light backgrounds). Lock-ups supplied: horizontal, compact, stacked, wordmark, and the monogram alone ("secondary logo").
