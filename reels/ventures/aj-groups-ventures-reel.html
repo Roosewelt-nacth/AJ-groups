@@ -1,0 +1,290 @@
+<title>AJ Groups Ventures Reel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/*
+  9:16 reel, 25s, one clock. AJ GROUPS palette: navy #2d3041, ink #14151f, cream #f4f1ea, gold #debd87.
+  0-5s    the group: venture bubbles gather on a cream grid, category pills on the left; "Food" is picked and Bun Bun grows
+  5-18s   the roll: Bun Bun's bubble opens to the screen; eight ventures in a circle carousel over a blurred photo,
+          a scrolling name list with a resizing pill, category, status, counter and dial
+  18-25s  the poster: the last circle turns ink, stretches and softens into the arch, and the editorial type reveals
+  Cinematic pass: rack focus + camera push into the bubble, pull-through into the roll, drift, flares at each hand-over, dust, grade, grain.
+  Every keyframe is generated on the same 25s timeline, so the reel loops and records deterministically.
+*/
+:root{
+  --navy:#2d3041; --ink:#14151f; --cream:#f4f1ea; --paper:#ece8df;
+  --gold:#debd87; --gold-deep:#b98f4f; --mute:#8b877f;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;display:flex;align-items:center;justify-content:center;background:#0d0e14;overflow:hidden;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.frame{position:relative;overflow:hidden;container-type:size;height:min(100vh,177.78vw);width:min(100vw,56.25vh);background:var(--cream)}
+.L{position:absolute;inset:0}
+.t{animation-duration:25s;animation-timing-function:linear;animation-iteration-count:infinite;animation-fill-mode:both}
+em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
+
+/* ---------- scene A: the group ---------- */
+.grid{background-image:radial-gradient(rgba(45,48,65,.16) .22cqw,transparent .3cqw);background-size:5cqw 5cqw;background-position:center}
+.atop{position:absolute;left:0;right:0;top:6cqh;display:flex;flex-direction:column;align-items:center;gap:1.6cqh;color:var(--navy)}
+.mk{display:flex;align-items:center;gap:1.6cqw;font-size:4cqw;letter-spacing:-.02em}
+.mk img{display:block;height:8cqw;width:auto;aspect-ratio:900/196}
+.atop b{font-weight:300;font-size:12cqw;letter-spacing:-.045em;line-height:1}
+.atop b em{color:var(--gold-deep)}
+.pills{position:absolute;left:5cqw;top:28cqh;display:flex;flex-direction:column;gap:2.2cqh}
+.pill{align-self:flex-start;font-size:3.7cqw;font-weight:500;padding:1.3cqw 3.2cqw;border-radius:99px;background:#fff;color:var(--navy);box-shadow:0 .4cqw 1.6cqw rgba(45,48,65,.1)}
+.bub{position:absolute;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 1.6cqw 4cqw rgba(45,48,65,.18),inset 0 0 0 .3cqw rgba(255,255,255,.6)}
+.bub img{width:100%;height:100%;object-fit:cover;display:block}
+.float{position:absolute;inset:0;animation:drift 6s ease-in-out infinite}
+@keyframes drift{0%,100%{translate:0 0}50%{translate:0 -1.2cqw}}
+.btag{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:3.6cqw;font-weight:600;color:var(--navy)}
+
+/* ---------- scene B: the roll ---------- */
+.bg{position:absolute;inset:-6%;background-size:cover;background-position:center;filter:blur(3cqw) saturate(1.1)}
+.dim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,21,31,.55),rgba(20,21,31,.62) 45%,rgba(20,21,31,.86))}
+.rtop{position:absolute;left:0;right:0;top:4.5cqh;display:flex;flex-direction:column;align-items:center;gap:.8cqh;color:var(--cream)}
+.rtop .mk img{height:6.4cqw;opacity:.92}
+.stack{position:relative;height:1.4em}
+.stack>*{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap}
+.count{font-size:2.6cqw;letter-spacing:.24em;color:rgba(244,241,234,.7);font-variant-numeric:tabular-nums}
+.circ{position:absolute;left:18cqw;top:12cqh;width:64cqw;height:64cqw;border-radius:50%;overflow:hidden;box-shadow:0 3cqw 9cqw rgba(0,0,0,.5),inset 0 0 0 .4cqw rgba(244,241,234,.18)}
+.circ img{width:100%;height:100%;object-fit:cover;display:block}
+.meta{position:absolute;left:0;right:0;top:51cqh;height:9cqh}
+.meta>div{position:absolute;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:1.1cqh}
+.meta em{font-size:5.6cqw;color:var(--gold);letter-spacing:-.01em}
+.chip{display:inline-flex;align-items:center;gap:1.2cqw;font-size:2.5cqw;font-weight:500;color:var(--cream);padding:.8cqw 2.2cqw;border-radius:99px;border:.25cqw solid rgba(244,241,234,.3)}
+.chip i{width:1.3cqw;height:1.3cqw;border-radius:50%;background:var(--gold)}
+.chip.live i{background:#8fd19e}
+.list{position:absolute;left:0;right:0;top:calc(68cqh - 3.6cqw);height:7.2cqw}
+.lst{position:absolute;left:0;width:100cqw;top:0}
+.lst div{height:7.2cqw;display:flex;align-items:center;justify-content:center;font-size:5.2cqw;font-weight:500;letter-spacing:-.025em;white-space:nowrap}
+.lst.faded{color:rgba(244,241,234,.38);-webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent)}
+.lfw{position:absolute;left:0;right:0;top:-8.4cqw;height:24cqw;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 32%,#000 68%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 32%,#000 68%,transparent 100%)}
+.lfw .lst{top:8.4cqw}
+.win{position:absolute;left:50%;top:0;height:7.2cqw;transform:translateX(-50%);border-radius:99px;background:var(--cream);overflow:hidden;box-shadow:0 1cqw 4cqw rgba(0,0,0,.35)}
+.win .lst{left:calc(50% - 50cqw);color:var(--navy)}
+.dome{position:absolute;left:50%;width:56cqw;height:56cqw;margin-left:-28cqw;bottom:-36cqw;border-radius:50%;background:rgba(244,241,234,.06);border:.25cqw solid rgba(244,241,234,.16)}
+.dot{position:absolute;width:2.4cqw;height:2.4cqw;margin:-1.2cqw 0 0 -1.2cqw;border-radius:50%;background:rgba(244,241,234,.3)}
+
+/* ---------- scene C/D: the poster ---------- */
+.arch{position:absolute;left:18cqw;width:64cqw;border-radius:32cqw;background:var(--ink)}
+.ptext{position:absolute;left:0;right:0;text-align:center;color:var(--cream);text-transform:uppercase}
+.p-head{top:64cqh;font-size:6.2cqw;font-weight:600;letter-spacing:-.025em;line-height:1.08}
+.p-head>span{display:block}
+.p-head .yr{display:inline;font-weight:300}
+.p-under{top:77cqh;font-size:3.7cqw;font-weight:700;letter-spacing:-.01em;line-height:1.08}
+.p-under span{display:block;text-decoration:underline;text-decoration-thickness:.32cqw;text-underline-offset:.5cqw}
+.p-cap{top:87cqh;font-size:2.35cqw;font-weight:500;letter-spacing:.01em;line-height:1.45}
+.p-site{top:94cqh;font-size:2.2cqw;letter-spacing:.32em;font-weight:500;opacity:.6}
+
+
+/* ================= cinematic layer ================= */
+.cam{position:absolute;inset:0;transform-origin:63% 52%}
+.cine{position:absolute;inset:0;pointer-events:none}
+.beam{overflow:hidden;mix-blend-mode:screen}
+.beam::before{content:"";position:absolute;inset:-20% -40%;background:linear-gradient(112deg,transparent 40%,rgba(255,236,200,.2) 47%,rgba(255,236,200,.08) 53%,transparent 61%);transform:translateX(-26%);animation:beamMove 25s linear infinite;filter:blur(1.2cqw)}
+@keyframes beamMove{0%{transform:translateX(-26%)}100%{transform:translateX(26%)}}
+.motes{overflow:hidden}
+.motes.front{filter:blur(1.2cqw)}
+.motes.back{filter:blur(.12cqw)}
+.motes i{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(222,189,135,.95) 0,transparent 68%);animation-name:moteDrift,moteTwinkle;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite;opacity:.4}
+@keyframes moteDrift{from{transform:translate(0,0)}to{transform:translate(var(--dx),var(--dy))}}
+@keyframes moteTwinkle{0%,100%{opacity:.12}50%{opacity:.85}}
+.grade{background:linear-gradient(180deg,rgba(222,189,135,.18),transparent 38%,transparent 62%,rgba(45,48,65,.22));mix-blend-mode:soft-light}
+.vig{background:radial-gradient(118% 88% at 50% 46%,transparent 52%,rgba(20,21,31,.36) 100%)}
+.grain{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");background-size:320px 320px;opacity:.15;mix-blend-mode:overlay;animation:grainShift .5s steps(1) infinite}
+@keyframes grainShift{0%{background-position:0 0}20%{background-position:-70px 40px}40%{background-position:50px -90px}60%{background-position:-120px -30px}80%{background-position:90px 80px}}
+.streak{position:absolute;left:-10%;width:120%;height:.6cqw;background:linear-gradient(90deg,transparent,rgba(255,238,205,0) 12%,rgba(255,238,205,.95) 50%,rgba(255,238,205,0) 88%,transparent);filter:blur(.4cqw);opacity:0;mix-blend-mode:screen}
+.fade{background:var(--ink)}
+.circ{box-shadow:0 3cqw 9cqw rgba(0,0,0,.55),0 0 9cqw rgba(222,189,135,.16),inset 0 0 0 .4cqw rgba(244,241,234,.2)}
+.circ::after{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.3) 48%,rgba(255,236,200,.12) 54%,transparent 62%);background-size:300% 100%;animation:csheen 1.6s linear infinite}
+@keyframes csheen{0%,12.5%{background-position:-10% 0}56%,100%{background-position:100% 0}}
+.dof{filter:blur(.32cqw)}
+
+@media (prefers-reduced-motion:reduce){ .t,.float{animation:none!important} }
+</style>
+
+<div class="frame" id="frame">
+  <div class="cam" id="cam">
+  <div class="L" id="poster"></div>
+  <div class="L" id="sA">
+    <div class="L grid" id="grid"></div>
+    <div class="atop" id="aTop"><span class="mk"><img src="brand/logo-horizontal-navy.webp" alt="AJ GROUPS, infinite possibilities"></span><b>Our <em>ventures</em></b></div>
+    <div class="pills" id="pills"></div>
+    <div id="bubs"></div>
+  </div>
+  <div class="L" id="roll">
+    <div id="bgs"></div>
+    <div class="dim"></div>
+    <div class="rtop"><span class="mk"><img src="brand/logo-horizontal-gold.webp" alt="AJ GROUPS"></span><div class="stack count" id="counts" style="width:30cqw"></div></div>
+    <div class="dome"></div><div id="dots"></div>
+    <div id="circs"></div>
+    <div class="meta" id="meta"></div>
+    <div class="list" id="list">
+      <div class="lfw"><div class="lst faded" id="lf"></div></div>
+      <div class="win" id="win"><div class="lst" id="ln"></div></div>
+    </div>
+  </div>
+  <div class="arch" id="arch"></div>
+  <div id="ptext"></div>
+  </div>
+  <div class="cine beam"></div>
+  <div class="cine motes back" id="motesBack"></div>
+  <div class="cine motes front" id="motesFront"></div>
+  <div id="streaks"></div>
+  <div class="cine grade"></div>
+  <div class="cine vig"></div>
+  <div class="cine grain"></div>
+  <div class="cine fade" id="fade"></div>
+</div>
+
+<script>
+(function(){
+  var V=[
+    {n:'Bun Bun Cafe',           c:'Food & Beverage',             s:'Open now',             img:'bun',      tag:'Food',     live:1},
+    {n:'Alven Studio',           c:'Creative & Digital Marketing',s:'Launching Dec 6',      img:'alven',    tag:'Creative'},
+    {n:'House of Fovo',          c:'Photography & Videography',   s:'Launching Dec 13',     img:'fovo',     tag:'Photo'},
+    {n:'AJ Little Wonder World', c:'Stories, Learning & Play',    s:'Date to be announced', img:'little',   tag:'Kids'},
+    {n:'Clothing Brand',         c:'Fashion & Lifestyle',         s:'Coming soon',          img:'fashion',  tag:'Fashion'},
+    {n:'AJ Software Solutions',  c:'Technology & Development',    s:'Coming soon',          img:'software', tag:'Tech'},
+    {n:'Online Course',          c:'Learning & Education',        s:'Coming soon',          img:'course',   tag:'Learning'},
+    {n:'Digital Products',       c:'Practical digital resources', s:'Coming soon',          img:'digital',  tag:'Digital'}
+  ];
+  var T=25, S0=5.0, D=1.6, TR=.45, LH=7.2, EASE='cubic-bezier(.65,0,.35,1)';
+  var css=[], kn=0, $=function(id){return document.getElementById(id);};
+  function el(tag,cls,html){var e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e;}
+  function anim(e,stops){
+    stops=stops.slice().sort(function(a,b){return a[0]-b[0];});
+    if(stops[0][0]>0) stops.unshift([0,stops[0][1]]);
+    if(stops[stops.length-1][0]<T) stops.push([T,stops[stops.length-1][1]]);
+    var name='k'+(kn++), s='@keyframes '+name+'{';
+    stops.forEach(function(st){ s+=Math.max(0,Math.min(100,st[0]/T*100)).toFixed(3)+'%{'+st[1]+';animation-timing-function:'+EASE+'}'; });
+    css.push(s+'}');
+    e.classList.add('t');
+    e.style.animationName=e.style.animationName?e.style.animationName+','+name:name;
+  }
+  var S=function(i){return S0+i*D;}, E=function(i){return S0+(i+1)*D;};
+  var END=E(7);                      /* 17.8s: the last venture hands over to the poster */
+
+  /* ---- scene A ---- */
+  anim($('grid'),[[0,'opacity:0'],[.7,'opacity:1']]);
+  anim($('aTop'),[[.2,'opacity:0;transform:translateY(2cqh)'],[.9,'opacity:1;transform:none']]);
+  var tags=['All'].concat(V.map(function(v){return v.tag;}));
+  tags.forEach(function(t,j){
+    var p=el('div','pill',t); $('pills').appendChild(p);
+    anim(p,[[.4+.05*j,'opacity:0;transform:translateX(-4cqw)'],[.95+.05*j,'opacity:1;transform:none']]);
+    if(j===0) anim(p,[[0,'background:#2d3041;color:#f4f1ea'],[2.5,'background:#2d3041;color:#f4f1ea'],[2.6,'background:#ffffff;color:#2d3041']]);
+    if(j===1) anim(p,[[0,'background:#ffffff;color:#2d3041'],[2.5,'background:#ffffff;color:#2d3041'],[2.6,'background:#2d3041;color:#f4f1ea']]);
+  });
+  /* cluster layout: centre x (cqw), centre y (cqh), diameter (cqw) */
+  var B=[[63,52,38],[44,33,22],[82,30,26],[90,57,16],[78,73,28],[48,71,24],[36,48,14],[62,23,14]];
+  V.forEach(function(v,k){
+    var b=B[k], d=el('div','bub');
+    d.style.cssText='left:'+(b[0]-b[2]/2)+'cqw;top:calc('+b[1]+'cqh - '+(b[2]/2)+'cqw);width:'+b[2]+'cqw;height:'+b[2]+'cqw';
+    var f=el('div','float'); f.style.animationDelay=(-k*.7)+'s'; f.appendChild(d);
+    var img=el('img'); img.src='img/stock-'+v.img+'.jpg'; img.alt=''; d.appendChild(img);
+    $('bubs').appendChild(f);
+    var t0=.6+.11*k;
+    if(k===0) anim(d,[[t0,'transform:scale(0)'],[t0+.4,'transform:scale(1.08)'],[t0+.65,'transform:scale(1)'],[2.5,'transform:scale(1)'],[2.95,'transform:scale(1.35)']]);
+    else { anim(d,[[t0,'transform:scale(0)'],[t0+.4,'transform:scale(1.08)'],[t0+.65,'transform:scale(1)'],[2.5,'transform:scale(1)'],[2.95,'transform:scale(.8)']]);
+           anim(img,[[2.5,'opacity:1;filter:grayscale(0)'],[2.95,'opacity:.16;filter:grayscale(1)']]); }
+  });
+  var tag=el('div','btag','Bun Bun Cafe'); tag.style.top='calc(52cqh + 27.5cqw)'; tag.style.left='63cqw'; $('sA').appendChild(tag);
+  anim(tag,[[2.8,'opacity:0;transform:translate(-50%,1cqh)'],[3.2,'opacity:1;transform:translate(-50%,0)'],[3.75,'opacity:1;transform:translate(-50%,0)'],[3.9,'opacity:0;transform:translate(-50%,0)']]);
+  anim($('sA'),[[0,'opacity:1'],[4.9,'opacity:1'],[4.95,'opacity:0']]);
+
+  /* ---- scene B ---- */
+  var R0='clip-path:circle(0cqw at 63cqw 52cqh)', R1='clip-path:circle(25.65cqw at 63cqw 52cqh)', R2='clip-path:circle(210cqh at 63cqw 52cqh)';
+  anim($('roll'),[[0,R0+';opacity:1'],[3.88,R0+';opacity:1'],[3.9,R1+';opacity:1'],[4.0,R1+';opacity:1'],[4.85,R2+';opacity:1'],[END+.2,R2+';opacity:1'],[END+1.0,R2+';opacity:0']]);
+  var P=function(x,y,s,o){return 'transform:translate('+x+'cqw,'+y+'cqh) scale('+s+');opacity:'+o;};
+  V.forEach(function(v,i){
+    var s=S(i), e=E(i);
+    var bg=el('div','bg'); bg.style.backgroundImage='url(img/stock-'+v.img+'.jpg)'; $('bgs').appendChild(bg);
+    anim(bg, i===0 ? [[0,'opacity:1;transform:scale(1.12)'],[e+.32,'opacity:1;transform:scale(1.04)'],[e+.34,'opacity:0;transform:scale(1.04)']]
+                   : [[s-.4,'opacity:0;transform:scale(1.12)'],[s+.05,'opacity:1;transform:scale(1.1)'],[e+.32,'opacity:1;transform:scale(1.04)'],[e+.34,'opacity:0;transform:scale(1.04)']].concat(i===7?[]:[]));
+    if(i===7) anim(bg,[[0,'filter:blur(3cqw) saturate(1.1)']]);
+
+    var c=el('div','circ'), im=el('img'); im.src='img/stock-'+v.img+'.jpg'; im.alt=v.n; c.appendChild(im); $('circs').appendChild(c);
+    var st;
+    if(i===0) st=[[0,P(13,22,.802,0)],[3.89,P(13,22,.802,0)],[3.9,P(13,22,.802,1)],[4.0,P(13,22,.802,1)],[4.95,P(0,0,1,1)]];
+    else { var a=S(i-1)-TR; st=[[0,P(100,0,.55,0)],[a-.01,P(100,0,.55,0)],[a,P(100,0,.55,1)],[a+TR,P(58,0,.55,1)],[s-TR,P(58,0,.55,1)],[s,P(0,0,1,1)]]; }
+    if(i<7) st=st.concat([[e-TR,P(0,0,1,1)],[e,P(-58,0,.55,1)],[e+D-TR,P(-58,0,.55,1)],[e+D,P(-100,0,.55,1)],[e+D+.01,P(-100,0,.55,0)]]);
+    anim(c,st);
+
+    var m=el('div','',  '<em>'+v.c+'</em><span class="chip'+(v.live?' live':'')+'"><i></i>'+v.s+'</span>'); $('meta').appendChild(m);
+    var mi=i===0?4.7:s-.25, mo=i===7?END+.1:e-.3;
+    anim(m,[[mi,'opacity:0;transform:translateY(1.5cqh)'],[mi+.4,'opacity:1;transform:none'],[mo,'opacity:1;transform:none'],[mo+.25,'opacity:0;transform:translateY(-1.5cqh)']]);
+
+    var cn=el('span','', String(i+1).padStart(2,'0')+' / 08'); $('counts').appendChild(cn);
+    anim(cn,[[mi,'opacity:0'],[mi+.3,'opacity:1'],[mo,'opacity:1'],[mo+.2,'opacity:0']]);
+
+    $('lf').appendChild(el('div','',v.n)); $('ln').appendChild(el('div','',v.n));
+
+    /* dots ride a circle concentric with the dome (dome centre sits 8cqw below the frame, radius 28cqw) */
+    var th=(155-i*130/7)*Math.PI/180, R=34, cx=50, cy=177.78+8;
+    var dt=el('div','dot'); dt.style.left=(cx+R*Math.cos(th))+'cqw'; dt.style.top=(cy-R*Math.sin(th))+'cqw'; $('dots').appendChild(dt);
+    anim(dt,[[ (i===0?4.6:s-.3),'background:rgba(244,241,234,.3);transform:scale(1)'],[(i===0?4.9:s),'background:#debd87;transform:scale(1.7)'],[(i===7?END+2:e-.3),'background:#debd87;transform:scale(1.7)'],[(i===7?END+2.1:e),'background:rgba(244,241,234,.3);transform:scale(1)']]);
+  });
+  var ls=[[0,'transform:translateY(0)']];
+  for(var i=1;i<8;i++){ ls.push([S(i)-TR,'transform:translateY('+(-(i-1)*LH)+'cqw)']); ls.push([S(i),'transform:translateY('+(-i*LH)+'cqw)']); }
+  anim($('lf'),ls); anim($('ln'),ls);
+  anim($('list'),[[4.3,'opacity:0'],[5.0,'opacity:1'],[END,'opacity:1'],[END+.3,'opacity:0']]);
+
+  /* ---- scenes C/D: ink circle to arch, then the editorial type ---- */
+  anim($('arch'),[[0,'opacity:0;top:12cqh;height:64cqw;filter:blur(0cqw)'],[END,'opacity:0;top:12cqh;height:64cqw;filter:blur(0cqw)'],
+                  [END+.4,'opacity:1;top:12cqh;height:64cqw;filter:blur(0cqw)'],[END+.55,'opacity:1;top:12cqh;height:64cqw;filter:blur(0cqw)'],
+                  [END+1.8,'opacity:1;top:8cqh;height:100cqh;filter:blur(5.5cqw)']]);
+  var PT=[
+    ['p-head','<span><span class="yr">2026.</span>&mdash; One group,</span><span>many identities.</span>',END+2.2],
+    ['p-under','<span>The brands.</span><span>The vision.</span><span>The group.</span>',END+3.0],
+    ['p-cap','We see possibilities where others see ideas.<br>We turn ambition into brands.',END+3.7],
+    ['p-site','ajgroups.co',END+4.2]
+  ];
+  PT.forEach(function(p){
+    var d=el('div','ptext '+p[0],p[1]); $('ptext').appendChild(d);
+    anim(d,[[p[2],'opacity:0;transform:translateY(2.4cqh);filter:blur(1cqw)'],[p[2]+.7,'opacity:1;transform:none;filter:blur(0cqw)']]);
+  });
+
+  /* ---- cinematic layer: camera, flares, dust, fade ---- */
+  anim($('cam'),[
+    [0,'transform:scale(1.07) translate(0cqw,0cqw);filter:blur(10px)'],[1.4,'transform:scale(1.03) translate(0cqw,0cqw);filter:blur(0px)'],
+    [2.9,'transform:scale(1) translate(0cqw,0cqw);filter:blur(0px)'],[4.9,'transform:scale(1.06) translate(0cqw,0cqw);filter:blur(0px)'],
+    [6.6,'transform:scale(1.04) translate(0cqw,0cqw);filter:blur(0px)'],[9,'transform:scale(1.05) translate(-.5cqw,.3cqw);filter:blur(0px)'],
+    [12,'transform:scale(1.055) translate(.5cqw,-.2cqw);filter:blur(0px)'],[15,'transform:scale(1.06) translate(-.4cqw,.3cqw);filter:blur(0px)'],
+    [END,'transform:scale(1.07) translate(0cqw,0cqw);filter:blur(0px)'],[END+1.5,'transform:scale(1.045) translate(0cqw,0cqw);filter:blur(0px)'],
+    [END+4,'transform:scale(1) translate(0cqw,0cqw);filter:blur(0px)']]);
+  function flare(t,y,peak,len){ var d=el('div','streak'); d.style.top=y+'cqh'; $('streaks').appendChild(d);
+    anim(d,[[t-len*.6,'opacity:0;transform:scaleX(.3)'],[t-len*.1,'opacity:'+peak+';transform:scaleX(1)'],[t+len*.5,'opacity:0;transform:scaleX(1.15)']]); }
+  flare(4.9,52,.9,1.0);
+  for(var i=1;i<8;i++) flare(S(i)-.15,30,.7,.8);
+  flare(END+.4,30,1,1.2);
+  anim($('fade'),[[0,'opacity:1'],[.9,'opacity:0'],[24.55,'opacity:0'],[25,'opacity:1']]);
+  /* far bubbles sit slightly out of focus */
+  [3,6,7].forEach(function(k){ $('bubs').children[k].classList.add('dof'); });
+  /* drifting dust at two depths */
+  (function(){
+    var seed=11; function r(){ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; }
+    for(var i=0;i<40;i++){
+      var fr=i%6===0, m=document.createElement('i'), size=fr?(6+r()*9):(.8+r()*2.6);
+      m.style.cssText='left:'+(r()*100).toFixed(1)+'%;top:'+(r()*100).toFixed(1)+'%;width:'+size.toFixed(2)+'cqw;height:'+size.toFixed(2)+'cqw;'+
+        '--dx:'+((r()-.5)*16).toFixed(1)+'cqw;--dy:'+(-8-r()*18).toFixed(1)+'cqw;'+
+        'animation-duration:'+(16+r()*16).toFixed(1)+'s,'+(3+r()*5).toFixed(1)+'s;animation-delay:'+(-r()*20).toFixed(1)+'s,'+(-r()*6).toFixed(1)+'s';
+      $(fr?'motesFront':'motesBack').appendChild(m);
+    }
+  })();
+
+  /* the pill hugs each name: measure once fonts are in, then animate its width with the list */
+  function build(){
+    var probe=$('ln').children, fw=$('frame').clientWidth/100, ws=[];
+    for(var i=0;i<probe.length;i++){ var sp=el('span','',probe[i].textContent); sp.style.cssText='position:absolute;visibility:hidden;font-size:5.2cqw;font-weight:500;letter-spacing:-.025em;white-space:nowrap'; $('frame').appendChild(sp); ws.push(sp.getBoundingClientRect().width/fw+7); sp.remove(); }
+    var w=[[0,'width:'+ws[0]+'cqw']];
+    for(var i=1;i<8;i++){ w.push([S(i)-TR,'width:'+ws[i-1]+'cqw']); w.push([S(i),'width:'+ws[i]+'cqw']); }
+    anim($('win'),w);
+    var st=document.createElement('style'); st.textContent=css.join('\n'); document.head.appendChild(st);
+    window.__built=true;
+  }
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(build);
+})();
+</script>

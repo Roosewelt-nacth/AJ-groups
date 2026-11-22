@@ -7,3 +7,11 @@ Thumbs.db
 # local tooling
 .claude/
 client/
+
+# reels: installed tools and generated audio
+reels/rec/node_modules/
+reels/audio/*.wav
+reels/audio/*.png
+reels/rec/*.png
+reels/rec/*.jpg
+reels/rec/*.mp4

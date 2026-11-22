@@ -28,6 +28,7 @@ The websites for **AJ GROUPS**, founded and led by **Allwyn**. A group of small 
 | `server/` | `worker.js` (Cloudflare Worker for orders) and `SETUP.md` (plain-language setup) |
 | `tools/` | Helper scripts (`prep_photos.py` prepares menu photos) |
 | `client/` | Scratch and review files, not part of the public site |
+| `reels/` | Testing repo only. Marketing reels (`video/`: laptop, iPad and ventures MP4s with soundtrack, poster PNG) and their sources, soundtrack script and render tools. See `reels/README.md`. Hidden from search |
 
 Older drafts live outside the repo in `AJ-Groups-Drafts` (next to this folder on the original computer). They are not needed to continue.
 

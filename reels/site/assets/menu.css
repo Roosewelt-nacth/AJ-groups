@@ -1,0 +1,31 @@
+/* AJ GROUPS shared menu: a compact glass card under the header with a soft dim behind it. One look for every page that has a Menu button.
+   The pages decide when the menu exists (display); this file decides how it looks. */
+:root .menu{
+  position:fixed;inset:var(--menu-top,76px) 12px auto 12px;z-index:40;max-height:calc(100vh - var(--menu-top,76px) - 16px);max-height:calc(100dvh - var(--menu-top,76px) - 16px);
+  overflow:auto;overscroll-behavior:contain;flex-direction:column;justify-content:flex-start;gap:0;padding:6px;border-radius:22px;
+  background:color-mix(in srgb,var(--sheet,var(--bg,var(--cream,#fff))) 88%,transparent);
+  -webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3);
+  box-shadow:0 0 0 100vmax rgba(6,8,14,.4),0 22px 60px rgba(0,0,0,.28),inset 0 0 0 1px var(--line,rgba(128,128,128,.25));
+  opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-10px) scale(.985);transform-origin:50% 0;
+  transition:opacity .2s ease,transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s .32s;
+}
+:root .menu.on{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition-delay:0s}
+:root .menu a{
+  position:relative;display:block;min-height:50px;line-height:50px;padding:0 16px;border:0;border-radius:14px;
+  font-family:inherit;font-size:17px;font-weight:400;letter-spacing:-.01em;text-align:center;color:var(--ink);text-decoration:none;
+  opacity:1;transform:none;filter:none;-webkit-tap-highlight-color:transparent;transition:background .2s ease;
+}
+:root .menu a+a::before{content:"";position:absolute;top:0;left:18px;right:18px;height:1px;background:var(--line)}
+:root .menu a:hover,:root .menu a:focus-visible,:root .menu a:active{background:color-mix(in srgb,var(--ink) 9%,transparent);padding-left:16px}
+:root .menu a.on{background:color-mix(in srgb,var(--ink) 12%,transparent)}
+:root .menu a em{font-family:inherit;font-style:normal;font-size:1em;letter-spacing:inherit}
+:root .menu small{display:block;padding:12px 16px 8px;font-size:12px;text-align:center;color:var(--mute);opacity:1}
+/* where the card sits: just under each page's header */
+:root.stack .menu{--menu-top:calc(var(--hb,64px) + 10px)}
+:root:not(.stack) .top ~ .menu{--menu-top:84px}
+:root .tb ~ .menu{--menu-top:72px}
+@media (min-width:700px){:root .menu{left:auto;right:max(12px,var(--pad,12px));width:min(380px,calc(100vw - 24px))}:root .tb ~ .menu{left:max(12px,var(--pad,12px));right:auto}}
+/* while it is open the header stays bright above the dim, and the bottom dock steps aside */
+:root.menu-open .top,:root.menu-open .tb{z-index:45}
+:root.menu-open .mo-dock{opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:reduce){:root .menu{transition:opacity .1s;transform:none}}

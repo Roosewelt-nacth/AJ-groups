@@ -1,0 +1,253 @@
+<title>AJ Groups iPad Reel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/*
+  9:16 reel canvas. A landscape tablet leans on its folio stand in a seamless studio sweep
+  (deep navy into pale grey-blue, the AJ GROUPS navy family), after the iPad reference.
+  The screen shows the real ajgroups.co captured at 1366x1024: home, about, vision, ventures.
+  20s loop, pure CSS, cinematic pass (macro open, orbit, spill light, dust, grain):
+  0-5%    curtain lifts on a close side view of the tablet's aluminium edge
+  5-28%   camera orbits round to the front-left 3/4 view and pulls back
+  28-36%  screen wakes, a light sweep crosses the glass
+  36-96%  slow push-in with gentle sway while the site steps through its chapters
+  94-100% curtain, loop
+  3D rules: only .rig and .tab preserve-3d, never opacity/filter on them, no coplanar painted planes.
+*/
+:root{
+  --navy:#2d3041;
+  --navy-ink:#0d0f1a;
+  --gold:#debd87;
+  --gold-deep:#b98f4f;
+  --cream:#f4f1ea;
+  --silver:#dfe3ec;
+  --fabric:#1d2236;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;display:flex;align-items:center;justify-content:center;background:#05060b;overflow:hidden;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+
+.frame{
+  position:relative;overflow:hidden;container-type:size;
+  height:min(100vh,177.78vw);width:min(100vw,56.25vh);
+  background:linear-gradient(180deg,#04050b 0%,#0b0e1c 20%,#1a2140 38%,#33406a 50%,#5d6b93 60%,#9aa4bd 69%,#bcc2d1 80%,#c9cdd8 100%);
+}
+.frame::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 30% at 50% 56%,rgba(222,189,135,.10),transparent 70%)}
+
+.label{position:absolute;left:0;right:0;z-index:3;display:flex;justify-content:center;pointer-events:none}
+.label.top{top:max(9cqw,env(safe-area-inset-top,0px) + 5cqw);align-items:center;gap:2cqw;font-size:4.4cqw;letter-spacing:-.02em;color:var(--cream)}
+.label.top img{display:block;height:8.6cqw;width:auto;aspect-ratio:900/196}
+.label.bottom{bottom:max(10cqw,env(safe-area-inset-bottom,0px) + 6cqw);flex-direction:column;align-items:center;gap:2.2cqw;text-align:center;color:var(--navy);animation:capIn 20s linear infinite}
+.label.bottom b{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:8.4cqw;letter-spacing:-.02em;line-height:1}
+.label.bottom b em{font-style:italic;color:#8d6a35}
+.label.bottom span{font-size:2.7cqw;letter-spacing:.32em;text-transform:uppercase;opacity:.6}
+@keyframes capIn{0%,80%{opacity:0;transform:translateY(2cqw)}86%,95%{opacity:1;transform:none}99%,100%{opacity:0;transform:none}}
+
+/* ---------- 3D tablet ---------- */
+.scene{position:absolute;inset:0;perspective:300cqw;perspective-origin:50% 52%}
+.rig{
+  position:absolute;left:12.5cqw;top:calc(66% - 60cqw);width:80cqw;height:60cqw;
+  transform-style:preserve-3d;transform-origin:50% 100% -12cqw;
+  transform:rotateX(-4deg) rotateY(28deg) scale(1.1);
+  animation:camera 20s linear infinite;
+}
+@keyframes camera{
+  0%    {transform:translateY(-2cqw) rotateX(-2deg) rotateY(82deg) scale(2.1)}
+  5%    {transform:translateY(-2cqw) rotateX(-3deg) rotateY(80deg) scale(2.0)}
+  16%   {transform:translateY(0cqw)  rotateX(-4deg) rotateY(56deg) scale(1.45)}
+  30%   {transform:translateY(0cqw)  rotateX(-6deg) rotateY(34deg) scale(1.2)}
+  40%   {transform:translateY(0cqw)  rotateX(-5deg) rotateY(28deg) scale(1.12)}
+  56%   {transform:translateY(0cqw)  rotateX(-4deg) rotateY(21deg) scale(1.16)}
+  72%   {transform:translateY(0cqw)  rotateX(-7deg) rotateY(33deg) scale(1.13)}
+  86%   {transform:translateY(0cqw)  rotateX(-4deg) rotateY(26deg) scale(1.1)}
+  96%   {transform:translateY(0cqw)  rotateX(-4deg) rotateY(28deg) scale(1.12)}
+  100%  {transform:translateY(-2cqw) rotateX(-2deg) rotateY(82deg) scale(2.1)}
+}
+
+/* the tablet leans back 25deg on its bottom edge */
+.tab{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:50% 100%;transform:rotateX(30deg)}
+.rim{position:absolute;inset:0;border-radius:4.2cqw;background:linear-gradient(90deg,#aeb5c6,#d7dbe5 18%,#9aa2b5 60%,#c5cad6)}
+.back{position:absolute;inset:0;border-radius:4.2cqw;transform:translateZ(-.95cqw) rotateY(180deg);background:linear-gradient(160deg,#283052,var(--fabric) 60%,#151a2b);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.front{position:absolute;inset:0;border-radius:4.2cqw;background:#040407;box-shadow:inset 0 0 0 .34cqw var(--silver),inset 0 0 0 .5cqw #9ca4b6;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.cams{position:absolute;top:.95cqw;left:50%;transform:translateX(-50%);display:flex;gap:3.4cqw}
+.cams i{width:.7cqw;height:.7cqw;border-radius:50%;background:#14161f;box-shadow:inset 0 0 0 .15cqw #2a2d3c}
+
+/* folio stand: the cover folds off the back and meets the floor behind */
+.pool{position:absolute;left:-25%;width:150%;top:100%;height:70cqw;transform-origin:50% 0;transform:translateY(.04cqw) rotateX(90deg) translateY(-34cqw);background:radial-gradient(30% 14% at 50% 62%,rgba(236,244,255,.55),rgba(210,226,255,.2) 50%,transparent 76%);opacity:0;animation:poolIn 20s linear infinite}
+@keyframes poolIn{0%,40%{opacity:0}50%,96%{opacity:1}98%,100%{opacity:0}}
+.stand{position:absolute;left:5cqw;width:70cqw;top:29.3cqw;height:39.7cqw;transform-origin:50% 0;border-radius:0 0 1.2cqw 1.2cqw;
+  transform:translateZ(-18.8cqw) rotateX(-39.4deg);background:linear-gradient(180deg,#252b45,var(--fabric) 50%,#121626)}
+.stand.inner{transform:translateZ(-18.8cqw) rotateX(-39.4deg) translateZ(-.5cqw);background:#11141f}
+.floor{position:absolute;left:-30%;width:160%;top:100%;height:70cqw;transform-origin:50% 0;transform:translateY(.05cqw) rotateX(90deg) translateY(-50cqw);
+  background:
+    radial-gradient(40% 8% at 50% 72%,rgba(8,10,22,.7),transparent 70%),
+    radial-gradient(34% 16% at 50% 30%,rgba(10,12,24,.35),transparent 70%),
+    radial-gradient(60% 40% at 50% 55%,rgba(20,24,44,.22),transparent 72%)}
+
+/* ---------- screen: the real ajgroups.co at iPad size ---------- */
+.display{position:absolute;inset:2.05cqw 2.7cqw;border-radius:2.3cqw;overflow:hidden;background:#000}
+.ui{position:absolute;inset:0;opacity:0;animation:wake 20s linear infinite}
+@keyframes wake{0%,33%{opacity:0}40%,96%{opacity:1}98%,100%{opacity:0}}
+.shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;animation:20s linear infinite}
+.shot.home{animation-name:sHome}
+.shot.about{animation-name:sAbout}
+.shot.vision{animation-name:sVision}
+.shot.ventures{animation-name:sVentures}
+@keyframes sHome    {0%,38%{opacity:1;transform:scale(1.05)}58%{opacity:1;transform:scale(1)}60%{opacity:1;transform:translateY(-3%)}60.5%,100%{opacity:0;transform:translateY(-3%)}}
+@keyframes sAbout   {0%,59%{opacity:0;transform:translateY(6%)}61%{opacity:1;transform:none}68.5%{opacity:1;transform:scale(1.015)}70%{opacity:1;transform:translateY(-3%)}70.5%,100%{opacity:0;transform:translateY(-3%)}}
+@keyframes sVision  {0%,69%{opacity:0;transform:translateY(6%)}71%{opacity:1;transform:none}78.5%{opacity:1;transform:scale(1.015)}80%{opacity:1;transform:translateY(-3%)}80.5%,100%{opacity:0;transform:translateY(-3%)}}
+@keyframes sVentures{0%,79%{opacity:0;transform:translateY(6%)}81%{opacity:1;transform:none}100%{opacity:1;transform:scale(1.02)}}
+.glass{position:absolute;inset:-20% -90%;pointer-events:none;background:linear-gradient(108deg,transparent 41%,rgba(255,255,255,.12) 48%,rgba(255,255,255,.03) 56%,transparent 63%);transform:translateX(-30%);animation:glare 20s linear infinite}
+@keyframes glare{0%,40%{transform:translateX(-30%)}100%{transform:translateX(30%)}}
+/* the live site: runs at its real iPad size and is scaled down into the display; the captures stay underneath as a fallback */
+.live{position:absolute;left:0;top:0;border:0;transform-origin:0 0;opacity:0;pointer-events:none;background:var(--navy);transition:opacity .4s}
+.display.is-live .live{opacity:1}
+.display.is-live .shot{visibility:hidden}
+.sweep{position:absolute;inset:-10% -60%;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.22) 49%,rgba(255,255,255,.05) 53%,transparent 60%);transform:translateX(-60%);animation:sweep 20s linear infinite}
+@keyframes sweep{0%,35%{transform:translateX(-60%)}46%,100%{transform:translateX(60%)}}
+
+.curtain{position:absolute;inset:0;z-index:9;background:#05060b;pointer-events:none;animation:curtain 20s linear infinite}
+@keyframes curtain{0%{opacity:1}4%{opacity:0}94%{opacity:0}98%,100%{opacity:1}}
+
+@media (prefers-reduced-motion:reduce){
+  .rig,.ui,.shot,.sweep,.label.bottom,.curtain{animation:none}
+  .ui,.label.bottom,.shot.home{opacity:1}
+  .curtain{opacity:0}
+}
+
+/* ================= cinematic layer ================= */
+.cine{position:absolute;inset:0;pointer-events:none}
+.beam{overflow:hidden}
+.beam::before{content:"";position:absolute;inset:-20% -40%;background:linear-gradient(112deg,transparent 40%,rgba(255,236,200,var(--beam-a1)) 47%,rgba(255,236,200,var(--beam-a2)) 53%,transparent 61%);transform:translateX(-26%);animation:beamMove 20s linear infinite;filter:blur(1.2cqw)}
+@keyframes beamMove{0%{transform:translateX(-26%)}100%{transform:translateX(26%)}}
+.motes{overflow:hidden}
+.motes.mfront{filter:blur(1.2cqw)}
+.motes.mback{filter:blur(.12cqw)}
+.motes i{position:absolute;border-radius:50%;background:radial-gradient(circle,var(--mote) 0,transparent 68%);animation-name:moteDrift,moteTwinkle;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite;opacity:.4}
+@keyframes moteDrift{from{transform:translate(0,0)}to{transform:translate(var(--dx),var(--dy))}}
+@keyframes moteTwinkle{0%,100%{opacity:.12}50%{opacity:.85}}
+.grade{background:linear-gradient(180deg,rgba(222,189,135,var(--grade-top)),transparent 38%,transparent 62%,rgba(45,48,65,var(--grade-bot)));mix-blend-mode:soft-light}
+.vig{background:radial-gradient(118% 88% at 50% 46%,transparent 50%,rgba(var(--vig-rgb),var(--vig-a)) 100%)}
+.grain{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");background-size:320px 320px;opacity:var(--grain-a);mix-blend-mode:overlay;animation:grainShift .5s steps(1) infinite}
+@keyframes grainShift{0%{background-position:0 0}20%{background-position:-70px 40px}40%{background-position:50px -90px}60%{background-position:-120px -30px}80%{background-position:90px 80px}}
+.streak{position:absolute;left:-10%;width:120%;top:var(--streak-y);height:.55cqw;background:linear-gradient(90deg,transparent,rgba(255,232,190,.0) 12%,rgba(255,238,205,.95) 50%,rgba(255,232,190,.0) 88%,transparent);filter:blur(.35cqw);opacity:0;mix-blend-mode:screen;animation:streak 20s linear infinite}
+@keyframes streak{0%,36%{opacity:0;transform:scaleX(.3)}40%{opacity:.55;transform:scaleX(1)}47%{opacity:0;transform:scaleX(1.1)}100%{opacity:0}}
+.scene{animation:focus 20s linear infinite,sway 9s ease-in-out infinite}
+@keyframes focus{0%{filter:blur(9px)}7%{filter:blur(0)}13.5%{filter:blur(0)}15%{filter:blur(1.4px)}17%,100%{filter:blur(0)}}
+@keyframes sway{0%,100%{transform:rotate(-.28deg) translate(-.35cqw,.1cqw)}50%{transform:rotate(.32deg) translate(.4cqw,.3cqw)}}
+.label.top{animation:topIn 20s linear infinite}
+@keyframes topIn{0%,7%{opacity:0;transform:translateY(-1.5cqw)}14%,95%{opacity:1;transform:none}98%,100%{opacity:0}}
+
+.frame{--beam-a1:.16;--beam-a2:.07;--mote:rgba(255,236,200,.95);--grade-top:.18;--grade-bot:.22;--vig-rgb:5,6,12;--vig-a:.5;--grain-a:.2;--streak-y:44%}
+
+</style>
+
+<div class="frame">
+  <div class="label top"><img src="brand/logo-horizontal-gold.webp" alt="AJ GROUPS, infinite possibilities"></div>
+
+  <div class="cine beam"></div>
+  <div class="cine motes mback" id="motesBack"></div>
+  <div class="scene">
+    <div class="rig">
+      <div class="floor"></div>
+      <div class="pool"></div>
+      <div class="stand inner"></div>
+      <div class="stand"></div>
+      <div class="tab" id="tab">
+        <div class="back"></div>
+        <div class="front">
+          <div class="cams"><i></i><i></i></div>
+          <div class="display">
+            <div class="ui">
+              <img class="shot home" src="shots/home.jpg" alt="AJ Groups home page: One-stop solution">
+              <img class="shot about" src="shots/about.jpg" alt="About AJ Groups: A different approach to building businesses">
+              <img class="shot vision" src="shots/vision.jpg" alt="Vision: To build a legacy beyond industries">
+              <img class="shot ventures" src="shots/ventures.jpg" alt="Our ventures: Different industries, distinct identities">
+              <div class="glass"></div>
+              <div class="sweep"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cine motes mfront" id="motesFront"></div>
+  <div class="streak"></div>
+  <div class="cine grade"></div>
+  <div class="cine vig"></div>
+  <div class="cine grain"></div>
+  <div class="label bottom"><b>One group. <em>Many identities.</em></b><span>ajgroups.co</span></div>
+  <div class="curtain"></div>
+</div>
+
+<script>
+
+/* drifting dust motes at two depths: small and sharp behind the device, large and soft in front of it */
+(function(){
+  var back=document.getElementById('motesBack'), front=document.getElementById('motesFront'), seed=11;
+  function r(){ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; }
+  for(var i=0;i<40;i++){
+    var fr=i%6===0, s=document.createElement('i'), size=fr?(6+r()*9):(.8+r()*2.6);
+    s.style.cssText='left:'+(r()*100).toFixed(1)+'%;top:'+(r()*100).toFixed(1)+'%;width:'+size.toFixed(2)+'cqw;height:'+size.toFixed(2)+'cqw;'+
+      '--dx:'+((r()-.5)*16).toFixed(1)+'cqw;--dy:'+(-8-r()*18).toFixed(1)+'cqw;'+
+      'animation-duration:'+(16+r()*16).toFixed(1)+'s,'+(3+r()*5).toFixed(1)+'s;animation-delay:'+(-r()*20).toFixed(1)+'s,'+(-r()*6).toFixed(1)+'s';
+    (fr?front:back).appendChild(s);
+  }
+})();
+
+/* extrude the aluminium edge: thin silver slices stacked between the glass and the folio back */
+(function(){
+  var tab=document.getElementById('tab'), back=tab.querySelector('.back'), n=8;
+  for(var k=1;k<=n;k++){
+    var d=document.createElement('div'); d.className='rim';
+    d.style.transform='translateZ(-'+(k*0.95/(n+1)).toFixed(3)+'cqw)';
+    tab.insertBefore(d,back);
+  }
+})();
+
+/* run the real ajgroups.co on the screen so the orb moves, and step it through its chapters in time with the reel */
+(function(){
+  var W=1366, H=1024, LOOP=20000;
+  var disp=document.querySelector('.display'), ui=disp.querySelector('.ui');
+  var f=document.createElement('iframe');
+  f.className='live'; f.src='site/index.html'+(/[?&]rec\b/.test(location.search)?'?fixedres':''); f.title='ajgroups.co, running live';
+  f.setAttribute('tabindex','-1'); f.setAttribute('aria-hidden','true');
+  f.style.width=W+'px'; f.style.height=H+'px';
+  ui.insertBefore(f, ui.querySelector('.glass'));
+  function fit(){ if(disp.clientWidth) f.style.transform='scale('+(disp.clientWidth/W)+')'; }
+  if(window.ResizeObserver) new ResizeObserver(fit).observe(disp); fit();
+
+  var doc=null, tries=0;
+  function check(){
+    try{
+      var d=f.contentDocument;
+      if(d && d.documentElement.classList.contains('ready') && d.querySelector('.stop.cur')){ doc=d; disp.classList.add('is-live'); return; }
+    }catch(e){ return; }
+    if(++tries<120) setTimeout(check,250);
+  }
+  f.addEventListener('load',check);
+
+  var clock=null, stage=-1, labels=['','About','Vision','Ventures'];
+  function go(st){
+    try{
+      if(st===0){ f.contentWindow.scrollTo(0,0); return; }
+      var a=[].slice.call(doc.querySelectorAll('.pillnav a')).filter(function(x){return x.textContent.trim()===labels[st];})[0];
+      if(a) a.click();
+    }catch(e){}
+  }
+  function tick(){
+    if(!clock){ clock=document.getAnimations().filter(function(a){return a.animationName==='camera';})[0]||null; }
+    if(doc && clock && clock.currentTime!=null){
+      var p=(clock.currentTime%LOOP)/LOOP;
+      var st=(p<0.30||p>0.985)?0 : p>=0.80?3 : p>=0.70?2 : p>=0.60?1 : 0;
+      if(st!==stage){ stage=st; go(st); }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
