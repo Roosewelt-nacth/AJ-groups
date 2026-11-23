@@ -374,6 +374,17 @@ a.logo.mo-cur{background:none!important}
 .payrow div{display:grid;gap:2px}.payrow span{font-size:10px;opacity:.7}.payrow b{font-family:var(--disp);font-weight:300;font-size:clamp(28px,3.4vw,38px);letter-spacing:-.03em;line-height:1.1}
 .paynote{margin:0;font-size:12px;line-height:1.5;color:var(--mute)}.trkpay{margin:6px 0 0;font-size:13px;color:var(--accent)}.trkpay:empty{display:none}
 section[hidden],.step[hidden],.tools[hidden]{display:none!important}
+/* packaging grid with the coffee photo: the full set and the coffee cups on top, four squares below */
+.p-coffee{grid-column:8/13;aspect-ratio:1}
+.p-cups{grid-column:1/4}.p-carrier{grid-column:4/7}.p-coaster{grid-column:7/10}.p-shop{grid-column:10/13;aspect-ratio:1}
+@media (max-width:760px){.p-coffee,.p-cups,.p-carrier,.p-coaster{grid-column:span 6;aspect-ratio:.9}.p-shop{grid-column:1/-1;aspect-ratio:1.3}}
+/* one plain colour for the whole page: no glows, gradients or drifting clouds behind the content */
+body::before,.hero::before,#gfx{display:none!important}
+.lock .disc::before{background:var(--disc1)}
+.stage{background:var(--glass)}
+.hill{background:var(--hill1)}
+.arcblob{background:var(--arc1)}
+.mi,.mi.photo{background:none}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 </head>
@@ -497,6 +508,7 @@ section[hidden],.step[hidden],.tools[hidden]{display:none!important}
     <p class="sub">Every Bun Bun order leaves in our own packaging: cake bags and boxes, cups, a carry handle and a ribbon. Concept mockups from the brand document.</p>
     <div class="pk">
       <figure class="pkf p-set rv"><img src="../assets/bunbun/pack-set.jpg?v=2" alt="Bun Bun bag, carton, cups and mug in cream and green" loading="lazy"><figcaption><b>The full set</b><span>Bags, cartons, cups and mugs</span></figcaption></figure>
+      <figure class="pkf p-coffee rv"><img src="../assets/bunbun/pack-coffee.webp" alt="Three Bun Bun coffee cups, two green with the wordmark and one cream with the mark, under an espresso machine" loading="lazy" width="1000" height="1000"><figcaption><b>Coffee to go</b><span>Cups in green and cream</span></figcaption></figure>
       <figure class="pkf p-cups rv"><img src="../assets/bunbun/pack-cups.jpg?v=2" alt="Stacked Bun Bun cups" loading="lazy"><figcaption><b>Cups</b><span>For hot chocolate and more</span></figcaption></figure>
       <figure class="pkf p-carrier rv"><img src="../assets/bunbun/pack-carrier.jpg?v=2" alt="Bun Bun carry handle holding two cups" loading="lazy"><figcaption><b>Carry handle</b><span>Easy to take home</span></figcaption></figure>
       <figure class="pkf p-coaster rv"><img src="../assets/bunbun/pack-coaster.jpg?v=2" alt="Bun Bun branded lid on a wooden tray" loading="lazy"><figcaption><b>Gift tray</b><span>Wood and ribbon</span></figcaption></figure>
@@ -564,6 +576,6 @@ var p=document.querySelector('.pill');if(p)p.insertAdjacentHTML('afterbegin','<a
 window.MOTION.titles.xmas='Christmas';window.MOTION.dock.splice(1,0,{l:'Christmas',h:'#xmas',i:'<svg viewBox="0 0 24 24"><path d="M12 3l4 6h-3l4 6h-3l3 5H7l3-5H7l4-6H8z"/></svg>'});
 })();</script>
 <script src="../assets/motion.js?v=8"></script>
-<script type="module" src="main.js?v=55"></script>
+<script type="module" src="main.js?v=56"></script>
 </body>
 </html>
