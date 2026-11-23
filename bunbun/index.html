@@ -385,6 +385,10 @@ body::before,.hero::before,#gfx{display:none!important}
 .hill{background:var(--hill1)}
 .arcblob{background:var(--arc1)}
 .mi,.mi.photo{background:none}
+/* hairline glass: every object gets the same thin line, in the page's own ink colour */
+:root{--hair:color-mix(in srgb,var(--ink) 16%,transparent)}
+.pkf,.mc,.panel,.stage,.hw,.sum,.qty,.chip,.pill,.sw,.btn,.xc,.msg,.thanks,.trk,.pkf figcaption,.tools button,.mtabs button,.lock .disc::before,.f input,.f select,.f textarea{outline:1px solid var(--hair);outline-offset:-1px}
+.btn:focus-visible,.chip:focus-visible,.mtabs button:focus-visible,.tools button:focus-visible,.f input:focus-visible,.f select:focus-visible,.f textarea:focus-visible,.msg:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 </head>
