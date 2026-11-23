@@ -285,8 +285,8 @@ function frame() {
   if (!FIXED && !first && clock.elapsedTime > 3 && dt < .05) { fa += dt; fn++; if (fn >= 40) { const av = fa / fn; if (av > .024 && PR > PFLOOR) { PR = Math.max(PFLOOR, PR * .85); renderer.setPixelRatio(PR); fit(); } else if (av < .0185 && PR < PRMAX) { PR = Math.min(PRMAX, PR * 1.1); renderer.setPixelRatio(PR); fit(); } fa = 0; fn = 0; } }
   frames++; if (!ready && frames > 3 && fontsOk && logoReady) { performance.mark('aj-ready'); ready = true; setTimeout(loadVenturePhotos, 1800); root.classList.add('ready'); setTimeout(() => root.classList.add('settled'), 4500); }
   if (ready && app < 1) app = Math.min(1, app + dt * .5);
-  const target = !isNaN(PIN) ? clamp(PIN, 0, NS - 1) : LY.stack ? clamp(swF, 0, NS - 1) : clamp(scrollY / vh(), 0, NS - 1);
-  sNow = first ? target : sNow + (target - sNow) * Math.min(1, dt * (LY.stack ? (swDrag ? 32 : 12) : 5.5));
+  const target0 = !isNaN(PIN) ? clamp(PIN, 0, NS - 1) : LY.stack ? clamp(swF, 0, NS - 1) : clamp(scrollY / (vh() || 1), 0, NS - 1), target = isFinite(target0) ? target0 : 0;   /* a hidden or zero-height frame must never produce NaN and stop the drawing */
+  sNow = first ? target : sNow + (target - sNow) * Math.min(1, dt * (LY.stack ? (swDrag ? 32 : 12) : 5.5)); if (!isFinite(sNow)) sNow = 0;
   const i0 = Math.min(NS - 2, Math.floor(clamp(sNow, 0, NS - 1))), f = clamp(sNow - i0, 0, 1), w = sstep(.15, .85, f), A = CH[sNow >= NS - 1 ? NS - 1 : i0], B = CH[sNow >= NS - 1 ? NS - 1 : i0 + 1], ww = sNow >= NS - 1 ? 0 : w;
   U.uA.value = A.s; U.uB.value = B.s; U.uW.value = A.s === B.s ? 0 : ww;
   themeNow += (THEME - themeNow) * Math.min(1, dt * 3.2); const iA = sNow >= NS - 1 ? NS - 1 : i0, iB = sNow >= NS - 1 ? NS - 1 : i0 + 1;
