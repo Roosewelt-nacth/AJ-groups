@@ -42,7 +42,7 @@ const U = { uTime: { value: 0 }, uAsp: { value: 1 }, uTan: { value: Math.tan(.5 
 /* the AJ logo as a 3D object: its silhouette becomes a signed-distance texture (built once, here) that the shader extrudes into a slab */
 U.uLogo = { value: Object.assign(new THREE.DataTexture(new Uint16Array([THREE.DataUtils.toHalfFloat(1)]), 1, 1, THREE.RedFormat, THREE.HalfFloatType), { needsUpdate: true }) }; U.uLogoOn = { value: 0 };
 U.uLogo2 = { value: Object.assign(new THREE.DataTexture(new Uint16Array([THREE.DataUtils.toHalfFloat(1)]), 1, 1, THREE.RedFormat, THREE.HalfFloatType), { needsUpdate: true }) }; U.uLogo2On = { value: 0 };   /* the Bun Bun mark, same treatment */
-const buildLogoSDF = function (src, done) {
+const buildLogoSDFMain = function (src, done) {
   const N = 512, M = 512, UNIT = 2.5 / N, img = new Image();
   const dt1 = (f, n, d, v, z) => { let k = 0; v[0] = 0; z[0] = -1e20; z[1] = 1e20; for (let q = 1; q < n; q++) { let s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]); while (s <= z[k]) { k--; s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]); } k++; v[k] = q; z[k] = s; z[k + 1] = 1e20; } k = 0; for (let q = 0; q < n; q++) { while (z[k + 1] < q) k++; d[q] = (q - v[k]) * (q - v[k]) + f[v[k]]; } };
   const edt = (g) => { const f = new Float64Array(N), d = new Float64Array(N), v = new Int32Array(N), z = new Float64Array(N + 1);
@@ -67,8 +67,30 @@ const buildLogoSDF = function (src, done) {
   };
   img.src = src;
 };
-buildLogoSDF('assets/brand/logo-silhouette.png', t => { U.uLogo.value = t; U.uLogoOn.value = 1; });
-buildLogoSDF('assets/bunbun/logo-silhouette.png', t => { U.uLogo2.value = t; U.uLogo2On.value = 1; });
+/* The distance texture is made in a worker so the page never freezes while it opens (on a phone this was over a second of blocked screen).
+   The slow main-thread builder above stays as the fallback when workers are unavailable. */
+const SDF_N = 512; let logoReady = false;
+const sdfWorker = (() => { try { return new Worker('assets/sdf-worker.js?v=1'); } catch (e) { return null; } })(), sdfJobs = new Map(); let sdfId = 0;
+const sdfTex = out => { const t = new THREE.DataTexture(out, SDF_N, SDF_N, THREE.RedFormat, THREE.HalfFloatType); t.minFilter = t.magFilter = THREE.LinearFilter; t.generateMipmaps = false; t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; t.needsUpdate = true; return t; };
+const sdfFallback = j => buildLogoSDFMain(j.src, j.done);
+if (sdfWorker) { sdfWorker.onmessage = e => { const j = sdfJobs.get(e.data.id); if (j) { sdfJobs.delete(e.data.id); j.done(sdfTex(e.data.out)); } };
+  sdfWorker.onerror = () => { sdfJobs.forEach(sdfFallback); sdfJobs.clear(); }; }
+const buildLogoSDF = (src, done) => {
+  if (!sdfWorker) { buildLogoSDFMain(src, done); return; }
+  const img = new Image();
+  img.onload = () => { try {
+      const c = document.createElement('canvas'); c.width = c.height = SDF_N; const cx = c.getContext('2d', { willReadFrequently: true }); cx.drawImage(img, 0, 0, SDF_N, SDF_N);
+      const px = cx.getImageData(0, 0, SDF_N, SDF_N).data, mask = new Uint8Array(SDF_N * SDF_N); for (let i = 0; i < mask.length; i++) mask[i] = px[i * 4] > 127 ? 1 : 0;
+      const id = ++sdfId; sdfJobs.set(id, { src, done }); sdfWorker.postMessage({ id, mask, N: SDF_N, UNIT: 2.5 / SDF_N }, [mask.buffer]);
+    } catch (e) { buildLogoSDFMain(src, done); } };
+  img.onerror = () => { /* no logo texture: the shape stays the orb */ };
+  img.src = src;
+};
+buildLogoSDF('assets/brand/logo-silhouette-512.png', t => { U.uLogo.value = t; U.uLogoOn.value = 1; logoReady = true; performance.mark('aj-logo'); });
+/* the Bun Bun mark is only needed a few chapters down, so it waits until the opening is over */
+setTimeout(() => buildLogoSDF('assets/bunbun/logo-silhouette.png', t => { U.uLogo2.value = t; U.uLogo2On.value = 1; }), 4000);
+setTimeout(() => { logoReady = true; }, 1500);   /* never hold the opening for the logo longer than this */
+
 const frag = /* glsl */`
 precision highp float;
 varying vec2 vUv;
@@ -184,7 +206,7 @@ void main(){
 }`;
 const scene = new THREE.Scene(), cam = new THREE.Camera();
 scene.add(Object.assign(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({ uniforms: U, vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0., 1.); }', fragmentShader: frag, depthTest: false, depthWrite: false })), { frustumCulled: false }));
-renderer.setClearColor(0x9fb0ba); renderer.compile(scene, cam);   /* build the shader before the first frame so the opening isn't a stutter */
+renderer.setClearColor(0x9fb0ba); const compiled = renderer.compileAsync ? renderer.compileAsync(scene, cam).catch(() => {}) : (renderer.compile(scene, cam), Promise.resolve());   /* build the shader before the first frame so the opening isn't a stutter */
 
 /* group each chapter's text and button in a panel (a glass sheet on phones, invisible on laptops) */
 stopEls.forEach(el => { const items = [...el.querySelectorAll(':scope > .lead, :scope > .line, :scope > .enter')]; if (!items.length) return; const b = document.createElement('div'); b.className = 'body'; items[0].before(b); items.forEach(x => b.append(x)); });
@@ -252,15 +274,17 @@ const orbit = document.getElementById('orbit'), oc1 = orbit.querySelector('.c1')
 const _sc = new Map(), setV = (el, k, v) => { let m = _sc.get(el); if (!m) _sc.set(el, m = {}); if (m[k] === v) return; m[k] = v; if (k[0] === '-') el.style.setProperty(k, v); else el.style[k] = v; };
 const setA = (el, k, v) => { const s = String(v); if (el['_a' + k] !== s) { el['_a' + k] = s; el.setAttribute(k, s); } }, setT = (el, v) => { if (el._t !== v) { el._t = v; el.textContent = v; } };
 let _bgc = '';
-const clock = new THREE.Clock(); let frames = 0, fontsOk = false, ready = (!isNaN(PIN) || RM); if (ready) root.classList.add('ready');
+const clock = new THREE.Clock(); const loadVenturePhotos = () => { document.querySelectorAll('img[data-src]').forEach(i => { i.src = i.dataset.src; i.removeAttribute('data-src'); }); };
+['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(ev => addEventListener(ev, loadVenturePhotos, { once: true, passive: true }));
+let frames = 0, fontsOk = false, ready = (!isNaN(PIN) || RM); if (ready) root.classList.add('ready');
 /* the opening waits for the first drawn frames and the fonts, so nothing starts while the page is still busy and then jumps */
 (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => { fontsOk = true; }); setTimeout(() => { fontsOk = true; }, 1800);
 let first = true, curIdx = -1, fa = 0, fn = 0, svPrev = 0, svS = 0, dragS = 0, dragT = 0; const PRMAX = PR, PFLOOR = Math.max(.75, PR * .6), FIXED = q.has('fixedres');
 function frame() {
   const dt = Math.min(clock.getDelta(), .05), T = !isNaN(TFIX) ? TFIX : (RM ? 0 : clock.elapsedTime);
   if (!FIXED && !first && clock.elapsedTime > 3 && dt < .05) { fa += dt; fn++; if (fn >= 40) { const av = fa / fn; if (av > .024 && PR > PFLOOR) { PR = Math.max(PFLOOR, PR * .85); renderer.setPixelRatio(PR); fit(); } else if (av < .0185 && PR < PRMAX) { PR = Math.min(PRMAX, PR * 1.1); renderer.setPixelRatio(PR); fit(); } fa = 0; fn = 0; } }
-  frames++; if (!ready && frames > 3 && fontsOk) { ready = true; root.classList.add('ready'); setTimeout(() => root.classList.add('settled'), 4500); }
-  if (ready && app < 1) app = Math.min(1, app + dt * .4);
+  frames++; if (!ready && frames > 3 && fontsOk && logoReady) { performance.mark('aj-ready'); ready = true; setTimeout(loadVenturePhotos, 1800); root.classList.add('ready'); setTimeout(() => root.classList.add('settled'), 4500); }
+  if (ready && app < 1) app = Math.min(1, app + dt * .5);
   const target = !isNaN(PIN) ? clamp(PIN, 0, NS - 1) : LY.stack ? clamp(swF, 0, NS - 1) : clamp(scrollY / vh(), 0, NS - 1);
   sNow = first ? target : sNow + (target - sNow) * Math.min(1, dt * (LY.stack ? (swDrag ? 32 : 12) : 5.5));
   const i0 = Math.min(NS - 2, Math.floor(clamp(sNow, 0, NS - 1))), f = clamp(sNow - i0, 0, 1), w = sstep(.15, .85, f), A = CH[sNow >= NS - 1 ? NS - 1 : i0], B = CH[sNow >= NS - 1 ? NS - 1 : i0 + 1], ww = sNow >= NS - 1 ? 0 : w;
@@ -322,7 +346,8 @@ setV(root, '--line', `rgba(${c3(GOLD, BRONZE, white)},${lerp(.34, .38, white).to
   addEventListener('keydown', e => { if (!LY.stack) return; if (e.key === 'ArrowRight') swF = clamp(Math.round(swF) + 1, 0, NS - 1); if (e.key === 'ArrowLeft') swF = clamp(Math.round(swF) - 1, 0, NS - 1); }); }
 if (q.get('sw')) swF = +q.get('sw');
 layout(); (document.fonts && document.fonts.ready || Promise.resolve()).then(layout); setTimeout(layout, 400);
-requestAnimationFrame(frame);
+/* start drawing once the shader is built in the background; the page chrome is already showing, so nothing waits on a frozen screen */
+let loopOn = false; const startLoop = () => { if (loopOn) return; loopOn = true; requestAnimationFrame(frame); }; compiled.then(startLoop); setTimeout(startLoop, 3000);
 
 /* ?audit: shows each chapter in turn, measures every block and reports overlaps and anything off screen. */
 if (q.has('audit')) setTimeout(() => {
