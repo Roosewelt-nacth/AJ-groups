@@ -403,6 +403,15 @@ body img,body .mk,body .wm,body canvas{filter:none!important}
 .btn,.enter,.cta{translate:none!important}
 .btn{transition:background-color .25s ease,color .25s ease,opacity .25s ease,outline-color .25s ease!important}
 @media (hover:hover){.btn:hover{opacity:.88}.btn.ghost:hover{opacity:1;background:color-mix(in srgb,var(--ink) 6%,transparent)}}
+/* buttons and nav: one pattern. Solid = green fill, cream text. Outline = no fill, green text, a visible green border. */
+:root{--bd:color-mix(in srgb,var(--ink) 38%,transparent)}
+.btn{border:1px solid var(--ink)!important;background:var(--ink)!important;color:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.btn.ghost,.pill,.sw,.qty,.chip,.mtabs button,.tools button{border:1px solid var(--bd)!important}
+.btn.ghost{background:transparent!important;color:var(--ink)!important}
+.pill{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.chip.on,.chip[aria-pressed="true"],.mtabs button[aria-selected="true"],.mtabs button.on{border-color:var(--ink)!important}
+.pill a{transition:background-color .25s ease}
+@media (hover:hover){.btn.ghost:hover,.pill a:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)!important}.btn.ghost:hover{border-color:var(--ink)!important}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 </head>
