@@ -18,20 +18,20 @@ let PR = Math.min(devicePixelRatio, MOBILE ? 2 : 1.25); renderer.setPixelRatio(P
 /* per chapter: shape, page tone (rgb), text is white (1) or dark (0), orb tint, orb screen position (x offset in screens, 0 = centred) and scale */
 const CH = [
   /* s shape, bg page tone, w white text, tint, ox orb offset, sc scale, ps phone scale, ext shape extent, abs absorption colour, fe (weave, grid, transmission, dispersion). AJ palette: slate blue #2d3041 and beige #debd87; the glass takes the opposite colour to its page so the orb always stands out (tintD/absD: the same glass in the dark theme) */
-  { s: 9, bg: [.176, .188, .255], w: 1, tint: [1, .9, .74], ox: 0, sc: 1.0, ps: 1, ext: 1, abs: [.3, .6, 1.8], fe: [0, 0, 1, .07] },
+  { s: 9, bg: [.176, .188, .255], w: 1, tint: [1, .9, .74], ox: 0, sc: 1.0, ps: 1, ext: 1, abs: [.3, .6, 1.8], fe: [0, 0, .55, .07] },
   { s: 8, bg: [.205, .218, .295], w: 1, tint: [1, .92, .78], ox: .24, sc: .96, ps: .92, ext: 1.07, abs: [.5, .9, 1.9], fe: [0, 0, 1, .1] },     /* founder: warm crystal */
   { s: 8, bg: [.205, .218, .295], w: 1, tint: [1, .92, .78], ox: .24, sc: .96, ps: .92, ext: 1.07, abs: [.5, .9, 1.9], fe: [0, 0, 1, .1] },     /* founder: warm crystal */
-  { s: 9, bg: [.957, .945, .918], w: 0, tint: [.5, .54, .72], tintD: [1, .88, .68], ox: .24, sc: 1.05, ps: 1, ext: 1, abs: [4.6, 4.4, 3.0], absD: [0.25, 1.7, 3.2], fe: [0, 0, .45, .07] },        /* our story */
-  { s: 9, bg: [.957, .945, .918], w: 0, tint: [.5, .54, .72], tintD: [1, .88, .68], ox: .24, sc: 1.05, ps: 1, ext: 1, abs: [4.6, 4.4, 3.0], absD: [0.25, 1.7, 3.2], fe: [0, 0, .45, .07] },        /* our story */
+  { s: 9, bg: [.957, .945, .918], w: 0, tint: [.5, .54, .72], tintD: [1, .88, .68], ox: .24, sc: 1.05, ps: 1, ext: 1, abs: [4.6, 4.4, 3.0], absD: [0.12, 0.9, 2.7], fe: [0, 0, .45, .07] },        /* our story */
+  { s: 9, bg: [.957, .945, .918], w: 0, tint: [.5, .54, .72], tintD: [1, .88, .68], ox: .24, sc: 1.05, ps: 1, ext: 1, abs: [4.6, 4.4, 3.0], absD: [0.12, 0.9, 2.7], fe: [0, 0, .45, .07] },        /* our story */
   { s: 0, bg: [.205, .218, .295], w: 1, tint: [1, .9, .74], ox: 0, sc: 1.18, ps: 1, ext: 1, abs: [.3, .6, 1.8], fe: [0, 0, 1, .07] },
-  { s: 10, bg: [.205, .218, .295], w: 1, tint: [1, .9, .74], ox: .24, sc: 1.28, ps: 1.1, ext: 1, abs: [.3, .6, 1.8], fe: [0, 0, 1, .07] },    /* Bun Bun: its own mark as a glass slab */
+  { s: 10, bg: [.205, .218, .295], w: 1, tint: [1, .96, .88], ox: .24, sc: 1.28, ps: 1.1, ext: 1, abs: [.3, .45, 1], fe: [0, 0, .6, .05] },    /* Bun Bun: its own mark as a glass slab */
   { s: 1, bg: [.957, .945, .918], w: 0, tint: [.5, .54, .72], tintD: [1, .88, .68], ox: .24, sc: 1, ps: 1, ext: 1, abs: [4.6, 4.4, 3.0], absD: [0.25, 1.7, 3.2], fe: [0, 0, .45, .08] },     /* marketing: megaphone */
   { s: 2, bg: [.176, .188, .255], w: 1, tint: [.95, .96, 1], ox: .24, sc: 1, ps: 1, ext: 1.07, abs: [.7, .65, .5], fe: [0, 0, 1, .13] },     /* photography: clear crystal with colour fringes */
   { s: 6, bg: [.957, .945, .918], w: 0, tint: [.5, .54, .72], tintD: [1, .88, .66], ox: .24, sc: .95, ps: .95, ext: 1.1, abs: [4.6, 4.4, 3.0], absD: [0.2, 1.5, 2.5], fe: [0, 0, .4, .03] }, /* kids: toy blocks */
   { s: 3, bg: [.957, .945, .918], w: 0, tint: [.5, .54, .72], tintD: [1, .88, .68], ox: .24, sc: .92, ps: .9, ext: 1.02, abs: [4.6, 4.4, 3.0], absD: [0.35, 2.1, 3.7], fe: [1, 0, .6, .03] },  /* clothing: woven spool */
   { s: 4, bg: [.176, .188, .255], w: 1, tint: [.66, .7, .88], ox: .24, sc: .86, ps: .85, ext: 1.05, abs: [1.6, 1.5, 1.0], fe: [0, 1, 1, .06] },     /* software: blue glass with a beige circuit grid */
   { s: 8, bg: [.205, .218, .295], w: 1, tint: [1, .92, .78], ox: .24, sc: .96, ps: .92, ext: 1.07, abs: [.5, .9, 1.9], fe: [0, 0, 1, .1] },     /* founder: warm crystal */
-  { s: 9, bg: [.957, .945, .918], w: 0, tint: [.5, .54, .72], tintD: [1, .88, .68], ox: .24, sc: 1.05, ps: 1, ext: 1, abs: [4.6, 4.4, 3.0], absD: [0.25, 1.7, 3.2], fe: [0, 0, .45, .07] },        /* our story */
+  { s: 9, bg: [.957, .945, .918], w: 0, tint: [.5, .54, .72], tintD: [1, .88, .68], ox: .24, sc: 1.05, ps: 1, ext: 1, abs: [4.6, 4.4, 3.0], absD: [0.12, 0.9, 2.7], fe: [0, 0, .45, .07] },        /* our story */
   { s: 7, bg: [.176, .188, .255], w: 1, tint: [.95, .96, 1], ox: .26, sc: 1.05, ps: .74, ext: 1.5, abs: [.6, .58, .5], fe: [0, 0, 1, .1] },
 ];
 const DARK = [[.105, .113, .155], [.12, .128, .172], [.098, .105, .145], [.105, .113, .155], [.12, .128, .172], [.098, .105, .145], [.105, .113, .155], [.098, .105, .145], [.12, .128, .172], [.098, .105, .145], [.12, .128, .172], [.098, .105, .145], [.12, .128, .172], [.098, .105, .145], [.105, .113, .155]];
@@ -274,6 +274,8 @@ const orbit = document.getElementById('orbit'), oc1 = orbit.querySelector('.c1')
 const _sc = new Map(), setV = (el, k, v) => { let m = _sc.get(el); if (!m) _sc.set(el, m = {}); if (m[k] === v) return; m[k] = v; if (k[0] === '-') el.style.setProperty(k, v); else el.style[k] = v; };
 const setA = (el, k, v) => { const s = String(v); if (el['_a' + k] !== s) { el['_a' + k] = s; el.setAttribute(k, s); } }, setT = (el, v) => { if (el._t !== v) { el._t = v; el.textContent = v; } };
 let _bgc = '';
+let lastS = -1, lastTh = -1, dirtyDraw = true, half = q.has('half');   /* half: draw every other frame (also forced with ?half for testing) */
+addEventListener('resize', () => { dirtyDraw = true; }); addEventListener('pointermove', () => { dirtyDraw = true; }, { passive: true });
 const PERF = q.has('perf'); let pfN = 0, pfA = 0; const perfBox = PERF ? Object.assign(document.createElement('div'), { style: 'position:fixed;left:8px;bottom:8px;z-index:99999;padding:6px 10px;border-radius:8px;background:rgba(0,0,0,.72);color:#fff;font:12px/1.4 monospace;pointer-events:none' }) : null; if (PERF) document.body.append(perfBox);
 const marksReady = () => { const m = performance.getEntriesByType('mark').find(e => e.name === 'aj-ready'); return m ? Math.round(m.startTime) : 0; };
 const clock = new THREE.Clock(); const loadVenturePhotos = () => { document.querySelectorAll('img[data-src]').forEach(i => { i.src = i.dataset.src; i.removeAttribute('data-src'); }); };
@@ -285,8 +287,8 @@ let first = true, curIdx = -1, fa = 0, fn = 0, svPrev = 0, svS = 0, dragS = 0, d
 function frame() {
   const rdt = clock.getDelta(), dt = Math.min(rdt, .05), T = !isNaN(TFIX) ? TFIX : (RM ? 0 : clock.elapsedTime);
   /* resolution governor: watches the real frame time (the old check threw away every frame slower than 20 fps, so the slowest phones never got lowered quality), starts after one second and reacts quickly */
-  if (!FIXED && !first && clock.elapsedTime > 1.2 && rdt < .25) { fa += rdt; fn++; if (fn >= 24) { const av = fa / fn; if (av > .024 && PR > PFLOOR) { PR = Math.max(PFLOOR, PR * (av > .034 ? .72 : .85)); renderer.setPixelRatio(PR); fit(); } else if (av < .0185 && PR < PRMAX) { PR = Math.min(PRMAX, PR * 1.1); renderer.setPixelRatio(PR); fit(); } fa = 0; fn = 0; } }
-  if (PERF) { pfN++; pfA += rdt; if (pfA > .5) { const fps = Math.round(pfN / pfA); perfBox.textContent = fps + ' fps · res ' + PR.toFixed(2) + ' (max ' + PRMAX.toFixed(2) + ') · ' + Math.round(innerWidth * PR) + 'x' + Math.round(innerHeight * PR) + ' · ready ' + (marksReady() || '…') + ' ms'; pfN = 0; pfA = 0; } }
+  if (!FIXED && !first && clock.elapsedTime > 1.2 && rdt < .25) { fa += rdt; fn++; if (fn >= 24) { const av = fa / fn; if (av > .034 && PR <= PFLOOR + 1e-3 && !half) { half = true; } else if (av > .024 && PR > PFLOOR) { PR = Math.max(PFLOOR, PR * (av > .034 ? .72 : .85)); renderer.setPixelRatio(PR); fit(); } else if (av < .0185 && PR < PRMAX) { PR = Math.min(PRMAX, PR * 1.1); renderer.setPixelRatio(PR); fit(); } fa = 0; fn = 0; } }
+  if (PERF) { pfN++; pfA += rdt; if (pfA > .5) { const fps = Math.round(pfN / pfA); perfBox.textContent = fps + ' fps' + (half ? ' (drawing every other frame)' : '') + ' · res ' + PR.toFixed(2) + ' (max ' + PRMAX.toFixed(2) + ') · ' + Math.round(innerWidth * PR) + 'x' + Math.round(innerHeight * PR) + ' · ready ' + (marksReady() || '…') + ' ms'; pfN = 0; pfA = 0; } }
   frames++; if (!ready && frames > 3 && fontsOk && logoReady) { performance.mark('aj-ready'); ready = true; setTimeout(loadVenturePhotos, 1800); root.classList.add('ready'); setTimeout(() => root.classList.add('settled'), 4500); }
   if (ready && app < 1) app = Math.min(1, app + dt * .5);
   const target0 = !isNaN(PIN) ? clamp(PIN, 0, NS - 1) : LY.stack ? clamp(swF, 0, NS - 1) : clamp(scrollY / (vh() || 1), 0, NS - 1), target = isFinite(target0) ? target0 : 0;   /* a hidden or zero-height frame must never produce NaN and stop the drawing */
@@ -336,6 +338,10 @@ setV(root, '--line', `rgba(${c3(NAVY, TAUPE, white)},${lerp(.2, .36, white).toFi
   cards.forEach(c => c.classList.toggle('cur', +c.dataset.i === near && op > .4));
   /* phones: transparent canvas, and only the box around the orb is shaded (so it can be drawn at full sharpness for the same cost); laptops draw the whole page */
   U.uTr.value = LY.stack ? 1 : 0; U.uPx.value = 2 * 4.6 * U.uTan.value / (innerHeight * renderer.getPixelRatio());
+  /* drawing is skipped (the last picture stays on screen) when nothing moved under reduced motion, or on every other frame for a device that is
+     still too slow at the lowest resolution; the page itself keeps running at full speed either way */
+  const still = RM && !first && app >= 1 && Math.abs(sNow - lastS) < 1e-4 && Math.abs(themeNow - lastTh) < 1e-4 && !dirtyDraw; lastS = sNow; lastTh = themeNow; dirtyDraw = false;
+  if (still || (half && !first && (frames & 1))) { requestAnimationFrame(frame); return; }
   renderer.setScissorTest(false); renderer.setClearAlpha(LY.stack ? 0 : 1); renderer.clear();
   if (LY.stack && LY.rpx) { const W = innerWidth, H = innerHeight, x0 = Math.max(0, W / 2 - LY.rpx), x1 = Math.min(W, W / 2 + LY.rpx), y0 = Math.max(0, LY.zc - LY.rpx), y1 = Math.min(H, LY.zc + LY.rpx); renderer.setScissorTest(true); renderer.setScissor(Math.floor(x0), Math.floor(H - y1), Math.ceil(x1 - x0), Math.ceil(y1 - y0)); }
   renderer.render(scene, cam); renderer.setScissorTest(false); first = false; requestAnimationFrame(frame);

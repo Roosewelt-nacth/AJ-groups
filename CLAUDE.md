@@ -126,6 +126,11 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 - **Packaging mockups** (`assets/bunbun/pack-*.jpg`) were recoloured from periwinkle and navy to cream with green marks (blue pixels mapped through a green-to-cream gradient). The unrecoloured originals are in git history.
 - Hero: "Design a birthday cake" and "See the menu". `bunbun/index.html` loads `main.js?v=55`, and `main.js` loads `menu.js?v=17`.
 
+## 3D look and speed, 24 Nov 2026 (testing repo first)
+- **Logo glass:** the landing logo used fully clear glass (`fe.z = 1`), which looks silver on a thin slab; it is now part-solid (`fe.z = .55`) so it reads as champagne gold. The dark-theme glass on the light chapters (`absD`) was shifted from copper to gold, and the Bun Bun mark is cream glass to match its rebrand.
+- **Drawing less:** with reduced motion the 3D view is only redrawn when something changes; on a device that is still under 30 fps at the lowest resolution the view is drawn every other frame (`half`, test with `?half=1`). `?perf=1` shows the live numbers.
+- **Service worker** (`sw.js`, registered on the home page over HTTPS only; test locally with `?sw=1`): pages come from the network first, so updates show at once; files with a `?v=` number, fonts and three.js are reused from the device; other files are shown from the device and refreshed in the background. A second visit downloads almost nothing. **Always bump `?v=` when a script or stylesheet changes.** The baker dashboard keeps its own worker. To switch caching off for everyone, publish a `sw.js` that unregisters itself. The privacy policy mentions the on-device copy.
+
 ## Open items (waiting on people, not on code)
 1. **Allwyn:** pick and buy the domain in his own registrar account, turn on two-step login, set up email. Then the site needs: a `CNAME` file, the Pages custom domain with HTTPS, canonical links, `sitemap.xml`, and `ALLOW_ORIGIN` set to the new domain.
 2. **Allwyn:** deploy the Cloudflare backend per `server/SETUP.md` and send the **worker address** (not the code). Then set `BACKEND.url` in `bunbun/menu.js`, bump `?v=`, push.
