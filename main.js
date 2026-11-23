@@ -307,7 +307,7 @@ function frame() {
   /* page tone and type colour: every value is blended, so changing chapter or theme is a cross-fade, never a jump */
   const white = lerp(lerp(A.w, B.w, ww), 1, themeNow), c3 = (a, b, t) => `${Math.round(lerp(a[0], b[0], t))},${Math.round(lerp(a[1], b[1], t))},${Math.round(lerp(a[2], b[2], t))}`, NAVY = [45, 48, 65], WH = [244, 241, 234], GOLD = [222, 189, 135], BRONZE = [143, 108, 48], TAUPE = [166, 162, 154];
   setV(root, '--ink', `rgb(${c3(NAVY, WH, white)})`); setV(root, '--mute', `rgba(${c3(NAVY, TAUPE, white)},${lerp(.72, 1, white).toFixed(2)})`); setV(root, '--em', `rgb(${c3(GOLD, BRONZE, white)})`);
-setV(root, '--line', `rgba(${c3(GOLD, BRONZE, white)},${lerp(.34, .38, white).toFixed(2)})`); setV(root, '--lw', white.toFixed(3));
+setV(root, '--line', `rgba(${c3(NAVY, TAUPE, white)},${lerp(.2, .36, white).toFixed(2)})`);   /* hairlines are neutral; gold is kept for accents */ setV(root, '--lw', white.toFixed(3));
   setV(root, '--btn', `rgb(${c3(NAVY, GOLD, white)})`); setV(root, '--btnink', `rgb(${c3(GOLD, NAVY, white)})`); setV(root, '--sheet', c255(bg.map(v => v * (.72 - themeNow * .3))));
   const bgc = c255(bg); setV(document.body, 'background', bgc); if (bgc !== _bgc) { _bgc = bgc; renderer.setClearColor(new THREE.Color(...bg)); }
   setV(mark, '--ms', sNow < .2 ? '40px' : '24px'); setV(mark, '--msm', sNow < .2 ? '28px' : '20px');
