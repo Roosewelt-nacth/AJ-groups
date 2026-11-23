@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { dessert, berry as dBerry, berryHalf as dHalf, blueberry as dBlue, raspberry as dRasp, textures as dTex, holly as dHolly } from './desserts.js?v=13';
-import { MENU, XMAS, XMAS_CAT, DELIVERY as D, TRACKER as TRK, PAYMENT as PAY, BACKEND } from './menu.js?v=15';
-import { initExtras } from './extras.js?v=2';
+import { MENU, XMAS, XMAS_CAT, DELIVERY as D, TRACKER as TRK, PAYMENT as PAY, BACKEND } from './menu.js?v=17';
+import { initExtras } from './extras.js?v=3';
 import { makeStore } from './store.js?v=2';
 import { initTracker } from './tracker.js?v=4';
 import { initPay } from './pay.js?v=1';
@@ -21,7 +21,7 @@ const TOPS = { strawberry: 'Strawberries', berries: 'Berries', roses: 'Piped ros
 const STYLE = { naked: 'Semi-naked', frosted: 'Smooth buttercream' };
 const TIER = { 1: ['1 tier', 'serves 8', 1200], 2: ['2 tiers', 'serves 16', 2600], 3: ['3 tiers', 'serves 28', 4200] };
 const OCC = [
-  { k: 'Birthday', style: 'naked', tiers: 2, flavour: 'vanilla', frost: 'cream', drip: 'none', tops: ['strawberry', 'berries'], candles: true, msg: 'Happy Birthday' },
+  { k: 'Birthday', style: 'naked', tiers: 2, flavour: 'vanilla', frost: 'cream', drip: 'none', tops: [], candles: true, msg: 'Happy Birthday' },
   { k: 'Wedding', style: 'frosted', tiers: 3, flavour: 'vanilla', frost: 'cream', drip: 'none', tops: ['roses', 'pearls'], candles: false, msg: 'Forever begins' },
   { k: 'Anniversary', style: 'naked', tiers: 2, flavour: 'redvelvet', frost: 'cream', drip: 'none', tops: ['strawberry', 'roses'], candles: true, msg: 'Happy Anniversary' },
   { k: 'Baby shower', style: 'frosted', tiers: 2, flavour: 'strawberry', frost: 'sky', drip: 'white', tops: ['macarons', 'pearls'], candles: false, msg: 'Welcome little one' },
@@ -34,7 +34,7 @@ const XM = document.documentElement.dataset.xmas === '1';
 if (XM) { FL.plum = ['Rum plum', '#4b2b19']; TOPS.holly = 'Holly'; OCC.unshift({ k: 'Christmas', style: 'frosted', tiers: 2, flavour: 'plum', frost: 'cream', drip: 'white', tops: ['holly', 'pearls'], candles: false, msg: 'Merry Christmas' }); }
 const MENU_ALL = XM ? [XMAS_CAT, ...MENU] : MENU;
 const bag = new Map(); const gifts = []; const STAND = .52; const standParts = [];
-const S = { cakeOn: false, occ: 'Birthday', style: 'naked', tiers: 2, flavour: 'vanilla', frost: 'cream', drip: 'none', tops: new Set(['strawberry', 'berries']), candles: true, msg: 'Happy Birthday', deco: [], decorate: false, qty: 1, ship: 'home', pinOk: false, km: 0, msgStyle: 'script', slot: '' };
+const S = { cakeOn: false, occ: 'Birthday', style: 'naked', tiers: 2, flavour: 'vanilla', frost: 'cream', drip: 'none', tops: new Set(), candles: true, msg: 'Happy Birthday', deco: [], decorate: false, qty: 1, ship: 'home', pinOk: false, km: 0, msgStyle: 'script', slot: '' };
 let X = null;
 const price = (s = S) => (TIER[s.tiers][2] + (s.drip !== 'none' ? 150 : 0) + [...s.tops].length * 100 + (s.candles ? 50 : 0) + (s.style === 'frosted' ? 200 : 0) + (s.deco ? s.deco.length * 20 : 0)) * (s.qty || 1);
 const preset = (o) => ({ ...S, occ: o.k, style: o.style, tiers: o.tiers, flavour: o.flavour, frost: o.frost, drip: o.drip, tops: new Set(o.tops), candles: o.candles, msg: o.msg, deco: [], decorate: false, qty: 1 });
@@ -113,7 +113,7 @@ if (renderer) {
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new RoomEnvironment(), .04).texture; scene.environmentIntensity = .62;
   const key = new THREE.DirectionalLight(0xfff3e6, 2.4); key.position.set(3.2, 7, 4.5); key.castShadow = true; key.shadow.mapSize.set(1024, 1024); key.shadow.camera.left = -3; key.shadow.camera.right = 3; key.shadow.camera.top = 5; key.shadow.camera.bottom = -2; key.shadow.camera.near = 1; key.shadow.camera.far = 20; key.shadow.bias = -.0004; key.shadow.radius = 5; scene.add(key);
-  const rim = new THREE.DirectionalLight(0xdfe8ff, .9); rim.position.set(-4, 3, -3); scene.add(rim); scene.add(new THREE.HemisphereLight(0xffffff, 0xaab6cc, .35));
+  const rim = new THREE.DirectionalLight(0xdfe8ff, .9); rim.position.set(-4, 3, -3); scene.add(rim); scene.add(new THREE.HemisphereLight(0xffffff, 0xd9cfb4, .35));
   const ground = new THREE.Mesh(new THREE.CircleGeometry(4, 48), new THREE.ShadowMaterial({ opacity: .22 })); ground.rotation.x = -Math.PI / 2; ground.position.y = -.005; ground.receiveShadow = true; root.add(ground);
   root.add(cakeG, boxG); scene.add(root); cam.position.set(0, 3.2, 10); cam.lookAt(0, 1.5, 0);
   makeTextures(); makeGeometry();
@@ -278,7 +278,7 @@ function thumbRig() {
   const c = document.createElement('canvas'), r = new THREE.WebGLRenderer({ canvas: c, alpha: true, antialias: true, preserveDrawingBuffer: true }); r.setPixelRatio(1); r.setSize(420, 420, false); r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
   const sc = new THREE.Scene(), cm = new THREE.PerspectiveCamera(28, 1, .1, 60), pm = new THREE.PMREMGenerator(r); sc.environment = pm.fromScene(new RoomEnvironment(), .04).texture; sc.environmentIntensity = .62;
   const key = new THREE.DirectionalLight(0xfff3e6, 2.4); key.position.set(3.2, 7, 4.5); key.castShadow = true; key.shadow.mapSize.set(1024, 1024); Object.assign(key.shadow.camera, { left: -3, right: 3, top: 5, bottom: -2, near: 1, far: 20 }); key.shadow.bias = -.0004; sc.add(key);
-  const rim = new THREE.DirectionalLight(0xdfe8ff, .9); rim.position.set(-4, 3, -3); sc.add(rim); sc.add(new THREE.HemisphereLight(0xffffff, 0xaab6cc, .35));
+  const rim = new THREE.DirectionalLight(0xdfe8ff, .9); rim.position.set(-4, 3, -3); sc.add(rim); sc.add(new THREE.HemisphereLight(0xffffff, 0xd9cfb4, .35));
   const gr = new THREE.Mesh(new THREE.CircleGeometry(5, 48), new THREE.ShadowMaterial({ opacity: .22 })); gr.rotation.x = -Math.PI / 2; gr.position.y = -.005; gr.receiveShadow = true; sc.add(gr);
   const cakeT = new THREE.Group(), dT = new THREE.Group(); sc.add(cakeT, dT); return (rig = { r, c, sc, cam: cm, cakeT, dT });
 }
@@ -298,7 +298,7 @@ $('qm').addEventListener('click', () => { S.qty = Math.max(1, S.qty - 1); ui(); 
 $('msg').addEventListener('input', (e) => { S.msg = e.target.value; clearTimeout(S._m); S._m = setTimeout(refresh, 70); });
 $('bDeco').addEventListener('click', () => { S.decorate = !S.decorate; ui(); }); $('bClear').addEventListener('click', () => { S.deco = []; refresh(); });
 $('bRand').addEventListener('click', () => { const pick = (o) => Object.keys(o)[Math.floor(Math.random() * Object.keys(o).length)]; S.flavour = pick(FL); S.frost = pick(FR); S.drip = pick(DR); S.style = pick(STYLE); S.tiers = 1 + Math.floor(Math.random() * 3); S.tops = new Set(Object.keys(TOPS).filter(() => Math.random() > .55)); if (!S.tops.size) S.tops.add('berries'); S.candles = Math.random() > .5; S.deco = []; refresh(); });
-const float = $('float'); ['#ffffff', '#f2f5fb', '#dfe6f2', '#fff0c1', '#c8d1e1'].forEach((c) => { for (let i = 0; i < 4; i++) { const p = document.createElement('i'); p.style.cssText = `left:${(8 + Math.random() * 84).toFixed(0)}%;top:${(10 + Math.random() * 70).toFixed(0)}%;--c:${c};--t:${(5 + Math.random() * 5).toFixed(1)}s;--d:${(-Math.random() * 6).toFixed(1)}s;scale:${(.7 + Math.random() * .9).toFixed(2)}`; float.appendChild(p); } });
+const float = $('float'); ['#ffffff', '#fbf7ec', '#f2ebd8', '#f8f2e4', '#e6dcc3'].forEach((c) => { for (let i = 0; i < 4; i++) { const p = document.createElement('i'); p.style.cssText = `left:${(8 + Math.random() * 84).toFixed(0)}%;top:${(10 + Math.random() * 70).toFixed(0)}%;--c:${c};--t:${(5 + Math.random() * 5).toFixed(1)}s;--d:${(-Math.random() * 6).toFixed(1)}s;scale:${(.7 + Math.random() * .9).toFixed(2)}`; float.appendChild(p); } });
 
 /* ---------- delivery check (demo estimate) ---------- */
 const shipMsg = $('shipMsg');
@@ -322,7 +322,7 @@ async function pack() {
   if (S.ship === 'home' && !S.pinOk) { shipMsg.className = 'shipMsg no'; shipMsg.textContent = 'Check your pincode first so we know you are nearby.'; $('pin').focus(); return; }
   packState = 'busy'; $('bPack').disabled = true; spinning = false; S.decorate = false; ui(); stage.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   if (!renderer) { say('Packed (preview needs 3D)'); packState = 'done'; $('bPack').disabled = false; ui(); return; }
-  say('Packing your cake…'); standParts.forEach((p) => { p.visible = false; }); const bw = 3.2, bh = cakeH - STAND + .35, wall = M('#aab6cc', { roughness: .6 }), lidM = M('#c8d1e1', { roughness: .5 }), rib = M('#fff0c1', { roughness: .4 });
+  say('Packing your cake…'); standParts.forEach((p) => { p.visible = false; }); const bw = 3.2, bh = cakeH - STAND + .35, wall = M('#4a442c', { roughness: .6 }), lidM = M('#6b6340', { roughness: .5 }), rib = M('#f8f2e4', { roughness: .4 });
   const walls = new THREE.Group(); const w = (sx, sy, sz, x, z) => { const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), wall); m.position.set(x, sy / 2, z); m.castShadow = true; walls.add(m); };
   w(bw, bh, .07, 0, bw / 2); w(bw, bh, .07, 0, -bw / 2); w(.07, bh, bw, bw / 2, 0); w(.07, bh, bw, -bw / 2, 0); walls.scale.y = .001; boxG.add(walls);
   const lid = new THREE.Group(); const lm = new THREE.Mesh(new THREE.BoxGeometry(bw + .16, .34, bw + .16), lidM); lm.position.y = .17; lm.castShadow = true; lid.add(lm);
@@ -361,7 +361,7 @@ X = initExtras({ S, $, apply, preset, OCC, keys: { FL, FR, DR, TOPS, STYLE, TIER
 
 /* ---------- colour directions ---------- */
 if (XM) { const sw = document.querySelector('.sw'); if (sw) sw.innerHTML = [['x1', 'Plum &amp; Gold', 'Plum and gold: deep plum with gold', 'linear-gradient(135deg,#4d2040 50%,#e0b863 50%)'], ['x2', 'Holly &amp; Berry', 'Holly and cranberry: forest green with red', 'linear-gradient(135deg,#1e5a37 50%,#c8283d 50%)'], ['x3', 'Snow &amp; Rum', 'Icing and rum: cream with rum brown', 'linear-gradient(135deg,#fbf6ec 50%,#6b3a1f 50%)']].map(([t, n, ti, g]) => `<button type="button" data-t="${t}" title="${ti}" style="--sw:${g}"><i></i><span>${n}</span></button>`).join(''); }
-{ const root = document.documentElement, meta = document.querySelector('meta[name="theme-color"]'), bg = { a: '#aab6cc', b: '#19253b', c: '#fff0c1', x1: '#2a1020', x2: '#12301f', x3: '#fbf6ec' }, btns = [...document.querySelectorAll('.sw button')];
+{ const root = document.documentElement, meta = document.querySelector('meta[name="theme-color"]'), bg = { a: '#f8f2e4', b: '#4a442c', x1: '#2a1020', x2: '#12301f', x3: '#fbf6ec' }, btns = [...document.querySelectorAll('.sw button')];
   const set = (t, save) => { root.dataset.theme = t; if (meta) meta.setAttribute('content', bg[t]); btns.forEach((b) => b.setAttribute('aria-pressed', b.dataset.t === t)); if (save) { try { localStorage.setItem('bbtheme', t); } catch (e) {} } };
   btns.forEach((b) => b.addEventListener('click', () => set(b.dataset.t, true))); set(root.dataset.theme || 'a'); }
 
@@ -426,24 +426,24 @@ if (XM) {
     if (!$('gto').value.trim()) { $('gm').textContent = 'Please add who it is for.'; return; } if (corp && qty < 10) { $('gm').textContent = 'Business orders start at 10 boxes.'; return; }
     gifts.push({ id: $('gcake').value, qty, to: $('gto').value.trim(), msg: $('gmsg').value.trim(), date: $('gdate').value, corp, company: $('gco').value.trim() }); changeBag($('gcake').value, qty); $('gm').textContent = 'Added to your order. See it under Order.'; say2('Gift added to your order'); });
   /* the wish card, drawn on a canvas so it can be saved and shared */
-  const wc = $('wc'), cx = wc.getContext('2d'); const logo = new Image(); logo.src = '../assets/bunbun/logo-word.png'; let logoTint = null; logo.onload = () => { const c = document.createElement('canvas'); c.width = logo.width; c.height = logo.height; const x = c.getContext('2d'); x.drawImage(logo, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#fff0c1'; x.fillRect(0, 0, c.width, c.height); logoTint = c; draw(); };
+  const wc = $('wc'), cx = wc.getContext('2d'); const logo = new Image(); logo.src = '../assets/bunbun/logo-word.png'; let logoTint = null; logo.onload = () => { const c = document.createElement('canvas'); c.width = logo.width; c.height = logo.height; const x = c.getContext('2d'); x.drawImage(logo, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#f8f2e4'; x.fillRect(0, 0, c.width, c.height); logoTint = c; draw(); };
   const wrap = (t, w) => { const words = t.split(' '), lines = []; let l = ''; words.forEach((wd) => { const tt = l ? l + ' ' + wd : wd; if (cx.measureText(tt).width > w && l) { lines.push(l); l = wd; } else l = tt; }); if (l) lines.push(l); return lines; };
   function draw() {
     const W = 1080, H = 1350, g = cx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#2b3d66'); g.addColorStop(1, '#0f1828'); cx.fillStyle = g; cx.fillRect(0, 0, W, H);
     for (let i = 0; i < 90; i++) { cx.fillStyle = `rgba(255,240,193,${.15 + ((i * 37) % 10) / 20})`; cx.beginPath(); cx.arc((i * 211) % W, (i * 337) % H, 1.5 + (i % 4), 0, 6.283); cx.fill(); }
     cx.strokeStyle = 'rgba(255,240,193,.5)'; cx.lineWidth = 3; cx.strokeRect(46, 46, W - 92, H - 92);
-    cx.textAlign = 'center'; cx.fillStyle = '#fff0c1'; cx.font = 'italic 500 150px "Cormorant Garamond", Georgia, serif'; cx.fillText('Merry', W / 2, 250); cx.fillText('Christmas', W / 2, 400);
+    cx.textAlign = 'center'; cx.fillStyle = '#f8f2e4'; cx.font = 'italic 500 150px "Cormorant Garamond", Georgia, serif'; cx.fillText('Merry', W / 2, 250); cx.fillText('Christmas', W / 2, 400);
     const img = menuImgs['xm-500']; if (img) { const im = wc._img || (wc._img = Object.assign(new Image(), { src: img, onload: draw })); if (im.complete && im.naturalWidth) cx.drawImage(im, W / 2 - 330, 440, 660, 660); }
     else { cx.fillStyle = 'rgba(255,240,193,.12)'; cx.beginPath(); cx.arc(W / 2, 760, 250, 0, 6.283); cx.fill(); }
     const name = $('wn').value.trim(), wish = $('ww').value.trim() || 'Wishing you cake and cheer';
     cx.fillStyle = '#fff'; cx.font = '500 56px Jost, Inter, sans-serif'; wrap(wish, 840).slice(0, 2).forEach((l, i) => cx.fillText(l, W / 2, 1120 + i * 66));
-    if (name) { cx.font = 'italic 500 64px "Cormorant Garamond", Georgia, serif'; cx.fillStyle = '#fff0c1'; cx.fillText('with love, ' + name, W / 2, 1262); }
+    if (name) { cx.font = 'italic 500 64px "Cormorant Garamond", Georgia, serif'; cx.fillStyle = '#f8f2e4'; cx.fillText('with love, ' + name, W / 2, 1262); }
     if (logoTint) cx.drawImage(logoTint, W / 2 - 110, H - 140, 220, 220 * logoTint.height / logoTint.width * 0 + 60);
   }
   ['wn', 'ww'].forEach((i) => $(i).addEventListener('input', draw)); draw(); const pull = setInterval(() => { if (menuImgs['xm-500']) { draw(); clearInterval(pull); } }, 1500);
   const blob = () => new Promise((r) => wc.toBlob(r, 'image/png'));
   $('wdl').addEventListener('click', async () => { const b = await blob(), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'bun-bun-christmas-card.png'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); });
-  $('wsh').addEventListener('click', async () => { const b = await blob(), f = new File([b], 'bun-bun-christmas-card.png', { type: 'image/png' }); if (navigator.canShare && navigator.canShare({ files: [f] })) { try { await navigator.share({ files: [f], title: 'Bun Bun Bakes Christmas', text: 'Merry Christmas from Bun Bun Bakes' }); } catch (e) {} } else say2('Sharing is not available here. Use Download card.'); });
+  $('wsh').addEventListener('click', async () => { const b = await blob(), f = new File([b], 'bun-bun-christmas-card.png', { type: 'image/png' }); if (navigator.canShare && navigator.canShare({ files: [f] })) { try { await navigator.share({ files: [f], title: 'Bun Bun Cafe Christmas', text: 'Merry Christmas from Bun Bun Cafe' }); } catch (e) {} } else say2('Sharing is not available here. Use Download card.'); });
   new IntersectionObserver((es, ob) => { if (es[0].isIntersecting) { ob.disconnect(); exclusive(menuRenders); } }, { rootMargin: '500px 0px' }).observe($('xmas'));
   /* snow: falls in depth layers, settles on the rounded tops of objects as lumpy, glinting drifts, and is shaken off when you scroll (?snow=0 turns it off) */
   if (!/[?&]snow=0/.test(location.search)) (function snowfall() {

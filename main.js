@@ -274,6 +274,8 @@ const orbit = document.getElementById('orbit'), oc1 = orbit.querySelector('.c1')
 const _sc = new Map(), setV = (el, k, v) => { let m = _sc.get(el); if (!m) _sc.set(el, m = {}); if (m[k] === v) return; m[k] = v; if (k[0] === '-') el.style.setProperty(k, v); else el.style[k] = v; };
 const setA = (el, k, v) => { const s = String(v); if (el['_a' + k] !== s) { el['_a' + k] = s; el.setAttribute(k, s); } }, setT = (el, v) => { if (el._t !== v) { el._t = v; el.textContent = v; } };
 let _bgc = '';
+const PERF = q.has('perf'); let pfN = 0, pfA = 0; const perfBox = PERF ? Object.assign(document.createElement('div'), { style: 'position:fixed;left:8px;bottom:8px;z-index:99999;padding:6px 10px;border-radius:8px;background:rgba(0,0,0,.72);color:#fff;font:12px/1.4 monospace;pointer-events:none' }) : null; if (PERF) document.body.append(perfBox);
+const marksReady = () => { const m = performance.getEntriesByType('mark').find(e => e.name === 'aj-ready'); return m ? Math.round(m.startTime) : 0; };
 const clock = new THREE.Clock(); const loadVenturePhotos = () => { document.querySelectorAll('img[data-src]').forEach(i => { i.src = i.dataset.src; i.removeAttribute('data-src'); }); };
 ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(ev => addEventListener(ev, loadVenturePhotos, { once: true, passive: true }));
 let frames = 0, fontsOk = false, ready = (!isNaN(PIN) || RM); if (ready) root.classList.add('ready');
@@ -281,8 +283,10 @@ let frames = 0, fontsOk = false, ready = (!isNaN(PIN) || RM); if (ready) root.cl
 (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => { fontsOk = true; }); setTimeout(() => { fontsOk = true; }, 1800);
 let first = true, curIdx = -1, fa = 0, fn = 0, svPrev = 0, svS = 0, dragS = 0, dragT = 0; const PRMAX = PR, PFLOOR = Math.max(.75, PR * .6), FIXED = q.has('fixedres');
 function frame() {
-  const dt = Math.min(clock.getDelta(), .05), T = !isNaN(TFIX) ? TFIX : (RM ? 0 : clock.elapsedTime);
-  if (!FIXED && !first && clock.elapsedTime > 3 && dt < .05) { fa += dt; fn++; if (fn >= 40) { const av = fa / fn; if (av > .024 && PR > PFLOOR) { PR = Math.max(PFLOOR, PR * .85); renderer.setPixelRatio(PR); fit(); } else if (av < .0185 && PR < PRMAX) { PR = Math.min(PRMAX, PR * 1.1); renderer.setPixelRatio(PR); fit(); } fa = 0; fn = 0; } }
+  const rdt = clock.getDelta(), dt = Math.min(rdt, .05), T = !isNaN(TFIX) ? TFIX : (RM ? 0 : clock.elapsedTime);
+  /* resolution governor: watches the real frame time (the old check threw away every frame slower than 20 fps, so the slowest phones never got lowered quality), starts after one second and reacts quickly */
+  if (!FIXED && !first && clock.elapsedTime > 1.2 && rdt < .25) { fa += rdt; fn++; if (fn >= 24) { const av = fa / fn; if (av > .024 && PR > PFLOOR) { PR = Math.max(PFLOOR, PR * (av > .034 ? .72 : .85)); renderer.setPixelRatio(PR); fit(); } else if (av < .0185 && PR < PRMAX) { PR = Math.min(PRMAX, PR * 1.1); renderer.setPixelRatio(PR); fit(); } fa = 0; fn = 0; } }
+  if (PERF) { pfN++; pfA += rdt; if (pfA > .5) { const fps = Math.round(pfN / pfA); perfBox.textContent = fps + ' fps · res ' + PR.toFixed(2) + ' (max ' + PRMAX.toFixed(2) + ') · ' + Math.round(innerWidth * PR) + 'x' + Math.round(innerHeight * PR) + ' · ready ' + (marksReady() || '…') + ' ms'; pfN = 0; pfA = 0; } }
   frames++; if (!ready && frames > 3 && fontsOk && logoReady) { performance.mark('aj-ready'); ready = true; setTimeout(loadVenturePhotos, 1800); root.classList.add('ready'); setTimeout(() => root.classList.add('settled'), 4500); }
   if (ready && app < 1) app = Math.min(1, app + dt * .5);
   const target0 = !isNaN(PIN) ? clamp(PIN, 0, NS - 1) : LY.stack ? clamp(swF, 0, NS - 1) : clamp(scrollY / (vh() || 1), 0, NS - 1), target = isFinite(target0) ? target0 : 0;   /* a hidden or zero-height frame must never produce NaN and stop the drawing */

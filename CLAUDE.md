@@ -108,6 +108,24 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 - `performance.mark('aj-logo')` and `('aj-ready')` exist; read them with `performance.getEntriesByType('mark')`.
 - **Not done (needs Allwyn's Cloudflare login):** GitHub Pages sends every file with `Cache-Control: max-age=600` and gzip only. Turning the DNS records orange (proxied) with SSL mode "Full" would add Brotli, HTTP/3 and a long browser cache for `/assets/*` through a Cache Rule. Keep HTML on a short cache so updates still appear within minutes.
 
+## Bun Bun Cafe rebrand and more speed work, 23 Nov 2026
+- **Brand kit** (from Allwyn, "BUN BUN rebranding.zip"): palette **green `#4a442c`** and **cream `#f8f2e4`**; a rounded "BunBun" wordmark (primary logo) and the "U n" mark (secondary logo), each in cream and green. The venture is now called **Bun Bun Cafe** everywhere on its own page (it used to say Bun Bun Bakes).
+- **`bunbun/index.html`:** two looks only, **Cream** (`data-theme="a"`: cream page, green text) and **Green** (`data-theme="b"`: green page, cream text). The old Periwinkle, Midnight and Buttercream looks are gone, and a saved old theme falls back to Cream. The December themes (Plum and Gold, Holly and Berry, Snow and Rum) are **unchanged**; they switch on automatically from 1 Dec. All other blue and navy colours in the page, the packaging boxes and the Christmas card were mapped to green and cream.
+- **Logos** are used as CSS masks, so one file takes any colour: `assets/bunbun/logo-word.png` (primary, 800 px) and `logo-mark.png` (secondary, 480 px). `assets/bunbun/logo-silhouette.png` (the 3D shape on the home page) was rebuilt from the new mark, same footprint as before. Bun Bun has its own `bunbun/favicon-32.png` and `bunbun/apple-touch-icon.png` (cream mark on green).
+- **Still closed:** the Bun Bun page keeps its `noindex` and the redirect to the home page until launch. To preview it, copy `bunbun/index.html` to `bunbun/_preview.html` without the redirect line and noindex tag, and delete the copy afterwards.
+- `bunbun/main.js` is at `?v=54`, `menu.js` `?v=16`, `extras.js` `?v=3`; `assets/vt.js` is at `?v=11`.
+- **Resolution governor fixed** (`main.js`): it used to ignore every frame slower than 20 fps, so the slowest phones were never given lower quality. It now reads the real frame time, starts after 1.2 s, and drops resolution faster on very slow devices.
+- **`/?perf=1`** shows a small box with live frames per second, the render resolution and the time to ready. Ask for a photo of it when a phone feels slow.
+- The small glass chips on the venture cards no longer use `backdrop-filter` (16 fewer blur layers on that slide).
+
+## Bun Bun Cafe: short menu and a quiet page, 23 Nov 2026 (testing repo first)
+- **Menu cut to five dishes** in `bunbun/menu.js`: Classic New York and Biscoff cheesecake, Classic Fudge and Salted Caramel brownie, Caramel Pudding. The full list is kept as `MENU_FULL`; `ON_MENU` (a set of ids) chooses what shows. Add an id to bring a dish back.
+- **Cake studio is birthday only**, with Tiers, Finish, Sponge, Buttercream, Message, Quantity and Delivery. Occasion, Drip, Decoration and the Decorate/Clear/Surprise buttons are hidden (`hidden` attribute, code untouched). The cake starts plain (no strawberries or berries).
+- **Hidden sections** (markup kept, `hidden` attribute): Occasions, Plan it early (save a date) and The bakers (it was only placeholder text). Shown: hero, Cake studio, Menu, Packaging, How it works, Order. Remove the `hidden` attributes to bring any back.
+- **No automatic December look** any more; the Christmas pages still open with `?xmas=1`.
+- **Packaging mockups** (`assets/bunbun/pack-*.jpg`) were recoloured from periwinkle and navy to cream with green marks (blue pixels mapped through a green-to-cream gradient). The unrecoloured originals are in git history.
+- Hero: "Design a birthday cake" and "See the menu". `bunbun/index.html` loads `main.js?v=55`, and `main.js` loads `menu.js?v=17`.
+
 ## Open items (waiting on people, not on code)
 1. **Allwyn:** pick and buy the domain in his own registrar account, turn on two-step login, set up email. Then the site needs: a `CNAME` file, the Pages custom domain with HTTPS, canonical links, `sitemap.xml`, and `ALLOW_ORIGIN` set to the new domain.
 2. **Allwyn:** deploy the Cloudflare backend per `server/SETUP.md` and send the **worker address** (not the code). Then set `BACKEND.url` in `bunbun/menu.js`, bump `?v=`, push.

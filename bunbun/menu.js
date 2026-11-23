@@ -2,7 +2,7 @@
    Each item:  id (unique), name, desc, price (rupees, a draft figure), unit, type (which dessert is drawn), opts (how it looks).
    Types: cheesecake, flan, glass, pops, brownie, cupcake, macarons, donut, cookies, tart, eclair, jar
    To remove an item, delete its line. To add one, copy a line and change the id, name, price and opts. */
-export const MENU = [
+const MENU_FULL = [
   { cat: 'Cheesecakes', blurb: 'Baked slowly and set overnight, on a buttery biscuit base.', items: [
     { id: 'cc-ny', name: 'Classic New York', desc: 'Dense, creamy and lightly tangy with a golden top.', price: 220, unit: 'slice', type: 'cheesecake', opts: { fill: '#f6ecd6', garnish: ['strawberry', 'mint'] } },
     { id: 'cc-blue', name: 'Blueberry', desc: 'Vanilla cheesecake under glossy blueberry compote.', price: 240, unit: 'slice', type: 'cheesecake', opts: { fill: '#f7eed8', top: '#2d2a6b', ribbon: '#6b3f91', garnish: ['blueberry'] } },
@@ -11,8 +11,8 @@ export const MENU = [
     { id: 'cc-mango', name: 'Mango', desc: 'Alphonso mango layer with fresh mango cubes.', price: 250, unit: 'slice', type: 'cheesecake', opts: { fill: '#fbe7b0', top: '#f2a817', garnish: ['mango', 'mint'] } },
     { id: 'cc-choc', name: 'Dark Chocolate', desc: 'Rich chocolate cheesecake with a ganache top.', price: 260, unit: 'slice', type: 'cheesecake', opts: { fill: '#6b3e2b', top: '#2a150d', crust: '#4a2a1a', garnish: ['chocolate'] } }
   ] },
-  { cat: 'Puddings', blurb: 'Spoon desserts, made fresh each morning.', items: [
-    { id: 'pd-flan', name: 'Caramel Custard', desc: 'Silky egg custard under dark caramel.', price: 140, unit: 'cup', type: 'flan', opts: { body: '#f2cf86', sauce: '#a85a14', garnish: 'cream' } },
+  { cat: 'Caramel pudding', blurb: 'Silky custard under dark caramel, made fresh each morning.', items: [
+    { id: 'pd-flan', name: 'Caramel Pudding', desc: 'Silky egg custard under dark caramel.', price: 140, unit: 'cup', type: 'flan', opts: { body: '#f2cf86', sauce: '#a85a14', garnish: 'cream' } },
     { id: 'pd-choc', name: 'Chocolate Pot', desc: 'Dark chocolate pudding with whipped cream.', price: 160, unit: 'cup', type: 'glass', opts: { layers: [['#2d160d', 1.1, 'sauce'], ['#4a2616', .9]], top: 'cream', garnish: ['chocolate'] } },
     { id: 'pd-mango', name: 'Mango Panna Cotta', desc: 'Vanilla panna cotta set under mango purée.', price: 170, unit: 'cup', type: 'glass', opts: { layers: [['#fbf3e0', 1.1], ['#f4a91c', .9, 'sauce']], garnish: ['mango', 'mint'] } },
     { id: 'pd-berry', name: 'Berry Panna Cotta', desc: 'Cream panna cotta with a mixed berry coulis.', price: 170, unit: 'cup', type: 'glass', opts: { layers: [['#fbf3e0', 1.1], ['#b0203f', .8, 'sauce']], garnish: ['blueberry', 'mint'] } },
@@ -48,7 +48,7 @@ export const MENU = [
   { cat: 'Donuts & éclairs', blurb: 'Filled, glazed and finished while fresh.', items: [
     { id: 'dn-pink', name: 'Strawberry Glaze Donut', desc: 'Soft yeast donut, pink glaze, sprinkles.', price: 90, unit: 'piece', type: 'donut', opts: { glaze: '#f2a7be', sprinkles: true } },
     { id: 'dn-choc', name: 'Chocolate Donut', desc: 'Dark chocolate glaze with a cream drizzle.', price: 95, unit: 'piece', type: 'donut', opts: { glaze: '#3a1f13', drizzle: '#f7f0e4' } },
-    { id: 'dn-blue', name: 'Sky Glaze Donut', desc: 'Vanilla glaze in Bun Bun blue.', price: 90, unit: 'piece', type: 'donut', opts: { glaze: '#aab6cc', sprinkles: true } },
+    { id: 'dn-blue', name: 'Sky Glaze Donut', desc: 'Vanilla glaze in a soft sky blue.', price: 90, unit: 'piece', type: 'donut', opts: { glaze: '#aab6cc', sprinkles: true } },
     { id: 'ec-choc', name: 'Chocolate Éclair', desc: 'Choux filled with vanilla cream, dark glaze.', price: 130, unit: 'piece', type: 'eclair', opts: { glaze: '#3a1f13', drizzle: '#f7f0e4' } },
     { id: 'ec-pista', name: 'Pistachio Éclair', desc: 'Pistachio cream, green glaze and crushed nuts.', price: 140, unit: 'piece', type: 'eclair', opts: { glaze: '#a8c27a', nuts: true } }
   ] },
@@ -61,6 +61,11 @@ export const MENU = [
     { id: 'jr-choc', name: 'Brownie Jar', desc: 'Brownie, chocolate cream and crunch.', price: 170, unit: 'jar', type: 'jar', opts: { layers: [['#3a1f13', .8], ['#8a6048', .5], ['#3a1f13', .8], ['#8a6048', .5]], top: 'cream', garnish: ['chocolate'] } }
   ] }
 ];
+
+/* WHAT IS ON THE MENU FOR NOW: a short list of what we bake best, in small batches.
+   To bring a dish back, add its id to this list (the full list above is kept). */
+const ON_MENU = new Set(['cc-ny', 'cc-biscoff', 'br-classic', 'br-caramel', 'pd-flan']);
+export const MENU = MENU_FULL.map((c) => ({ ...c, items: c.items.filter((i) => ON_MENU.has(i.id)) })).filter((c) => c.items.length);
 
 /* ---------- CHRISTMAS SPECIAL (demo: every figure here is a sample until confirmed) ----------
    Shown only when the page is opened with ?xmas=1. Edit dates, batches and prices here. */
@@ -105,7 +110,7 @@ export const TRACKER = {
 export const PAYMENT = {
   link: '',
   upiId: '',
-  payeeName: 'Bun Bun Bakes',
+  payeeName: 'Bun Bun Cafe',
   depositPercent: 50,   // advance for custom cakes; the rest is paid on delivery or pickup
   allowFull: true
 };

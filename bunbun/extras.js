@@ -29,7 +29,7 @@ export function initExtras(c) {
   async function cardImage() {
     renderer.render(scene, cam); const cake = await load(cvs.toDataURL('image/png'));
     const W = 1080, H = 1350, cv = document.createElement('canvas'); cv.width = W; cv.height = H; const x = cv.getContext('2d');
-    const cs = getComputedStyle(document.documentElement), v = (n, f) => cs.getPropertyValue(n).trim() || f, bg = v('--bg', '#19253b'), b1 = v('--bg1', '#334466'), ink = v('--ink', '#ffffff'), acc = v('--accent', ink), glow = v('--stage-glow', 'rgba(255,255,255,.2)');
+    const cs = getComputedStyle(document.documentElement), v = (n, f) => cs.getPropertyValue(n).trim() || f, bg = v('--bg', '#4a442c'), b1 = v('--bg1', '#6b6340'), ink = v('--ink', '#ffffff'), acc = v('--accent', ink), glow = v('--stage-glow', 'rgba(255,255,255,.2)');
     x.fillStyle = bg; x.fillRect(0, 0, W, H);
     let g = x.createRadialGradient(W * .3, H * .12, 0, W * .3, H * .12, W * 1.05); g.addColorStop(0, b1); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(0, 0, W, H);
     g = x.createRadialGradient(W / 2, H * .5, 0, W / 2, H * .5, W * .58); g.addColorStop(0, glow); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(0, 0, W, H);
@@ -48,7 +48,7 @@ export function initExtras(c) {
   const shmsg = $('shmsg'), closeShare = () => { modal.hidden = true; document.body.style.overflow = ''; }; let blobURL = '';
   modal.addEventListener('click', (e) => { if (e.target === modal || e.target.closest('.shx')) closeShare(); }); addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeShare(); });
   $('bShare').addEventListener('click', async () => {
-    const url = shareURL(), text = `I designed a ${S.occ.toLowerCase()} cake at Bun Bun Bakes. What do you think?`; shmsg.textContent = 'Making your card…'; modal.hidden = false; document.body.style.overflow = 'hidden';
+    const url = shareURL(), text = `I designed a ${S.occ.toLowerCase()} cake at Bun Bun Cafe. What do you think?`; shmsg.textContent = 'Making your card…'; modal.hidden = false; document.body.style.overflow = 'hidden';
     const cv = await cardImage(), blob = await new Promise((r) => cv.toBlob(r, 'image/png')); if (blobURL) URL.revokeObjectURL(blobURL); blobURL = URL.createObjectURL(blob);
     $('shimg').src = blobURL; $('shSave').href = blobURL; $('shWa').href = 'https://wa.me/?text=' + encodeURIComponent(text + ' ' + url); shmsg.textContent = 'Anyone with the link sees your exact design and can change it.';
     const file = new File([blob], 'my-bun-bun-cake.png', { type: 'image/png' }), nat = $('shNative'); nat.style.display = navigator.share ? '' : 'none';
@@ -105,7 +105,7 @@ export function initExtras(c) {
   const status = (days) => { const left = days - D.leadDays; if (days < 0) return ['late', 'Passed', 'This date has passed.']; if (days === 0) return ['late', 'Today', 'Today is the day. Pick something ready from the menu.']; if (left < 0) return ['late', 'Too late for a custom cake', `Custom cakes need ${D.leadDays} days. Choose from the menu or call us.`]; if (left === 0) return ['urgent', 'Order today', 'Today is the last day to order a custom cake.']; if (left <= 5) return ['soon', `Order within ${left} day${left > 1 ? 's' : ''}`, 'The last day to order is coming up.']; return ['ok', 'Plenty of time', 'Plan the design now and order later.']; };
   function ics(e) {
     const d = nextOcc(e), ymd = (x) => `${x.getFullYear()}${pad(x.getMonth() + 1)}${pad(x.getDate())}`, end = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1), clean = (s) => String(s).replace(/[\\;,]/g, ' ').replace(/\r?\n/g, ' '), trig = (days) => { const h = Math.max(0, days * 24 - 9), dd = Math.floor(h / 24), hh = h % 24; return `-P${dd}DT${hh}H`; };
-    const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Bun Bun Bakes//Save a date//EN', 'BEGIN:VEVENT', `UID:${e.id}@bunbun`, `DTSTAMP:${ymd(new Date())}T000000Z`, `DTSTART;VALUE=DATE:${ymd(d)}`, `DTEND;VALUE=DATE:${ymd(end)}`, `SUMMARY:${clean(title(e))}`, `DESCRIPTION:Order the cake from Bun Bun Bakes by ${clean(fmt(new Date(d.getFullYear(), d.getMonth(), d.getDate() - D.leadDays)))}.`];
+    const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Bun Bun Cafe//Save a date//EN', 'BEGIN:VEVENT', `UID:${e.id}@bunbun`, `DTSTAMP:${ymd(new Date())}T000000Z`, `DTSTART;VALUE=DATE:${ymd(d)}`, `DTEND;VALUE=DATE:${ymd(end)}`, `SUMMARY:${clean(title(e))}`, `DESCRIPTION:Order the cake from Bun Bun Cafe by ${clean(fmt(new Date(d.getFullYear(), d.getMonth(), d.getDate() - D.leadDays)))}.`];
     if (e.yearly) L.push('RRULE:FREQ=YEARLY'); [D.leadDays + 5, D.leadDays].forEach((n) => L.push('BEGIN:VALARM', `TRIGGER:${trig(n)}`, 'ACTION:DISPLAY', n === D.leadDays ? 'DESCRIPTION:Last day to order the cake' : 'DESCRIPTION:Time to plan the cake', 'END:VALARM')); L.push('END:VEVENT', 'END:VCALENDAR');
     const url = URL.createObjectURL(new Blob([L.join('\r\n')], { type: 'text/calendar' })), a = document.createElement('a'); a.href = url; a.download = 'bun-bun-' + clean(title(e)).toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.ics'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
   }
