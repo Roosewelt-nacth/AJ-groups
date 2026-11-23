@@ -390,6 +390,12 @@ body::before,.hero::before,#gfx{display:none!important}
 :root{--hair:color-mix(in srgb,var(--ink) 16%,transparent)}
 .pkf,.mc,.panel,.stage,.hw,.sum,.qty,.chip,.pill,.sw,.btn,.xc,.msg,.thanks,.trk,.pkf figcaption,.tools button,.mtabs button,.lock .disc::before,.f input,.f select,.f textarea{outline:1px solid var(--hair);outline-offset:-1px}
 .btn:focus-visible,.chip:focus-visible,.mtabs button:focus-visible,.tools button:focus-visible,.f input:focus-visible,.f select:focus-visible,.f textarea:focus-visible,.msg:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+/* clean surfaces: no shadows at rest; a small, soft lift only on hover or keyboard focus */
+body *:not(.mo-dock):not(.mo-dock *){box-shadow:none!important;text-shadow:none!important}
+body img,body .mk,body .wm,body canvas{filter:none!important}
+.pkf,.mc,.panel,.hw,.sum,.chip,.pill,.btn,.xc,.tools button,.mtabs button{transition:box-shadow .25s ease,transform .25s ease}
+@media (hover:hover){.pkf:hover,.mc:hover,.hw:hover,.xc:hover,.btn:hover,.chip:hover,.pill:hover,.tools button:hover,.mtabs button:hover{box-shadow:0 6px 16px -10px var(--shadow)!important}}
+.btn:focus-visible,.chip:focus-visible,.pill:focus-visible{box-shadow:0 6px 16px -10px var(--shadow)!important}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 </head>
