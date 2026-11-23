@@ -396,6 +396,13 @@ body img,body .mk,body .wm,body canvas{filter:none!important}
 .pkf,.mc,.panel,.hw,.sum,.chip,.pill,.btn,.xc,.tools button,.mtabs button{transition:box-shadow .25s ease,transform .25s ease}
 @media (hover:hover){.pkf:hover,.mc:hover,.hw:hover,.xc:hover,.btn:hover,.chip:hover,.pill:hover,.tools button:hover,.mtabs button:hover{box-shadow:0 6px 16px -10px var(--shadow)!important}}
 .btn:focus-visible,.chip:focus-visible,.pill:focus-visible{box-shadow:0 6px 16px -10px var(--shadow)!important}
+/* hairline edges only on hover; form fields keep theirs so they can be found */
+.pkf,.mc,.panel,.stage,.hw,.sum,.qty,.chip,.pill,.sw,.btn,.xc,.msg,.thanks,.trk,.pkf figcaption,.tools button,.mtabs button,.lock .disc::before{outline-color:transparent!important;transition:outline-color .25s ease,box-shadow .25s ease}
+@media (hover:hover){.pkf:hover,.mc:hover,.panel:hover,.hw:hover,.sum:hover,.qty:hover,.chip:hover,.pill:hover,.btn:hover,.xc:hover,.tools button:hover,.mtabs button:hover{outline-color:var(--hair)!important}}
+/* buttons: no magnetic pull, just a calm hover */
+.btn,.enter,.cta{translate:none!important}
+.btn{transition:background-color .25s ease,color .25s ease,opacity .25s ease,outline-color .25s ease!important}
+@media (hover:hover){.btn:hover{opacity:.88}.btn.ghost:hover{opacity:1;background:color-mix(in srgb,var(--ink) 6%,transparent)}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 </head>
