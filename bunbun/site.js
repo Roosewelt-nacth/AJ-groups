@@ -44,7 +44,6 @@ const BUNBUN = {
     ['Triple Chocolate Waffle', 'Andy Li', 'CC0', 'File:%22triple_chocolate%22_waffle_-_Wafflemeister_2024-08-25.jpg'],
     ['Traditional Plum Cake', 'Joegoauk Goa', 'CC BY-SA 2.0', 'File:Plum_cake._Goa.jpg'],
     ['Non-Alcoholic Plum Cake', 'James Petts', 'CC BY-SA 2.0', 'File:Slice_of_Christmas_cake_(11879724696).jpg'],
-    ['Home page', 'zingyyellow', 'CC BY 2.0', 'File:Baked_cheesecake_with_raspberries_and_blueberries.jpg'],
   ],
 
   cakes: ['Birthday Cakes', 'Anniversary Cakes', 'Theme-Based Cakes', 'Personalised Cakes', 'Special Occasion Cakes'],

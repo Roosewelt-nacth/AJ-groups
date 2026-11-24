@@ -29,4 +29,3 @@ Free-licence images from Wikimedia Commons, resized and colour-graded toward the
 - triple-choc-waffle.webp: File:"triple chocolate" waffle - Wafflemeister 2024-08-25.jpg, by Andy Li, CC0
 - plum-rum.webp: File:Plum cake. Goa.jpg, by Joegoauk Goa, CC BY-SA 2.0
 - plum-free.webp: File:Slice of Christmas cake (11879724696).jpg, by James Petts, CC BY-SA 2.0
-- hero.webp: File:Baked cheesecake with raspberries and blueberries.jpg, by zingyyellow, CC BY 2.0
