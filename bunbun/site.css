@@ -252,3 +252,103 @@ dialog.od[open] .sheet{animation:odIn .45s cubic-bezier(.2,.8,.2,1)}
 }
 /* the rest of the page breathes more: quieter section labels, more space */
 .sec{padding:clamp(80px,10vw,150px) 0}
+
+/* the 3D slice sits fully inside the hero (no bleed); the photo shows until 3D is ready, or if 3D is unavailable */
+.ed-fig{right:var(--pad);width:min(46vw,620px);pointer-events:auto}
+.ed-fig img{-webkit-mask:none;mask:none}
+.ed-fig canvas{position:absolute;inset:0;width:100%!important;height:100%!important;opacity:0;transition:opacity .8s ease;cursor:grab}
+.ed-fig canvas:active{cursor:grabbing}
+.ed-fig.live canvas{opacity:1}
+.ed-fig.live img{opacity:0;transition:opacity .8s ease}
+@media (max-width:860px){.ed-fig{right:auto;width:100%;margin:0 auto}}
+
+/* the hero dish: a real photo with depth. It floats, and turns a few degrees towards the pointer */
+.ed-fig{perspective:1200px}
+.ed-fig img{transform-style:preserve-3d;will-change:transform;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-reduced-motion:no-preference){.ed-fig{animation:edFloat 7s ease-in-out infinite}}
+@keyframes edFloat{50%{translate:0 calc(-50% - 10px)}}
+@media (max-width:860px){@keyframes edFloat{50%{translate:0 -8px}}}
+
+/* ===== minimal editorial style across every page (same voice as the home hero) ===== */
+h1{font-size:clamp(34px,3.8vw,58px);line-height:1.15;letter-spacing:-.02em}
+h2{font-size:clamp(28px,2.9vw,44px);line-height:1.15;letter-spacing:-.02em}
+h1 em,h2 em{font-family:inherit;font-style:normal;font-weight:400;color:color-mix(in srgb,var(--ink) 34%,transparent)}
+.eyebrow{font-size:12.5px;letter-spacing:0;text-transform:none;font-weight:600;gap:10px}
+.eyebrow::before{width:20px;height:15px;border-radius:0;background:currentColor;-webkit-mask:url(../assets/bunbun/logo-mark.png?v=3) center/contain no-repeat;mask:url(../assets/bunbun/logo-mark.png?v=3) center/contain no-repeat}
+.lead{font-size:clamp(15px,1.15vw,17px);max-width:52ch}
+.page-hero{padding:clamp(70px,10vw,140px) 0 clamp(30px,4vw,60px)}
+.page-hero .wrap{padding-left:calc(var(--pad) + clamp(0px,4vw,56px))}
+.page-hero h1{margin-top:20px;max-width:18ch}
+.card{border-color:color-mix(in srgb,var(--ink) 12%,transparent);border-radius:20px;background:transparent}
+.card h3{font-size:18px}
+.num{font-size:13px;font-family:Inter,sans-serif;font-weight:600;opacity:.4;letter-spacing:.08em}
+.band{background:transparent}
+.tick li{font-size:15px}
+.sec-h{gap:12px}
+.note{border-color:color-mix(in srgb,var(--ink) 14%,transparent);border-radius:20px}
+.note b{font-size:16px;font-family:Inter,sans-serif;font-weight:600}
+.cat>h3{font-size:13px;font-family:Inter,sans-serif;font-weight:600;letter-spacing:.04em;color:var(--mute)}
+.figs figure{border-radius:20px}
+.ed-fig img{-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent),linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent),linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);mask-composite:intersect}
+
+/* ===== two entries: the logo all year, the plum cake for the Christmas season (until New Year's Day) ===== */
+html:not(.season) .only-season{display:none!important}
+html.season .only-std{display:none!important}
+.lg{min-height:calc(100svh - 68px);display:grid;place-items:center;padding:40px var(--pad) 60px;text-align:center}
+.lg-in{display:grid;justify-items:center;gap:clamp(16px,2.6vh,26px)}
+.lg-mk{width:clamp(110px,14vw,190px)}
+.lg-wm{width:clamp(220px,34vw,460px)}
+.lg-line{max-width:40ch;margin:6px 0 0;color:var(--mute);font-size:clamp(15px,1.2vw,17px)}
+.lg-cta{justify-content:center;margin-top:6px}
+@media (prefers-reduced-motion:no-preference){.lg-in>*{animation:lgIn .9s cubic-bezier(.2,.8,.2,1) both}.lg-in>:nth-child(2){animation-delay:.12s}.lg-in>:nth-child(3){animation-delay:.24s}.lg-in>:nth-child(4){animation-delay:.32s}}
+@keyframes lgIn{from{opacity:0;transform:translateY(14px)}}
+
+/* ===== the entry: the original Bun Bun logo hero, kept as it was ===== */
+.hero0{position:relative;min-height:calc(100svh - 68px);overflow:hidden;display:grid;place-items:center;text-align:center;padding:90px var(--pad) 130px}
+.grid0{position:absolute;inset:0;pointer-events:none}
+.grid0 i{position:absolute;background:color-mix(in srgb,var(--ink) 14%,transparent)}
+.grid0 .v1{left:14%;top:0;bottom:0;width:1px}.grid0 .v2{right:14%;top:0;bottom:0;width:1px}.grid0 .h1{left:0;right:0;bottom:20%;height:1px}
+.grid0 b{position:absolute;width:14px;height:14px;border:1px solid var(--ink);transform:rotate(45deg);opacity:.45}
+.lock0{position:relative;z-index:2;display:grid;justify-items:center;gap:clamp(12px,2.4vh,30px);margin-top:-2vh}
+.disc0{position:relative;width:min(70vw,440px,40vh);aspect-ratio:1;display:grid;place-items:center}
+.disc0 .mk{position:relative;width:62%;color:var(--ink)}
+.disc0 svg{position:absolute;inset:-2%;width:104%;height:104%;animation:spin0 90s linear infinite}
+.disc0 text{font:600 12.6px Inter,sans-serif;letter-spacing:.3em;fill:var(--ink);opacity:.8}
+@keyframes spin0{to{rotate:360deg}}
+.lock0 .wm{width:min(70vw,560px,50vh);color:var(--ink)}
+.tiny0{position:absolute;z-index:3;margin:0;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;line-height:1.9;font-weight:500;color:var(--ink)}
+.t-a{left:var(--pad);top:36px;max-width:26ch;text-align:left}
+.t-b{right:var(--pad);bottom:96px;text-align:right}
+.t-c{left:var(--pad);bottom:96px;text-align:left}
+.cta0{position:absolute;z-index:4;left:50%;bottom:34px;transform:translateX(-50%);display:flex;gap:10px;white-space:nowrap}
+@media (max-width:760px){.hero0{padding-bottom:150px}.disc0{width:min(78vw,360px)}.t-a{top:20px;max-width:20ch}.t-b,.t-c{display:none}.cta0{bottom:110px}}
+@media (prefers-reduced-motion:reduce){.disc0 svg{animation:none}}
+
+/* ===== Cream and Green looks, on every page ===== */
+html[data-look="green"]{--bg:var(--green);--ink:var(--cream)}
+html[data-look="green"] body{background:var(--bg);color:var(--ink)}
+html[data-look="green"] .dark{--bg:var(--cream);--ink:var(--green)}
+html[data-look="green"] .pc .ph{background:#f8f2e4}
+.look{display:flex;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--bd);flex:none}
+.look button{height:30px;padding:0 4px;border:0;border-radius:999px;background:transparent;color:var(--ink);font:500 12px Inter,sans-serif;cursor:pointer;display:flex;align-items:center;gap:7px}
+.look button i{width:20px;height:20px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px var(--line)}
+.look button[data-l="cream"] i{background:linear-gradient(135deg,#f8f2e4 50%,#4a442c 50%)}
+.look button[data-l="green"] i{background:linear-gradient(135deg,#4a442c 50%,#f8f2e4 50%)}
+.look button span{display:none}
+.look button[aria-pressed="true"]{background:var(--ink);color:var(--bg);padding:0 12px 0 5px}
+.look button[aria-pressed="true"] span{display:inline}
+@media (max-width:420px){.look button[aria-pressed="true"] span{display:none}.look button[aria-pressed="true"]{padding:0 5px}}
+
+/* brief: highlights under the entry, as a quiet row */
+.intro .wrap{display:grid;gap:clamp(36px,5vw,60px)}
+.hl{list-style:none;margin:0;padding:22px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.hl li{display:grid;gap:8px;font-size:15px}
+.hl span{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--mute)}
+@media (max-width:760px){.hl{grid-template-columns:1fr 1fr;row-gap:24px}}
+.pc .ln+.ln{padding-top:0}
+/* page transitions */
+@media (prefers-reduced-motion:no-preference){
+ body{animation:pgIn .45s ease both}
+ html.leaving body{opacity:0;transform:translateY(6px);transition:opacity .25s ease,transform .25s ease}
+}
+@keyframes pgIn{from{opacity:0;transform:translateY(8px)}}

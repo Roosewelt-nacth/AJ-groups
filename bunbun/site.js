@@ -52,8 +52,11 @@ const BUNBUN = {
   hd.innerHTML = `<div class="wrap"><a class="brand" href="${link('')}" aria-label="Bun Bun Cafe home"><i class="mk"></i><i class="wm"></i></a>
     <nav class="nav" aria-label="Main">${PAGES.map(([k, p, l]) => `<a href="${link(p)}"${k === page ? ' aria-current="page"' : ''}>${l}</a>`).join('')}</nav>
     <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
-    <button class="btn sm" type="button" data-order="general">Order Now</button></div>`;
+    <div class="look" role="group" aria-label="Choose a look"><button type="button" data-l="cream" title="Cream"><i></i><span>Cream</span></button><button type="button" data-l="green" title="Green"><i></i><span>Green</span></button></div><button class="btn sm" type="button" data-order="general">Order Now</button></div>`;
   body.prepend(hd);
+  const setLook = (l) => { document.documentElement.dataset.look = l; hd.querySelectorAll('.look button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.l === l)); try { localStorage.setItem('bbtheme', l === 'green' ? 'b' : 'a'); } catch (e) {} };
+  hd.querySelectorAll('.look button').forEach((b) => b.addEventListener('click', () => setLook(b.dataset.l)));
+  setLook(document.documentElement.dataset.look || 'cream');
   const mb = hd.querySelector('.menu-btn');
   mb.addEventListener('click', () => { const o = hd.classList.toggle('open'); mb.setAttribute('aria-expanded', o); mb.setAttribute('aria-label', o ? 'Close menu' : 'Open menu'); });
   let lastY = scrollY; addEventListener('scroll', () => { const y = scrollY; if (!hd.classList.contains('open')) hd.classList.toggle('up', y > lastY && y > 140); lastY = y; }, { passive: true });
@@ -77,8 +80,9 @@ const BUNBUN = {
   const IMG = (i) => R + '../assets/bunbun/' + i.photo;
   const card = (i) => `<article class="pc rv">
     <div class="ph">${i.photo ? `<img src="${esc(IMG(i))}" alt="${esc(i.name)}" loading="lazy">` : '<i class="mk" aria-hidden="true"></i>'}
-      <div class="chips">${i.tag ? `<span>${esc(i.tag)}</span>` : ''}<span>${i.size ? esc(i.size) : (i.photo ? 'Illustrative photo' : 'Photo coming soon')}</span></div></div>
+      <div class="chips">${i.tag ? `<span>${esc(i.tag)}</span>` : ''}<span>${i.photo ? 'Illustrative photo' : 'Photo coming soon'}</span></div></div>
     <div class="bd"><h3>${esc(i.name)}</h3><p>${esc(i.desc)}</p>${i.preorder ? `<p>${esc(i.preorder)}</p>` : ''}
+      <div class="ln"><span>Size</span><b>${i.size ? esc(i.size) : 'To be confirmed'}</b></div>
       <div class="ln"><span>Price</span><b>${i.price ? esc(i.price) : 'To be confirmed'}</b></div>
       <button class="btn pill" type="button" data-order="${esc(i.id)}">Order Now</button></div></article>`;
   document.querySelectorAll('[data-list]').forEach((el) => {
@@ -93,6 +97,7 @@ const BUNBUN = {
     const k = el.dataset.fill;
     if (k === 'fssai') el.textContent = B.fssai || 'Licence number to be added';
     if (k === 'location') el.textContent = B.location;
+    if (k === 'wa-number') el.textContent = '+' + B.whatsapp.replace(/^(\d{2})(\d{5})(\d+)$/, '$1 $2 $3');
     if (k === 'whatsapp') { el.href = wa('Hi Bun Bun Cafe, I would like to place an order.'); el.target = '_blank'; el.rel = 'noopener'; }
     if (k === 'instagram') { if (ig) { el.href = ig; el.target = '_blank'; el.rel = 'noopener'; } else { el.removeAttribute('href'); el.setAttribute('aria-disabled', 'true'); el.textContent = 'Instagram (link coming soon)'; } }
   });
@@ -177,6 +182,18 @@ const BUNBUN = {
     io.observe(sec);
     const tick = () => { p = where(); if (!run) { run = true; last = performance.now(); requestAnimationFrame(draw); } }; addEventListener('scroll', tick, { passive: true }); tick();
   });
+
+  /* hero dish turns a little towards the pointer (hover screens only) */
+  document.querySelectorAll('[data-tilt]').forEach((f) => { const im = f.querySelector('img'); if (!im || !matchMedia('(hover:hover)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    addEventListener('pointermove', (e) => { const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5; im.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 7}deg) translateZ(0)`; }, { passive: true }); });
+
+  /* page transitions: a short fade between pages (skipped with reduced motion, new tabs and modified clicks) */
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.addEventListener('click', (e) => { const a = e.target.closest('a[href]'); if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
+      const u = new URL(a.href, location.href); if (u.origin !== location.origin || u.pathname === location.pathname || !u.pathname.includes('/bunbun/')) return;
+      e.preventDefault(); document.documentElement.classList.add('leaving'); setTimeout(() => { location.href = u.href; }, 260); });
+    addEventListener('pageshow', () => document.documentElement.classList.remove('leaving'));
+  }
 
   /* gentle reveal on scroll */
   const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px' }) : null;
