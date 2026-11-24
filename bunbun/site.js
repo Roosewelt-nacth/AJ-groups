@@ -33,18 +33,7 @@ const BUNBUN = {
       desc: 'Enjoy the traditional festive plum cake experience with our non-alcoholic version, prepared without alcohol.', size: null, price: null, photo: 'menu/plum-free.webp', preorder: null },
   ],
 
-  /* sample photos until Bun Bun's own are ready: free-licence images from Wikimedia Commons, colour-graded to the brand */
-  credits: [
-    ['Nutella Brownie', 'Ɱ', 'CC BY-SA 3.0', 'File:Chocolatebrownie.JPG'],
-    ['Double Chocolate Brownie', 'Wikimedia Commons contributor', 'CC BY-SA 3.0', 'File:Chocolate_brownies_without_table.jpg'],
-    ['Metro Chocolate Brownie', 'Phadke09', 'CC BY-SA 4.0', 'File:Brownie_IMG_001.jpg'],
-    ['Chocolate Mousse', 'jules / stonesoup', 'CC BY 2.0', 'File:Chocolate_mousse_-_stonesoup.jpg'],
-    ['Caramel Pudding', 'BokuAlec', 'CC BY-SA 3.0', 'File:Italian_Creme_Caramel.JPG'],
-    ['White Chocolate Waffle', 'Susanne Nilsson', 'CC BY-SA 2.0', 'File:Dessert_(37490131630).jpg'],
-    ['Triple Chocolate Waffle', 'Andy Li', 'CC0', 'File:%22triple_chocolate%22_waffle_-_Wafflemeister_2024-08-25.jpg'],
-    ['Traditional Plum Cake', 'Joegoauk Goa', 'CC BY-SA 2.0', 'File:Plum_cake._Goa.jpg'],
-    ['Non-Alcoholic Plum Cake', 'James Petts', 'CC BY-SA 2.0', 'File:Slice_of_Christmas_cake_(11879724696).jpg'],
-  ],
+  credits: [],
 
   cakes: ['Birthday Cakes', 'Anniversary Cakes', 'Theme-Based Cakes', 'Personalised Cakes', 'Special Occasion Cakes'],
 };
@@ -79,18 +68,19 @@ const BUNBUN = {
       <li><a href="${wa('Hi Bun Bun Cafe, I would like to place an order.')}" target="_blank" rel="noopener">WhatsApp</a></li>
       <li>${ig ? `<a href="${ig}" target="_blank" rel="noopener">Instagram</a>` : '<span>Instagram (link coming soon)</span>'}</li>
       <li><span>FSSAI licence: ${B.fssai ? esc(B.fssai) : 'to be added'}</span></li></ul></div>
-    <details class="cr"><summary>Photo credits</summary><p>Sample photos from Wikimedia Commons, colour-graded for this site, until Bun Bun's own photos are ready. ${B.credits.map(([w, a, l, f]) => `${esc(w)}: <a href="https://commons.wikimedia.org/wiki/${f}" target="_blank" rel="noopener">${esc(a)}</a>, ${esc(l)}`).join(' · ')}</p></details>
+    ${B.credits.length ? `<details class="cr"><summary>Photo credits</summary><p>Sample photos from Wikimedia Commons, colour-graded for this site, until Bun Bun's own photos are ready. ${B.credits.map(([w, a, l, f]) => `${esc(w)}: <a href="https://commons.wikimedia.org/wiki/${f}" target="_blank" rel="noopener">${esc(a)}</a>, ${esc(l)}`).join(' · ')}</p></details>` : ''}
     <div class="base"><span>© 2026 Bun Bun Cafe · by AJ GROUPS. All rights reserved.</span><span><a href="${R}../privacy/">Privacy</a> · <a href="${R}../terms/">Terms</a></span></div></div>`;
   body.append(ft);
 
   /* product cards */
   const all = {}; B.menu.forEach((c) => c.items.forEach((i) => { all[i.id] = i; })); B.seasonal.forEach((i) => { all[i.id] = i; });
+  const IMG = (i) => R + '../assets/bunbun/' + i.photo;
   const card = (i) => `<article class="pc rv">
-    <div class="ph">${i.photo ? `<img src="${R}../assets/bunbun/${esc(i.photo)}" alt="${esc(i.name)}" loading="lazy">` : '<i class="mk" aria-hidden="true"></i><small>Photo coming soon</small>'}${i.photo ? '<small>Sample photo</small>' : ''}</div>
-    <div class="bd">${i.tag ? `<span class="tag${i.alcohol ? ' solid' : ''}">${esc(i.tag)}</span>` : ''}<h3>${esc(i.name)}</h3><p>${esc(i.desc)}</p>
-      ${i.preorder ? `<p>${esc(i.preorder)}</p>` : ''}
-      <div class="meta"><div><div class="price">${i.price ? esc(i.price) : 'Price to be confirmed'}</div><div class="size">${i.size ? esc(i.size) : 'Size to be confirmed'}</div></div>
-      <button class="btn sm" type="button" data-order="${esc(i.id)}">Order Now</button></div></div></article>`;
+    <div class="ph">${i.photo ? `<img src="${esc(IMG(i))}" alt="${esc(i.name)}" loading="lazy">` : '<i class="mk" aria-hidden="true"></i>'}
+      <div class="chips">${i.tag ? `<span>${esc(i.tag)}</span>` : ''}<span>${i.size ? esc(i.size) : (i.photo ? 'Illustrative photo' : 'Photo coming soon')}</span></div></div>
+    <div class="bd"><h3>${esc(i.name)}</h3><p>${esc(i.desc)}</p>${i.preorder ? `<p>${esc(i.preorder)}</p>` : ''}
+      <div class="ln"><span>Price</span><b>${i.price ? esc(i.price) : 'To be confirmed'}</b></div>
+      <button class="btn pill" type="button" data-order="${esc(i.id)}">Order Now</button></div></article>`;
   document.querySelectorAll('[data-list]').forEach((el) => {
     const k = el.dataset.list;
     if (k === 'menu') el.innerHTML = B.menu.map((c) => `<div class="cat"><h3>${esc(c.cat)}</h3><div class="grid g3">${c.items.map(card).join('')}</div></div>`).join('');
@@ -111,14 +101,18 @@ const BUNBUN = {
   /* WhatsApp order dialog: product, quantity, date, requirements, then opens WhatsApp with the message filled in */
   const dlg = document.createElement('dialog'); dlg.className = 'od';
   const min = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
-  dlg.innerHTML = `<button class="x" type="button" aria-label="Close">×</button><form method="dialog" novalidate>
-    <span class="eyebrow">Order on WhatsApp</span><h3 id="odT">Order</h3>
-    <label id="odPw">Product<select id="odP"></select></label>
-    <div class="two"><label>Quantity<input id="odQ" type="number" min="1" max="99" value="1" inputmode="numeric"></label><label>Preferred date<input id="odD" type="date" min="${min}"></label></div>
-    <label>Requirements<textarea id="odN" maxlength="600" placeholder="Flavour, size, message on the cake, allergies…"></textarea></label>
-    <p class="hint" id="odH"></p>
-    <div class="row"><button class="btn" type="submit" id="odGo">Continue to WhatsApp</button>${ig ? `<a class="btn ghost" href="${ig}" target="_blank" rel="noopener">Message on Instagram</a>` : ''}</div>
-    <p class="hint">Your order is confirmed only after Bun Bun Cafe replies to confirm availability, price and timing.</p></form>`;
+  dlg.innerHTML = `<div class="odbg" aria-hidden="true"></div><form method="dialog" novalidate>
+    <div class="sheet"><button class="x" type="button" aria-label="Close">×</button>
+      <div class="odph"><div class="chips"><span id="odC1">Order on WhatsApp</span><span id="odC2"></span></div></div>
+      <h4>Order details</h4>
+      <p class="odt" id="odT">Order</p>
+      <label class="pl">Product<select id="odP"></select></label>
+      <div class="two"><label class="pl">Quantity<input id="odQ" type="number" min="1" max="99" value="1" inputmode="numeric"></label><label class="pl">Date<input id="odD" type="date" min="${min}"></label></div>
+      <h4>Your requirements</h4>
+      <label class="pl"><span class="sr">Requirements</span><textarea id="odN" maxlength="600" placeholder="Flavour, size, message on the cake, allergies…"></textarea></label>
+      <p class="hint" id="odH"></p>
+      <p class="hint">Confirmed only after Bun Bun Cafe replies with availability, price and timing.</p></div>
+    <div class="odgo"><button class="btn cta" type="submit" id="odGo">Continue to WhatsApp</button>${ig ? `<a class="btn cta ghost" href="${ig}" target="_blank" rel="noopener">Instagram</a>` : ''}</div></form>`;
   body.append(dlg);
   const $ = (id) => dlg.querySelector('#' + id);
   const opts = [['general', 'Not sure yet / general enquiry'], ['custom-cake', 'Custom cake']].concat(B.menu.flatMap((c) => c.items.map((i) => [i.id, i.name])), B.seasonal.map((i) => [i.id, i.name]));
@@ -127,9 +121,13 @@ const BUNBUN = {
     $('odD').min = c ? new Date(Date.now() + B.customNoticeDays * 864e5).toISOString().slice(0, 10) : min;
     $('odH').textContent = c ? `Custom cakes need at least ${B.customNoticeDays} days' notice. Share reference images in the WhatsApp chat.` : (all[v] && all[v].alcohol ? 'This cake contains alcohol (rum). Not for under-18s.' : ''); };
   $('odP').addEventListener('change', setHint);
-  const open = (id) => { $('odP').value = opts.some((o) => o[0] === id) ? id : 'general'; $('odT').textContent = all[id] ? all[id].name : (id === 'custom-cake' ? 'Custom cake' : 'Place an order'); setHint(); dlg.showModal(); };
+  const FALL = R + '../assets/bunbun/pack-coffee.webp';
+  const paint = (id) => { const it = all[id], src = it && it.photo ? IMG(it) : FALL;
+    dlg.style.setProperty('--odimg', 'url("' + src + '")'); $('odC2').textContent = it ? (it.price || 'Price to be confirmed') : (id === 'custom-cake' ? B.customNoticeDays + " days' notice" : 'Bun Bun Cafe'); };
+  $('odP').addEventListener('change', () => paint($('odP').value));
+  const open = (id) => { $('odP').value = opts.some((o) => o[0] === id) ? id : 'general'; $('odT').textContent = all[id] ? all[id].name : (id === 'custom-cake' ? 'Custom cake' : 'Place an order'); paint(id); setHint(); dlg.showModal(); };
   dlg.querySelector('.x').addEventListener('click', () => dlg.close());
-  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('click', (e) => { if (e.target === dlg || e.target.classList.contains('odbg') || e.target.tagName === 'FORM') dlg.close(); });
   dlg.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault(); const v = $('odP').value, name = opts.find((o) => o[0] === v)[1], d = $('odD').value;
     if (v === 'custom-cake' && d && d < $('odD').min) { $('odH').textContent = `Please pick a date at least ${B.customNoticeDays} days from today for a custom cake.`; $('odD').focus(); return; }
@@ -138,6 +136,47 @@ const BUNBUN = {
     window.open(wa(msg), '_blank', 'noopener'); dlg.close();
   });
   document.addEventListener('click', (e) => { const b = e.target.closest('[data-order]'); if (b) { e.preventDefault(); open(b.dataset.order); } });
+
+
+  /* scrolling plum cake, animated with the scroll: each new layer is revealed the way it is made
+     (fruit drops in, glaze pours down, sugar falls, the holly grows in, the plate opens out), while the slice floats and turns */
+  document.querySelectorAll('[data-story]').forEach((sec) => {
+    const imgs = [...sec.querySelectorAll('.frames img')], dots = [...sec.querySelectorAll('.dots li')], steps = [...sec.querySelectorAll('.st')];
+    const frames = sec.querySelector('.frames'), stage = sec.querySelector('.stage');
+    const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    imgs.forEach((im) => { im.loading = 'eager'; im.classList.add('on'); });
+    const cv = document.createElement('canvas'); cv.className = 'fx'; cv.setAttribute('aria-hidden', 'true'); frames.append(cv);
+    const cx = cv.getContext('2d'); let W = 0, H = 0;
+    const size = () => { const r = frames.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0); };
+    size(); addEventListener('resize', size);
+    const cl = (x) => (x < 0 ? 0 : x > 1 ? 1 : x), ease = (x) => x * x * (3 - 2 * x);
+    /* where we are: 0 at the first step ... 5 at the last, fractional in between */
+    const where = () => { const mid = innerHeight * (innerWidth < 860 ? .72 : .52), c = steps.map((s) => { const r = s.getBoundingClientRect(); return r.top + r.height / 2; });
+      if (mid <= c[0]) return 0; for (let k = 0; k < c.length - 1; k++) if (mid <= c[k + 1]) return k + (mid - c[k]) / (c[k + 1] - c[k]); return c.length - 1; };
+    /* particles: sugar snow and a few drops of glaze */
+    const sugar = Array.from({ length: 90 }, () => ({ x: Math.random(), y: Math.random(), s: .6 + Math.random() * 1.6, v: .04 + Math.random() * .08, w: Math.random() * 6.28 }));
+    let p = 0, shown = 0, last = performance.now(), active = false, run = false, cur = -1;
+    const draw = (now) => {
+      const dt = Math.min(.05, (now - last) / 1000); last = now;
+      shown += (p - shown) * (RM ? 1 : Math.min(1, dt * 7));                       /* glide towards the scroll position */
+      const q = shown, r = (k) => ease(cl((q - (k - .75)) / .75));                    /* reveal of layer k, 0..1, finishing as its step is reached */
+      const r1 = r(1), r2 = r(2), r3 = r(3), r4 = r(4), r5 = r(5);
+      imgs[1].style.cssText = `opacity:${r1};transform:translateY(${(1 - r1) * -7}%) scale(${1 + (1 - r1) * .06});filter:blur(${(1 - r1) * 6}px)`;
+      /* calm, photographic: each layer simply dissolves in with the scroll (no floating, no particles) until the real video is ready */
+      [r1, r2, r3, r4, r5].forEach((v, k) => { imgs[k + 1].style.cssText = `opacity:${v}`; });
+      frames.style.transform = '';
+      /* sugar falls while step 4 is being reached; glaze drips during step 3 */
+      cx.clearRect(0, 0, W, H);
+      const snow = 0;
+      if (snow > 0) { cx.fillStyle = '#ffffff'; sugar.forEach((g) => { g.y += g.v * dt * 3; if (g.y > 1) { g.y = 0; g.x = Math.random(); } g.w += dt * 2;
+        const x = (.28 + g.x * .5) * W + Math.sin(g.w) * 4, y = (.02 + g.y * .5) * H; cx.globalAlpha = snow * .85 * (1 - g.y); cx.beginPath(); cx.arc(x, y, g.s, 0, 6.283); cx.fill(); }); cx.globalAlpha = 1; }
+      const n = Math.round(q); if (n !== cur) { cur = n; dots.forEach((d, k) => d.classList.toggle('on', k <= n)); steps.forEach((s, k) => s.classList.toggle('on', k === n)); }
+      if (Math.abs(p - shown) > .002) requestAnimationFrame(draw); else run = false;
+    };
+    const io = new IntersectionObserver((es) => { const on = es[0].isIntersecting; active = on; if (on && !run) { run = true; last = performance.now(); requestAnimationFrame(draw); } }, { rootMargin: '200px 0px' });
+    io.observe(sec);
+    const tick = () => { p = where(); if (!run) { run = true; last = performance.now(); requestAnimationFrame(draw); } }; addEventListener('scroll', tick, { passive: true }); tick();
+  });
 
   /* gentle reveal on scroll */
   const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px' }) : null;

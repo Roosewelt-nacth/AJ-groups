@@ -18,14 +18,5 @@ Things to confirm yourself
 - Real photographs of Bun Bun products, bakers, Alven and Fovo work, and the founder must be your own or properly licensed.
 - A lawyer should read `privacy/` and `terms/` before launch. They are written in plain language for a small Indian business and have not been reviewed by a lawyer.
 
-## Bun Bun sample photos (assets/bunbun/menu/)
-Free-licence images from Wikimedia Commons, resized and colour-graded toward the Bun Bun cream and green. Credits also show under "Photo credits" in the Bun Bun footer. Replace with Bun Bun's own photos when ready.
-- nutella-brownie.webp: File:Chocolatebrownie.JPG, by Ɱ, CC BY-SA 3.0
-- double-choc-brownie.webp: File:Chocolate brownies without table.jpg, CC BY-SA 3.0
-- metro-brownie.webp: File:Brownie IMG 001.jpg, by Phadke09, CC BY-SA 4.0
-- choc-mousse.webp: File:Chocolate mousse - stonesoup.jpg, by jules / stonesoup, CC BY 2.0
-- caramel-pudding.webp: File:Italian Creme Caramel.JPG, by BokuAlec, CC BY-SA 3.0
-- white-choc-waffle.webp: File:Dessert (37490131630).jpg, by Susanne Nilsson, CC BY-SA 2.0
-- triple-choc-waffle.webp: File:"triple chocolate" waffle - Wafflemeister 2024-08-25.jpg, by Andy Li, CC0
-- plum-rum.webp: File:Plum cake. Goa.jpg, by Joegoauk Goa, CC BY-SA 2.0
-- plum-free.webp: File:Slice of Christmas cake (11879724696).jpg, by James Petts, CC BY-SA 2.0
+## Bun Bun photos (assets/bunbun/menu/, assets/bunbun/plum/)
+AI-generated images supplied by the owner on 24 Nov 2026 (menu items and the six plum cake steps), background levelled to the brand cream. No third-party licence applies. Replace with Bun Bun's own photos when ready, and check they match what is actually baked.

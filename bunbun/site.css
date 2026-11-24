@@ -113,18 +113,37 @@ p{margin:12px 0 0}
 .figs figcaption{padding:12px 16px;font-size:14px;display:flex;justify-content:space-between;gap:10px}
 .figs figcaption span{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.6;align-self:center}
 
-/* order dialog */
-dialog.od{border:1px solid var(--line);border-radius:calc(var(--r) + 4px);padding:0;width:min(520px,calc(100vw - 24px));background:var(--bg);color:var(--ink)}
-dialog.od::backdrop{background:color-mix(in srgb,var(--green) 45%,transparent);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
-.od form{display:grid;gap:14px;padding:clamp(22px,4vw,34px)}
-.od .x{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:999px;border:1px solid var(--bd);background:none;cursor:pointer;font-size:18px}
-.od label{display:grid;gap:6px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:500}
-.od input,.od textarea,.od select{font-size:15px;letter-spacing:0;text-transform:none;font-weight:400;border:1px solid var(--bd);border-radius:14px;padding:12px 14px;background:transparent;width:100%}
-.od input:focus,.od textarea:focus,.od select:focus{outline:2px solid var(--ink);outline-offset:1px}
-.od textarea{min-height:90px;resize:vertical}
-.od .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.od .hint{font-size:13px;color:var(--mute);margin:0}
-.od .row .btn{flex:1}
+/* order sheet: a frosted glass card over a blurred photo of the product, the main action as a pill below it */
+dialog.od{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:var(--cream)}
+dialog.od::backdrop{background:transparent}
+.od .odbg{position:fixed;inset:-40px;background:var(--green) var(--odimg) center/cover;filter:blur(18px) saturate(.85);transform:scale(1.04)}
+.od .odbg::after{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--green) 28%,transparent)}
+.od form{position:relative;min-height:100%;display:grid;place-content:center;justify-items:center;gap:14px;padding:24px 14px}
+.od .sheet{position:relative;width:min(400px,calc(100vw - 28px));padding:14px 14px 22px;border-radius:44px;background:color-mix(in srgb,var(--cream) 16%,transparent);border:1px solid color-mix(in srgb,var(--cream) 28%,transparent);-webkit-backdrop-filter:blur(26px) saturate(1.3);backdrop-filter:blur(26px) saturate(1.3);display:grid;gap:12px;max-height:calc(100svh - 110px);overflow:auto}
+.od .sheet::before{content:"";justify-self:center;width:38px;height:3px;border-radius:2px;background:color-mix(in srgb,var(--cream) 45%,transparent);margin-top:-4px}
+.od .x{position:absolute;top:22px;right:22px;z-index:2;width:34px;height:34px;border-radius:999px;border:0;background:color-mix(in srgb,var(--green) 45%,transparent);color:var(--cream);cursor:pointer;font-size:17px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.od .odph{position:relative;height:170px;border-radius:32px;background:var(--green) var(--odimg) center/cover}
+.od .odph .chips{position:absolute;left:12px;right:12px;bottom:12px}
+.od h4{margin:8px 12px 0;padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,var(--cream) 26%,transparent);font:400 15px/1.2 Inter,sans-serif}
+.od .odt{margin:0 12px;font-size:14px;opacity:.9}
+.od .pl{display:grid;gap:6px;margin:0 12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.95}
+.od .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 12px}.od .two .pl{margin:0}
+.od select,.od input,.od textarea{font-size:15px;letter-spacing:0;text-transform:none;color:var(--cream);border:0;border-radius:999px;padding:12px 18px;background-color:color-mix(in srgb,var(--green) 42%,transparent);width:100%;-webkit-appearance:none;appearance:none;color-scheme:dark}
+.od select{background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 22px) 52%,calc(100% - 17px) 52%;background-size:5px 5px;background-repeat:no-repeat;padding-right:40px}
+.od select option{color:var(--green);background:var(--cream)}
+.od textarea{border-radius:22px;min-height:84px;resize:vertical}
+.od input::placeholder,.od textarea::placeholder{color:color-mix(in srgb,var(--cream) 60%,transparent)}
+.od select:focus,.od input:focus,.od textarea:focus{outline:1.5px solid color-mix(in srgb,var(--cream) 70%,transparent);outline-offset:1px}
+.od .hint{margin:0 12px;font-size:12.5px;opacity:.85}
+.od .hint:empty{display:none}
+.od .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.od .odgo{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn.cta{background:var(--cream);color:var(--green);border-color:var(--cream);min-height:48px;padding:0 28px}
+.btn.cta.ghost{background:transparent;color:var(--cream);border-color:color-mix(in srgb,var(--cream) 55%,transparent)}
+@media (hover:hover){.btn.cta.ghost:hover{background:color-mix(in srgb,var(--cream) 12%,transparent)}}
+dialog.od[open] .sheet{animation:odIn .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes odIn{from{opacity:0;transform:translateY(16px) scale(.98)}}
+@media (prefers-reduced-motion:reduce){dialog.od[open] .sheet{animation:none}}
 
 /* footer: same colour as the page */
 .ft{border-top:1px solid var(--line);padding:clamp(50px,6vw,80px) 0 calc(40px + env(safe-area-inset-bottom))}
@@ -147,3 +166,38 @@ dialog.od::backdrop{background:color-mix(in srgb,var(--green) 45%,transparent);-
 .ft .cr summary{cursor:pointer;width:max-content}
 .ft .cr p{max-width:none;font-size:12.5px}
 .pc .ph img+small{color:var(--cream);text-shadow:0 1px 2px rgba(74,68,44,.6);opacity:.85}
+/* product cards, inspired by the glass booking card: inset rounded photo, glass chips on it, hairline rows, pill button */
+.pc{border-radius:36px;padding:10px;background:color-mix(in srgb,var(--ink) 4%,var(--bg));border:1px solid var(--line)}
+.pc .ph{border-radius:28px;aspect-ratio:5/4}
+.pc .ph .chips{position:absolute;left:10px;right:10px;bottom:10px}
+.chips{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;pointer-events:none}
+.chips span{padding:7px 13px;border-radius:999px;font-size:12px;color:var(--cream);background:color-mix(in srgb,var(--green) 38%,transparent);-webkit-backdrop-filter:blur(12px) saturate(1.2);backdrop-filter:blur(12px) saturate(1.2)}
+.pc .bd{padding:18px 14px 8px;gap:8px}
+.pc .bd h3{padding-bottom:12px;border-bottom:1px solid var(--line)}
+.pc .ln{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:14px;margin-top:auto;padding-top:8px}
+.pc .ln span{color:var(--mute)}.pc .ln b{font-weight:500}
+.btn.pill{align-self:flex-start;margin-top:8px;min-height:44px;padding:0 22px;background:color-mix(in srgb,var(--ink) 10%,transparent);color:var(--ink);border-color:transparent}
+@media (hover:hover){.btn.pill:hover{opacity:1;background:var(--ink);color:var(--bg)}}
+.dark .pc{background:color-mix(in srgb,var(--cream) 8%,transparent);border-color:color-mix(in srgb,var(--cream) 16%,transparent)}
+
+/* scrolling plum cake: the picture stays put while each step adds a layer */
+.story{padding:clamp(30px,5vw,70px) 0}
+.story-in{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,5vw,80px)}
+.story .stage{position:sticky;top:calc(50svh - min(42vw,560px) / 2 + 20px);align-self:start;height:min(42vw,560px)}
+.story .frames{position:relative;width:100%;height:100%}
+.story .frames{will-change:transform}
+.story .frames img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;will-change:clip-path,opacity,transform}
+.story .frames .fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.story .dots{position:absolute;left:0;bottom:-6px;display:flex;gap:8px;list-style:none;margin:0;padding:0}
+.story .dots li{width:22px;height:2px;border-radius:2px;background:var(--line);transition:background-color .4s ease,width .4s ease}
+.story .dots li.on{background:var(--ink);width:36px}
+.story .st{min-height:78svh;display:flex;flex-direction:column;justify-content:center;opacity:.28;transition:opacity .5s ease}
+.story .st.on{opacity:1}
+.story .st h2{margin-top:14px}
+@media (max-width:860px){
+ .story-in{grid-template-columns:1fr;gap:0}
+ .story .stage{top:0;padding-top:12px;height:min(50svh,96vw);margin:0 auto;width:100%;z-index:1;background:var(--bg)}
+ .story .dots{left:50%;translate:-50% 0;bottom:4px}
+ .story .st{min-height:62svh;justify-content:flex-start;padding-top:28px}
+}
+@media (prefers-reduced-motion:reduce){.story .frames img,.story .st{transition:none}}
