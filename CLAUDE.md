@@ -181,3 +181,13 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 - `reels/video/`: `AJ-Groups-Reel-Laptop.mp4` and `AJ-Groups-Reel-iPad.mp4` (20 s), `AJ-Groups-Reel-Ventures.mp4` (25 s), all 1080×1920 with original synthesised soundtracks, and `AJ-Groups-Signal-Poster.png`. Made for Allwyn to review and share.
 - Sources, frozen site copies, the soundtrack script (`reels/audio/score.py`) and the stepped-clock recorder (`reels/rec/rec.cjs`) are alongside; `reels/README.md` explains preview, re-render and adding the sound. `/reels/` is disallowed in `robots.txt`. The official repo does not carry the reels.
 - The videos were rendered on 20 to 21 Nov, so they still show "One-stop solution" and Bun Bun as open. Re-render if they must match the current site.
+
+## Bun Bun Cafe rebuilt as an eight-page site, 24 Nov 2026 (testing repo first)
+- Built from Allwyn's brief: Home, About Us, Our Menu, Custom Cakes, Seasonal Specials, Our Brand, How to Order, Contact Us (`bunbun/`, `bunbun/about/`, `menu/`, `custom-cakes/`, `seasonal/`, `brand/`, `how-to-order/`, `contact/`). Shared look in `bunbun/site.css`, shared header, footer, product cards and ordering in `bunbun/site.js`.
+- **Edit business details at the top of `bunbun/site.js` (`BUNBUN`)**: WhatsApp number (AJ GROUPS number for now, by request), Instagram link (null until shared), FSSAI number (null), menu items, prices, sizes, photos, featured items, seasonal cakes. Anything null shows as "to be confirmed".
+- **Ordering is WhatsApp only** (plus an Instagram link): every Order Now opens a short form (product, quantity, preferred date, requirements) and then WhatsApp with the message filled in. Custom cakes enforce 2 days' notice. No cart, payment, tracking, pincode check or cake studio, as the brief asks.
+- Founder is **Monisha Janet** (Founder and Certified Baker); the Bun Bun name is credited to Allwyn Jerold; family support is mentioned. Do not present Allwyn as founder.
+- Footer says "by AJ GROUPS" (not "part of AJ GROUPS") and uses the page colour.
+- The old one-page site (cake studio, order tracker, pay step) is in git history before this change; its JS files (`main.js`, `menu.js`, `desserts.js`, `extras.js`, `tracker.js`, `pay.js`, `store.js`) are no longer loaded. `bunbun/baker/` is untouched.
+- Every page keeps `noindex` and the redirect unless the address has `?preview`; `site.js` carries `?preview` on internal links.
+- Waiting on: menu, seasonal menu, cake menu (from Allwyn), FSSAI number, Instagram link, Bun Bun's own WhatsApp number, product and founder photos.
