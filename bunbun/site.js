@@ -28,9 +28,9 @@ const BUNBUN = {
 
   seasonal: [
     { id: 'plum-rum', name: 'Traditional Rum-Soaked Plum Cake', tag: 'Contains alcohol', alcohol: true,
-      desc: 'A festive classic prepared with carefully selected ingredients and rum-soaked fruits, bringing together the rich and traditional flavours of Christmas.', size: null, price: null, photo: 'menu/plum-rum.webp', preorder: null },
+      desc: 'A festive classic prepared with carefully selected ingredients and rum-soaked fruits, bringing together the rich and traditional flavours of Christmas.', size: null, price: null, photo: 'plum/step-6.webp', preorder: null },
     { id: 'plum-free', name: 'Non-Alcoholic Plum Cake', tag: 'Alcohol-free', alcohol: false,
-      desc: 'Enjoy the traditional festive plum cake experience with our non-alcoholic version, prepared without alcohol.', size: null, price: null, photo: 'menu/plum-free.webp', preorder: null },
+      desc: 'Enjoy the traditional festive plum cake experience with our non-alcoholic version, prepared without alcohol.', size: null, price: null, photo: 'plum/step-1.webp', preorder: null },
   ],
 
   credits: [],
