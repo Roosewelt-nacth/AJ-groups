@@ -201,3 +201,12 @@ dialog.od[open] .sheet{animation:odIn .45s cubic-bezier(.2,.8,.2,1)}
  .story .st{min-height:62svh;justify-content:flex-start;padding-top:28px}
 }
 @media (prefers-reduced-motion:reduce){.story .frames img,.story .st{transition:none}}
+
+/* phone alignment pass: show the whole dish (square photos in square frames), no pale box behind photos, soft edges on the plum cake */
+.pc{background:var(--bg)}
+.pc .ph{aspect-ratio:1/1;background:#f8f2e4}
+.pc .ph img{object-fit:contain;object-position:50% 50%}
+.dark .pc{background:color-mix(in srgb,var(--cream) 6%,transparent)}
+.story .frames{-webkit-mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent),linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);-webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent),linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);mask-composite:intersect}
+@media (max-width:860px){.story .stage{width:min(100%,46svh);margin:0 auto}.story .dots{bottom:-2px}}
+@media (min-width:601px) and (max-width:960px){.pc .ph{aspect-ratio:4/3}}
