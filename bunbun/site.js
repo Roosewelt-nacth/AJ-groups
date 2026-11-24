@@ -70,7 +70,7 @@ const BUNBUN = {
   body.append(ft);
 
   /* alternating colours down the page, numbered chapters */
-  chaps.forEach((c, i) => { c.dataset.n = String(i + 1).padStart(2, '0'); c.dataset.name = NAMES[c.id]; c.classList.toggle('alt', i % 2 === 1); });
+  let ai = 0; chaps.forEach((c, i) => { c.dataset.n = String(i + 1).padStart(2, '0'); c.dataset.name = NAMES[c.id]; if (c.id === 'seasonal') return; c.classList.toggle('alt', ai % 2 === 1); ai++; });  /* Seasonal keeps its own Christmas colours and is left out of the cream/green alternation */
   ft.classList.toggle('alt', !chaps[chaps.length - 1].classList.contains('alt'));
 
   /* menu panels and seasonal cards */
@@ -100,8 +100,25 @@ const BUNBUN = {
   document.addEventListener('click', (e) => { const b = e.target.closest('.seg button'); if (!b) return; b.parentElement.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); upd(b.closest('[data-name],[data-hamper]')); });
   ['input', 'change'].forEach((t) => document.addEventListener(t, (e) => { const r = e.target.closest('[data-hamper]'); if (r) upd(r); }));
 
+  /* Christmas chapter: a slow, sparse snowfall (only while the chapter is on screen; none with reduced motion) */
+  const snowC = document.querySelector('.xmas .snow');
+  if (snowC && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const sx = snowC.getContext('2d'), sec = snowC.parentElement; let W = 0, Hh = 0, on = false, lt = 0;
+    const flakes = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), r: .7 + Math.random() * 2.1, v: .012 + Math.random() * .03, a: .25 + Math.random() * .5, w: Math.random() * 6.28 }));
+    const fit = () => { const d = Math.min(devicePixelRatio || 1, 2); W = sec.clientWidth; Hh = sec.clientHeight; snowC.width = W * d; snowC.height = Hh * d; sx.setTransform(d, 0, 0, d, 0, 0); };
+    const tickS = (now) => { if (!on) return; const dt = Math.min(.05, (now - (lt || now)) / 1000); lt = now; sx.clearRect(0, 0, W, Hh);
+      const col = getComputedStyle(sec).color; sx.fillStyle = col;
+      flakes.forEach((f) => { f.y += f.v * dt * 6 * (800 / Math.max(Hh, 400)); f.w += dt * .6; if (f.y > 1.02) { f.y = -.02; f.x = Math.random(); }
+        sx.globalAlpha = f.a; sx.beginPath(); sx.arc((f.x + Math.sin(f.w) * .012) * W, f.y * Hh, f.r, 0, 6.283); sx.fill(); });
+      sx.globalAlpha = 1; requestAnimationFrame(tickS); };
+    fit(); addEventListener('resize', fit); new ResizeObserver(fit).observe(sec);
+    new IntersectionObserver((es) => { const v = es[0].isIntersecting; if (v && !on) { on = true; lt = 0; requestAnimationFrame(tickS); } on = v; }).observe(sec);
+  }
+
   /* Advent: days to Christmas */
   const advEl = document.querySelector('[data-advent]');
+  document.querySelectorAll('[data-xdays]').forEach((el) => { const n = new Date(), d0 = new Date(n.getFullYear(), n.getMonth(), n.getDate()); el.textContent = Math.max(0, Math.round((new Date(B.christmas[0], B.christmas[1], B.christmas[2]) - d0) / 864e5)); });
+  document.querySelectorAll('.w1 .arc').forEach((a) => { const n = new Date(), s = new Date(B.christmas[0], 10, 1), e = new Date(B.christmas[0], B.christmas[1], B.christmas[2]); a.style.strokeDasharray = Math.max(4, Math.min(100, (n - s) / (e - s) * 100)) + ' 100'; });
   if (advEl) {
     const n = new Date(), today = new Date(n.getFullYear(), n.getMonth(), n.getDate());
     const days = Math.round((new Date(B.christmas[0], B.christmas[1], B.christmas[2]) - today) / 864e5);
@@ -114,6 +131,7 @@ const BUNBUN = {
     if (k === 'fssai') el.textContent = B.fssai || 'to be added';
     if (k === 'location') el.textContent = B.location || 'Location to be added';
     if (k === 'wa-number') el.textContent = '+' + B.whatsapp.replace(/^(\d{2})(\d{5})(\d+)$/, '$1 $2 $3');
+    if (k === 'wa-xmas') { el.href = msg(['• Christmas collection (plum cake / hamper)']); el.target = '_blank'; el.rel = 'noopener'; }
     if (k === 'whatsapp') { el.href = wa('Hi Bun Bun Cafe, I would like to place an order.'); el.target = '_blank'; el.rel = 'noopener'; }
     if (k === 'instagram') { if (ig) { el.href = ig; el.target = '_blank'; el.rel = 'noopener'; } else { el.removeAttribute('href'); el.setAttribute('aria-disabled', 'true'); el.textContent = 'Instagram (link coming soon)'; } }
   });
