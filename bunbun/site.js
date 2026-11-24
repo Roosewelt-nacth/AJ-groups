@@ -2,7 +2,7 @@
    EDIT BUSINESS DETAILS HERE. Anything still null shows as "to be added" on the site. */
 const BUNBUN = {
   whatsapp: '918807893624',            // AJ GROUPS business number for now; replace with Bun Bun's own (country code, no + or spaces)
-  instagram: null,                     // e.g. 'https://www.instagram.com/bunbuncafe/' once shared
+  instagram: 'https://www.instagram.com/bun.bun.bakes/?hl=en',
   fssai: null,                         // licence number, e.g. '12345678901234'
   location: null,                      // e.g. 'Area, City' (to come from AJ GROUPS)
   noticeDays: 2,
@@ -28,7 +28,6 @@ const BUNBUN = {
   ],
   hamper: { sizes: ['Petite', 'Classic', 'Grand'], items: ['Plum cake', 'Brownies', 'Caramel pudding', 'Waffles', 'Chocolate mousse'] },
   christmas: [2026, 11, 25],                                              // month is 0-based
-  advent: [[2026, 10, 29], [2026, 11, 6], [2026, 11, 13], [2026, 11, 20]], // the four Advent Sundays
 };
 
 (() => {
@@ -101,15 +100,12 @@ const BUNBUN = {
   document.addEventListener('click', (e) => { const b = e.target.closest('.seg button'); if (!b) return; b.parentElement.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); upd(b.closest('[data-name],[data-hamper]')); });
   ['input', 'change'].forEach((t) => document.addEventListener(t, (e) => { const r = e.target.closest('[data-hamper]'); if (r) upd(r); }));
 
-  /* Advent: candles lit by date, and the days to Christmas */
+  /* Advent: days to Christmas */
   const advEl = document.querySelector('[data-advent]');
   if (advEl) {
-    const n = new Date(), today = new Date(n.getFullYear(), n.getMonth(), n.getDate()), q = new URLSearchParams(location.search).get('lit');
-    const lit = q !== null ? Math.max(0, Math.min(4, +q || 0)) : B.advent.filter((d) => new Date(d[0], d[1], d[2]) <= today).length;
+    const n = new Date(), today = new Date(n.getFullYear(), n.getMonth(), n.getDate());
     const days = Math.round((new Date(B.christmas[0], B.christmas[1], B.christmas[2]) - today) / 864e5);
-    const when = days > 0 ? `<b>${days}</b>${days === 1 ? 'day' : 'days'} to Christmas` : days === 0 ? '<b>Today</b>Merry Christmas' : '<b>Merry</b>Christmas';
-    advEl.innerHTML = `<div class="cds">${B.advent.map((d, k) => `<div class="cd${k < lit ? ' on' : ''}"><svg viewBox="0 0 40 120" aria-hidden="true"><path class="fl" d="M20 4c6 8 8 13 0 20c-8-7-6-12 0-20z"/><path d="M20 24v11"/><rect x="9" y="36" width="22" height="78" rx="4"/></svg><span>${new Date(d[0], d[1], d[2]).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span></div>`).join('')}</div><div class="days">${when}</div>`;
-    advEl.setAttribute('role', 'img'); advEl.setAttribute('aria-label', `Advent: ${lit} of 4 candles lit. ${days > 0 ? days + ' days to Christmas' : 'Merry Christmas'}`);
+    advEl.innerHTML = '<div class="days">' + (days > 0 ? `<b>${days}</b>${days === 1 ? 'day' : 'days'} to Christmas` : days === 0 ? '<b>Today</b>Merry Christmas' : '<b>Merry</b>Christmas') + '</div>';
   }
 
   /* contact details */
@@ -122,18 +118,13 @@ const BUNBUN = {
     if (k === 'instagram') { if (ig) { el.href = ig; el.target = '_blank'; el.rel = 'noopener'; } else { el.removeAttribute('href'); el.setAttribute('aria-disabled', 'true'); el.textContent = 'Instagram (link coming soon)'; } }
   });
 
-  /* chapter index (laptops), header highlight and smooth scrolling between chapters */
-  const ix = document.createElement('nav'); ix.className = 'cidx'; ix.setAttribute('aria-label', 'Chapters');
-  ix.innerHTML = chaps.map((c) => `<a href="#${c.id}"><span>${c.dataset.n}</span><b>${esc(c.dataset.name)}</b></a>`).join('') + '<i class="cbar"><i></i></i>';
-  body.append(ix);
-  const navA = [...hd.querySelectorAll('.nav a')], ixA = [...ix.querySelectorAll('a')], fill = ix.querySelector('.cbar i');
+  /* header highlight follows the chapter you are reading */
+  const navA = [...hd.querySelectorAll('.nav a')];
   let cur = '', tk = 0;
   const spy = () => { tk = 0; const line = innerHeight * .35; let c0 = chaps[0];
     chaps.forEach((c) => { if (c.getBoundingClientRect().top <= line) c0 = c; });
-    const h = root.scrollHeight - innerHeight; fill.style.transform = `scaleY(${h > 0 ? scrollY / h : 0})`;
-    ix.classList.toggle('show', scrollY > innerHeight * .6); ix.classList.toggle('alt', c0.classList.contains('alt'));
     if (c0.id === cur) return; cur = c0.id;
-    navA.concat(ixA).forEach((a) => { if (a.getAttribute('href') === '#' + cur) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); }); };
+    navA.forEach((a) => { if (a.getAttribute('href') === '#' + cur) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); }); };
   addEventListener('scroll', () => { if (!tk) tk = requestAnimationFrame(spy); }, { passive: true }); addEventListener('resize', spy); spy();
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.addEventListener('click', (e) => { const a = e.target.closest('a[href^="#"]'); if (!a || e.defaultPrevented) return; const el = document.getElementById(a.getAttribute('href').slice(1)); if (!el) return;
