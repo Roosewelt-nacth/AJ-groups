@@ -346,9 +346,28 @@ html[data-look="green"] .pc .ph{background:#f8f2e4}
 .hl span{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--mute)}
 @media (max-width:760px){.hl{grid-template-columns:1fr 1fr;row-gap:24px}}
 .pc .ln+.ln{padding-top:0}
-/* page transitions */
-@media (prefers-reduced-motion:no-preference){
- body{animation:pgIn .45s ease both}
- html.leaving body{opacity:0;transform:translateY(6px);transition:opacity .25s ease,transform .25s ease}
-}
-@keyframes pgIn{from{opacity:0;transform:translateY(8px)}}
+
+
+/* ===== one page, five chapters ===== */
+html{scroll-padding-top:76px}
+.chap{position:relative}
+.chap+.chap{border-top:1px solid var(--line)}
+.chap>.page-hero:first-child{padding-top:clamp(80px,11vw,150px)}
+h2.h1{font-size:clamp(34px,3.8vw,58px);line-height:1.15;letter-spacing:-.02em;margin-top:20px;max-width:18ch}
+/* each chapter opens with its number, quietly, like a book */
+.chap:not(#home)::before{content:attr(data-n);position:absolute;right:var(--pad);top:clamp(70px,10vw,140px);font:300 clamp(60px,9vw,140px)/1 var(--disp);letter-spacing:-.05em;color:color-mix(in srgb,var(--ink) 8%,transparent);pointer-events:none}
+.nav a[aria-current="true"]{background:var(--ink);color:var(--bg)}
+/* side index: a slim progress line with the five chapters, appears after the opening (laptops) */
+.cidx{position:fixed;left:clamp(12px,1.6vw,26px);top:50%;translate:0 -50%;z-index:35;display:grid;gap:14px;padding-left:14px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.cidx.show{opacity:1;pointer-events:auto}
+.cidx a{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:11px;color:var(--mute)}
+.cidx a span{font-weight:600;letter-spacing:.06em}
+.cidx a b{font-weight:500;max-width:0;overflow:hidden;white-space:nowrap;opacity:0;transition:max-width .4s ease,opacity .3s ease}
+.cidx a[aria-current]{color:var(--ink)}
+.cidx:hover a b{max-width:160px;opacity:1}
+.cidx:hover{background:color-mix(in srgb,var(--bg) 92%,transparent);border-radius:0 14px 14px 0;padding:10px 14px 10px 14px}
+.cidx a[aria-current] span{color:var(--ink)}
+.cidx .cbar{position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line)}
+.cidx .cbar i{position:absolute;inset:0;background:var(--ink);transform-origin:50% 0;transform:scaleY(0)}
+@media (max-width:1100px){.cidx{display:none}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

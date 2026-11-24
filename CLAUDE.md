@@ -196,3 +196,9 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 - **Standard entry (all year, the "official" look):** the Bun Bun logo centred (mark and wordmark), one line, Explore Our Menu and Order Now (`section.lg.only-std` in `bunbun/index.html`).
 - **Christmas entry (until the end of 1 Jan 2027):** the editorial plum cake hero, the scrolling plum cake story and the home Christmas section (`.only-season`). A small script in `<head>` adds `html.season` while the date is before 2 Jan 2027, so the site switches back to the logo entry by itself. Review either with `?season=1` or `?season=0`.
 - Next season: change the date in that script and the seasonal content; the Seasonal Specials page stays all year.
+
+## Bun Bun as one scrolling page, 24 Nov 2026
+- Bun Bun is now **one page** (`bunbun/index.html`) in five chapters: `#home` (logo entry, brief hero text, highlights, Christmas block in season, featured; the scrolling plum cake story was removed on request), `#menu` (with `#seasonal` plum cakes in season), `#cakes`, `#about` (story, founder, philosophy, FSSAI, brand identity and packaging), `#order` (how to order, WhatsApp/Instagram/location, closing call to action).
+- The old addresses (`about/`, `menu/`, `custom-cakes/`, `seasonal/`, `brand/`, `how-to-order/`, `contact/`) are small redirect files to their chapter.
+- Header links scroll to chapters and highlight the one you are reading; laptops also show a slim chapter index with a progress line on the left. Each chapter shows its number faintly at the top right.
+- The blade wipe between pages and the next/previous links were removed (not needed on one page). Cream/Green switch, WhatsApp order sheet, and the season switch (`?season=1/0`) are unchanged.

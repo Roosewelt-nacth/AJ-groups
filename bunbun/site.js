@@ -41,16 +41,17 @@ const BUNBUN = {
 (() => {
   const B = BUNBUN, body = document.body, page = body.dataset.page || 'home', R = body.dataset.root || './';
   const keep = /[?&]preview(=|&|$)/.test(location.search) ? '?preview' : '';
-  const link = (p) => (p ? R + p + '/' : R) + keep;
+  const SEC = { '': 'home', home: 'home', about: 'about', brand: 'about', menu: 'menu', seasonal: 'seasonal', 'custom-cakes': 'cakes', cakes: 'cakes', 'how-to-order': 'order', contact: 'order', order: 'order' };
+  const link = (p) => '#' + (SEC[p] || p || 'home');
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const wa = (text) => 'https://wa.me/' + B.whatsapp + '?text=' + encodeURIComponent(text);
   const ig = B.instagram;
-  const PAGES = [['home', '', 'Home'], ['about', 'about', 'About Us'], ['menu', 'menu', 'Our Menu'], ['cakes', 'custom-cakes', 'Custom Cakes'], ['seasonal', 'seasonal', 'Seasonal Specials'], ['brand', 'brand', 'Our Brand'], ['how', 'how-to-order', 'How to Order'], ['contact', 'contact', 'Contact Us']];
+  const PAGES = [['home', 'home', 'Home'], ['menu', 'menu', 'Menu'], ['cakes', 'cakes', 'Custom Cakes'], ['about', 'about', 'About'], ['order', 'order', 'Order & Contact']];
 
   /* header */
   const hd = document.createElement('header'); hd.className = 'hd';
   hd.innerHTML = `<div class="wrap"><a class="brand" href="${link('')}" aria-label="Bun Bun Cafe home"><i class="mk"></i><i class="wm"></i></a>
-    <nav class="nav" aria-label="Main">${PAGES.map(([k, p, l]) => `<a href="${link(p)}"${k === page ? ' aria-current="page"' : ''}>${l}</a>`).join('')}</nav>
+    <nav class="nav" aria-label="Main">${PAGES.map(([k, p, l]) => `<a href="${link(p)}">${l}</a>`).join('')}</nav>
     <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
     <div class="look" role="group" aria-label="Choose a look"><button type="button" data-l="cream" title="Cream"><i></i><span>Cream</span></button><button type="button" data-l="green" title="Green"><i></i><span>Green</span></button></div><button class="btn sm" type="button" data-order="general">Order Now</button></div>`;
   body.prepend(hd);
@@ -187,12 +188,25 @@ const BUNBUN = {
   document.querySelectorAll('[data-tilt]').forEach((f) => { const im = f.querySelector('img'); if (!im || !matchMedia('(hover:hover)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     addEventListener('pointermove', (e) => { const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5; im.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 7}deg) translateZ(0)`; }, { passive: true }); });
 
-  /* page transitions: a short fade between pages (skipped with reduced motion, new tabs and modified clicks) */
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.addEventListener('click', (e) => { const a = e.target.closest('a[href]'); if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
-      const u = new URL(a.href, location.href); if (u.origin !== location.origin || u.pathname === location.pathname || !u.pathname.includes('/bunbun/')) return;
-      e.preventDefault(); document.documentElement.classList.add('leaving'); setTimeout(() => { location.href = u.href; }, 260); });
-    addEventListener('pageshow', () => document.documentElement.classList.remove('leaving'));
+
+  /* one page in five chapters: a slim index on the side (desktop) shows where you are; the header menu follows it */
+  const chaps = [...document.querySelectorAll('.chap')];
+  if (chaps.length) {
+    const ix = document.createElement('nav'); ix.className = 'cidx'; ix.setAttribute('aria-label', 'Chapters');
+    ix.innerHTML = chaps.map((c) => `<a href="#${c.id}"><span>${c.dataset.n}</span><b>${esc(c.dataset.name)}</b></a>`).join('') + '<i class="cbar"><i></i></i>';
+    body.append(ix);
+    const navA = [...hd.querySelectorAll('.nav a')], ixA = [...ix.querySelectorAll('a')], fill = ix.querySelector('.cbar i');
+    let cur = '', tk = 0;
+    const spy = () => { tk = 0; const line = innerHeight * .35; let id = chaps[0].id;
+      chaps.forEach((c) => { if (c.getBoundingClientRect().top <= line) id = c.id; });
+      const h = document.documentElement.scrollHeight - innerHeight; fill.style.transform = `scaleY(${h > 0 ? scrollY / h : 0})`;
+      ix.classList.toggle('show', scrollY > innerHeight * .6);
+      if (id === cur) return; cur = id;
+      navA.concat(ixA).forEach((a) => { if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); }); };
+    addEventListener('scroll', () => { if (!tk) tk = requestAnimationFrame(spy); }, { passive: true }); addEventListener('resize', spy); spy();
+    document.addEventListener('click', (e) => { const a = e.target.closest('a[href^="#"]'); if (!a) return; const el = document.getElementById(a.getAttribute('href').slice(1)); if (!el) return;
+      e.preventDefault(); hd.classList.remove('open'); mb.setAttribute('aria-expanded', 'false');
+      el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); history.replaceState(null, '', '#' + el.id); });
   }
 
   /* gentle reveal on scroll */
