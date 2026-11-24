@@ -210,3 +210,45 @@ dialog.od[open] .sheet{animation:odIn .45s cubic-bezier(.2,.8,.2,1)}
 .story .frames{-webkit-mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent),linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);-webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent),linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);mask-composite:intersect}
 @media (max-width:860px){.story .stage{width:min(100%,46svh);margin:0 auto}.story .dots{bottom:-2px}}
 @media (min-width:601px) and (max-width:960px){.pc .ph{aspect-ratio:4/3}}
+
+/* ===== editorial hero (minimal): copy on the left, the dish bleeding off the right edge ===== */
+.ed{position:relative;min-height:calc(100svh - 68px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;padding:0 var(--pad);overflow:hidden}
+.ed-copy{position:relative;z-index:2;padding-left:clamp(0px,4vw,56px)}
+.ed-tag{display:flex;align-items:center;gap:10px;margin:0 0 22px;font-size:13px;font-weight:500}
+.ed-tag .mk{width:22px}
+.ed h1{font-family:var(--disp);font-weight:400;font-size:clamp(34px,3.6vw,56px);line-height:1.18;letter-spacing:-.02em}
+.ed h1 span{color:color-mix(in srgb,var(--ink) 32%,transparent)}
+.ed-meta{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:28px;font-size:12px;color:var(--mute)}
+.ed-go{display:inline-flex;align-items:center;gap:10px;padding:0;border:0;background:none;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink)}
+.ed-go span{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid var(--bd);font-size:15px;transition:background-color .25s ease,color .25s ease}
+@media (hover:hover){.ed-go:hover span{background:var(--ink);color:var(--bg)}}
+.ed-dot{width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.5}
+.ed-fig{position:absolute;right:-6vw;top:50%;width:min(60vw,880px);aspect-ratio:1;margin:0;translate:0 -50%;z-index:1;pointer-events:none}
+.ed-fig img{width:100%;height:100%;object-fit:contain;-webkit-mask:radial-gradient(closest-side,#000 86%,transparent);mask:radial-gradient(closest-side,#000 86%,transparent)}
+.ed-thread{position:absolute;left:calc(var(--pad) + clamp(0px,4vw,56px));bottom:clamp(24px,5svh,52px);z-index:2}
+.ed-th{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-size:12.5px;font-weight:600}
+.ed-th svg,.ed-side svg,.ed-down svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ed-thread ul{display:flex;gap:clamp(18px,3vw,40px);list-style:none;margin:0;padding:0}
+.ed-thread a{display:flex;align-items:center;gap:12px;max-width:190px;text-decoration:none;font-size:11.5px;line-height:1.45;color:var(--mute)}
+.ed-thread img{flex:none;width:44px;height:44px;border-radius:12px;object-fit:cover;background:#f8f2e4}
+@media (hover:hover){.ed-thread a:hover{color:var(--ink)}}
+.ed-crumb{position:absolute;left:clamp(10px,2vw,28px);top:50%;translate:0 -50%;z-index:2;display:flex;flex-direction:column-reverse;align-items:center;gap:10px;font-size:11px;font-weight:500}
+.ed-crumb span{writing-mode:vertical-rl;transform:rotate(180deg)}
+.ed-crumb i{font-style:normal;opacity:.5;transform:rotate(-90deg)}
+.ed-side{position:absolute;right:clamp(14px,2.4vw,34px);top:clamp(24px,6svh,60px);z-index:3;display:grid;gap:10px}
+.ed-side a,.ed-down{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 70%,transparent);text-decoration:none;color:var(--ink)}
+.ed-side a[aria-disabled]{display:none}
+.ed-down{position:absolute;right:clamp(14px,2.4vw,34px);bottom:clamp(24px,5svh,52px);z-index:3}
+@media (hover:hover){.ed-side a:hover,.ed-down:hover{border-color:var(--ink)}}
+@media (max-width:860px){
+ .ed{grid-template-columns:1fr;align-content:start;min-height:0;padding-top:18px;padding-bottom:40px}
+ .ed-fig{position:relative;right:auto;top:auto;translate:none;width:116%;margin:-4% -8% -6% auto;order:-1}
+ .ed-copy{padding-left:0}
+ .ed-crumb,.ed-down{display:none}
+ .ed-side{top:20px}
+ .ed-thread{position:static;margin-top:36px}
+ .ed-thread ul{flex-direction:column;gap:14px}
+ .ed-thread a{max-width:none}
+}
+/* the rest of the page breathes more: quieter section labels, more space */
+.sec{padding:clamp(80px,10vw,150px) 0}
