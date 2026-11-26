@@ -380,3 +380,63 @@ html.settled .stage .rise{transition:none}
 .ub-msg em{color:color-mix(in srgb,var(--c) 62%,transparent)}
 .ub-msg span{display:block;margin-top:12px;font:500 11px 'DM Sans',sans-serif;letter-spacing:.3em;text-transform:uppercase;opacity:.75}
 @media (prefers-reduced-motion:reduce){.ub-msg{opacity:1}}
+
+/* ===== the baker's counter (landing) ===== */
+h1,h2,h3{font-weight:380}
+.stage{display:flex;flex-direction:column;grid-template-columns:none;max-width:none;margin:0;padding:clamp(86px,12vh,110px) 0 0;min-height:100svh;overflow:hidden;gap:0}
+.st-eb{padding:0 var(--pad);align-self:flex-start}
+.bigword{position:relative;width:min(112vw,1900px);margin:clamp(6px,1.4vh,14px) 0 0 -6vw;aspect-ratio:4.2/1;background:url(../assets/bunbun/stock/ht-word.webp) center/cover,var(--g);-webkit-mask:url(../assets/bunbun/logo-word.png) center/100% 100% no-repeat;mask:url(../assets/bunbun/logo-word.png) center/100% 100% no-repeat;rotate:-2deg;transform-origin:0 100%}
+.st-lower{position:relative;flex:1;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(20px,4vw,70px);padding:0 var(--pad) clamp(70px,10vh,100px);align-items:start}
+.st-l{display:grid;justify-items:start;padding-top:clamp(8px,2vh,26px);position:relative;z-index:2}
+.st-line{font:420 clamp(28px,3.3vw,52px)/1.08 var(--disp);font-variation-settings:"SOFT" 100,"WONK" 1;letter-spacing:-.03em;max-width:15ch}
+.st-line em{font-weight:340}
+.stage .xpill{margin-top:22px}.stage .cta{justify-content:flex-start;margin-top:24px}
+.st-art{position:relative;justify-self:end;width:min(100%,420px);margin-top:calc(clamp(40px,8vh,90px) * -1)}
+.print{position:relative;rotate:4deg;background:var(--c);padding:clamp(8px,1.2vw,14px);box-shadow:0 1px 0 color-mix(in srgb,var(--g) 18%,transparent),0 26px 40px -22px color-mix(in srgb,var(--g) 55%,transparent)}
+.print img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.tape{position:absolute;width:clamp(70px,8vw,100px);height:clamp(22px,2.4vw,30px);background:color-mix(in srgb,var(--g) 20%,transparent);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);clip-path:polygon(0 0,4% 18%,0 36%,4% 54%,0 72%,4% 100%,100% 100%,96% 78%,100% 58%,96% 38%,100% 18%,96% 0)}
+.ta{top:-12px;left:-22px;rotate:-38deg}.tb{bottom:-8px;right:-26px;rotate:-38deg}
+.stamp{position:absolute;left:-16%;top:-4%;width:clamp(120px,13vw,170px);aspect-ratio:1;color:var(--g);stroke:var(--g);fill:none;rotate:-14deg;mix-blend-mode:multiply;opacity:.92;pointer-events:none}
+.stamp text{fill:var(--g);stroke:none;font:600 15.5px 'DM Mono',monospace;letter-spacing:.14em}.stamp .s1{font:700 21px 'DM Mono',monospace;letter-spacing:.12em}
+.slip{position:absolute;right:-10%;bottom:-9%;width:clamp(176px,17vw,224px);rotate:-5deg;background:var(--c);padding:22px 16px 14px;color:var(--g);font:400 12px/1.45 'DM Mono',monospace;box-shadow:0 0 0 1px color-mix(in srgb,var(--g) 22%,transparent),0 22px 34px -16px color-mix(in srgb,var(--g) 55%,transparent);display:grid;gap:2px}
+.slip .perf{position:absolute;left:0;right:0;top:0;height:9px;background:radial-gradient(circle at 5px 0,var(--g) 0 2.4px,transparent 2.6px) 0 0/10px 9px repeat-x;opacity:.7}
+.slip b{font-weight:500;letter-spacing:.2em;text-transform:uppercase;font-size:11px}.slip .no{position:absolute;right:14px;top:20px;opacity:.6;font-size:11px}
+.slip hr{border:0;border-top:1px dashed var(--line);margin:6px 0}
+.slip small{margin-top:8px;opacity:.7;letter-spacing:.14em;text-transform:uppercase;font-size:10px}
+.slip strong{font:380 clamp(26px,2.6vw,34px)/1.05 var(--disp);font-variation-settings:"SOFT" 100,"WONK" 1;letter-spacing:-.02em}
+.slip p{font-size:11px;opacity:.78;margin-top:4px}
+.slipbtn{margin-top:10px;padding:9px 12px;border:1px dashed var(--g);text-align:center;font-weight:500;letter-spacing:.06em;transition:background .25s,color .25s}.slipbtn:hover{background:var(--g);color:var(--c)}
+.bun{position:absolute;left:-30%;bottom:-6%;width:clamp(74px,8vw,104px);fill:var(--g);overflow:visible}
+.bun .ew{fill:var(--c)}.bun .pu{fill:var(--g)}.bun .sm{fill:none;stroke:var(--c);stroke-width:4;stroke-linecap:round}
+.tapebar{margin:auto -3vw 0;background:var(--g);color:var(--c);padding:14px 0;rotate:-1.2deg;overflow:hidden;white-space:nowrap;position:relative;z-index:3}
+.tapebar .tt{display:flex;width:max-content;animation:mq 38s linear infinite}
+.tapebar span{font:500 clamp(11px,1.1vw,13px) 'DM Mono',monospace;letter-spacing:.24em;text-transform:uppercase;padding:0 clamp(20px,3vw,40px);position:relative}
+.tapebar span::after{content:"\2726";position:absolute;right:-5px;opacity:.6}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* entrance: printed and stuck down, one thing at a time */
+.bigword,.print,.stamp,.slip,.tape,.bun,.tapebar{transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .8s ease,clip-path 1.2s cubic-bezier(.76,0,.24,1),rotate 1.2s cubic-bezier(.34,1.56,.64,1),scale 1s cubic-bezier(.34,1.56,.64,1),translate 1s cubic-bezier(.34,1.56,.64,1)}
+html:not(.ready) .bigword{clip-path:inset(0 0 100% 0);translate:0 50px;rotate:-6deg}
+html:not(.ready) .print{opacity:0;translate:0 90px;rotate:14deg}
+html:not(.ready) .stamp{opacity:0;scale:2.2;rotate:-50deg}
+html:not(.ready) .slip{opacity:0;translate:70px 20px;rotate:9deg}
+html:not(.ready) .tape{scale:0 1}
+html:not(.ready) .bun{translate:0 110%}
+html:not(.ready) .tapebar{translate:0 100%}
+html.ready .print{transition-delay:.25s}html.ready .stamp{transition-delay:.9s}html.ready .slip{transition-delay:.65s}html.ready .tape{transition-delay:.7s}html.ready .bun{transition-delay:1.25s}html.ready .tapebar{transition-delay:.5s}
+@media (max-width:900px){
+  .stage{padding-top:84px}.bigword{width:142vw;margin-left:-20vw}
+  .st-lower{grid-template-columns:1fr;padding-bottom:90px;gap:34px}.st-l{justify-items:center;text-align:center}.st-line{max-width:17ch}.stage .cta{justify-content:center}
+  .st-art{justify-self:center;width:min(66%,300px);margin-top:0}.stamp{left:-26%;width:104px}.slip{right:-30%;width:176px}.bun{left:-40%;width:78px}
+}
+@media (max-width:640px){.stage .cta{flex-direction:column;align-items:stretch;width:min(100%,320px)}.slip{right:-34%}}
+@media (prefers-reduced-motion:reduce){.tapebar .tt{animation:none}html:not(.ready) .bigword,html:not(.ready) .print,html:not(.ready) .stamp,html:not(.ready) .slip,html:not(.ready) .tape,html:not(.ready) .bun,html:not(.ready) .tapebar{clip-path:none;opacity:1;rotate:0deg;scale:1;translate:0}}
+/* fit the whole counter in the first screen */
+.print img{height:auto}
+.bigword{width:min(104vw,1800px);margin-left:-2vw}
+.st-art{width:min(100%,320px);margin-top:calc(clamp(30px,6vh,70px) * -1)}
+.st-lower{padding-bottom:clamp(54px,8vh,80px)}
+.tapebar{margin-top:auto}
+.stage{min-height:100svh}
+@media (max-width:900px){.bigword{width:128vw;margin-left:-14vw}.st-art{width:min(62%,280px)}}
+.stamp{width:clamp(96px,10.5vw,140px);left:-17%;top:-1%}
+@media (max-width:900px){.bigword{width:112vw;margin-left:-6vw}}

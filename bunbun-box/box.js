@@ -120,7 +120,7 @@ const BUNBUN = {
   /* ---------- brand first: the page opens straight onto the brand; the box unwraps itself as you scroll ---------- */
   const opened = true;
   requestAnimationFrame(() => setTimeout(() => root.classList.add('ready'), 60));
-  setTimeout(startMotion, RM ? 0 : 1500);
+  setTimeout(startMotion, RM ? 0 : 3200);
 
   /* gentle reveals */
   $$('.th, .intro .wrap > *, .seasonal .sh, .seasonal .notice, .hamper, .about h2, .about .three p, .who, .lic, .contact h2, .contact .lead, .contact .notice, .cc').forEach((el) => el.classList.add('rv'));
@@ -130,8 +130,20 @@ const BUNBUN = {
   else if (GS) { gsap.registerPlugin(ScrollTrigger); ScrollTrigger.batch('.rv', { start: 'top 88%', once: true, onEnter: (els) => els.forEach((el, i) => { el.style.setProperty('--dl', i * .09 + 's'); el.classList.add('in'); }) }); }
   else { const io = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -10% 0px' }); $$('.rv').forEach((el) => io.observe(el)); }
   /* the treats drift away from the pointer, a little */
-  if (FINE && !RM) { const stg = $('.stage'), seal2 = $('.st-seal'); let raf = 0, mx = 0, my = 0;
-    stg.addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; if (!raf) raf = requestAnimationFrame(() => { raf = 0; seal2.style.translate = (mx * -22) + 'px ' + (my * -22) + 'px'; }); }); }
+  /* the earliest pickup date on the order slip: today plus the notice days (live, never made up) */
+  { const d = new Date(); d.setDate(d.getDate() + B.noticeDays);
+    const f = new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }).format(d);
+    $$('#pickup').forEach((el) => { el.textContent = f; }); $$('[data-days]').forEach((el) => { el.textContent = B.noticeDays; });
+    $$('[data-slip]').forEach((el) => { el.href = wa('Hi Bun Bun Cafe, I would like to place an order. The earliest date I can pick up is ' + f + '.\n\nWhat I would like:\n'); }); }
+  /* the bun looks at you, blinks now and then, and the print and stamp lean with the pointer */
+  { const eyes = $$('[data-eye]'), bunEl = $('.bun'), stg = $('.stage');
+    if (!RM && eyes.length) { let raf = 0, px = 0, py = 0;
+      const look = () => { raf = 0; const r = bunEl.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .55, ang = Math.atan2(py - cy, px - cx), dist = Math.min(1, Math.hypot(px - cx, py - cy) / 300);
+        eyes.forEach((g) => { g.style.transform = 'translate(' + (Math.cos(ang) * 5 * dist) + 'px,' + (Math.sin(ang) * 4 * dist) + 'px)'; }); };
+      addEventListener('pointermove', (e) => { px = e.clientX; py = e.clientY; if (!raf) raf = requestAnimationFrame(look); }, { passive: true });
+      setInterval(() => { eyes.forEach((g) => { g.style.transition = 'transform .08s'; g.style.scale = '1 .1'; g.style.transformOrigin = 'center'; setTimeout(() => { g.style.scale = '1 1'; }, 110); }); }, 4200); }
+    if (FINE && !RM) { const pr = $('.print'), st = $('.stamp'), sl = $('.slip'); let raf = 0, mx = 0, my = 0;
+      stg.addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; if (!raf) raf = requestAnimationFrame(() => { raf = 0; pr.style.translate = (mx * -12) + 'px ' + (my * -8) + 'px'; st.style.marginLeft = (mx * 16) + 'px'; st.style.marginTop = (my * 12) + 'px'; sl.style.marginLeft = (mx * -10) + 'px'; }); }); } }
 
   /* the bar steps aside on the way down */
   const top = $('#top'); let ly = 0; addEventListener('scroll', () => { const y = scrollY; top.classList.toggle('hide', y > ly && y > 240); ly = y; }, { passive: true });
@@ -145,8 +157,10 @@ const BUNBUN = {
     gsap.registerPlugin(ScrollTrigger);
     if (window.Lenis && !lenis) { lenis = new Lenis({ lerp: .1, wheelMultiplier: .9, touchMultiplier: 1.4 }); lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add((t) => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
     /* the brand stage: the photo sinks slowly, the words lift away */
-    gsap.to('.st-ph img', { yPercent: 12, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
-    gsap.to('.st-l', { y: -80, opacity: .2, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to('.bigword', { xPercent: -5, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to('.print', { yPercent: -12, rotate: -1, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to('.stamp', { rotate: 12, yPercent: 20, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to('.st-l', { y: -50, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
     /* the tray: the heading drifts sideways, every photo has its own depth */
     gsap.fromTo('.th h2', { xPercent: 3 }, { xPercent: -3, ease: 'none', scrollTrigger: { trigger: '.trayw', start: 'top bottom', end: 'bottom top', scrub: true } });
     $$('.cp img').forEach((im) => gsap.fromTo(im, { yPercent: -7, scale: 1.14 }, { yPercent: 7, scale: 1.14, ease: 'none', scrollTrigger: { trigger: im.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
