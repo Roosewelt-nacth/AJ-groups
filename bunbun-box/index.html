@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bun Bun Cafe | Open your box (design review)</title>
+<meta name="description" content="Open your Bun Bun box: brownies, waffles, desserts and Christmas plum cakes, baked fresh and made to order.">
+<meta name="theme-color" content="#4a442c">
+<link rel="icon" href="../bunbun/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="../bunbun/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..500,0..100&family=DM+Sans:opsz,wght@9..40,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./box.css?v=2">
+<script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date();document.documentElement.classList.toggle("season",q==="1"?true:q==="0"?false:d<new Date(2027,0,2));if(q==="open")document.documentElement.classList.add("opened")}catch(e){}})();</script>
+</head>
+<body>
+
+<!-- THE LID: a cream lid with a green ribbon and a seal. Tap or drag the seal to open the box. -->
+<div class="lid" id="lid">
+  <div class="half l"><i class="rb v"></i></div>
+  <div class="half r"><i class="rb v"></i></div>
+  <i class="rb h" aria-hidden="true"></i>
+  <div class="face">
+    <p class="tag">Baked fresh · Made to order</p>
+    <button class="seal" id="seal" type="button" aria-label="Open your Bun Bun box">
+      <svg viewBox="0 0 200 200" aria-hidden="true"><defs><path id="rp" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0"/></defs><text><textPath href="#rp">OPEN YOUR BOX · BUN BUN CAFE · HOMEMADE · </textPath></text></svg>
+      <i class="mk"></i>
+    </button>
+    <p class="hint"><span class="d">Tap</span> the seal to open</p>
+  </div>
+</div>
+
+<div class="cur" id="cur" aria-hidden="true"><i class="mk"></i><span></span></div>
+
+<header class="top" id="top">
+  <a class="brand" href="#open" aria-label="Bun Bun Cafe"><i class="mk"></i><i class="wm"></i></a>
+  <nav aria-label="Main"><a href="#tray">Creations</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+</header>
+
+<main>
+<!-- inside the box -->
+<section class="inside" id="open">
+  <div class="tis" aria-hidden="true"></div>
+  <p class="eyebrow">Bun Bun Cafe</p>
+  <h1 class="rise">Your box <em>is open.</em></h1>
+  <p class="lead rise">Brownies, waffles and desserts, made by hand and baked to order. Pick what you love, and we'll put it in your box.</p>
+  <p class="notice rise"><b>Plan ahead.</b> Please order at least 2 days before your date.</p>
+  <a class="down" href="#tray" aria-label="See the creations"><i></i>Fill your box</a>
+</section>
+
+<section class="trayw" id="tray">
+  <div class="th"><p class="eyebrow">Our creations</p><h2>Crafted fresh. <em>Loved every bite.</em></h2></div>
+  <div class="tray" id="trayg"></div>
+</section>
+
+<section class="about" id="about"><div class="wrap">
+  <p class="eyebrow">About us</p>
+  <h2>A little interest. <em>A sweet beginning.</em></h2>
+  <div class="two">
+    <p>Bun Bun Cafe started with something simple: Monisha Janet's personal interest in baking and her desire to turn that interest into something of her own. With the encouragement and support of her family, she took her first step towards building a home-baking venture.</p>
+    <p>What began as a simple interest gradually became Bun Bun Cafe, a homegrown bakery built around creativity, passion and the love of baking. As a certified baker, Monisha leads the baking, the product preparation and the creative direction of the brand.</p>
+  </div>
+  <div class="who"><div><p class="eyebrow">Meet our founder</p><h3>Monisha Janet</h3><p class="role">Founder &amp; Certified Baker</p></div>
+    <ul class="pills"><li>Quality ingredients</li><li>Fresh preparation</li><li>Attention to detail</li><li>Food safety and hygiene</li><li>Personalised experience</li></ul></div>
+  <p class="lic">Bun Bun Cafe is an FSSAI-licensed food business. Licence no. <span data-fill="fssai"></span></p>
+</div></section>
+
+<section class="contact" id="contact"><div class="wrap">
+  <p class="eyebrow">Contact us</p>
+  <h2>We'd love to <em>hear from you!</em></h2>
+  <div class="cg">
+    <a class="cc" data-wa href="#" target="_blank" rel="noopener"><span class="eyebrow">WhatsApp</span><b data-fill="wa-number"></b><span>The quickest way to enquire or place an order.</span></a>
+    <a class="cc" data-fill="instagram" href="#" target="_blank" rel="noopener"><span class="eyebrow">Instagram</span><b>Send a DM</b><span>See our latest bakes and message us there.</span></a>
+    <div class="cc"><span class="eyebrow">Location</span><b data-fill="location"></b><span>Collection details are shared when your order is confirmed.</span></div>
+  </div>
+</div>
+<footer class="ft"><i class="rib" aria-hidden="true"></i><span>© 2026 Bun Bun Cafe · by AJ GROUPS</span><span><a href="../privacy/">Privacy</a> · <a href="../terms/">Terms</a></span></footer>
+</section>
+</main>
+
+<!-- your box pill -->
+<div class="bx" id="bx" role="status"><span class="ct"><b id="bn">0</b> in your box</span><button type="button" id="mk" class="pb">Make my card</button><a class="pb solid" id="eq" target="_blank" rel="noopener" href="#">Enquire</a><button type="button" id="clr" class="x" aria-label="Empty my box">&times;</button></div>
+
+<!-- a dish opens in a sheet -->
+<dialog class="sheet" id="sheet" aria-label="Creation details">
+  <button class="close" type="button" aria-label="Close" data-close>&times;</button>
+  <div class="sp"><img id="sImg" alt="" width="640" height="640"></div>
+  <div class="sb"><span class="fn" id="sNo"></span><h3 id="sTitle"></h3><p id="sText"></p>
+    <span class="lb" id="sLb">Choose your favourites</span><div class="chk" id="sChk"></div>
+    <a class="pb solid" id="sGo" target="_blank" rel="noopener" href="#">Enquire on WhatsApp</a></div>
+</dialog>
+
+<!-- the share card -->
+<dialog class="sheet card" id="cardD" aria-label="Your box card">
+  <button class="close" type="button" aria-label="Close" data-close>&times;</button>
+  <canvas id="cv" width="1080" height="1350"></canvas>
+  <div class="sb"><h3>Your Bun Bun box</h3><p>Save your card or share it. Anyone can enquire in one tap.</p>
+    <button class="pb solid" id="cSave" type="button">Share or save</button></div>
+</dialog>
+
+<script src="./box.js?v=2"></script>
+</body>
+</html>
