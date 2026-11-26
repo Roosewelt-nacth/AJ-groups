@@ -10,7 +10,7 @@
 <link rel="icon" href="../bunbun/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="../bunbun/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,0..100&family=DM+Sans:opsz,wght@9..40,400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./new.css?v=1">
+<link rel="stylesheet" href="./new.css?v=3">
 <script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date(),on=q==="1"?true:q==="0"?false:d<new Date(2027,0,2);document.documentElement.classList.toggle("season",on)}catch(e){}})();</script>
 </head>
 <body>
@@ -28,18 +28,23 @@
 <main id="top">
 <!-- 1 HERO -->
 <section class="hero" id="hero">
-  <div class="float f1"><img src="../assets/bunbun/menu-c/double-choc-brownie.webp" alt="" width="640" height="640"></div>
-  <div class="float f2"><img src="../assets/bunbun/menu-c/triple-choc-waffle.webp" alt="" width="640" height="640"></div>
-  <div class="float f3"><img src="../assets/bunbun/menu-c/caramel-pudding.webp" alt="" width="640" height="640"></div>
-  <div class="hin">
-    <p class="eyebrow">Bun Bun Cafe · Homemade · Baked to order</p>
-    <h1 class="split" aria-label="Warm from the oven.">Warm from the <em>oven.</em></h1>
-    <p class="lead">Brownies, waffles and desserts made by hand, in small batches, for every moment worth sharing.</p>
-    <div class="cta"><a class="mag pillbtn solid" href="#creations">Discover our creations</a><a class="mag pillbtn only-season" href="#seasonal">Christmas editions</a></div>
+  <div class="hgrid">
+    <div class="hin">
+      <p class="eyebrow">Bun Bun Cafe · Homemade · Baked to order</p>
+      <h1 class="split" aria-label="Warm from the oven.">Warm from the <em>oven.</em></h1>
+      <p class="lead">Brownies, waffles and desserts made by hand, in small batches, for every moment worth sharing.</p>
+      <div class="cta"><a class="mag pillbtn solid" href="#creations">Discover our creations</a><a class="mag pillbtn only-season" href="#seasonal">Christmas editions</a></div>
+    </div>
+    <div class="hr">
+      <div class="arch"><img src="../assets/bunbun/menu-c/double-choc-brownie.webp" alt="A double chocolate brownie" width="640" height="640"></div>
+      <div class="float f1"><img src="../assets/bunbun/menu-c/triple-choc-waffle.webp" alt="" width="640" height="640"></div>
+      <div class="float f2"><img src="../assets/bunbun/menu-c/caramel-pudding.webp" alt="" width="640" height="640"></div>
+      <div class="ring" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="rp" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text><textPath href="#rp">BAKED FRESH · HOMEMADE TASTE · MADE TO ORDER · </textPath></text></svg><i class="mk"></i></div>
+    </div>
   </div>
-  <div class="scrollcue" aria-hidden="true"><i></i>Scroll</div>
+  <div class="hfoot"><span><b>01</b>Made by hand</span><span><b>02</b>Baked to order</span><span><b>03</b>Small batches</span><span class="cue"><i></i>Scroll</span></div>
 </section>
-<div class="marq" aria-hidden="true"><div class="mt"><span>Brownies</span><span>Waffles</span><span>Desserts</span><span>Cakes</span><span>Baked fresh</span><span>Made to order</span><span>Brownies</span><span>Waffles</span><span>Desserts</span><span>Cakes</span><span>Baked fresh</span><span>Made to order</span></div></div>
+<div class="marq dark" aria-hidden="true"><div class="mt"><span>Brownies</span><span>Waffles</span><span>Desserts</span><span>Cakes</span><span>Baked fresh</span><span>Made to order</span><span>Brownies</span><span>Waffles</span><span>Desserts</span><span>Cakes</span><span>Baked fresh</span><span>Made to order</span></div></div>
 
 <!-- 2 OUR WAY: a pinned story in three steps -->
 <section class="story" id="story">
@@ -60,7 +65,7 @@
 </section>
 
 <!-- 3 CREATIONS: one counter you walk along -->
-<section class="creations" id="creations">
+<section class="creations dark" id="creations">
   <div class="chead"><p class="eyebrow">Our creations</p><h2 class="big">Crafted fresh. <em>Loved every bite.</em></h2><p class="lead">Tick your favourites, then enquire on WhatsApp in one message.</p>
     <p class="notice"><b>Plan ahead.</b> Please order at least 2 days before your date.</p></div>
   <div class="counter" id="counter"><div class="track" data-list="menu"></div></div>
@@ -79,7 +84,7 @@
 </section>
 
 <!-- 5 ABOUT -->
-<section class="about" id="about"><div class="wrap">
+<section class="about dark" id="about"><div class="wrap">
   <p class="eyebrow">About us</p>
   <h2 class="big">A little interest. <em>A sweet beginning.</em></h2>
   <div class="two">
@@ -116,6 +121,6 @@
 <script src="./vendor/ScrollTrigger.min.js"></script>
 <script src="./vendor/lenis.min.js"></script>
 <script src="./vendor/matter.min.js"></script>
-<script src="./new.js?v=1"></script>
+<script src="./new.js?v=3"></script>
 </body>
 </html>

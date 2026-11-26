@@ -6,9 +6,9 @@ const BUNBUN = {
   instagram: 'https://www.instagram.com/bun.bun.bakes/?hl=en',
   fssai: null, location: null, noticeDays: 2,
   menu: [
-    { cat: 'Brownies', wash: '#8a4b26', photo: 'menu-c/nutella-brownie.webp', story: 'Rich, fudgy and made to be shared.', items: ['Nutella Brownie', 'Double Chocolate Brownie', 'Metro Chocolate Brownie'] },
-    { cat: 'Waffles', wash: '#c98a3c', photo: 'menu-c/triple-choc-waffle.webp', story: 'Warm, crisp and finished with chocolate.', items: ['White Chocolate Waffle', 'Triple Chocolate Waffle'] },
-    { cat: 'Desserts', wash: '#d79a2f', photo: 'menu-c/caramel-pudding.webp', story: 'Silky, chilled and made to be savoured.', items: ['Chocolate Mousse', 'Caramel Pudding'] },
+    { cat: 'Brownies', photo: 'menu-c/nutella-brownie.webp', story: 'Rich, fudgy and made to be shared.', items: ['Nutella Brownie', 'Double Chocolate Brownie', 'Metro Chocolate Brownie'] },
+    { cat: 'Waffles', photo: 'menu-c/triple-choc-waffle.webp', story: 'Warm, crisp and finished with chocolate.', items: ['White Chocolate Waffle', 'Triple Chocolate Waffle'] },
+    { cat: 'Desserts', photo: 'menu-c/caramel-pudding.webp', story: 'Silky, chilled and made to be savoured.', items: ['Chocolate Mousse', 'Caramel Pudding'] },
     { cat: 'Cakes', photo: null, items: [], story: 'Our cake collection is being finalised. We also create bespoke cakes for birthdays, anniversaries and special occasions.' },
   ],
   seasonal: [
@@ -19,6 +19,7 @@ const BUNBUN = {
   christmas: [2026, 11, 25],
 };
 
+history.scrollRestoration = 'manual'; scrollTo(0, 0);
 (() => {
   const B = BUNBUN, root = document.documentElement, $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches, FINE = matchMedia('(hover:hover) and (pointer:fine)').matches;
@@ -34,7 +35,7 @@ const BUNBUN = {
   /* ---------- content ---------- */
   const seg = (s) => `<div class="seg" role="group" aria-label="Size">${s.map((x, k) => `<button type="button" data-s="${esc(x)}" aria-pressed="${k === 0}">${esc(x)}</button>`).join('')}</div>`;
   const feat = (c, k) => c.items.length
-    ? `<article class="fc" data-cat="${esc(c.cat)}" style="--wash:${c.wash}"><div class="fp"><img src="${IMG(c.photo)}" alt="${esc(c.cat)}" width="640" height="640" loading="lazy" decoding="async"></div>
+    ? `<article class="fc" data-cat="${esc(c.cat)}"><div class="fp"><img src="${IMG(c.photo)}" alt="${esc(c.cat)}" width="640" height="640" loading="lazy" decoding="async"></div>
        <div class="fb"><span class="fn">0${k + 1}</span><h3>${esc(c.cat)}</h3><p>${esc(c.story)}</p><div><span class="lb">Choose your favourites</span><div class="chk">${c.items.map((x) => `<label><input type="checkbox" value="${esc(x)}">${esc(x)}</label>`).join('')}</div></div>
        <a class="pillbtn solid go" href="#" target="_blank" rel="noopener">Enquire &rarr;</a></div></article>`
     : `<article class="fc wide"><div class="fp"><i class="mk"></i></div><div class="fb"><span class="fn">0${k + 1}</span><h3>${esc(c.cat)}</h3><p>${esc(c.story)}</p><a class="pillbtn" href="${wa('Hi Bun Bun Cafe, I would like to ask about a bespoke cake.\n\nOccasion:\nFlavour and size:\n' + NOTE)}" target="_blank" rel="noopener">Enquire about a bespoke cake</a></div></article>`;
@@ -82,7 +83,7 @@ const BUNBUN = {
   lenis && lenis.stop();
 
   const words = splitWords($('.hero h1')); gsap.set(words, { yPercent: 115 });
-  gsap.set(['.hero .eyebrow', '.hero .lead', '.cta > *', '.scrollcue'], { opacity: 0, y: 22 }); gsap.set('.float', { opacity: 0, scale: .7 }); gsap.set('.bar', { yPercent: -120 });
+  gsap.set(['.hero .eyebrow', '.hero .lead', '.cta > *'], { opacity: 0, y: 22 }); gsap.set('.float', { opacity: 0, scale: .7 }); gsap.set('.arch', { clipPath: 'inset(100% 0 0 0)' }); gsap.set('.arch img', { scale: 1.25 }); gsap.set('.ring', { opacity: 0, scale: .6 }); gsap.set('.hfoot > *', { opacity: 0, y: 16 }); gsap.set('.bar', { yPercent: -120 });
 
   /* opening: the oven warms to 180 degrees, then the curtain lifts */
   const dn = $('#ldn'), o = { v: 0 };
@@ -92,8 +93,12 @@ const BUNBUN = {
     .to('.bar', { yPercent: 0, duration: .9 }, '-=.35')
     .to('.hero .eyebrow', { opacity: 1, y: 0, duration: .8 }, '-=.6')
     .to(words, { yPercent: 0, duration: 1.1, stagger: .09 }, '-=.7')
+    .to('.arch', { clipPath: 'inset(0% 0 0 0)', duration: 1.5, ease: 'expo.inOut' }, '-=1.4')
+    .to('.arch img', { scale: 1, duration: 2, ease: 'expo.out' }, '<')
+    .to('.ring', { opacity: 1, scale: 1, duration: 1.2, ease: 'back.out(1.6)' }, '-=.8')
+    .to('.hfoot > *', { opacity: 1, y: 0, duration: .8, stagger: .1 }, '-=.8')
     .to('.float', { opacity: 1, scale: 1, duration: 1.4, stagger: .15, ease: 'expo.out' }, '-=.9')
-    .to(['.hero .lead', '.cta > *', '.scrollcue'], { opacity: 1, y: 0, duration: .9, stagger: .08 }, '-=1');
+    .to(['.hero .lead', '.cta > *'], { opacity: 1, y: 0, duration: .9, stagger: .08 }, '-=1');
 
   /* top bar leaves on the way down, returns on the way up */
   const bar = $('#bar'); let ly = 0; ScrollTrigger.create({ onUpdate: (s) => { const y = s.scroll(); bar.classList.toggle('hide', y > ly && y > 200); ly = y; } });
@@ -153,7 +158,7 @@ const BUNBUN = {
 
   /* ---------- the sprinkle floor (Matter.js): falls when Contact arrives, drag with the pointer on laptops ---------- */
   const fc = $('#floor'); if (fc && window.Matter) { const M = Matter, sec = fc.parentElement, ctx = fc.getContext('2d'); let eng, W, Hh, started = false, raf = 0, vis = false;
-    const cols = ['#4a442c', '#7a6a3e', '#b9803f', '#d9b36a', '#f8f2e4', '#8a4b26', '#a8a07a'];
+    const cols = ['#4a442c', '#f8f2e4', '#4a442c', '#f8f2e4', '#4a442c'];
     const fit = () => { const d = Math.min(devicePixelRatio || 1, 2); W = sec.clientWidth; Hh = sec.clientHeight; fc.width = W * d; fc.height = Hh * d; ctx.setTransform(d, 0, 0, d, 0, 0); };
     const start = () => { started = true; fit(); eng = M.Engine.create({ gravity: { y: 1.1 } });
       const t = 60, wl = { isStatic: true, render: { visible: false } };
@@ -161,7 +166,7 @@ const BUNBUN = {
       const n = W < 700 ? 70 : 130; for (let i = 0; i < n; i++) setTimeout(() => { if (!eng) return; const c = cols[i % cols.length], b = M.Bodies.rectangle(40 + Math.random() * (W - 80), -30 - Math.random() * 120, 26 + Math.random() * 12, 9, { chamfer: { radius: 4 }, restitution: .3, friction: .4, angle: Math.random() * 3 }); b.c = c; b.w = b.bounds.max.x - b.bounds.min.x; M.Composite.add(eng.world, b); }, i * 26);
       if (FINE) { const mo = M.Mouse.create(fc), mc = M.MouseConstraint.create(eng, { mouse: mo, constraint: { stiffness: .2, render: { visible: false } } }); M.Composite.add(eng.world, mc); mo.element.removeEventListener('wheel', mo.mousewheel); mo.element.removeEventListener('mousewheel', mo.mousewheel); mo.element.removeEventListener('DOMMouseScroll', mo.mousewheel); }
       const loop = () => { if (!vis) { raf = 0; return; } M.Engine.update(eng, 1000 / 60); ctx.clearRect(0, 0, W, Hh);
-        M.Composite.allBodies(eng.world).forEach((b) => { if (!b.c) return; ctx.save(); ctx.translate(b.position.x, b.position.y); ctx.rotate(b.angle); ctx.fillStyle = b.c; ctx.beginPath(); ctx.roundRect(-b.w / 2, -4.5, b.w, 9, 4.5); ctx.fill(); ctx.restore(); }); raf = requestAnimationFrame(loop); };
+        M.Composite.allBodies(eng.world).forEach((b) => { if (!b.c) return; ctx.save(); ctx.translate(b.position.x, b.position.y); ctx.rotate(b.angle); ctx.fillStyle = b.c; ctx.strokeStyle = '#4a442c'; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.roundRect(-b.w / 2, -4.5, b.w, 9, 4.5); ctx.fill(); ctx.stroke(); ctx.restore(); }); raf = requestAnimationFrame(loop); };
       start.loop = loop; };
     new IntersectionObserver((es) => { vis = es[0].isIntersecting; if (vis && !started && sec.getBoundingClientRect().top < innerHeight * .8) start(); if (vis && started && !raf) raf = requestAnimationFrame(start.loop); }, { threshold: .25 }).observe(sec);
     addEventListener('resize', () => { if (started) fit(); }); }
