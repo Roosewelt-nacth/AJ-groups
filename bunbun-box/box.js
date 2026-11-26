@@ -10,13 +10,16 @@ const BUNBUN = {
     { id: 'c', name: 'Cakes', photo: null, story: 'Our cake collection is being finalised. We also create bespoke cakes for birthdays, anniversaries and special occasions.', items: [] },
     { id: 'x', name: 'Christmas', season: true, photo: 'stock/fruit-cake.webp', thumb: 'stock/fruit-cake-sq.webp', story: 'Plum cakes and Christmas hampers for the season.', items: [] },
   ],
-  /* Seasonal Editions (until 1 Jan 2027): full cakes by weight, and the hamper builder */
-  seasonal: [
-    { name: 'Traditional Rum-Soaked Plum Cake', tag: 'Contains alcohol (rum). Not for under-18s.', photo: 'stock/fruit-cake.webp', sizes: ['Half kg', '1 kg'],
-      desc: 'A festive classic prepared with carefully selected ingredients and rum-soaked fruits, bringing together the rich and traditional flavours of Christmas.' },
-    { name: 'Non-Alcoholic Plum Cake', tag: 'Prepared without alcohol', photo: 'stock/fruit-cake.webp', sizes: ['Half kg', '1 kg'],
-      desc: 'Enjoy the traditional festive plum cake experience with our non-alcoholic version.' },
-  ],
+  /* Seasonal Editions (until 1 Jan 2027): one plum cake with a choice of type and size, and the hamper builder.
+     Add, remove or rename a type here; the card, the box and the WhatsApp message follow. */
+  plum: { name: 'Christmas Plum Cake', photo: 'stock/fruit-cake.webp', sizes: ['Half kg', '1 kg'],
+    intro: 'Our festive plum cake, baked whole and made to order. Choose how you would like it.',
+    types: [
+      { label: 'Rum-soaked', item: 'Rum-Soaked Plum Cake', tag: 'Contains alcohol (rum). Not for under-18s.',
+        desc: 'A festive classic prepared with carefully selected ingredients and rum-soaked fruits, bringing together the rich and traditional flavours of Christmas.' },
+      { label: 'Non-alcoholic', item: 'Non-Alcoholic Plum Cake', tag: 'Prepared without alcohol',
+        desc: 'Enjoy the traditional festive plum cake experience with our non-alcoholic version.' },
+    ] },
   hamper: { sizes: ['Petite', 'Classic', 'Grand'], items: ['Plum cake', 'Brownies', 'Caramel pudding', 'Waffles', 'Chocolate mousse'] },
   christmas: [2026, 11, 25],                                              // month is 0-based
 };
@@ -71,19 +74,28 @@ const BUNBUN = {
   const addX = (txt) => { const s = sel.x || (sel.x = new Set()); s.add(txt); upd(); bump(); };
   const flash = (b, t) => { const o = b.textContent; b.textContent = t; b.classList.add('added'); setTimeout(() => { b.textContent = o; b.classList.remove('added'); }, 1400); };
   if (season && $('#plums')) {
-    $('#plums').innerHTML = B.seasonal.map((p, i) => `<article class="pc rv" data-p="${i}"><div class="ph"><img src="${IMG(p.photo)}" alt="${esc(p.name)}" loading="lazy" decoding="async"></div>
-      <div class="bd"><span class="tg">${esc(p.tag)}</span><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><div class="act">${seg(p.sizes)}<button class="pb solid add" type="button">Add to box</button><a class="pb go" target="_blank" rel="noopener" href="#">Enquire</a></div></div></article>`).join('');
+    const P = B.plum;
+    $('#plums').innerHTML = `<article class="pc one rv"><div class="ph"><img src="${IMG(P.photo)}" alt="${esc(P.name)}" loading="lazy" decoding="async"></div>
+      <div class="bd"><span class="tg" id="pTag">${esc(P.types[0].tag)}</span><h3>${esc(P.name)}</h3><p class="pin">${esc(P.intro)}</p>
+        <div class="opt"><span class="lb">Type</span><div class="seg type" role="group" aria-label="Type">${P.types.map((t, k) => `<button type="button" data-t="${k}" aria-pressed="${k === 0}">${esc(t.label)}</button>`).join('')}</div></div>
+        <p class="pdesc" id="pDesc" aria-live="polite">${esc(P.types[0].desc)}</p>
+        <div class="opt"><span class="lb">Size</span>${seg(P.sizes)}</div>
+        <div class="act"><button class="pb solid add" type="button">Add to box</button><a class="pb go" target="_blank" rel="noopener" href="#">Enquire</a></div></div></article>`;
+    const pType = () => P.types[+$('#plums .seg.type [aria-pressed="true"]').dataset.t];
     const H = B.hamper;
     $('#hamper').innerHTML = `<div><div class="hico"><svg viewBox="0 0 120 120" aria-hidden="true"><rect x="22" y="54" width="76" height="52" rx="4"/><rect x="16" y="40" width="88" height="16" rx="4"/><path d="M60 40v66"/><path d="M60 40c-8-14-26-14-26-4s14 8 26 4zM60 40c8-14 26-14 26-4s-14 8-26 4z"/></svg></div><span class="tg" style="color:var(--mute)">Made to order</span><h3>Christmas Hamper</h3><p>Choose a size and what goes inside. We confirm the final box with you on WhatsApp.</p></div>
       <div class="hb"><div><span class="lb">Size</span><br>${seg(H.sizes)}</div><div><span class="lb">Add to your hamper</span><div class="chk" style="margin-top:8px">${H.items.map((x) => `<label><input type="checkbox" value="${esc(x)}">${esc(x)}</label>`).join('')}</div></div>
       <label><span class="lb">Card message</span><br><input class="fld" maxlength="70" placeholder="Optional" style="margin-top:8px"></label>
       <div class="act"><button class="pb solid add" type="button">Add hamper to box</button><a class="pb go" target="_blank" rel="noopener" href="#">Enquire</a></div></div>`;
-    const plumTxt = (a) => a.querySelector('h3').textContent.replace('Traditional ', '') + ' (' + $('.seg [aria-pressed="true"]', a).dataset.s + ')';
+    const plumTxt = (a) => pType().item + ' (' + $('.seg:not(.type) [aria-pressed="true"]', a).dataset.s + ')';
+    const plumShow = () => { const t = pType(), tg = $('#pTag'), d = $('#pDesc');
+      [tg, d].forEach((el) => el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.8,.2,1)' }));
+      tg.textContent = t.tag; d.textContent = t.desc; };
     const hamTxt = () => { const h = $('#hamper'), inside = $$('.chk input:checked', h).map((x) => x.value), card = $('.fld', h).value.trim();
       return 'Christmas Hamper (' + $('.seg [aria-pressed="true"]', h).dataset.s + ')' + (inside.length ? ' with ' + inside.join(', ') : '') + (card ? ', card: "' + card + '"' : ''); };
     const sync = () => { $$('#plums .pc').forEach((a) => { $('.go', a).href = msg(['• ' + plumTxt(a)]); }); $('#hamper .go').href = msg(['• ' + hamTxt()]); };
     sync();
-    $('#seasonal').addEventListener('click', (e) => { const sb = e.target.closest('.seg button'); if (sb) { $$('button', sb.parentElement).forEach((x) => x.setAttribute('aria-pressed', x === sb)); sync(); return; }
+    $('#seasonal').addEventListener('click', (e) => { const sb = e.target.closest('.seg button'); if (sb) { $$('button', sb.parentElement).forEach((x) => x.setAttribute('aria-pressed', x === sb)); if (sb.parentElement.classList.contains('type')) plumShow(); sync(); return; }
       const ad = e.target.closest('.add'); if (!ad) return; const a = ad.closest('.pc'); addX(a ? plumTxt(a) : hamTxt()); flash(ad, 'Added ✓'); pop(ad); });
     ['input', 'change'].forEach((t) => $('#hamper').addEventListener(t, sync));
     /* days to Christmas, and the arc fills as it comes closer (from 1 Nov) */
