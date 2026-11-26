@@ -9,8 +9,8 @@
 <meta name="theme-color" content="#4a442c">
 <link rel="icon" href="../bunbun/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="../bunbun/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=DM+Sans:opsz,wght@9..40,400..600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./box.css?v=23">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=DM+Sans:opsz,wght@9..40,400..600&family=DM+Mono:wght@400;500&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./box.css?v=26">
 <script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date();document.documentElement.classList.toggle("season",q==="1"?true:q==="0"?false:d<new Date(2027,0,2));document.documentElement.classList.add("opened")}catch(e){}})();</script>
 </head>
 <body>
@@ -28,9 +28,11 @@
 <!-- 01 HOME: the baker's counter -->
 <section class="stage" id="home">
   <h1 class="sr-only">Bun Bun Cafe: freshly baked treats and customised cakes</h1>
-  <p class="eyebrow st-eb rise">Bun Bun Cafe · A homegrown bakery</p>
+  <div class="st-eb rise"><p class="eyebrow">Bun Bun Cafe · A homegrown bakery</p><p class="eyebrow mono">Nº 001 · Fresh batch · <span data-today></span></p></div>
+  <p class="st-side" aria-hidden="true">Baked fresh · Made to order · Homemade taste</p>
   <div class="bigword" role="img" aria-label="Bun Bun"></div>
   <div class="st-lower">
+    <p class="note" aria-hidden="true"><svg viewBox="0 0 110 80"><path d="M6 72c28 2 64-18 82-60"/><path d="M68 18l20-8 6 22"/></svg><span>poke the logo!</span></p>
     <div class="st-l">
       <p class="st-line rise">Homemade taste. Baked to order. <em>Made for every moment.</em></p>
       <p class="xpill only-season rise"><i></i>Christmas plum cakes &amp; hampers, now taking orders</p>
@@ -38,6 +40,7 @@
     </div>
     <div class="st-art">
       <div class="print"><img src="../assets/bunbun/stock/ht-print.webp" alt="A waffle on a plate, printed in green halftone" width="700" height="875" fetchpriority="high"><i class="tape ta"></i><i class="tape tb"></i></div>
+      <img class="stk s1" src="../assets/bunbun/stock/ht-st1.webp" alt="" width="360" height="360" loading="eager"><img class="stk s2" src="../assets/bunbun/stock/ht-st2.webp" alt="" width="360" height="360" loading="eager">
       <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="sp" d="M100,100 m-70,0 a70,70 0 1,1 140,0 a70,70 0 1,1 -140,0"/><filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6"/></filter></defs>
         <g filter="url(#rough)"><circle cx="100" cy="100" r="92" fill="none" stroke-width="5"/><circle cx="100" cy="100" r="82" fill="none" stroke-width="1.6"/><circle cx="100" cy="100" r="48" fill="none" stroke-width="1.6"/>
         <text><textPath href="#sp" textLength="436" lengthAdjust="spacing">BAKED FRESH · MADE TO ORDER · HOMEMADE ·</textPath></text>
@@ -144,6 +147,6 @@
 <script src="./vendor/gsap.min.js"></script>
 <script src="./vendor/ScrollTrigger.min.js"></script>
 <script src="./vendor/lenis.min.js"></script>
-<script src="./box.js?v=14"></script>
+<script src="./box.js?v=15"></script>
 </body>
 </html>

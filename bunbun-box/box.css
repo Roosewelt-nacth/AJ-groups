@@ -446,3 +446,43 @@ html.season li.only-season{display:list-item!important}
 html.season a.only-season:not(.pb){display:inline-block!important}
 .pb,.slipbtn,.seg button{line-height:1}
 .pb{text-align:center}
+
+/* ===== proof of hand: print-shop details, handwriting, stickers, a wordmark that is alive ===== */
+.stage{--mk:color-mix(in srgb,var(--g) 55%,transparent)}
+.stage::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.05;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* crop marks in the four corners */
+.stage::after{content:"";position:absolute;inset:14px;pointer-events:none;z-index:5;
+  background:
+   linear-gradient(var(--mk),var(--mk)) top left/16px 1px no-repeat,linear-gradient(var(--mk),var(--mk)) top left/1px 16px no-repeat,
+   linear-gradient(var(--mk),var(--mk)) top right/16px 1px no-repeat,linear-gradient(var(--mk),var(--mk)) top right/1px 16px no-repeat,
+   linear-gradient(var(--mk),var(--mk)) bottom left/16px 1px no-repeat,linear-gradient(var(--mk),var(--mk)) bottom left/1px 16px no-repeat,
+   linear-gradient(var(--mk),var(--mk)) bottom right/16px 1px no-repeat,linear-gradient(var(--mk),var(--mk)) bottom right/1px 16px no-repeat}
+.stage>*{position:relative;z-index:1}.stage .tapebar{z-index:3}
+.st-eb{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:0 var(--pad);width:100%}
+.st-eb .mono{font-family:'DM Mono',monospace;letter-spacing:.16em}
+.st-side{position:absolute!important;left:clamp(8px,1vw,16px);top:50%;writing-mode:vertical-rl;rotate:180deg;translate:0 -50%;font:500 10px 'DM Mono',monospace;letter-spacing:.32em;text-transform:uppercase;color:var(--mute);margin:0;white-space:nowrap}
+/* the wordmark becomes a live canvas once WebGL is ready */
+.bigword.gl{-webkit-mask:none;mask:none;background:none}
+.bigword .dough{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
+.bigword.gl{cursor:crosshair}
+/* handwriting */
+.note{position:absolute;z-index:4;left:calc(var(--pad) + clamp(220px,30vw,420px));top:clamp(300px,41vh,372px);margin:0;rotate:-5deg;font:600 clamp(22px,2.2vw,30px)/1 'Caveat',cursive;color:var(--g);pointer-events:none;display:flex;align-items:flex-start;gap:4px;transition:opacity .5s}
+.note svg{width:clamp(70px,7vw,96px);height:auto;margin-top:-38px;fill:none;stroke:var(--g);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.note path{stroke-dasharray:190;stroke-dashoffset:190;transition:stroke-dashoffset 1.1s ease 3.4s}
+html.ready .note path{stroke-dashoffset:0}
+.note span{opacity:0;transform:translateY(6px);transition:opacity .6s ease 3.2s,transform .6s ease 3.2s;white-space:nowrap}html.ready .note span{opacity:1;transform:none}
+.stage.poked .note{opacity:0}
+/* die-cut stickers (thick cream border, tiny shadow) */
+.stk{position:absolute;z-index:3;border-radius:50%;border:5px solid var(--c);box-shadow:0 0 0 1px color-mix(in srgb,var(--g) 30%,transparent),0 14px 20px -10px color-mix(in srgb,var(--g) 60%,transparent);background:var(--c)}
+.s1{width:clamp(70px,7.4vw,98px);left:-6%;top:56%;rotate:-14deg}.s2{width:clamp(56px,5.6vw,76px);right:-7%;top:-5%;rotate:12deg}
+html:not(.ready) .stk{opacity:0;scale:.2;rotate:40deg}
+.stk{transition:opacity .5s ease,scale .9s cubic-bezier(.34,1.56,.64,1),rotate .9s cubic-bezier(.34,1.56,.64,1)}
+html.ready .s1{transition-delay:1.5s}html.ready .s2{transition-delay:1.7s}
+/* crumbs from a click */
+.crumb{position:absolute;z-index:6;pointer-events:none;border-radius:42%;will-change:transform}
+@media (max-width:900px){.st-side,.note{display:none}.st-eb .mono{display:none}.s1{left:-12%;top:62%}.s2{right:-10%}}
+@media (prefers-reduced-motion:reduce){.note path{stroke-dashoffset:0;transition:none}.note span{opacity:1;transform:none;transition:none}html:not(.ready) .stk{opacity:1;scale:1}}
+.stk{height:auto;aspect-ratio:1/1;object-fit:cover}
+.note{left:clamp(300px,34vw,460px);top:6px;align-items:flex-end;gap:2px}
+.note svg{margin:0;width:clamp(56px,5.6vw,80px)}
+.note span{margin-bottom:2px}
