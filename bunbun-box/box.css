@@ -1,7 +1,7 @@
 /* Bun Bun Cafe, "Open your box". Cream and green only. No libraries; only transform and opacity move. */
 :root{--c:#f8f2e4;--g:#4a442c;--ink:var(--g);--paper:var(--c);--mute:color-mix(in srgb,var(--ink) 70%,transparent);--line:color-mix(in srgb,var(--ink) 18%,transparent);--pad:clamp(18px,4vw,56px);--disp:'Fraunces',Georgia,serif;--ease:cubic-bezier(.76,0,.24,1);--out:cubic-bezier(.2,.8,.2,1)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:var(--c);color:var(--g);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{background:var(--c);color:var(--g);-webkit-text-size-adjust:100%}
 html:not(.opened){overflow:hidden}
 body{font:400 16px/1.6 'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
 img,canvas{display:block;max-width:100%}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -59,7 +59,7 @@ html.opened .inside .eyebrow.rise{transition-delay:.45s}html.opened h1.rise{tran
 .trayw{padding:clamp(70px,11vh,130px) var(--pad) clamp(70px,10vh,120px);max-width:1500px;margin:0 auto}
 .th{margin-bottom:clamp(26px,4vh,46px)}.th h2{font-size:clamp(42px,7vw,108px);margin-top:12px}
 .tray{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:clamp(210px,31vh,300px);gap:clamp(10px,1.2vw,16px)}
-.cp{position:relative;border-radius:clamp(22px,2.4vw,34px);overflow:hidden;background:var(--g);color:var(--c);text-align:left;display:block;content-visibility:auto;contain-intrinsic-size:auto 280px}
+.cp{position:relative;border-radius:clamp(22px,2.4vw,34px);overflow:hidden;background:var(--g);color:var(--c);text-align:left;display:block}
 .cp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--out)}
 .cp::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,color-mix(in srgb,var(--g) 92%,transparent),color-mix(in srgb,var(--g) 0%,transparent) 62%)}
 .cp .lab{position:absolute;left:clamp(18px,2vw,30px);right:clamp(18px,2vw,30px);bottom:clamp(16px,2vw,28px);z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
@@ -131,3 +131,68 @@ html.fine .seal{cursor:none}
 
 @media (max-width:800px){.two,.who,.cg{grid-template-columns:1fr}.bx{max-width:calc(100vw - 16px);gap:6px;padding-left:14px;font-size:13px}.bx .pb{padding:0 12px}.ct{margin-right:2px}}
 @media (prefers-reduced-motion:reduce){.half,.face,.rise{transition:none!important}.seal svg,.down i{animation:none}html:not(.opened) .rise{opacity:1;transform:none}}
+
+/* ===== refinement pass ===== */
+/* opening: the inside rises up to meet you as the lid parts */
+main{transition:transform 1.3s var(--ease)}
+html:not(.opened){background:var(--g)}
+html:not(.opened) main{transform:scale(.94)}
+.half.l{box-shadow:24px 0 60px -30px color-mix(in srgb,var(--g) 55%,transparent)}.half.r{box-shadow:-24px 0 60px -30px color-mix(in srgb,var(--g) 55%,transparent)}
+.lid.open .half.l{transform:translateX(-101%) rotate(-2deg)}.lid.open .half.r{transform:translateX(101%) rotate(2deg)}
+.seal{transition:transform .5s var(--out),box-shadow .5s var(--out)}
+.seal:hover{box-shadow:0 0 0 14px var(--c),0 0 0 15.5px var(--g)}
+.seal::after{content:"";position:absolute;inset:-26px;border-radius:50%;border:1px solid color-mix(in srgb,var(--g) 40%,transparent);animation:breathe 2.8s var(--out) infinite;pointer-events:none}
+@keyframes breathe{0%{transform:scale(.86);opacity:0}40%{opacity:1}100%{transform:scale(1.18);opacity:0}}
+
+/* floating treats inside the box (laptops and tablets) */
+.fl{position:absolute;z-index:0;width:clamp(110px,13vw,200px);aspect-ratio:1;opacity:0;transform:translateY(50px) scale(.8);transition:opacity 1.2s var(--out),transform 1.4s var(--out);translate:var(--px,0) var(--py,0)}
+html.opened .fl{opacity:1;transform:none}
+html.opened .fa{transition-delay:.7s}html.opened .fb{transition-delay:.85s}html.opened .fc{transition-delay:1s}
+.fl img{width:100%;height:100%;border-radius:50%;object-fit:cover;box-shadow:0 0 0 8px color-mix(in srgb,var(--c) 10%,transparent),0 30px 60px -20px color-mix(in srgb,#000 40%,transparent);animation:bob 7s ease-in-out infinite}
+.fb img{animation-duration:8.5s;animation-delay:-2s}.fc img{animation-duration:9.5s;animation-delay:-4s}
+@keyframes bob{50%{transform:translateY(-14px) rotate(3deg)}}
+.fa{left:6%;top:20%}.fb{right:6%;top:26%;width:clamp(90px,10vw,160px)}.fc{left:15%;bottom:9%;width:clamp(80px,8vw,130px)}
+.inside h1,.inside .lead,.inside .notice,.inside .eyebrow{position:relative;z-index:1}
+@media (max-width:900px){.fa{left:-30px;top:13%;width:110px}.fb{right:-26px;top:auto;bottom:16%;width:96px}.fc{display:none}}
+@media (max-width:420px){.fa{top:10%;width:92px}.fb{bottom:12%;width:84px}}
+
+/* gentle reveals as you scroll */
+.rv{opacity:0;transform:translateY(42px)}
+.rv.in{opacity:1;transform:none;transition:opacity .9s var(--out) var(--dl,0s),transform 1.1s var(--out) var(--dl,0s)}
+.cp.rv.in{transition:opacity .9s var(--out) var(--dl,0s),transform 1.1s var(--out) var(--dl,0s)}
+.cp:focus-visible{outline:3px solid var(--g);outline-offset:4px}
+.cp .lab{transition:transform .6s var(--out)}
+@media (hover:hover){.cp:hover .lab{transform:translateY(-4px)}}
+
+/* sheets: lock the page behind, show the native pointer inside, two-colour cakes panel */
+html:has(dialog[open]){overflow:hidden}
+html.modal .cur{opacity:0!important}
+html.fine dialog,html.fine dialog *{cursor:auto}html.fine dialog a,html.fine dialog button,html.fine dialog label,html.fine dialog input{cursor:pointer}
+.sp{position:relative;overflow:hidden}
+.sp .mk{display:none;position:absolute;inset:0;margin:auto;width:34%;height:auto;color:var(--c)}
+.sp.nophoto img{display:none}.sp.nophoto .mk{display:block}
+dialog.sheet[open] .sp img{animation:zoom 1.2s var(--out)}@keyframes zoom{from{transform:scale(1.12)}}
+dialog.sheet[open] .sb>*{animation:up .7s var(--out) both}
+dialog.sheet[open] .sb>:nth-child(2){animation-delay:.05s}dialog.sheet[open] .sb>:nth-child(3){animation-delay:.1s}dialog.sheet[open] .sb>:nth-child(4){animation-delay:.15s}dialog.sheet[open] .sb>:nth-child(5){animation-delay:.2s}dialog.sheet[open] .sb>:nth-child(6){animation-delay:.25s}dialog.sheet[open] .sb>:nth-child(7){animation-delay:.3s}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+dialog.sheet.closing{animation:out .28s ease forwards}dialog.sheet.closing::backdrop{opacity:0;transition:opacity .28s}
+@keyframes out{to{opacity:0;transform:translateY(24px) scale(.98)}}
+.chk label{transition:background .25s,color .25s,transform .3s var(--out)}.chk label:active{transform:scale(.96)}
+.chk label:has(input:checked)::before{content:"\2713";margin-right:6px;font-size:12px}
+.close{transition:transform .4s var(--out),background .25s}.close:hover{transform:rotate(90deg)}
+
+/* the pill never covers the footer */
+.ft{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+.rib b{position:absolute;left:50%;top:50%;width:22px;height:22px;translate:-50% -50%;z-index:1;background:var(--g);-webkit-mask:url(../assets/bunbun/logo-mark.png) center/contain no-repeat;mask:url(../assets/bunbun/logo-mark.png) center/contain no-repeat}
+.bx .ct b{display:inline-block;min-width:1ch}
+
+@media (prefers-reduced-motion:reduce){main,.fl,.rv,.half{transition:none!important}.fl img,.seal::after{animation:none}html:not(.opened) main{transform:none;opacity:1}.rv{opacity:1;transform:none}dialog.sheet[open] .sb>*,dialog.sheet[open] .sp img{animation:none}}
+
+/* ===== Lenis + GSAP ScrollTrigger ===== */
+html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}
+/* once the opening has played, CSS hands motion over to ScrollTrigger (no transition fighting the scrub) */
+html.settled .rise,html.settled .fl{transition:none}
+.cp img{transition:scale 1.1s var(--out)}
+@media (hover:hover){.cp:hover img{transform:none;scale:1.06}}
+.th h2{will-change:transform}
+.rib{transform-origin:center}

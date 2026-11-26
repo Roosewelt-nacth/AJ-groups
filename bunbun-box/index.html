@@ -10,7 +10,7 @@
 <link rel="icon" href="../bunbun/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="../bunbun/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..500,0..100&family=DM+Sans:opsz,wght@9..40,400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./box.css?v=2">
+<link rel="stylesheet" href="./box.css?v=5">
 <script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date();document.documentElement.classList.toggle("season",q==="1"?true:q==="0"?false:d<new Date(2027,0,2));if(q==="open")document.documentElement.classList.add("opened")}catch(e){}})();</script>
 </head>
 <body>
@@ -23,7 +23,7 @@
   <div class="face">
     <p class="tag">Baked fresh · Made to order</p>
     <button class="seal" id="seal" type="button" aria-label="Open your Bun Bun box">
-      <svg viewBox="0 0 200 200" aria-hidden="true"><defs><path id="rp" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0"/></defs><text><textPath href="#rp">OPEN YOUR BOX · BUN BUN CAFE · HOMEMADE · </textPath></text></svg>
+      <svg viewBox="0 0 200 200" aria-hidden="true"><defs><path id="rp" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0"/></defs><text><textPath href="#rp" textLength="512" lengthAdjust="spacing">OPEN YOUR BOX · BUN BUN CAFE · HOMEMADE · </textPath></text></svg>
       <i class="mk"></i>
     </button>
     <p class="hint"><span class="d">Tap</span> the seal to open</p>
@@ -41,6 +41,9 @@
 <!-- inside the box -->
 <section class="inside" id="open">
   <div class="tis" aria-hidden="true"></div>
+  <span class="fl fa" aria-hidden="true"><img src="../assets/bunbun/menu-c/double-choc-brownie.webp" alt="" width="640" height="640"></span>
+  <span class="fl fb" aria-hidden="true"><img src="../assets/bunbun/menu-c/white-choc-waffle.webp" alt="" width="640" height="640"></span>
+  <span class="fl fc" aria-hidden="true"><img src="../assets/bunbun/menu-c/choc-mousse.webp" alt="" width="640" height="640"></span>
   <p class="eyebrow">Bun Bun Cafe</p>
   <h1 class="rise">Your box <em>is open.</em></h1>
   <p class="lead rise">Brownies, waffles and desserts, made by hand and baked to order. Pick what you love, and we'll put it in your box.</p>
@@ -49,7 +52,7 @@
 </section>
 
 <section class="trayw" id="tray">
-  <div class="th"><p class="eyebrow">Our creations</p><h2>Crafted fresh. <em>Loved every bite.</em></h2></div>
+  <div class="th"><p class="eyebrow">Our creations · Tap a compartment</p><h2>Crafted fresh. <em>Loved every bite.</em></h2></div>
   <div class="tray" id="trayg"></div>
 </section>
 
@@ -74,7 +77,7 @@
     <div class="cc"><span class="eyebrow">Location</span><b data-fill="location"></b><span>Collection details are shared when your order is confirmed.</span></div>
   </div>
 </div>
-<footer class="ft"><i class="rib" aria-hidden="true"></i><span>© 2026 Bun Bun Cafe · by AJ GROUPS</span><span><a href="../privacy/">Privacy</a> · <a href="../terms/">Terms</a></span></footer>
+<footer class="ft"><i class="rib" aria-hidden="true"><b></b></i><span>© 2026 Bun Bun Cafe · by AJ GROUPS</span><span><a href="../privacy/">Privacy</a> · <a href="../terms/">Terms</a></span></footer>
 </section>
 </main>
 
@@ -84,7 +87,7 @@
 <!-- a dish opens in a sheet -->
 <dialog class="sheet" id="sheet" aria-label="Creation details">
   <button class="close" type="button" aria-label="Close" data-close>&times;</button>
-  <div class="sp"><img id="sImg" alt="" width="640" height="640"></div>
+  <div class="sp"><img id="sImg" alt="" width="640" height="640"><i class="mk" aria-hidden="true"></i></div>
   <div class="sb"><span class="fn" id="sNo"></span><h3 id="sTitle"></h3><p id="sText"></p>
     <span class="lb" id="sLb">Choose your favourites</span><div class="chk" id="sChk"></div>
     <a class="pb solid" id="sGo" target="_blank" rel="noopener" href="#">Enquire on WhatsApp</a></div>
@@ -98,6 +101,9 @@
     <button class="pb solid" id="cSave" type="button">Share or save</button></div>
 </dialog>
 
-<script src="./box.js?v=2"></script>
+<script src="./vendor/gsap.min.js"></script>
+<script src="./vendor/ScrollTrigger.min.js"></script>
+<script src="./vendor/lenis.min.js"></script>
+<script src="./box.js?v=4"></script>
 </body>
 </html>
