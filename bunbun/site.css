@@ -413,3 +413,34 @@ html{scroll-padding-top:16px}
 .ft{padding-top:clamp(28px,4vh,44px)}
 @media (max-width:760px){.chap:not(#home){padding:36px 0}.split{padding:18px 0}.head h2,#about .split:first-child h2{font-size:clamp(36px,10.5vw,50px)}}
 #xm-products{padding-top:0;padding-bottom:0}
+
+/* subtle WhatsApp icon in the pill */
+.wa-ico{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;color:var(--ink);opacity:.62;transition:opacity .25s ease,background-color .25s ease}
+.wa-ico svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+@media (hover:hover){.wa-ico:hover{opacity:1;background:var(--tint)}}
+.hd .wrap{gap:8px}
+@media (max-width:360px){.wa-ico{display:none}}
+@media (max-width:760px){
+ .cta0{flex-direction:column;align-items:stretch;gap:8px;white-space:normal;width:min(300px,calc(100% - 2 * var(--pad)));bottom:106px}
+ .cta0 .btn{min-height:44px;padding:0 18px}
+ .xpill{bottom:214px;white-space:nowrap}
+}
+
+/* ===== Creations: photo-led feature cards, one per category ===== */
+.mgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,22px);align-items:stretch}
+.fc{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:30px;padding:10px;overflow:hidden}
+.fp{border-radius:22px;overflow:hidden;background:#f8f2e4;aspect-ratio:5/4}
+.fp img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+@media (hover:hover){.fc:hover .fp img{transform:scale(1.045)}}
+.fb{display:flex;flex-direction:column;gap:10px;flex:1;padding:16px 12px 12px}
+.fn{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--mute)}
+.fb h3{font-size:clamp(24px,2.3vw,32px);line-height:1.05}
+.fb>p{margin:0;color:var(--mute);font-size:14.5px;max-width:40ch}
+.fb .opt{margin-top:2px}
+.fb .act{margin-top:auto;padding-top:6px}
+.fc-wide{grid-column:1/-1;flex-direction:row;align-items:center}
+.fc-wide .fp{flex:none;width:clamp(96px,12vw,150px);aspect-ratio:1;display:grid;place-items:center;color:#4a442c}
+.fc-wide .fp .mk{width:46%;opacity:.55}
+.fc-wide .fb{flex-direction:column;align-items:flex-start;padding:8px 14px}
+@media (max-width:980px){.mgrid{grid-template-columns:1fr 1fr}.fc-wide{grid-column:1/-1}}
+@media (max-width:640px){.mgrid{grid-template-columns:1fr}.fp{aspect-ratio:16/10}.fc-wide{flex-direction:column;align-items:stretch}.fc-wide .fp{width:100%;aspect-ratio:3/1}}

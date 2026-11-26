@@ -1,0 +1,42 @@
+/* Bun Bun Cafe, premium design review layer. Loaded after site.css, so the live /bunbun/ page is untouched.
+   Quiet, airy and soft: light type, spaced small caps, glass pills, rounded sheets that stack as you scroll,
+   and dish photos centred on the dish itself (assets/bunbun/menu-c/). */
+:root{--ease:cubic-bezier(.2,.8,.2,1)}
+
+/* type: lighter and airier */
+h2,.head h2,.intro h2,.split h2,#about .split:first-child h2{font-weight:300;letter-spacing:-.03em}
+.eyebrow,.head .eyebrow,.split .eyebrow,.intro .eyebrow{text-transform:uppercase;letter-spacing:.24em;font-size:11px;font-weight:500}
+.lead{font-weight:300;letter-spacing:.01em}
+.fb h3,.mp-h h3,.cc h3,.pc .bd h3{font-weight:340}
+.fn{letter-spacing:.2em;font-size:11px}
+
+/* chapters are soft sheets: each one rises over the previous with rounded top corners */
+.chap{background:var(--bg)}
+.chap:not(#home){border-top-left-radius:44px;border-top-right-radius:44px;margin-top:-44px;position:relative;z-index:1;padding-top:calc(clamp(40px,7vh,76px) + 44px)}
+#seasonal.xmas.chap{padding-top:calc(clamp(44px,7vh,80px) + 44px)}
+.ft{background:var(--bg);border-top:0;border-top-left-radius:44px;border-top-right-radius:44px;margin-top:-44px;position:relative;z-index:1;padding-top:calc(clamp(28px,4vh,44px) + 44px)}
+
+/* landing: the original logo entry, with a faint atmosphere behind it */
+.hero0{background:radial-gradient(60% 50% at 18% 16%,color-mix(in srgb,var(--ink) 6%,transparent),transparent 70%),radial-gradient(55% 50% at 86% 84%,color-mix(in srgb,var(--ink) 5%,transparent),transparent 70%)}
+
+/* buttons: refined pills, glass outline, a soft lift on the solid one */
+.btn{min-height:48px;padding:0 26px;font-weight:500;letter-spacing:.02em}
+.btn.sm{min-height:40px;padding:0 20px}
+.btn.ghost{background:color-mix(in srgb,var(--bg) 40%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn:not(.ghost){box-shadow:0 12px 28px -14px color-mix(in srgb,var(--ink) 60%,transparent)}
+.hd .btn.sm{min-height:44px}
+.hd{box-shadow:0 18px 44px -18px rgba(30,27,16,.3)}
+
+/* cards: bigger radius, fainter edge, calm lift on hover */
+.fc,.pc,.cc{border-radius:38px;border-color:color-mix(in srgb,var(--ink) 11%,transparent);transition:transform .6s var(--ease),border-color .4s ease}
+@media (hover:hover){.fc:hover,.pc:hover,.cc:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--ink) 22%,transparent)}}
+.notice{border-radius:22px}
+
+/* dish photos are centred on the dish: square frames, no crop of the food */
+.fp{aspect-ratio:1/1;border-radius:28px;position:relative}
+.fp img{object-fit:cover}
+.fp::after{content:"";position:absolute;inset:auto 0 0 0;height:26%;background:linear-gradient(180deg,transparent,color-mix(in srgb,#f8f2e4 80%,transparent));pointer-events:none}
+.fc-wide .fp::after{display:none}
+.pc:not(.hm) .ph{aspect-ratio:1/1;border-radius:26px}
+.pc:not(.hm) .ph img{object-fit:cover}
+@media (max-width:640px){.fp{aspect-ratio:1/1}.fc-wide .fp{aspect-ratio:3/1}}

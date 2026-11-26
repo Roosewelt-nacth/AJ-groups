@@ -11,7 +11,8 @@
 <link rel="icon" href="./favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,0..100&family=DM+Sans:opsz,wght@9..40,400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./site.css?v=56">
+<link rel="stylesheet" href="./site.css?v=60">
+<link rel="stylesheet" href="./premium.css?v=1">
 <script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date(),on=q==="1"?true:q==="0"?false:d<new Date(2027,0,2);document.documentElement.classList.toggle("season",on)}catch(e){}})();</script>
 <script>try{var s=localStorage.getItem("bbtheme");document.documentElement.dataset.look=s==="b"?"green":"cream"}catch(e){}</script>
 </head>
@@ -30,7 +31,7 @@
   <p class="tiny0 t-a">Homemade taste.<br>Baked to order.<br>Made for every moment.</p>
   <p class="tiny0 t-b">Birthday cakes<br>Brownies · Desserts · Waffles</p>
   <p class="xpill only-season"><i></i>Christmas plum cakes &amp; hampers, now taking orders</p>
-  <div class="cta0"><a class="btn only-season" href="#seasonal">Seasonal menu</a><a class="btn only-std" href="#menu">Order Now</a><a class="btn ghost" href="#menu">See the menu</a></div>
+  <div class="cta0"><a class="btn" href="#menu">Discover Our Creations</a><a class="btn ghost only-season" href="#seasonal">Explore Seasonal Editions</a><a class="btn ghost only-std" data-fill="whatsapp" href="#">Enquire on WhatsApp</a></div>
 </section>
 <section class="intro"><div class="wrap">
   <div class="split0">
@@ -75,7 +76,7 @@
 <svg class="holly" viewBox="0 0 240 160" aria-hidden="true"><path d="M20 120c40-6 80-30 112-70"/><path d="M132 50c18-24 46-34 86-34"/><path d="M70 104c-4-18 6-34 22-42c2 16-4 32-22 42zM70 104c18 2 34-6 42-22c-16-2-32 4-42 22z"/><path d="M150 40c-14-12-16-30-8-46c10 12 12 30 8 46zM150 40c16-8 34-6 46 6c-16 6-32 4-46-6z"/><path d="M106 70c-14-4-22-16-22-30c12 4 20 16 22 30z"/><circle cx="124" cy="58" r="5"/><circle cx="135" cy="64" r="5"/><circle cx="128" cy="70" r="5"/></svg>
 <div class="xbg" aria-hidden="true"><img src="../assets/bunbun/menu/plum-rum.webp" alt="" width="600" height="600"></div>
 <div class="wrap" id="xm-products">
-  <div class="head rv"><span class="eyebrow">Christmas 2026 · Advent collection</span><h2>A Christmas tradition, <em>baked with love.</em></h2></div>
+  <div class="head rv"><span class="eyebrow">Seasonal Editions · Christmas 2026</span><h2>A Christmas tradition, <em>baked with love.</em></h2></div>
   <div class="shead">
     <p class="lead rv">Celebrate the festive season with our specially prepared plum cakes, full cakes in half kg and 1 kg, and Christmas hampers made your way.</p>
     <a class="w w1 rv" href="#xm-cards"><small>Days to Christmas</small><b data-xdays>31</b><svg viewBox="0 0 100 50" aria-hidden="true"><path d="M8 46a42 42 0 0 1 84 0"/><path class="arc" d="M8 46a42 42 0 0 1 84 0" pathLength="100"/></svg></a>
@@ -88,7 +89,7 @@
 <!-- 03 MENU -->
 <div class="chap" id="menu">
 <div class="wrap">
-  <div class="head rv"><span class="eyebrow">Our menu</span><h2>Made fresh. <em>Loved every bite.</em></h2></div>
+  <div class="head rv"><span class="eyebrow">Our creations</span><h2>Crafted fresh. <em>Loved every bite.</em></h2><p class="lead">Brownies, waffles and desserts, made by hand and baked to order.</p></div>
   <div class="notice rv" role="note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><p><b>Plan ahead. Celebrate better.</b> Please order at least 2 days before your date.</p></div>
   <div class="mgrid" data-list="menu"></div>
 </div>
@@ -101,7 +102,7 @@
     <p class="lead">Have a question, planning a celebration or looking to place an order? Get in touch with Bun Bun Cafe.</p></div>
   <div class="notice rv" role="note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><p><b>Plan ahead. Celebrate better.</b> Please order at least 2 days before your date.</p></div>
   <div class="cgrid">
-    <div class="cc rv"><span class="eyebrow">WhatsApp</span><h3 data-fill="wa-number"></h3><p>The quickest way to order or ask a question.</p><a class="btn sm" data-fill="whatsapp" href="#">Open WhatsApp</a></div>
+    <div class="cc rv"><span class="eyebrow">WhatsApp</span><h3 data-fill="wa-number"></h3><p>The quickest way to enquire or place an order.</p><a class="btn sm" data-fill="whatsapp" href="#">Enquire on WhatsApp</a></div>
     <div class="cc rv"><span class="eyebrow">Instagram</span><h3>Send a DM</h3><p>See our latest bakes and message us there.</p><a class="btn sm ghost" data-fill="instagram" href="#">Instagram</a></div>
     <div class="cc rv"><span class="eyebrow">Location</span><h3 data-fill="location"></h3><p>Collection details are shared when your order is confirmed.</p></div>
   </div>
@@ -109,6 +110,6 @@
 </div>
 
 </main>
-<script src="./site.js?v=34"></script>
+<script src="./site.js?v=36"></script>
 </body>
 </html>

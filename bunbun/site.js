@@ -9,21 +9,21 @@ const BUNBUN = {
 
   /* The menu: one panel per category, every child item inside it. Add a size list (sizes) for items sold by weight. */
   menu: [
-    { cat: 'Brownies', photo: 'menu/nutella-brownie.webp', items: [
+    { cat: 'Brownies', photo: 'menu-c/nutella-brownie.webp', story: 'Rich, fudgy and made to be shared.', items: [
       { name: 'Nutella Brownie' }, { name: 'Double Chocolate Brownie' }, { name: 'Metro Chocolate Brownie' } ] },
-    { cat: 'Waffles', photo: 'menu/triple-choc-waffle.webp', items: [
+    { cat: 'Waffles', photo: 'menu-c/triple-choc-waffle.webp', story: 'Warm, crisp and finished with chocolate.', items: [
       { name: 'White Chocolate Waffle' }, { name: 'Triple Chocolate Waffle' } ] },
-    { cat: 'Desserts', photo: 'menu/caramel-pudding.webp', items: [
+    { cat: 'Desserts', photo: 'menu-c/caramel-pudding.webp', story: 'Silky, chilled and made to be savoured.', items: [
       { name: 'Chocolate Mousse' }, { name: 'Caramel Pudding' } ] },
-    { cat: 'Cakes', photo: null, sub: 'Menu coming soon', items: [],
-      note: 'Our cake menu is on its way. We also make customised cakes for birthdays, anniversaries and special occasions.' },
+    { cat: 'Cakes', photo: null, items: [],
+      story: 'Our cake collection is being finalised. We also create bespoke cakes for birthdays, anniversaries and special occasions.' },
   ],
 
   /* Seasonal (Advent) menu: full cakes by weight, and the hamper builder. Shown until 1 Jan 2027. */
   seasonal: [
-    { name: 'Traditional Rum-Soaked Plum Cake', tag: 'Contains alcohol (rum). Not for under-18s.', photo: 'menu/plum-rum.webp', sizes: ['Half kg', '1 kg'],
+    { name: 'Traditional Rum-Soaked Plum Cake', tag: 'Contains alcohol (rum). Not for under-18s.', photo: 'menu-c/plum-rum.webp', sizes: ['Half kg', '1 kg'],
       desc: 'A festive classic prepared with carefully selected ingredients and rum-soaked fruits, bringing together the rich and traditional flavours of Christmas.' },
-    { name: 'Non-Alcoholic Plum Cake', tag: 'Prepared without alcohol', photo: 'menu/plum-free.webp', sizes: ['Half kg', '1 kg'],
+    { name: 'Non-Alcoholic Plum Cake', tag: 'Prepared without alcohol', photo: 'menu-c/plum-free.webp', sizes: ['Half kg', '1 kg'],
       desc: 'Enjoy the traditional festive plum cake experience with our non-alcoholic version.' },
   ],
   hamper: { sizes: ['Petite', 'Classic', 'Grand'], items: ['Plum cake', 'Brownies', 'Caramel pudding', 'Waffles', 'Chocolate mousse'] },
@@ -38,7 +38,7 @@ const BUNBUN = {
   const ig = B.instagram;
   const NOTE = `Date needed: ______ (I know orders need ${B.noticeDays} days' notice)`;
   const msg = (lines) => wa(['Hi Bun Bun Cafe, I would like to order:'].concat(lines.filter(Boolean), ['', NOTE]).join('\n'));
-  const NAMES = { home: 'Home', about: 'About', menu: 'Menu', seasonal: 'Seasonal', contact: 'Contact Us' };
+  const NAMES = { home: 'Home', about: 'About', menu: 'Creations', seasonal: 'Seasonal Editions', contact: 'Contact Us' };
   const chaps = [...document.querySelectorAll('.chap')].filter((c) => getComputedStyle(c).display !== 'none');
 
   /* header: the mark only, five chapters, Order Now goes to the menu */
@@ -47,7 +47,8 @@ const BUNBUN = {
     <nav class="nav" aria-label="Main">${chaps.map((c) => `<a href="#${c.id}"${c.id === 'seasonal' ? ' class="ns"' : ''}>${NAMES[c.id]}</a>`).join('')}</nav>
     <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
     <div class="look" role="group" aria-label="Choose a look"><button type="button" data-l="cream" title="Cream"><i></i><span>Cream</span></button><button type="button" data-l="green" title="Green"><i></i><span>Green</span></button></div>
-    <a class="btn sm" href="#menu">Order Now</a></div>`;
+    <a class="wa-ico" href="${wa('Hi Bun Bun Cafe, I would like to place an order.')}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.2 8.6c.3-.6.8-.5 1.1.1l.5 1.1c.1.3 0 .6-.3.9l-.4.4c.6 1.2 1.6 2.1 2.8 2.7l.5-.5c.2-.2.5-.3.8-.1l1.1.6c.5.3.6.8.1 1.3-.7.8-1.8 1-3 .5-2.4-1-4-2.7-4.7-4.8-.3-.8.1-1.5.5-2.2z"/></svg></a>
+    <a class="btn sm" href="#contact">Enquire</a></div>`;
   body.prepend(hd);
   const setLook = (l) => { root.dataset.look = l; hd.querySelectorAll('.look button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.l === l)); try { localStorage.setItem('bbtheme', l === 'green' ? 'b' : 'a'); } catch (e) {} };
   hd.querySelectorAll('.look button').forEach((b) => b.addEventListener('click', () => setLook(b.dataset.l)));
@@ -75,30 +76,34 @@ const BUNBUN = {
 
   /* menu panels and seasonal cards */
   const seg = (sizes) => (sizes ? `<div class="seg" role="group" aria-label="Size">${sizes.map((s, k) => `<button type="button" data-s="${esc(s)}" aria-pressed="${k === 0}">${esc(s)}</button>`).join('')}</div>` : '');
-  const item = (i) => `<li class="it" data-name="${esc(i.name)}"><span class="nm">${esc(i.name)}</span><div class="ctl">${seg(i.sizes)}<a class="btn sm ghost go" href="#" target="_blank" rel="noopener">Order</a></div></li>`;
-  const customCake = wa('Hi Bun Bun Cafe, I would like to ask about a customised cake.\n\nOccasion:\nFlavour and size:\n' + NOTE);
-  const panel = (c) => `<section class="mp rv"><div class="mp-h">${c.photo ? `<img src="${IMG(c.photo)}" alt="${esc(c.cat)}" width="68" height="68" loading="lazy">` : '<div class="t0"><i class="mk" aria-hidden="true"></i></div>'}<div><h3>${esc(c.cat)}</h3><small>${c.items.length ? c.items.length + (c.items.length === 1 ? ' choice' : ' choices') : esc(c.sub || '')}</small></div></div>
-    ${c.items.length ? `<ul>${c.items.map(item).join('')}</ul>` : `<p class="note">${esc(c.note)}</p><a class="btn sm ghost" href="${customCake}" target="_blank" rel="noopener">Ask about a customised cake</a>`}</section>`;
+  const customCake = wa('Hi Bun Bun Cafe, I would like to ask about a bespoke cake.\n\nOccasion:\nFlavour and size:\n' + NOTE);
+  /* Creations: one photo-led feature per category; tick favourites, then a single quiet Enquire */
+  const feat = (c, k) => c.items.length ? `<article class="fc rv" data-cat="${esc(c.cat)}"><div class="fp"><img src="${IMG(c.photo)}" alt="${esc(c.cat)}" loading="lazy"></div>
+    <div class="fb"><span class="fn">${String(k + 1).padStart(2, '0')}</span><h3>${esc(c.cat)}</h3><p>${esc(c.story)}</p>
+      <div class="opt"><span class="lb">Choose your favourites</span><div class="chk">${c.items.map((x) => `<label><input type="checkbox" value="${esc(x.name)}">${esc(x.name)}</label>`).join('')}</div></div>
+      <div class="act"><a class="btn sm go" href="#" target="_blank" rel="noopener">Enquire</a></div></div></article>`
+    : `<article class="fc fc-wide rv"><div class="fp t0"><i class="mk" aria-hidden="true"></i></div><div class="fb"><span class="fn">${String(k + 1).padStart(2, '0')}</span><h3>${esc(c.cat)}</h3><p>${esc(c.story)}</p><div class="act"><a class="btn sm ghost" href="${customCake}" target="_blank" rel="noopener">Enquire about a bespoke cake</a></div></div></article>`;
   const cake = (i) => `<article class="pc rv" data-name="${esc(i.name)}"><div class="ph"><img src="${IMG(i.photo)}" alt="${esc(i.name)}" loading="lazy"></div>
-    <div class="bd"><span class="tg">${esc(i.tag)}</span><h3>${esc(i.name)}</h3><p>${esc(i.desc)}</p><div class="act">${seg(i.sizes)}<a class="btn sm go" href="#" target="_blank" rel="noopener">Order</a></div></div></article>`;
+    <div class="bd"><span class="tg">${esc(i.tag)}</span><h3>${esc(i.name)}</h3><p>${esc(i.desc)}</p><div class="act">${seg(i.sizes)}<a class="btn sm go" href="#" target="_blank" rel="noopener">Enquire</a></div></div></article>`;
   const H = B.hamper;
   const hamper = () => `<article class="pc hm rv" data-hamper><div class="ph"><svg viewBox="0 0 120 120" aria-hidden="true"><rect x="22" y="54" width="76" height="52" rx="4"/><rect x="16" y="40" width="88" height="16" rx="4"/><path d="M60 40v66"/><path d="M60 40c-8-14-26-14-26-4s14 8 26 4zM60 40c8-14 26-14 26-4s-14 8-26 4z"/></svg></div>
     <div class="bd"><span class="tg">Made to order</span><h3>Christmas Hamper</h3><p>Choose a size and what goes inside. We confirm the final box with you on WhatsApp.</p>
       <div class="hmo"><div><div class="opt"><span class="lb">Size</span>${seg(H.sizes)}</div>
         <div class="opt"><span class="lb">Add to your box</span><div class="chk">${H.items.map((x) => `<label><input type="checkbox" value="${esc(x)}">${esc(x)}</label>`).join('')}</div></div></div>
       <div><label class="opt"><span class="lb">Card message</span><input class="fld" maxlength="70" placeholder="Optional"></label>
-        <div class="act"><a class="btn sm go" href="#" target="_blank" rel="noopener">Order hamper</a></div></div></div></div></article>`;
+        <div class="act"><a class="btn sm go" href="#" target="_blank" rel="noopener">Enquire</a></div></div></div></div></article>`;
   document.querySelectorAll('[data-list]').forEach((el) => {
-    if (el.dataset.list === 'menu') el.innerHTML = B.menu.map(panel).join('');
+    if (el.dataset.list === 'menu') el.innerHTML = B.menu.map(feat).join('');
     else if (el.dataset.list === 'seasonal') el.innerHTML = B.seasonal.map(cake).join('') + hamper();
   });
-  const upd = (r) => { const a = r.querySelector('a.go'); if (!a) return; const sz = r.querySelector('.seg [aria-pressed="true"]');
+  const upd = (r) => { const a = r.querySelector('a.go'); if (!a) return;
+    if (r.hasAttribute('data-cat')) { const sel = [...r.querySelectorAll('.chk input:checked')].map((x) => x.value); a.href = msg(['• ' + r.dataset.cat + ': ' + (sel.length ? sel.join(', ') : 'selection to be discussed')]); return; } const sz = r.querySelector('.seg [aria-pressed="true"]');
     if (r.hasAttribute('data-hamper')) { const inside = [...r.querySelectorAll('.chk input:checked')].map((x) => x.value), card = r.querySelector('.fld').value.trim();
       a.href = msg(['• Christmas hamper' + (sz ? ' (' + sz.dataset.s + ')' : ''), '  Inside: ' + (inside.length ? inside.join(', ') : 'to be discussed'), card ? '  Card message: ' + card : '']); }
     else a.href = msg(['• ' + r.dataset.name + (sz ? ' (' + sz.dataset.s + ')' : '')]); };
-  document.querySelectorAll('[data-name],[data-hamper]').forEach(upd);
-  document.addEventListener('click', (e) => { const b = e.target.closest('.seg button'); if (!b) return; b.parentElement.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); upd(b.closest('[data-name],[data-hamper]')); });
-  ['input', 'change'].forEach((t) => document.addEventListener(t, (e) => { const r = e.target.closest('[data-hamper]'); if (r) upd(r); }));
+  document.querySelectorAll('[data-name],[data-hamper],[data-cat]').forEach(upd);
+  document.addEventListener('click', (e) => { const b = e.target.closest('.seg button'); if (!b) return; b.parentElement.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); upd(b.closest('[data-name],[data-hamper],[data-cat]')); });
+  ['input', 'change'].forEach((t) => document.addEventListener(t, (e) => { const r = e.target.closest('[data-hamper],[data-cat]'); if (r) upd(r); }));
 
   /* Christmas chapter: a slow, sparse snowfall (only while the chapter is on screen; none with reduced motion) */
   const snowC = document.querySelector('.xmas .snow');
