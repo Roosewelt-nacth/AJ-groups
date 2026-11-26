@@ -440,3 +440,9 @@ html.ready .print{transition-delay:.25s}html.ready .stamp{transition-delay:.9s}h
 @media (max-width:900px){.bigword{width:128vw;margin-left:-14vw}.st-art{width:min(62%,280px)}}
 .stamp{width:clamp(96px,10.5vw,140px);left:-17%;top:-1%}
 @media (max-width:900px){.bigword{width:112vw;margin-left:-6vw}}
+/* season-only elements keep their own layout when shown (the generic reset made buttons plain blocks) */
+html.season .pb.only-season,html.season .xpill.only-season{display:inline-flex!important}
+html.season li.only-season{display:list-item!important}
+html.season a.only-season:not(.pb){display:inline-block!important}
+.pb,.slipbtn,.seg button{line-height:1}
+.pb{text-align:center}
