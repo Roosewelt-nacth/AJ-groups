@@ -238,3 +238,8 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 
 ## Ventures showcase review page, 26 Nov 2026 (testing repo only)
 - `/ventures-showcase/` (`ventures-showcase/index.html`, standalone): the eight ventures as full-height panels (after a furniture-site reference video). Panels rise in, one opens full-bleed with a photo wipe, large name, line, status pill and a round thumbnail arrow; auto-plays every 5.2 s until the visitor hovers, taps or uses arrow keys. Phones stack the panels and open downwards. Wording and photos match the group page. `noindex`, disallowed in `robots.txt`; never copy to the official repo. Not wired into the main page yet.
+
+## Bun Bun cream-only redesign, 26 Nov 2026 (testing repo first)
+- **Cream is the only colour** on `/bunbun/`: `bunbun/cream.css` (loaded last) forces cream and brand-brown ink, chapters alternate two creams, the Cream/Green switch is gone, and Seasonal is cream with one small cranberry accent. The atmospheric layout (`atmos.css`, from the `/bunbun-atmos/` review copy) is now on the main page.
+- **Enquiry basket:** ticking favourites in Creations shows a floating "N favourites chosen / Enquire on WhatsApp" pill that sends everything in one message (clear with the x).
+- The ventures showcase page is kept on git branch `keep/ventures-showcase` (also in `ventures-showcase/`) for later use on the group page.

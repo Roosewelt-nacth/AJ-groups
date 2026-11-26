@@ -9,11 +9,11 @@ const BUNBUN = {
 
   /* The menu: one panel per category, every child item inside it. Add a size list (sizes) for items sold by weight. */
   menu: [
-    { cat: 'Brownies', photo: 'menu-c/nutella-brownie.webp', story: 'Rich, fudgy and made to be shared.', items: [
+    { cat: 'Brownies', wash: '#8a4b26', photo: 'menu-c/nutella-brownie.webp', story: 'Rich, fudgy and made to be shared.', items: [
       { name: 'Nutella Brownie' }, { name: 'Double Chocolate Brownie' }, { name: 'Metro Chocolate Brownie' } ] },
-    { cat: 'Waffles', photo: 'menu-c/triple-choc-waffle.webp', story: 'Warm, crisp and finished with chocolate.', items: [
+    { cat: 'Waffles', wash: '#c98a3c', photo: 'menu-c/triple-choc-waffle.webp', story: 'Warm, crisp and finished with chocolate.', items: [
       { name: 'White Chocolate Waffle' }, { name: 'Triple Chocolate Waffle' } ] },
-    { cat: 'Desserts', photo: 'menu-c/caramel-pudding.webp', story: 'Silky, chilled and made to be savoured.', items: [
+    { cat: 'Desserts', wash: '#d79a2f', photo: 'menu-c/caramel-pudding.webp', story: 'Silky, chilled and made to be savoured.', items: [
       { name: 'Chocolate Mousse' }, { name: 'Caramel Pudding' } ] },
     { cat: 'Cakes', photo: null, items: [],
       story: 'Our cake collection is being finalised. We also create bespoke cakes for birthdays, anniversaries and special occasions.' },
@@ -46,13 +46,10 @@ const BUNBUN = {
   hd.innerHTML = `<div class="wrap"><a class="brand" href="#home" aria-label="Bun Bun Cafe, home"><i class="mk"></i></a>
     <nav class="nav" aria-label="Main">${chaps.map((c) => `<a href="#${c.id}"${c.id === 'seasonal' ? ' class="ns"' : ''}>${NAMES[c.id]}</a>`).join('')}</nav>
     <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
-    <div class="look" role="group" aria-label="Choose a look"><button type="button" data-l="cream" title="Cream"><i></i><span>Cream</span></button><button type="button" data-l="green" title="Green"><i></i><span>Green</span></button></div>
     <a class="wa-ico" href="${wa('Hi Bun Bun Cafe, I would like to place an order.')}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.2 8.6c.3-.6.8-.5 1.1.1l.5 1.1c.1.3 0 .6-.3.9l-.4.4c.6 1.2 1.6 2.1 2.8 2.7l.5-.5c.2-.2.5-.3.8-.1l1.1.6c.5.3.6.8.1 1.3-.7.8-1.8 1-3 .5-2.4-1-4-2.7-4.7-4.8-.3-.8.1-1.5.5-2.2z"/></svg></a>
     <a class="btn sm" href="#contact">Enquire</a></div>`;
   body.prepend(hd);
-  const setLook = (l) => { root.dataset.look = l; hd.querySelectorAll('.look button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.l === l)); try { localStorage.setItem('bbtheme', l === 'green' ? 'b' : 'a'); } catch (e) {} };
-  hd.querySelectorAll('.look button').forEach((b) => b.addEventListener('click', () => setLook(b.dataset.l)));
-  setLook(root.dataset.look || 'cream');
+  root.dataset.look = 'cream';
   const mb = hd.querySelector('.menu-btn');
   mb.addEventListener('click', () => { const o = hd.classList.toggle('open'); mb.setAttribute('aria-expanded', o); mb.setAttribute('aria-label', o ? 'Close menu' : 'Open menu'); });
   let lastY = scrollY; addEventListener('scroll', () => { const y = scrollY; if (!hd.classList.contains('open')) hd.classList.toggle('up', y > lastY && y > 140); lastY = y; }, { passive: true });
@@ -78,12 +75,12 @@ const BUNBUN = {
   const seg = (sizes) => (sizes ? `<div class="seg" role="group" aria-label="Size">${sizes.map((s, k) => `<button type="button" data-s="${esc(s)}" aria-pressed="${k === 0}">${esc(s)}</button>`).join('')}</div>` : '');
   const customCake = wa('Hi Bun Bun Cafe, I would like to ask about a bespoke cake.\n\nOccasion:\nFlavour and size:\n' + NOTE);
   /* Creations: one photo-led feature per category; tick favourites, then a single quiet Enquire */
-  const feat = (c, k) => c.items.length ? `<article class="fc rv" data-cat="${esc(c.cat)}"><div class="fp"><img src="${IMG(c.photo)}" alt="${esc(c.cat)}" loading="lazy"></div>
+  const feat = (c, k) => c.items.length ? `<article class="fc rv" data-cat="${esc(c.cat)}" style="--wash:${c.wash || '#8a4b26'}"><div class="fp"><img src="${IMG(c.photo)}" alt="${esc(c.cat)}" loading="lazy" decoding="async"></div>
     <div class="fb"><span class="fn">${String(k + 1).padStart(2, '0')}</span><h3>${esc(c.cat)}</h3><p>${esc(c.story)}</p>
       <div class="opt"><span class="lb">Choose your favourites</span><div class="chk">${c.items.map((x) => `<label><input type="checkbox" value="${esc(x.name)}">${esc(x.name)}</label>`).join('')}</div></div>
       <div class="act"><a class="btn sm go" href="#" target="_blank" rel="noopener">Enquire</a></div></div></article>`
     : `<article class="fc fc-wide rv"><div class="fp t0"><i class="mk" aria-hidden="true"></i></div><div class="fb"><span class="fn">${String(k + 1).padStart(2, '0')}</span><h3>${esc(c.cat)}</h3><p>${esc(c.story)}</p><div class="act"><a class="btn sm ghost" href="${customCake}" target="_blank" rel="noopener">Enquire about a bespoke cake</a></div></div></article>`;
-  const cake = (i) => `<article class="pc rv" data-name="${esc(i.name)}"><div class="ph"><img src="${IMG(i.photo)}" alt="${esc(i.name)}" loading="lazy"></div>
+  const cake = (i) => `<article class="pc rv" data-name="${esc(i.name)}"><div class="ph"><img src="${IMG(i.photo)}" alt="${esc(i.name)}" loading="lazy" decoding="async"></div>
     <div class="bd"><span class="tg">${esc(i.tag)}</span><h3>${esc(i.name)}</h3><p>${esc(i.desc)}</p><div class="act">${seg(i.sizes)}<a class="btn sm go" href="#" target="_blank" rel="noopener">Enquire</a></div></div></article>`;
   const H = B.hamper;
   const hamper = () => `<article class="pc hm rv" data-hamper><div class="ph"><svg viewBox="0 0 120 120" aria-hidden="true"><rect x="22" y="54" width="76" height="52" rx="4"/><rect x="16" y="40" width="88" height="16" rx="4"/><path d="M60 40v66"/><path d="M60 40c-8-14-26-14-26-4s14 8 26 4zM60 40c8-14 26-14 26-4s-14 8-26 4z"/></svg></div>
@@ -104,6 +101,14 @@ const BUNBUN = {
   document.querySelectorAll('[data-name],[data-hamper],[data-cat]').forEach(upd);
   document.addEventListener('click', (e) => { const b = e.target.closest('.seg button'); if (!b) return; b.parentElement.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); upd(b.closest('[data-name],[data-hamper],[data-cat]')); });
   ['input', 'change'].forEach((t) => document.addEventListener(t, (e) => { const r = e.target.closest('[data-hamper],[data-cat]'); if (r) upd(r); }));
+
+  /* enquiry basket: everything ticked across the Creations, in one WhatsApp message */
+  const bk = document.createElement('div'); bk.className = 'bk'; bk.setAttribute('role', 'status');
+  bk.innerHTML = '<span><b>0</b> favourites chosen</span><a class="btn sm" target="_blank" rel="noopener" href="#">Enquire on WhatsApp</a><button type="button" aria-label="Clear my choices">&times;</button>'; body.append(bk);
+  const bkU = () => { const ls = [...document.querySelectorAll('[data-cat]')].map((r) => { const s = [...r.querySelectorAll('.chk input:checked')].map((x) => x.value); return s.length ? '• ' + r.dataset.cat + ': ' + s.join(', ') : ''; }).filter(Boolean);
+    const n = document.querySelectorAll('[data-cat] .chk input:checked').length; bk.classList.toggle('on', n > 0); bk.querySelector('b').textContent = n; bk.querySelector('a').href = msg(ls); };
+  ['input', 'change'].forEach((t) => document.addEventListener(t, (e) => { if (e.target.closest('[data-cat]')) bkU(); }));
+  bk.querySelector('button').addEventListener('click', () => { document.querySelectorAll('[data-cat] .chk input').forEach((x) => { x.checked = false; }); bkU(); });
 
   /* Christmas chapter: a slow, sparse snowfall (only while the chapter is on screen; none with reduced motion) */
   const snowC = document.querySelector('.xmas .snow');

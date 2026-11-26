@@ -1,0 +1,33 @@
+/* Cream is the only colour: warm cream pages, brand-brown ink. Chapters alternate between two creams.
+   Christmas keeps a single small cranberry accent. Loaded last. */
+:root,html[data-look]{--cream:#f8f2e4;--cream2:#f0e7d1;--green:#4a442c;--berry:#9e2b35}
+html,html[data-look="green"]{--bg:var(--cream);--ink:var(--green)}
+.alt,html[data-look="green"] .alt{--bg:var(--cream2);--ink:var(--green)}
+.look{display:none!important}
+.ft.alt{background:var(--cream2)}
+
+/* Seasonal: same cream, quiet accent */
+html #seasonal.xmas{--bg:var(--cream);--ink:var(--green);--gold:#8a6a3a;--mute:color-mix(in srgb,var(--green) 72%,transparent);--line:color-mix(in srgb,var(--green) 18%,transparent);--bd:color-mix(in srgb,var(--green) 38%,transparent);--tint:color-mix(in srgb,var(--green) 7%,transparent);background:radial-gradient(90% 60% at 85% 0%,#fbf7ec,var(--cream) 70%);color:var(--ink)}
+.xmas h2 em,.xmas .days b{color:var(--berry)}
+.xmas .eyebrow,.xmas .pc .tg{color:var(--berry)}
+.xmas .notice,.xmas .notice p{background:color-mix(in srgb,var(--berry) 10%,transparent);color:var(--green);border-color:color-mix(in srgb,var(--berry) 35%,transparent)}
+.xmas .notice svg{stroke:var(--berry)}
+.xmas .btn:not(.ghost){background:var(--green);border-color:var(--green);color:var(--cream)}
+.xmas .seg button[aria-pressed="true"],.xmas .chk label:has(input:checked){background:var(--green);border-color:var(--green);color:var(--cream)}
+.xmas .holly{stroke:#8a7a52;opacity:.55}
+.xmas .holly circle{fill:var(--berry)}
+.xmas .pc .ph svg,.pc.hm .ph svg{color:var(--green)}
+.xmas .xbg img{opacity:.22;mix-blend-mode:multiply}
+.xmas .xbg::after{background:radial-gradient(70% 60% at 50% 45%,transparent,var(--cream) 92%)}
+.xmas .w1,.pc.hm,.xmas .w{background:color-mix(in srgb,var(--green) 5%,transparent);border-color:var(--line);color:var(--green)}
+.pc.hm{border-color:color-mix(in srgb,var(--green) 18%,transparent)}
+.xmas .w1 svg{stroke:color-mix(in srgb,var(--green) 25%,transparent)}.xmas .w1 svg .arc{stroke:var(--berry)}
+.pc:not(.hm) .ph{background:radial-gradient(closest-side,color-mix(in srgb,#c98a3c 24%,transparent),transparent 82%)}
+
+/* floating enquiry basket (all ticked favourites in one message) */
+.bk{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));z-index:49;transform:translate(-50%,24px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:12px;padding:7px 7px 7px 20px;border-radius:999px;background:color-mix(in srgb,var(--cream) 82%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);border:1px solid color-mix(in srgb,var(--green) 22%,transparent);box-shadow:0 14px 40px rgba(74,68,44,.16);color:var(--green);font-size:14px;white-space:nowrap;transition:opacity .4s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.bk.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.bk b{font-weight:600}
+.bk a.btn{height:40px}
+.bk button{width:30px;height:30px;border-radius:50%;border:1px solid color-mix(in srgb,var(--green) 25%,transparent);background:none;color:inherit;cursor:pointer;font-size:15px}
+@media (max-width:480px){.bk{max-width:calc(100vw - 20px);font-size:13px;gap:8px;padding-left:14px;bottom:calc(84px + env(safe-area-inset-bottom))}.bk a.btn{padding:0 14px}}
