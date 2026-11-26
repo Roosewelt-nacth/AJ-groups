@@ -8,9 +8,17 @@ const BUNBUN = {
     { id: 'w', name: 'Waffles', photo: 'stock/waffle.webp', thumb: 'stock/waffle-sq.webp', story: 'Warm, crisp and finished with chocolate.', items: ['White Chocolate Waffle', 'Triple Chocolate Waffle'] },
     { id: 'd', name: 'Desserts', photo: 'stock/flan.webp', thumb: 'stock/flan-sq.webp', story: 'Silky, chilled and made to be savoured.', items: ['Chocolate Mousse', 'Caramel Pudding'] },
     { id: 'c', name: 'Cakes', photo: null, story: 'Our cake collection is being finalised. We also create bespoke cakes for birthdays, anniversaries and special occasions.', items: [] },
-    { id: 'x', name: 'Christmas', season: true, photo: 'stock/fruit-cake.webp', thumb: 'stock/fruit-cake-sq.webp', story: 'Rich plum cakes and Christmas hampers, baked for the season. Plum cakes come in half kg and 1 kg. The rum cake contains alcohol and is not for under-18s.',
-      items: ['Rum-Soaked Plum Cake (Half kg)', 'Rum-Soaked Plum Cake (1 kg)', 'Non-Alcoholic Plum Cake (Half kg)', 'Non-Alcoholic Plum Cake (1 kg)', 'Christmas Hamper'] },
+    { id: 'x', name: 'Christmas', season: true, photo: 'stock/fruit-cake.webp', thumb: 'stock/fruit-cake-sq.webp', story: 'Plum cakes and Christmas hampers for the season.', items: [] },
   ],
+  /* Seasonal Editions (until 1 Jan 2027): full cakes by weight, and the hamper builder */
+  seasonal: [
+    { name: 'Traditional Rum-Soaked Plum Cake', tag: 'Contains alcohol (rum). Not for under-18s.', photo: 'stock/fruit-cake.webp', sizes: ['Half kg', '1 kg'],
+      desc: 'A festive classic prepared with carefully selected ingredients and rum-soaked fruits, bringing together the rich and traditional flavours of Christmas.' },
+    { name: 'Non-Alcoholic Plum Cake', tag: 'Prepared without alcohol', photo: 'stock/fruit-cake.webp', sizes: ['Half kg', '1 kg'],
+      desc: 'Enjoy the traditional festive plum cake experience with our non-alcoholic version.' },
+  ],
+  hamper: { sizes: ['Petite', 'Classic', 'Grand'], items: ['Plum cake', 'Brownies', 'Caramel pudding', 'Waffles', 'Chocolate mousse'] },
+  christmas: [2026, 11, 25],                                              // month is 0-based
 };
 
 (() => {
@@ -47,7 +55,7 @@ const BUNBUN = {
     $('#sLb').hidden = !c.items.length; sChk.innerHTML = c.items.map((x) => `<label><input type="checkbox" value="${esc(x)}"${sel[c.id] && sel[c.id].has(x) ? ' checked' : ''}>${esc(x)}</label>`).join('');
     $('#sGo').textContent = c.items.length ? 'Enquire on WhatsApp' : 'Enquire about a bespoke cake';
     upd(); show(sheet); };
-  $('#trayg').addEventListener('click', (e) => { const b = e.target.closest('.cp'); if (b) openSheet(b.dataset.id); });
+  $('#trayg').addEventListener('click', (e) => { const b = e.target.closest('.cp'); if (!b) return; if (b.dataset.id === 'x') { const t = $('#seasonal'); if (lenis) lenis.scrollTo(t, { duration: 1.4 }); else t.scrollIntoView({ behavior: 'smooth' }); return; } openSheet(b.dataset.id); });
   sChk.addEventListener('change', (e) => { const s = sel[cur.id] || (sel[cur.id] = new Set()); e.target.checked ? s.add(e.target.value) : s.delete(e.target.value); upd(); bump(); if (e.target.checked) pop(e.target); });
   let opener = null;
   function show(d) { opener = document.activeElement; root.classList.add('modal'); if (lenis) lenis.stop(); d.classList.remove('closing'); d.showModal(); }
@@ -57,8 +65,35 @@ const BUNBUN = {
   $$('dialog [data-close]').forEach((b) => b.addEventListener('click', () => hide(b.closest('dialog'))));
   $('#clr').addEventListener('click', () => { Object.keys(sel).forEach((k) => delete sel[k]); upd(); });
 
+
+  /* ---------- Seasonal Editions: plum cakes by weight and the hamper builder, both go into the box ---------- */
+  const seg = (s) => `<div class="seg" role="group" aria-label="Size">${s.map((x, k) => `<button type="button" data-s="${esc(x)}" aria-pressed="${k === 0}">${esc(x)}</button>`).join('')}</div>`;
+  const addX = (txt) => { const s = sel.x || (sel.x = new Set()); s.add(txt); upd(); bump(); };
+  const flash = (b, t) => { const o = b.textContent; b.textContent = t; b.classList.add('added'); setTimeout(() => { b.textContent = o; b.classList.remove('added'); }, 1400); };
+  if (season && $('#plums')) {
+    $('#plums').innerHTML = B.seasonal.map((p, i) => `<article class="pc rv" data-p="${i}"><div class="ph"><img src="${IMG(p.photo)}" alt="${esc(p.name)}" loading="lazy" decoding="async"></div>
+      <div class="bd"><span class="tg">${esc(p.tag)}</span><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><div class="act">${seg(p.sizes)}<button class="pb solid add" type="button">Add to box</button><a class="pb go" target="_blank" rel="noopener" href="#">Enquire</a></div></div></article>`).join('');
+    const H = B.hamper;
+    $('#hamper').innerHTML = `<div><div class="hico"><svg viewBox="0 0 120 120" aria-hidden="true"><rect x="22" y="54" width="76" height="52" rx="4"/><rect x="16" y="40" width="88" height="16" rx="4"/><path d="M60 40v66"/><path d="M60 40c-8-14-26-14-26-4s14 8 26 4zM60 40c8-14 26-14 26-4s-14 8-26 4z"/></svg></div><span class="tg" style="color:var(--mute)">Made to order</span><h3>Christmas Hamper</h3><p>Choose a size and what goes inside. We confirm the final box with you on WhatsApp.</p></div>
+      <div class="hb"><div><span class="lb">Size</span><br>${seg(H.sizes)}</div><div><span class="lb">Add to your hamper</span><div class="chk" style="margin-top:8px">${H.items.map((x) => `<label><input type="checkbox" value="${esc(x)}">${esc(x)}</label>`).join('')}</div></div>
+      <label><span class="lb">Card message</span><br><input class="fld" maxlength="70" placeholder="Optional" style="margin-top:8px"></label>
+      <div class="act"><button class="pb solid add" type="button">Add hamper to box</button><a class="pb go" target="_blank" rel="noopener" href="#">Enquire</a></div></div>`;
+    const plumTxt = (a) => a.querySelector('h3').textContent.replace('Traditional ', '') + ' (' + $('.seg [aria-pressed="true"]', a).dataset.s + ')';
+    const hamTxt = () => { const h = $('#hamper'), inside = $$('.chk input:checked', h).map((x) => x.value), card = $('.fld', h).value.trim();
+      return 'Christmas Hamper (' + $('.seg [aria-pressed="true"]', h).dataset.s + ')' + (inside.length ? ' with ' + inside.join(', ') : '') + (card ? ', card: "' + card + '"' : ''); };
+    const sync = () => { $$('#plums .pc').forEach((a) => { $('.go', a).href = msg(['• ' + plumTxt(a)]); }); $('#hamper .go').href = msg(['• ' + hamTxt()]); };
+    sync();
+    $('#seasonal').addEventListener('click', (e) => { const sb = e.target.closest('.seg button'); if (sb) { $$('button', sb.parentElement).forEach((x) => x.setAttribute('aria-pressed', x === sb)); sync(); return; }
+      const ad = e.target.closest('.add'); if (!ad) return; const a = ad.closest('.pc'); addX(a ? plumTxt(a) : hamTxt()); flash(ad, 'Added ✓'); pop(ad); });
+    ['input', 'change'].forEach((t) => $('#hamper').addEventListener(t, sync));
+    /* days to Christmas, and the arc fills as it comes closer (from 1 Nov) */
+    const n = new Date(), d0 = new Date(n.getFullYear(), n.getMonth(), n.getDate()), xd = new Date(...B.christmas);
+    $$('[data-xdays]').forEach((el) => { el.textContent = Math.max(0, Math.round((xd - d0) / 864e5)); });
+    $$('.days .arc').forEach((a) => { const s = new Date(B.christmas[0], 10, 1); a.style.strokeDasharray = Math.max(4, Math.min(100, (n - s) / (xd - s) * 100)) + ' 100'; });
+  }
+
   /* a tiny burst of crumbs when you add something */
-  const pop = (el) => { const host = el.closest('dialog') || document.body, hr = host === document.body ? { left: 0, top: 0 } : host.getBoundingClientRect(), r0 = el.parentElement.getBoundingClientRect(), r = { left: r0.left - hr.left, top: r0.top - hr.top + (host === document.body ? 0 : host.scrollTop), width: r0.width, height: r0.height }; for (let i = 0; i < 8; i++) { const d = document.createElement('i'); d.style.cssText = `position:${host === document.body ? 'fixed' : 'absolute'};z-index:300;left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;width:7px;height:7px;border-radius:50%;background:#4a442c;pointer-events:none`; host.append(d);
+  const pop = (el) => { const host = el.closest('dialog') || document.body, hr = host === document.body ? { left: 0, top: 0 } : host.getBoundingClientRect(), r0 = (el.tagName === 'INPUT' ? el.parentElement : el).getBoundingClientRect(), r = { left: r0.left - hr.left, top: r0.top - hr.top + (host === document.body ? 0 : host.scrollTop), width: r0.width, height: r0.height }; for (let i = 0; i < 8; i++) { const d = document.createElement('i'); d.style.cssText = `position:${host === document.body ? 'fixed' : 'absolute'};z-index:300;left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;width:7px;height:7px;border-radius:50%;background:#4a442c;pointer-events:none`; host.append(d);
     const a = Math.random() * 6.28, k = 30 + Math.random() * 40; d.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: `translate(${Math.cos(a) * k}px,${Math.sin(a) * k - 20}px) scale(.2)`, opacity: 0 }], { duration: 700, easing: 'cubic-bezier(.2,.8,.2,1)' }).onfinish = () => d.remove(); } };
 
   /* ---------- details ---------- */
@@ -67,7 +102,7 @@ const BUNBUN = {
     if (k === 'fssai') el.textContent = B.fssai || 'to be added';
     if (k === 'location') el.textContent = B.location || 'Location to be added';
     if (k === 'wa-number') el.textContent = '+' + B.whatsapp.replace(/^(\d{2})(\d{5})(\d+)$/, '$1 $2 $3');
-    if (k === 'instagram') { if (B.instagram) el.href = B.instagram; else { el.removeAttribute('href'); $('b', el).textContent = 'Link coming soon'; } } });
+    if (k === 'instagram') { if (B.instagram) { el.href = B.instagram; el.target = '_blank'; el.rel = 'noopener'; } else { el.removeAttribute('href'); el.textContent = 'Instagram (link coming soon)'; } } });
   upd();
 
   /* ---------- the lid ---------- */
@@ -86,7 +121,7 @@ const BUNBUN = {
   addEventListener('keydown', (e) => { if (!opened && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openBox(); } });
 
   /* gentle reveals */
-  $$('.th, .about h2, .about .two p, .who, .lic, .contact h2, .cc').forEach((el) => el.classList.add('rv'));
+  $$('.th, .intro .wrap > *, .seasonal .sh, .seasonal .notice, .hamper, .about h2, .about .three p, .who, .lic, .contact h2, .contact .lead, .contact .notice, .cc').forEach((el) => el.classList.add('rv'));
   $$('.cp').forEach((el, i) => { el.classList.add('rv'); el.style.setProperty('--dl', (i % 3) * .08 + 's'); });
   const GS = !RM && !!(window.gsap && window.ScrollTrigger);
   if (RM || !('IntersectionObserver' in window)) $$('.rv').forEach((el) => el.classList.add('in'));
@@ -109,8 +144,8 @@ const BUNBUN = {
     if (window.Lenis && !lenis) { lenis = new Lenis({ lerp: .1, wheelMultiplier: .9, touchMultiplier: 1.4 }); lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add((t) => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
     const ins = $('.inside');
     /* the inside of the box: the headline sinks back and the treats drift up as you leave */
-    gsap.to('.inside h1', { yPercent: 38, opacity: .15, scale: .94, ease: 'none', scrollTrigger: { trigger: ins, start: 'top top', end: 'bottom top', scrub: true } });
-    gsap.to(['.inside .lead', '.inside .notice', '.inside .eyebrow'], { y: -60, opacity: 0, ease: 'none', scrollTrigger: { trigger: ins, start: 'top top', end: '60% top', scrub: true } });
+    gsap.to('.hero-wm', { yPercent: 40, opacity: .1, scale: .9, ease: 'none', scrollTrigger: { trigger: ins, start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to(['.inside .lines', '.inside .xpill', '.inside .cta'], { y: -60, opacity: 0, ease: 'none', scrollTrigger: { trigger: ins, start: 'top top', end: '60% top', scrub: true } });
     $$('.fl', ins).forEach((f, k) => gsap.to(f, { y: -(140 + k * 90), rotate: k % 2 ? 8 : -8, ease: 'none', scrollTrigger: { trigger: ins, start: 'top top', end: 'bottom top', scrub: true } }));
     /* the tray: the heading drifts sideways, every photo has its own depth */
     gsap.fromTo('.th h2', { xPercent: 3 }, { xPercent: -3, ease: 'none', scrollTrigger: { trigger: '.trayw', start: 'top bottom', end: 'bottom top', scrub: true } });
