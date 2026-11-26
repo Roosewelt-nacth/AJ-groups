@@ -118,8 +118,7 @@ const BUNBUN = {
   upd();
 
   /* ---------- brand first: the page opens straight onto the brand; the box unwraps itself as you scroll ---------- */
-  const lid = $('#lid'), lp = $('#seal'); const opened = true;
-  if (season) { $('#tagT').textContent = 'Merry Christmas,'; $('#tagS').textContent = 'from Bun Bun.'; }
+  const opened = true;
   requestAnimationFrame(() => setTimeout(() => root.classList.add('ready'), 60));
   setTimeout(startMotion, RM ? 0 : 1500);
 
@@ -148,20 +147,6 @@ const BUNBUN = {
     /* the brand stage: the photo sinks slowly, the words lift away */
     gsap.to('.st-ph img', { yPercent: 12, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
     gsap.to('.st-l', { y: -80, opacity: .2, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
-    /* the box: pinned while the bow unties, the lid lifts and the tissue parts, all on your scroll */
-    const ub = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: '.unbox', start: 'top top', end: '+=160%', pin: true, scrub: .6, anticipatePin: 1 } });
-    ub.fromTo('#scene', { scale: .82 }, { scale: 1, duration: 1 })
-      .to('.gtag', { y: 40, rotate: 40, opacity: 0, duration: .6 }, '<.4')
-      .to('.bow', { scale: 0, rotate: -50, opacity: 0, duration: .6 }, '<.2')
-      .to('.rib-v', { scaleY: 0, duration: .6 }, '<.2')
-      .to(lp, { rotateX: -116, '--sh': 1, duration: 1.6 })
-      .to('.unbox .hint', { opacity: 0, duration: .4 }, '<')
-      .to('.t1', { xPercent: -110, rotate: -8, duration: 1 }, '-=.6')
-      .to('.t2', { xPercent: 110, rotate: 8, duration: 1 }, '<')
-      .fromTo('.peek', { scale: .9 }, { scale: 1.08, duration: 1 }, '<')
-      .to('#scene', { scale: .9, yPercent: -8, duration: 1 }, '+=.1')
-      .fromTo('.ub-msg', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1 }, '<.2')
-      .to({}, { duration: .5 });
     /* the tray: the heading drifts sideways, every photo has its own depth */
     gsap.fromTo('.th h2', { xPercent: 3 }, { xPercent: -3, ease: 'none', scrollTrigger: { trigger: '.trayw', start: 'top bottom', end: 'bottom top', scrub: true } });
     $$('.cp img').forEach((im) => gsap.fromTo(im, { yPercent: -7, scale: 1.14 }, { yPercent: 7, scale: 1.14, ease: 'none', scrollTrigger: { trigger: im.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
