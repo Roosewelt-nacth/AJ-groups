@@ -20,3 +20,9 @@ Things to confirm yourself
 
 ## Bun Bun photos (assets/bunbun/menu/, assets/bunbun/plum/)
 AI-generated images supplied by the owner on 24 Nov 2026 (menu items and the six plum cake steps), background levelled to the brand cream. No third-party licence applies. Replace with Bun Bun's own photos when ready, and check they match what is actually baked.
+
+## Bun Bun new design review (`bunbun-new/vendor/`, 26 Nov 2026)
+- GSAP 3.12.5 and ScrollTrigger (GreenSock, standard no-charge licence, https://gsap.com/standard-license): animation and scroll effects.
+- Lenis 1.1.14 (MIT, darkroomengineering): smooth scrolling.
+- Matter.js 0.20.0 (MIT, Liam Brummitt): sprinkle physics.
+Downloaded from the jsDelivr npm CDN at pinned versions and self-hosted. Review the GSAP licence before the new design goes live.

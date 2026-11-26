@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bun Bun Cafe | Warm from the oven (new design review)</title>
+<meta name="description" content="Bun Bun Cafe, a homegrown bakery: brownies, waffles, desserts and Christmas plum cakes. Enquire on WhatsApp.">
+<meta name="theme-color" content="#f8f2e4">
+<link rel="icon" href="../bunbun/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="../bunbun/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,0..100&family=DM+Sans:opsz,wght@9..40,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./new.css?v=1">
+<script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date(),on=q==="1"?true:q==="0"?false:d<new Date(2027,0,2);document.documentElement.classList.toggle("season",on)}catch(e){}})();</script>
+</head>
+<body>
+
+<!-- opening: the oven warms up, then the page lifts -->
+<div class="load" id="load" aria-hidden="true"><div class="ld"><i class="mk"></i><p><span id="ldn">0</span>°</p><small>Warming up the oven</small></div></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="bar" id="bar">
+  <a class="brand" href="#top" aria-label="Bun Bun Cafe, home"><i class="mk"></i><i class="wm"></i></a>
+  <nav aria-label="Main"><a href="#story">Our way</a><a href="#creations">Creations</a><a class="only-season" href="#seasonal">Christmas</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+  <a class="mag pillbtn" data-wa href="#" target="_blank" rel="noopener">Enquire</a>
+</header>
+
+<main id="top">
+<!-- 1 HERO -->
+<section class="hero" id="hero">
+  <div class="float f1"><img src="../assets/bunbun/menu-c/double-choc-brownie.webp" alt="" width="640" height="640"></div>
+  <div class="float f2"><img src="../assets/bunbun/menu-c/triple-choc-waffle.webp" alt="" width="640" height="640"></div>
+  <div class="float f3"><img src="../assets/bunbun/menu-c/caramel-pudding.webp" alt="" width="640" height="640"></div>
+  <div class="hin">
+    <p class="eyebrow">Bun Bun Cafe · Homemade · Baked to order</p>
+    <h1 class="split" aria-label="Warm from the oven.">Warm from the <em>oven.</em></h1>
+    <p class="lead">Brownies, waffles and desserts made by hand, in small batches, for every moment worth sharing.</p>
+    <div class="cta"><a class="mag pillbtn solid" href="#creations">Discover our creations</a><a class="mag pillbtn only-season" href="#seasonal">Christmas editions</a></div>
+  </div>
+  <div class="scrollcue" aria-hidden="true"><i></i>Scroll</div>
+</section>
+<div class="marq" aria-hidden="true"><div class="mt"><span>Brownies</span><span>Waffles</span><span>Desserts</span><span>Cakes</span><span>Baked fresh</span><span>Made to order</span><span>Brownies</span><span>Waffles</span><span>Desserts</span><span>Cakes</span><span>Baked fresh</span><span>Made to order</span></div></div>
+
+<!-- 2 OUR WAY: a pinned story in three steps -->
+<section class="story" id="story">
+  <div class="sp">
+    <div class="sl">
+      <p class="eyebrow">Our way</p>
+      <div class="steps">
+        <div class="st on"><span class="no">01</span><h2>Mixed <em>by hand.</em></h2><p>Every batch starts small, with real ingredients and a recipe we love.</p></div>
+        <div class="st"><span class="no">02</span><h2>Baked <em>to order.</em></h2><p>Nothing waits on a shelf. We bake for you, so it reaches you fresh and warm.</p></div>
+        <div class="st"><span class="no">03</span><h2>Boxed <em>with care.</em></h2><p>Packed carefully and made to be shared, ready for the moment you planned.</p></div>
+      </div>
+      <p class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></p>
+    </div>
+    <div class="sr" aria-hidden="true">
+      <div class="frame"><img class="on" src="../assets/ventures/bun.webp?v=2" alt="" width="720" height="480"><img src="../assets/bunbun/menu-c/nutella-brownie.webp" alt="" width="640" height="640"><img src="../assets/bunbun/menu-c/white-choc-waffle.webp" alt="" width="640" height="640"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 CREATIONS: one counter you walk along -->
+<section class="creations" id="creations">
+  <div class="chead"><p class="eyebrow">Our creations</p><h2 class="big">Crafted fresh. <em>Loved every bite.</em></h2><p class="lead">Tick your favourites, then enquire on WhatsApp in one message.</p>
+    <p class="notice"><b>Plan ahead.</b> Please order at least 2 days before your date.</p></div>
+  <div class="counter" id="counter"><div class="track" data-list="menu"></div></div>
+</section>
+
+<!-- 4 SEASONAL (in season only) -->
+<section class="season only-season" id="seasonal">
+  <canvas class="snow" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="eyebrow berry">Seasonal editions · Christmas 2026</p>
+    <h2 class="big">A Christmas tradition, <em class="berry">baked with love.</em></h2>
+    <p class="lead">Rich plum cakes in half kg and 1 kg, and Christmas hampers made your way. <b class="days"><span data-xdays>0</span> days to Christmas.</b></p>
+    <p class="notice"><b>Plan ahead.</b> Please order at least 2 days before your date.</p>
+    <div class="sg" data-list="seasonal"></div>
+  </div>
+</section>
+
+<!-- 5 ABOUT -->
+<section class="about" id="about"><div class="wrap">
+  <p class="eyebrow">About us</p>
+  <h2 class="big">A little interest. <em>A sweet beginning.</em></h2>
+  <div class="two">
+    <p>Bun Bun Cafe started with something simple: Monisha Janet's personal interest in baking and her desire to turn that interest into something of her own.</p>
+    <p>With the encouragement and support of her family, Monisha took her first step towards building a home-baking venture. What began as a simple interest gradually became Bun Bun Cafe, a homegrown bakery built around creativity, passion and the love of baking.</p>
+  </div>
+  <div class="founder"><div><p class="eyebrow">Meet our founder</p><h3 class="name">Monisha Janet</h3><p class="role">Founder &amp; Certified Baker</p></div>
+    <p>As a certified baker, Monisha leads the baking process, product preparation and creative direction of the brand. Her focus is on delicious products, new flavours and designs, and a thoughtful experience with every order.</p></div>
+  <ul class="pills"><li>Quality ingredients</li><li>Fresh preparation</li><li>Attention to detail</li><li>Food safety and hygiene</li><li>Personalised experience</li></ul>
+  <p class="lic">Bun Bun Cafe is an FSSAI-licensed food business. Licence no. <span data-fill="fssai"></span></p>
+</div></section>
+
+<!-- 6 CONTACT + the sprinkle floor -->
+<section class="contact" id="contact">
+  <canvas class="floor" id="floor" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="eyebrow">Contact us</p>
+    <h2 class="big">We'd love to <em>hear from you!</em></h2>
+    <p class="lead">Have a question, planning a celebration or looking to place an order? Get in touch with Bun Bun Cafe.</p>
+    <div class="cg">
+      <a class="cc" data-wa href="#" target="_blank" rel="noopener"><span class="eyebrow">WhatsApp</span><b data-fill="wa-number"></b><span>The quickest way to enquire or place an order.</span></a>
+      <a class="cc" data-fill="instagram" href="#" target="_blank" rel="noopener"><span class="eyebrow">Instagram</span><b>Send a DM</b><span>See our latest bakes and message us there.</span></a>
+      <div class="cc"><span class="eyebrow">Location</span><b data-fill="location"></b><span>Collection details are shared when your order is confirmed.</span></div>
+    </div>
+    <p class="play" aria-hidden="true">Psst. Try dragging the sprinkles.</p>
+  </div>
+  <footer class="ft"><span>© 2026 Bun Bun Cafe · by AJ GROUPS</span><span><a href="../privacy/">Privacy</a> · <a href="../terms/">Terms</a></span></footer>
+</section>
+</main>
+
+<div class="bk" id="bk" role="status"><span><b>0</b> favourites chosen</span><a class="pillbtn solid" target="_blank" rel="noopener" href="#">Enquire on WhatsApp</a><button type="button" aria-label="Clear my choices">&times;</button></div>
+
+<script src="./vendor/gsap.min.js"></script>
+<script src="./vendor/ScrollTrigger.min.js"></script>
+<script src="./vendor/lenis.min.js"></script>
+<script src="./vendor/matter.min.js"></script>
+<script src="./new.js?v=1"></script>
+</body>
+</html>
