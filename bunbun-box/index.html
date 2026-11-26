@@ -10,25 +10,10 @@
 <link rel="icon" href="../bunbun/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="../bunbun/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..500,0..100&family=DM+Sans:opsz,wght@9..40,400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./box.css?v=11">
-<script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date();document.documentElement.classList.toggle("season",q==="1"?true:q==="0"?false:d<new Date(2027,0,2));if(q==="open")document.documentElement.classList.add("opened")}catch(e){}})();</script>
+<link rel="stylesheet" href="./box.css?v=17">
+<script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date();document.documentElement.classList.toggle("season",q==="1"?true:q==="0"?false:d<new Date(2027,0,2));document.documentElement.classList.add("opened")}catch(e){}})();</script>
 </head>
 <body>
-
-<!-- THE LID: a cream lid with a green ribbon and a seal. Tap or drag the seal to open the box. -->
-<div class="lid" id="lid">
-  <div class="half l"><i class="rb v"></i></div>
-  <div class="half r"><i class="rb v"></i></div>
-  <i class="rb h" aria-hidden="true"></i>
-  <div class="face">
-    <p class="tag">Baked fresh · Made to order</p>
-    <button class="seal" id="seal" type="button" aria-label="Open your Bun Bun box">
-      <svg viewBox="0 0 200 200" aria-hidden="true"><defs><path id="rp" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0"/></defs><text><textPath href="#rp" textLength="512" lengthAdjust="spacing">BAKED FRESH · HOMEMADE TASTE · MADE TO ORDER · </textPath></text></svg>
-      <i class="mk"></i>
-    </button>
-    <p class="hint"><span class="d">Tap</span> the seal to open</p>
-  </div>
-</div>
 
 <div class="cur" id="cur" aria-hidden="true"><i class="mk"></i><span></span></div>
 
@@ -40,18 +25,48 @@
 </header>
 
 <main>
-<!-- 01 HOME: inside the box -->
-<section class="inside" id="home">
-  <div class="tis" aria-hidden="true"></div>
-  <span class="fl fa" aria-hidden="true"><img src="../assets/bunbun/stock/brownie-plate-sq.webp" alt="" width="640" height="640"></span>
-  <span class="fl fb" aria-hidden="true"><img src="../assets/bunbun/stock/waffle-sq.webp" alt="" width="640" height="640"></span>
-  <span class="fl fc" aria-hidden="true"><img src="../assets/bunbun/stock/mousse-sq.webp" alt="" width="640" height="640"></span>
-  <h1 class="sr-only">Bun Bun Cafe: freshly baked treats and customised cakes</h1>
-  <i class="wm hero-wm rise" role="img" aria-label="Bun Bun"></i>
-  <div class="lines rise"><p>Homemade taste.<br>Baked to order.<br>Made for every moment.</p><p>Birthday cakes<br>Brownies · Desserts · Waffles</p></div>
-  <p class="xpill only-season rise"><i></i>Christmas plum cakes &amp; hampers, now taking orders</p>
-  <div class="cta rise"><a class="pb light" href="#tray">Discover Our Creations</a><a class="pb ghost only-season" href="#seasonal">Explore Seasonal Editions</a><a class="pb ghost only-std" data-wa href="#" target="_blank" rel="noopener">Enquire on WhatsApp</a></div>
-  <a class="down" href="#intro" aria-label="Scroll down"><i></i>Open the box</a>
+<!-- 01 HOME: the brand, first -->
+<section class="stage" id="home">
+  <div class="st-l">
+    <h1 class="sr-only">Bun Bun Cafe: freshly baked treats and customised cakes</h1>
+    <p class="eyebrow rise">Bun Bun Cafe · A homegrown bakery</p>
+    <i class="wm st-wm rise" role="img" aria-label="Bun Bun"></i>
+    <p class="st-line rise">Homemade taste. Baked to order. <em>Made for every moment.</em></p>
+    <p class="st-cats rise">Birthday cakes · Brownies · Desserts · Waffles</p>
+    <p class="xpill only-season rise"><i></i>Christmas plum cakes &amp; hampers, now taking orders</p>
+    <div class="cta rise"><a class="pb solid" href="#tray">Discover Our Creations</a><a class="pb only-season" href="#seasonal">Explore Seasonal Editions</a><a class="pb only-std" data-wa href="#" target="_blank" rel="noopener">Enquire on WhatsApp</a></div>
+  </div>
+  <div class="st-r rise">
+    <div class="st-ph"><img src="../assets/bunbun/stock/brownie-pour.webp" alt="Chocolate brownies with sauce pouring over them" width="800" height="1200" fetchpriority="high"></div>
+    <div class="st-seal" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="rp2" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text><textPath href="#rp2" textLength="502" lengthAdjust="spacing">BAKED FRESH · HOMEMADE TASTE · MADE TO ORDER · </textPath></text></svg><i class="mk"></i></div>
+  </div>
+  <a class="st-down" href="#unbox"><i></i>Scroll</a>
+</section>
+
+<!-- 02 THE BOX: scroll and it unwraps itself -->
+<section class="unbox" id="unbox">
+<div class="lid" id="lid">
+  <div class="scene" id="scene">
+    <div class="box" id="boxEl">
+      <div class="inner" aria-hidden="true"><img class="peek" src="../assets/bunbun/stock/brownie-plate-sq.webp" alt="" width="640" height="640"><i class="tsu t1"></i><i class="tsu t2"></i></div>
+      <div class="lidp" id="seal" aria-hidden="true">
+        <span class="front">
+          <span class="sm">Baked fresh · Made to order</span>
+          <span class="win"><img src="../assets/bunbun/stock/brownie-pour-sq.webp" alt="" width="640" height="640"><i class="film"></i></span>
+          <i class="wm press"></i>
+          <span class="sm">Homemade taste</span>
+          <i class="rib-v"></i>
+        </span>
+        <span class="back"></span>
+      </div>
+      <svg class="bow" viewBox="0 0 160 120" aria-hidden="true"><path d="M80 52C62 30 26 14 18 30s22 34 62 26z"/><path d="M80 52c18-22 54-38 62-22s-22 34-62 26z"/><path class="hi" d="M78 50C62 34 36 24 30 32"/><path class="hi" d="M82 50c16-16 42-26 48-18"/><path d="M74 58l-16 50 12-4 8 12 6-56zM86 58l16 50-12-4-8 12-6-56z"/><ellipse cx="80" cy="54" rx="11" ry="9"/></svg>
+      <div class="gtag" aria-hidden="true"><i class="str"></i><span class="card"><i class="hole"></i><b id="tagT">Baked fresh,</b><em id="tagS">just for you.</em></span></div>
+    </div>
+  </div>
+  <p class="hint">Keep scrolling to open your box</p>
+  <p class="ub-msg">Your box is <em>open.</em><span>Fill it with your favourites</span></p>
+</div>
+
 </section>
 
 <section class="intro" id="intro"><div class="wrap">
@@ -149,6 +164,6 @@
 <script src="./vendor/gsap.min.js"></script>
 <script src="./vendor/ScrollTrigger.min.js"></script>
 <script src="./vendor/lenis.min.js"></script>
-<script src="./box.js?v=8"></script>
+<script src="./box.js?v=11"></script>
 </body>
 </html>

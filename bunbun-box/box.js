@@ -117,20 +117,11 @@ const BUNBUN = {
     if (k === 'instagram') { if (B.instagram) { el.href = B.instagram; el.target = '_blank'; el.rel = 'noopener'; } else { el.removeAttribute('href'); el.textContent = 'Instagram (link coming soon)'; } } });
   upd();
 
-  /* ---------- the lid ---------- */
-  const lid = $('#lid'), seal = $('#seal'); let opened = root.classList.contains('opened');
-  const openBox = () => { if (opened) return; opened = true; lid.style.removeProperty('--d'); lid.classList.add('open'); $$('.half', lid).forEach((h) => { h.style.transform = ''; });
-    setTimeout(() => root.classList.add('opened'), RM ? 0 : 380); scrollTo(0, 0); setTimeout(startMotion, RM ? 0 : 1900); };
-  if (opened) { lid.style.display = 'none'; setTimeout(startMotion, 0); }
-  if (season) { $('textPath', lid).textContent = 'OPEN YOUR CHRISTMAS BOX · BUN BUN CAFE · '; $('.tag', lid).textContent = 'Christmas editions are here'; }
-  seal.addEventListener('click', () => { if (!dragged) openBox(); });
-  let sx = 0, dragging = false, dragged = false;
-  seal.addEventListener('pointerdown', (e) => { dragging = true; dragged = false; sx = e.clientX; seal.setPointerCapture(e.pointerId); });
-  seal.addEventListener('pointermove', (e) => { if (!dragging) return; const dx = Math.abs(e.clientX - sx); if (dx > 6) dragged = true; const h = $$('.half', lid); h[0].style.transition = h[1].style.transition = 'none'; h[0].style.transform = `translateX(${-dx * .5}px)`; h[1].style.transform = `translateX(${dx * .5}px)`; if (dx > 90) { dragging = false; h.forEach((x) => { x.style.transition = ''; }); openBox(); } });
-  const endDrag = () => { if (!dragging) return; dragging = false; $$('.half', lid).forEach((h) => { h.style.transition = ''; h.style.transform = ''; }); setTimeout(() => { dragged = false; }, 50); };
-  seal.addEventListener('pointerup', endDrag); seal.addEventListener('pointercancel', endDrag);
-  if (FINE) $('.hint .d', lid).textContent = 'Click'; else $('.hint .d', lid).textContent = 'Tap';
-  addEventListener('keydown', (e) => { if (!opened && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openBox(); } });
+  /* ---------- brand first: the page opens straight onto the brand; the box unwraps itself as you scroll ---------- */
+  const lid = $('#lid'), lp = $('#seal'); const opened = true;
+  if (season) { $('#tagT').textContent = 'Merry Christmas,'; $('#tagS').textContent = 'from Bun Bun.'; }
+  requestAnimationFrame(() => setTimeout(() => root.classList.add('ready'), 60));
+  setTimeout(startMotion, RM ? 0 : 1500);
 
   /* gentle reveals */
   $$('.th, .intro .wrap > *, .seasonal .sh, .seasonal .notice, .hamper, .about h2, .about .three p, .who, .lic, .contact h2, .contact .lead, .contact .notice, .cc').forEach((el) => el.classList.add('rv'));
@@ -140,8 +131,8 @@ const BUNBUN = {
   else if (GS) { gsap.registerPlugin(ScrollTrigger); ScrollTrigger.batch('.rv', { start: 'top 88%', once: true, onEnter: (els) => els.forEach((el, i) => { el.style.setProperty('--dl', i * .09 + 's'); el.classList.add('in'); }) }); }
   else { const io = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -10% 0px' }); $$('.rv').forEach((el) => io.observe(el)); }
   /* the treats drift away from the pointer, a little */
-  if (FINE && !RM) { const ins = $('.inside'), fls = $$('.fl', ins); let raf = 0, mx = 0, my = 0;
-    ins.addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; if (!raf) raf = requestAnimationFrame(() => { raf = 0; fls.forEach((f, k) => { const d = (k + 1) * 14; f.style.setProperty('--px', (-mx * d) + 'px'); f.style.setProperty('--py', (-my * d) + 'px'); }); }); }); }
+  if (FINE && !RM) { const stg = $('.stage'), seal2 = $('.st-seal'); let raf = 0, mx = 0, my = 0;
+    stg.addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; if (!raf) raf = requestAnimationFrame(() => { raf = 0; seal2.style.translate = (mx * -22) + 'px ' + (my * -22) + 'px'; }); }); }
 
   /* the bar steps aside on the way down */
   const top = $('#top'); let ly = 0; addEventListener('scroll', () => { const y = scrollY; top.classList.toggle('hide', y > ly && y > 240); ly = y; }, { passive: true });
@@ -154,11 +145,23 @@ const BUNBUN = {
     if (RM || !window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
     if (window.Lenis && !lenis) { lenis = new Lenis({ lerp: .1, wheelMultiplier: .9, touchMultiplier: 1.4 }); lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add((t) => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
-    const ins = $('.inside');
-    /* the inside of the box: the headline sinks back and the treats drift up as you leave */
-    gsap.to('.hero-wm', { yPercent: 40, opacity: .1, scale: .9, ease: 'none', scrollTrigger: { trigger: ins, start: 'top top', end: 'bottom top', scrub: true } });
-    gsap.to(['.inside .lines', '.inside .xpill', '.inside .cta'], { y: -60, opacity: 0, ease: 'none', scrollTrigger: { trigger: ins, start: 'top top', end: '60% top', scrub: true } });
-    $$('.fl', ins).forEach((f, k) => gsap.to(f, { y: -(140 + k * 90), rotate: k % 2 ? 8 : -8, ease: 'none', scrollTrigger: { trigger: ins, start: 'top top', end: 'bottom top', scrub: true } }));
+    /* the brand stage: the photo sinks slowly, the words lift away */
+    gsap.to('.st-ph img', { yPercent: 12, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to('.st-l', { y: -80, opacity: .2, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
+    /* the box: pinned while the bow unties, the lid lifts and the tissue parts, all on your scroll */
+    const ub = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: '.unbox', start: 'top top', end: '+=160%', pin: true, scrub: .6, anticipatePin: 1 } });
+    ub.fromTo('#scene', { scale: .82 }, { scale: 1, duration: 1 })
+      .to('.gtag', { y: 40, rotate: 40, opacity: 0, duration: .6 }, '<.4')
+      .to('.bow', { scale: 0, rotate: -50, opacity: 0, duration: .6 }, '<.2')
+      .to('.rib-v', { scaleY: 0, duration: .6 }, '<.2')
+      .to(lp, { rotateX: -116, '--sh': 1, duration: 1.6 })
+      .to('.unbox .hint', { opacity: 0, duration: .4 }, '<')
+      .to('.t1', { xPercent: -110, rotate: -8, duration: 1 }, '-=.6')
+      .to('.t2', { xPercent: 110, rotate: 8, duration: 1 }, '<')
+      .fromTo('.peek', { scale: .9 }, { scale: 1.08, duration: 1 }, '<')
+      .to('#scene', { scale: .9, yPercent: -8, duration: 1 }, '+=.1')
+      .fromTo('.ub-msg', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1 }, '<.2')
+      .to({}, { duration: .5 });
     /* the tray: the heading drifts sideways, every photo has its own depth */
     gsap.fromTo('.th h2', { xPercent: 3 }, { xPercent: -3, ease: 'none', scrollTrigger: { trigger: '.trayw', start: 'top bottom', end: 'bottom top', scrub: true } });
     $$('.cp img').forEach((im) => gsap.fromTo(im, { yPercent: -7, scale: 1.14 }, { yPercent: 7, scale: 1.14, ease: 'none', scrollTrigger: { trigger: im.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
@@ -179,9 +182,9 @@ const BUNBUN = {
   if (FINE) { root.classList.add('fine'); cu.querySelector('span').textContent = 'Open';
     const loop = () => { x += (tx - x) * .22; y += (ty - y) * .22; cu.style.setProperty('--x', x + 'px'); cu.style.setProperty('--y', y + 'px'); if (Math.abs(tx - x) + Math.abs(ty - y) > .1) requestAnimationFrame(loop); else run = false; };
     addEventListener('pointermove', (e) => { tx = e.clientX; ty = e.clientY; if (!root.classList.contains('moved')) { root.classList.add('moved'); x = tx; y = ty; } if (!run) { run = true; requestAnimationFrame(loop); }
-      const t = e.target; cu.classList.toggle('dish', !!t.closest('.cp') || !!t.closest('.seal')); cu.classList.toggle('btn', !t.closest('.cp') && !!t.closest('a,button,label')); }, { passive: true });
+      const t = e.target; cu.classList.toggle('dish', !!t.closest('.cp') || !!t.closest('#seal')); cu.classList.toggle('btn', !t.closest('.cp') && !!t.closest('a,button,label')); }, { passive: true });
     document.addEventListener('pointerleave', () => root.classList.remove('moved')); }
-  else addEventListener('pointerdown', (e) => { if (e.target.closest('.seal')) return; const p = document.createElement('div'); p.className = 'tp'; p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px'; p.innerHTML = '<i class="mk"></i>'; document.body.append(p); setTimeout(() => p.remove(), 850); }, { passive: true });
+  else addEventListener('pointerdown', (e) => { if (e.target.closest('#lid')) return; const p = document.createElement('div'); p.className = 'tp'; p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px'; p.innerHTML = '<i class="mk"></i>'; document.body.append(p); setTimeout(() => p.remove(), 850); }, { passive: true });
 
   /* ---------- the share card (canvas) ---------- */
   const cardD = $('#cardD'), cv = $('#cv'), cx = cv.getContext('2d');
