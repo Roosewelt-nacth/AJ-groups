@@ -226,46 +226,7 @@ const BUNBUN = {
     try { if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: 'My Bun Bun box', text: 'I am treating myself to Bun Bun Cafe ' + B.handle }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
     const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'my-bun-bun-box.png'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }, 'image/png'); });
 
-  /* ---------- proof of hand: today's date, crumbs on click, and a wordmark you can poke like dough ---------- */
-  { const stg = $('.stage'), host = $('.bigword');
-    const today = new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }).format(new Date());
-    $$('[data-today]').forEach((el) => { el.textContent = today; });
-    /* crumbs: a small burst of green and cream bits where you tap, which fall and fade */
-    if (stg && !RM && window.gsap) stg.addEventListener('pointerdown', (e) => { if (e.target.closest('a,button,input,label')) return; const r = stg.getBoundingClientRect();
-      for (let i = 0; i < 16; i++) { const c = document.createElement('i'); c.className = 'crumb'; const w = 5 + Math.random() * 7, cream = i % 3 === 0;
-        c.style.cssText = `width:${w}px;height:${w * (.6 + Math.random() * .5)}px;left:${e.clientX - r.left}px;top:${e.clientY - r.top}px;background:${cream ? '#f8f2e4' : '#4a442c'};${cream ? 'box-shadow:0 0 0 1.2px #4a442c;' : ''}`; stg.append(c);
-        gsap.fromTo(c, { x: 0, y: 0, rotate: 0, opacity: 1 }, { x: (Math.random() - .5) * 240, y: 200 + Math.random() * 160, rotate: (Math.random() - .5) * 540, opacity: 0, duration: 1.1 + Math.random() * .6, ease: 'power2.in', onComplete: () => c.remove() });
-        gsap.fromTo(c, { scale: .3 }, { scale: 1, duration: .25, ease: 'back.out(3)' }); gsap.to(c, { y: '-=' + (40 + Math.random() * 60), duration: .35, ease: 'power2.out', overwrite: false }); } });
-    /* the dough wordmark: WebGL bulge and stretch around the pointer, with a spring */
-    if (host && !RM) { const cv = document.createElement('canvas'); cv.className = 'dough'; cv.setAttribute('aria-hidden', 'true');
-      const gl = cv.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false }); if (gl) {
-        const mk = (t, s) => { const x = gl.createShader(t); gl.shaderSource(x, s); gl.compileShader(x); return x; };
-        const pr = gl.createProgram(); gl.attachShader(pr, mk(gl.VERTEX_SHADER, 'attribute vec2 a;varying vec2 u;void main(){u=vec2(a.x*.5+.5,1.-(a.y*.5+.5));gl_Position=vec4(a,0.,1.);}'));
-        gl.attachShader(pr, mk(gl.FRAGMENT_SHADER, `precision mediump float;varying vec2 u;uniform sampler2D mk,fl;uniform vec2 m,v;uniform float f,asp,t;
-          void main(){vec2 d=u-m;d.x*=asp;float r=length(d);float w=exp(-r*r*13.)*f;vec2 dir=d/(r+1e-4);dir.x/=asp;
-            vec2 uv=u-dir*w*.11+vec2(v.x,v.y*.5)*w*.07;uv.y+=sin(u.x*20.+t*6.)*.011*w;uv.x+=cos(u.y*15.+t*5.)*.007*w;
-            float ins=step(0.,uv.x)*step(uv.x,1.)*step(0.,uv.y)*step(uv.y,1.);float a=texture2D(mk,uv).a*ins;vec3 c=texture2D(fl,uv).rgb;gl_FragColor=vec4(c*a,a);}`));
-        gl.linkProgram(pr); gl.useProgram(pr);
-        const bf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, bf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-        const at = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(at); gl.vertexAttribPointer(at, 2, gl.FLOAT, false, 0, 0);
-        const U = (n) => gl.getUniformLocation(pr, n), uM = U('m'), uV = U('v'), uF = U('f'), uA = U('asp'), uT = U('t');
-        const tex = (img, unit, name) => { const tx = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, tx); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
-          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img); [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]].forEach(([p, v]) => gl.texParameteri(gl.TEXTURE_2D, p, v)); gl.uniform1i(U(name), unit); };
-        const ld = (src) => new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = src; });
-        let m = { x: .5, y: .5 }, vel = { x: 0, y: 0 }, f = 0, tf = 0, t = 0, run = false, ready = false;
-        const draw = () => { gl.uniform2f(uM, m.x, m.y); gl.uniform2f(uV, vel.x, vel.y); gl.uniform1f(uF, f); gl.uniform1f(uT, t); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); };
-        const fit = () => { const d = Math.min(devicePixelRatio || 1, 2), w = host.offsetWidth, h = host.offsetHeight; cv.width = Math.round(w * d); cv.height = Math.round(h * d); gl.viewport(0, 0, cv.width, cv.height); gl.uniform1f(uA, w / h); if (ready) draw(); };
-        const loop = () => { f += (tf - f) * .13; vel.x *= .88; vel.y *= .88; t += .016; draw(); if (Math.abs(tf - f) > .003 || f > .003 || Math.abs(vel.x) > .002) requestAnimationFrame(loop); else { run = false; f = 0; draw(); } };
-        const go = () => { if (!run && ready) { run = true; requestAnimationFrame(loop); } };
-        Promise.all([ld('../assets/bunbun/logo-word.png'), ld('../assets/bunbun/stock/ht-word.webp')]).then(([a, b]) => { if (!a || !b) return; host.append(cv); fit(); tex(a, 0, 'mk'); tex(b, 1, 'fl'); ready = true; draw(); host.classList.add('gl'); addEventListener('resize', fit);
-          /* hello: one slow sweep so people learn the logo is alive */
-          if (window.gsap) setTimeout(() => { if (stg.classList.contains('poked')) return; const o = { x: -.05 }; m.y = .5; tf = 1; go();
-            gsap.to(o, { x: 1.05, duration: 2.1, ease: 'sine.inOut', onUpdate: () => { const px = o.x - m.x; m.x = o.x; vel.x = px * 5; go(); }, onComplete: () => { if (!stg.classList.contains('poked')) tf = 0; go(); } }); }, 3600); });
-        /* the pointer: bulge near it, stretch with its speed */
-        const aim = (e, ext) => { const r = host.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height, inside = e.clientX > r.left - ext && e.clientX < r.right + ext && e.clientY > r.top - ext && e.clientY < r.bottom + ext;
-          vel.x = (x - m.x) * 6; vel.y = (y - m.y) * 6; m.x = x; m.y = y; tf = inside ? 1 : 0; if (inside) stg.classList.add('poked'); go(); };
-        stg.addEventListener('pointermove', (e) => aim(e, 60), { passive: true });
-        stg.addEventListener('pointerdown', (e) => { aim(e, 20); f = Math.max(f, .6); go(); }, { passive: true });
-        stg.addEventListener('pointerleave', () => { tf = 0; go(); }); stg.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') { tf = 0; go(); } });
-        if ('ResizeObserver' in window) new ResizeObserver(fit).observe(host); } } }
+  /* today's date on the landing (the "No. 001 / Fresh batch" line) */
+  { const today = new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }).format(new Date());
+    $$('[data-today]').forEach((el) => { el.textContent = today; }); }
 })();
