@@ -26,3 +26,13 @@ AI-generated images supplied by the owner on 24 Nov 2026 (menu items and the six
 - Lenis 1.1.14 (MIT, darkroomengineering): smooth scrolling.
 - Matter.js 0.20.0 (MIT, Liam Brummitt): sprinkle physics.
 Downloaded from the jsDelivr npm CDN at pinned versions and self-hosted. Review the GSAP licence before the new design goes live.
+
+## Bun Bun stock photos (`assets/bunbun/stock/`, 27 Nov 2026)
+Free photos under the Unsplash License (https://unsplash.com/license: free to use, commercial use allowed, no attribution required; credited here anyway). Resized to WebP; `-sq` files are centre-cropped squares.
+- `brownie-pour`: Pushpak Dsilva, https://unsplash.com/photos/chocolate-brownies-with-pouring-sauce-2UeBOL7UD34
+- `brownie-plate`: Arwen, https://unsplash.com/photos/a-rich-chocolate-brownie-on-a-white-plate-yBNwcGFDqBk
+- `waffle`: Angelo Pantazis, https://unsplash.com/photos/waffle-on-pink-ceramic-plate-placed-on-wooden-table-TjulG6gR-CM
+- `flan`: Felippe Lopes, https://unsplash.com/photos/a-small-dessert-on-a-white-plate-on-a-wooden-table-TqPdzQ00I0U
+- `mousse`: Abhishek Hajare, https://unsplash.com/photos/brown-and-black-chocolate-cake-G0xaK8Lfdlg
+- `fruit-cake`: Prince Abid, https://unsplash.com/photos/sliced-cakes-on-plate-75chao-zJa4
+These are stock photos, not Bun Bun's own bakes. Replace them with real photos of Bun Bun's products before the site goes live.

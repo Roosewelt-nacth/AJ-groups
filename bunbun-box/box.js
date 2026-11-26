@@ -4,11 +4,11 @@ const BUNBUN = {
   instagram: 'https://www.instagram.com/bun.bun.bakes/?hl=en', handle: '@bun.bun.bakes',
   fssai: null, location: null, noticeDays: 2,
   cats: [
-    { id: 'b', name: 'Brownies', photo: 'menu-c/nutella-brownie.webp', story: 'Rich, fudgy and made to be shared.', items: ['Nutella Brownie', 'Double Chocolate Brownie', 'Metro Chocolate Brownie'] },
-    { id: 'w', name: 'Waffles', photo: 'menu-c/triple-choc-waffle.webp', story: 'Warm, crisp and finished with chocolate.', items: ['White Chocolate Waffle', 'Triple Chocolate Waffle'] },
-    { id: 'd', name: 'Desserts', photo: 'menu-c/caramel-pudding.webp', story: 'Silky, chilled and made to be savoured.', items: ['Chocolate Mousse', 'Caramel Pudding'] },
+    { id: 'b', name: 'Brownies', photo: 'stock/brownie-pour.webp', thumb: 'stock/brownie-plate-sq.webp', story: 'Rich, fudgy and made to be shared.', items: ['Nutella Brownie', 'Double Chocolate Brownie', 'Metro Chocolate Brownie'] },
+    { id: 'w', name: 'Waffles', photo: 'stock/waffle.webp', thumb: 'stock/waffle-sq.webp', story: 'Warm, crisp and finished with chocolate.', items: ['White Chocolate Waffle', 'Triple Chocolate Waffle'] },
+    { id: 'd', name: 'Desserts', photo: 'stock/flan.webp', thumb: 'stock/flan-sq.webp', story: 'Silky, chilled and made to be savoured.', items: ['Chocolate Mousse', 'Caramel Pudding'] },
     { id: 'c', name: 'Cakes', photo: null, story: 'Our cake collection is being finalised. We also create bespoke cakes for birthdays, anniversaries and special occasions.', items: [] },
-    { id: 'x', name: 'Christmas', season: true, photo: 'menu-c/plum-rum.webp', story: 'Rich plum cakes and Christmas hampers, baked for the season. Plum cakes come in half kg and 1 kg. The rum cake contains alcohol and is not for under-18s.',
+    { id: 'x', name: 'Christmas', season: true, photo: 'stock/fruit-cake.webp', thumb: 'stock/fruit-cake-sq.webp', story: 'Rich plum cakes and Christmas hampers, baked for the season. Plum cakes come in half kg and 1 kg. The rum cake contains alcohol and is not for under-18s.',
       items: ['Rum-Soaked Plum Cake (Half kg)', 'Rum-Soaked Plum Cake (1 kg)', 'Non-Alcoholic Plum Cake (Half kg)', 'Non-Alcoholic Plum Cake (1 kg)', 'Christmas Hamper'] },
   ],
 };
@@ -144,7 +144,7 @@ const BUNBUN = {
   const drawCard = async () => {
     await Promise.all([document.fonts.load('300 100px Fraunces'), document.fonts.load('italic 300 100px Fraunces'), document.fonts.load('500 40px "DM Sans"')]).catch(() => {});
     const used = Object.keys(sel).filter((k) => sel[k].size);
-    const photos = (await Promise.all(used.map((k) => by(k).photo ? load(IMG(by(k).photo)) : null))).filter(Boolean).slice(0, 3), mark = await load(IMG('logo-mark.png'));
+    const photos = (await Promise.all(used.map((k) => by(k).thumb ? load(IMG(by(k).thumb)) : null))).filter(Boolean).slice(0, 3), mark = await load(IMG('logo-mark.png'));
     const picks = used.flatMap((k) => [...sel[k]]);
     const W = 1080, Hc = 1350;
     cx.clearRect(0, 0, W, Hc); cx.fillStyle = G; cx.fillRect(0, 0, W, Hc);
