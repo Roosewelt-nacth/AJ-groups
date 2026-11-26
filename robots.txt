@@ -6,5 +6,6 @@ Disallow: /bunbun/baker/
 Disallow: /reels/
 Disallow: /bunbun-premium/
 Disallow: /bunbun-atmos/
+Disallow: /ventures-showcase/
 
 Sitemap: https://ajgroups.co/sitemap.xml

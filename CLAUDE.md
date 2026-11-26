@@ -235,3 +235,6 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 
 ## Bun Bun atmospheric redesign review copy, 26 Nov 2026 (testing repo only)
 - `https://roosewelt-nacth.github.io/AJ-groups/bunbun-atmos/` : copy of the main Bun Bun page plus `atmos.css` (soft colour washes per chapter, airy alternating photo/text scenes with masked dish photos, glass pill notice, borderless plum cakes, glass contact panels). `noindex`, disallowed in `robots.txt`; never copy to the official repo. Main `/bunbun/` is unchanged.
+
+## Ventures showcase review page, 26 Nov 2026 (testing repo only)
+- `/ventures-showcase/` (`ventures-showcase/index.html`, standalone): the eight ventures as full-height panels (after a furniture-site reference video). Panels rise in, one opens full-bleed with a photo wipe, large name, line, status pill and a round thumbnail arrow; auto-plays every 5.2 s until the visitor hovers, taps or uses arrow keys. Phones stack the panels and open downwards. Wording and photos match the group page. `noindex`, disallowed in `robots.txt`; never copy to the official repo. Not wired into the main page yet.
