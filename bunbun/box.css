@@ -717,3 +717,11 @@ html.season .c-c,.c-c{grid-column:1/13}
 .about .wrap>.who:nth-of-type(3){grid-row:3/5;align-self:start;margin-top:clamp(26px,4vh,44px)}
 .about .wrap>.lic{align-self:start;margin-top:clamp(26px,4vh,44px)}
 }
+/* about, right half: philosophy sits under a rule with equal space above and below it */
+@media (min-width:861px){
+.about .wrap>.who:nth-of-type(2){padding-bottom:clamp(24px,3.6vh,38px)}
+.about .wrap>.who:nth-of-type(3){margin-top:0;padding-top:clamp(24px,3.6vh,38px);border-top:1px solid var(--line)}
+.about .wrap>.lic{margin-top:0;align-self:end;padding-top:20px}
+}
+@media (min-width:861px){.about .wrap>.who:nth-of-type(3){padding-top:clamp(36px,7.4vh,72px)}.about .wrap>.who:nth-of-type(2){padding-bottom:0}}
+@media (min-width:861px){.about .wrap>.who:nth-of-type(3){margin-top:-14px;padding-top:calc(clamp(36px,7.4vh,72px) + 14px)}}
