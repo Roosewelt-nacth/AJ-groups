@@ -638,27 +638,3 @@ dialog.sheet.closing{animation:out .2s ease forwards}
 dialog.sheet.closing::backdrop{opacity:0;transition:opacity .2s}
 /* the open sheet gets its own layer, so its fade and rise never repaint the page behind it */
 dialog.sheet[open]{will-change:opacity,transform}
-/* the menu card slides open and slides shut (two panels part from the sides; on phones from top and bottom) */
-@keyframes slL{from{transform:translateX(-102%)}}
-@keyframes slR{from{transform:translateX(102%)}}
-@keyframes slU{from{transform:translateY(-102%)}}
-@keyframes slD{from{transform:translateY(102%)}}
-@keyframes slLo{to{transform:translateX(-102%)}}
-@keyframes slRo{to{transform:translateX(102%)}}
-@keyframes slUo{to{transform:translateY(-102%)}}
-@keyframes slDo{to{transform:translateY(102%)}}
-@keyframes sfade{from{opacity:0}}
-@keyframes sfadeo{to{opacity:0}}
-#sheet[open]{animation:sfade .25s ease both;overflow:hidden;will-change:opacity}
-#sheet[open] .sp{animation:slL .62s var(--out) both;will-change:transform}
-#sheet[open] .sb{animation:slR .62s var(--out) .06s both;will-change:transform}
-#sheet[open] .close{animation:sfade .3s ease .45s both}
-#sheet.closing{animation:sfadeo .2s ease .3s forwards}
-#sheet.closing .sp{animation:slLo .46s cubic-bezier(.7,0,.3,1) both}
-#sheet.closing .sb{animation:slRo .46s cubic-bezier(.7,0,.3,1) both}
-#sheet.closing .close{animation:sfadeo .15s ease both}
-#sheet.closing::backdrop{transition:opacity .4s .1s}
-@media (max-width:800px){
-#sheet[open] .sp{animation-name:slU}#sheet[open] .sb{animation-name:slD}
-#sheet.closing .sp{animation-name:slUo}#sheet.closing .sb{animation-name:slDo}}
-@media (prefers-reduced-motion:reduce){#sheet[open] .sp,#sheet[open] .sb,#sheet.closing .sp,#sheet.closing .sb{animation:none}}
