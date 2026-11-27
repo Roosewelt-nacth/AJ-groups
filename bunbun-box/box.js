@@ -62,7 +62,7 @@ const BUNBUN = {
   sChk.addEventListener('change', (e) => { const s = sel[cur.id] || (sel[cur.id] = new Set()); e.target.checked ? s.add(e.target.value) : s.delete(e.target.value); upd(); bump(); if (e.target.checked) pop(e.target); });
   let opener = null;
   function show(d) { opener = document.activeElement; root.classList.add('modal'); if (lenis) lenis.stop(); d.classList.remove('closing'); d.showModal(); }
-  const hide = (d) => { if (!d.open || d.classList.contains('closing')) return; if (RM) { d.close(); return; } d.classList.add('closing'); setTimeout(() => { d.classList.remove('closing'); d.close(); }, 200); };
+  const hide = (d) => { if (!d.open || d.classList.contains('closing')) return; if (RM) { d.close(); return; } d.classList.add('closing'); setTimeout(() => { d.classList.remove('closing'); d.close(); }, d.id === 'sheet' ? 500 : 200); };
   $$('dialog').forEach((d) => { d.addEventListener('close', () => { root.classList.remove('modal'); if (lenis && opened) lenis.start(); if (opener && opener.focus) opener.focus({ preventScroll: true }); });
     d.addEventListener('cancel', (e) => { e.preventDefault(); hide(d); }); d.addEventListener('click', (e) => { if (e.target === d) hide(d); }); });
   $$('dialog [data-close]').forEach((b) => b.addEventListener('click', () => hide(b.closest('dialog'))));
