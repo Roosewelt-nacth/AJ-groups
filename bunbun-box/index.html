@@ -10,7 +10,7 @@
 <link rel="icon" href="../bunbun/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="../bunbun/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=DM+Sans:opsz,wght@9..40,400..600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./box.css?v=29">
+<link rel="stylesheet" href="./box.css?v=34">
 <script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date();document.documentElement.classList.toggle("season",q==="1"?true:q==="0"?false:d<new Date(2027,0,2));document.documentElement.classList.add("opened")}catch(e){}})();</script>
 </head>
 <body>
@@ -25,30 +25,30 @@
 </header>
 
 <main>
-<!-- 01 HOME: the baker's counter -->
-<section class="stage" id="home">
+<!-- 01 HOME: the original logo entry, annotated like a specimen plate -->
+<section class="fig" id="home">
   <h1 class="sr-only">Bun Bun Cafe: freshly baked treats and customised cakes</h1>
-  <div class="st-eb rise"><p class="eyebrow">Bun Bun Cafe · A homegrown bakery</p><p class="eyebrow mono">Nº 001 · Fresh batch · <span data-today></span></p></div>
-  <p class="st-side" aria-hidden="true">Baked fresh · Made to order · Homemade taste</p>
-  <div class="bigword" role="img" aria-label="Bun Bun"></div>
-  <div class="st-lower">
-    <div class="st-l">
-      <p class="st-line rise">Homemade taste. Baked to order. <em>Made for every moment.</em></p>
-      <p class="xpill only-season rise"><i></i>Christmas plum cakes &amp; hampers, now taking orders</p>
-      <div class="cta rise"><a class="pb solid" href="#tray">Discover Our Creations</a><a class="pb only-season" href="#seasonal">Explore Seasonal Editions</a><a class="pb only-std" data-wa href="#" target="_blank" rel="noopener">Enquire on WhatsApp</a></div>
-    </div>
-    <div class="st-art">
-      <div class="print"><img src="../assets/bunbun/stock/ht-print.webp" alt="A waffle on a plate, printed in green halftone" width="700" height="875" fetchpriority="high"><i class="tape ta"></i><i class="tape tb"></i></div>
-      <img class="stk s1" src="../assets/bunbun/stock/ht-st1.webp" alt="" width="360" height="360" loading="eager"><img class="stk s2" src="../assets/bunbun/stock/ht-st2.webp" alt="" width="360" height="360" loading="eager">
-      <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="sp" d="M100,100 m-70,0 a70,70 0 1,1 140,0 a70,70 0 1,1 -140,0"/><filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6"/></filter></defs>
-        <g filter="url(#rough)"><circle cx="100" cy="100" r="92" fill="none" stroke-width="5"/><circle cx="100" cy="100" r="82" fill="none" stroke-width="1.6"/><circle cx="100" cy="100" r="48" fill="none" stroke-width="1.6"/>
-        <text><textPath href="#sp" textLength="436" lengthAdjust="spacing">BAKED FRESH · MADE TO ORDER · HOMEMADE ·</textPath></text>
-        <text x="100" y="95" text-anchor="middle" class="s1">BAKED</text><text x="100" y="118" text-anchor="middle" class="s1">TODAY</text></g></svg>
-      <div class="slip"><i class="perf"></i><b>Order slip</b><span class="no">No. 001</span><small>Earliest pickup</small><strong id="pickup">&nbsp;</strong><p>Please order <span data-days>2</span> days ahead. We confirm the date on WhatsApp.</p><a class="slipbtn" data-slip href="#" target="_blank" rel="noopener">Order on WhatsApp &rarr;</a></div>
-      <svg class="bun" viewBox="0 0 120 100" aria-hidden="true"><path d="M60 8C28 8 8 30 8 62v40h104V62C112 30 92 8 60 8z"/><g class="eye" data-eye><circle cx="42" cy="54" r="13" class="ew"/><circle cx="42" cy="54" r="6.5" class="pu"/></g><g class="eye" data-eye><circle cx="78" cy="54" r="13" class="ew"/><circle cx="78" cy="54" r="6.5" class="pu"/></g><path class="sm" d="M48 76c4 8 20 8 24 0"/></svg>
-    </div>
+  <div class="grid0" aria-hidden="true"><i class="v1"></i><i class="v2"></i><b style="left:calc(14% - 7px);top:22%"></b><b style="right:calc(14% - 7px);top:64%"></b></div>
+  <svg class="leaders" id="leaders" aria-hidden="true"></svg>
+  <p class="fg-top rise"><span>Bun Bun Cafe · A homegrown bakery</span><span class="mono">Fig. 01 · Fresh batch · <span data-today></span></span></p>
+  <div class="spec fade">
+    <div class="disc"><svg viewBox="0 0 400 400" aria-hidden="true"><defs><path id="rp3" d="M200,200 m-186,0 a186,186 0 1,1 372,0 a186,186 0 1,1 -372,0"/></defs><text><textPath href="#rp3" textLength="1150" lengthAdjust="spacing">BAKED FRESH · HOMEMADE TASTE · MADE TO ORDER · BAKED WITH LOVE · </textPath></text></svg><i class="mk" role="img" aria-label="Bun Bun mark"></i></div>
+    <i class="wm" role="img" aria-label="Bun Bun"></i>
+    <div class="co l c1"><i class="n">1</i><b>Homemade taste</b><span>Brownies · Waffles · Desserts</span></div>
+    <div class="co r c2"><i class="n">2</i><b>Baked to order</b><span>Fresh for your date</span></div>
+    <div class="co l c3"><i class="n">3</i><b>Made for every moment</b><span>Birthday cakes &amp; treats</span></div>
+    <div class="co r c4 only-season"><i class="n">4</i><b>Christmas editions</b><span>Plum cakes &amp; hampers, now open</span></div>
+    <div class="co r c4 only-std"><i class="n">4</i><b>Order ahead</b><span>At least 2 days before</span></div>
   </div>
-  <div class="tapebar" aria-hidden="true"><div class="tt"><span>Brownies</span><span>Waffles</span><span>Desserts</span><span>Birthday cakes</span><span>Baked fresh</span><span>Made to order</span><span>Brownies</span><span>Waffles</span><span>Desserts</span><span>Birthday cakes</span><span>Baked fresh</span><span>Made to order</span></div></div>
+  <ul class="mini fade"><li><i>1</i>Homemade taste</li><li><i>2</i>Baked to order</li><li><i>3</i>Made for every moment</li><li class="only-season"><i>4</i>Christmas editions</li><li class="only-std"><i>4</i>Order 2 days ahead</li></ul>
+  <div class="cta2 rise"><a class="pb solid" href="#tray">Discover Our Creations</a><a class="pb only-season" href="#seasonal">Explore Seasonal Editions</a><a class="pb only-std" data-wa href="#" target="_blank" rel="noopener">Enquire on WhatsApp</a></div>
+  <div class="flowwrap rise">
+    <ol class="flow">
+      <li><span class="no">01</span><b>Pick</b><p>Choose your favourites from our creations.</p></li>
+      <li><span class="no">02</span><b>We bake</b><p>Fresh for your date. Please order at least <span data-days>2</span> days ahead.</p></li>
+      <li><span class="no">03</span><b>Collect</b><p>Earliest pickup <strong id="pickup">&nbsp;</strong>. We confirm on WhatsApp.</p><a class="fl-a" data-slip href="#" target="_blank" rel="noopener">Order on WhatsApp &rarr;</a></li>
+    </ol>
+  </div>
 </section>
 
 <section class="intro" id="intro"><div class="wrap">
@@ -146,6 +146,6 @@
 <script src="./vendor/gsap.min.js"></script>
 <script src="./vendor/ScrollTrigger.min.js"></script>
 <script src="./vendor/lenis.min.js"></script>
-<script src="./box.js?v=16"></script>
+<script src="./box.js?v=19"></script>
 </body>
 </html>

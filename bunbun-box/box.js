@@ -129,21 +129,21 @@ const BUNBUN = {
   if (RM || !('IntersectionObserver' in window)) $$('.rv').forEach((el) => el.classList.add('in'));
   else if (GS) { gsap.registerPlugin(ScrollTrigger); ScrollTrigger.batch('.rv', { start: 'top 88%', once: true, onEnter: (els) => els.forEach((el, i) => { el.style.setProperty('--dl', i * .09 + 's'); el.classList.add('in'); }) }); }
   else { const io = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -10% 0px' }); $$('.rv').forEach((el) => io.observe(el)); }
-  /* the treats drift away from the pointer, a little */
-  /* the earliest pickup date on the order slip: today plus the notice days (live, never made up) */
+  /* the earliest pickup date in the "Collect" step: today plus the notice days (live, never made up) */
   { const d = new Date(); d.setDate(d.getDate() + B.noticeDays);
     const f = new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }).format(d);
     $$('#pickup').forEach((el) => { el.textContent = f; }); $$('[data-days]').forEach((el) => { el.textContent = B.noticeDays; });
     $$('[data-slip]').forEach((el) => { el.href = wa('Hi Bun Bun Cafe, I would like to place an order. The earliest date I can pick up is ' + f + '.\n\nWhat I would like:\n'); }); }
-  /* the bun looks at you, blinks now and then, and the print and stamp lean with the pointer */
-  { const eyes = $$('[data-eye]'), bunEl = $('.bun'), stg = $('.stage');
-    if (!RM && eyes.length) { let raf = 0, px = 0, py = 0;
-      const look = () => { raf = 0; const r = bunEl.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .55, ang = Math.atan2(py - cy, px - cx), dist = Math.min(1, Math.hypot(px - cx, py - cy) / 300);
-        eyes.forEach((g) => { g.style.transform = 'translate(' + (Math.cos(ang) * 5 * dist) + 'px,' + (Math.sin(ang) * 4 * dist) + 'px)'; }); };
-      addEventListener('pointermove', (e) => { px = e.clientX; py = e.clientY; if (!raf) raf = requestAnimationFrame(look); }, { passive: true });
-      setInterval(() => { eyes.forEach((g) => { g.style.transition = 'transform .08s'; g.style.scale = '1 .1'; g.style.transformOrigin = 'center'; setTimeout(() => { g.style.scale = '1 1'; }, 110); }); }, 4200); }
-    if (FINE && !RM) { const pr = $('.print'), st = $('.stamp'), sl = $('.slip'); let raf = 0, mx = 0, my = 0;
-      stg.addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; if (!raf) raf = requestAnimationFrame(() => { raf = 0; pr.style.translate = (mx * -12) + 'px ' + (my * -8) + 'px'; st.style.marginLeft = (mx * 16) + 'px'; st.style.marginTop = (my * 12) + 'px'; sl.style.marginLeft = (mx * -10) + 'px'; }); }); } }
+  /* leader lines from each numbered callout to the ring: plain geometry, drawn once and on resize (no animation) */
+  { const fig = $('.fig'), svg = $('#leaders'), disc = $('.disc'); const NS = 'http://www.w3.org/2000/svg';
+    const draw = () => { if (!fig || !svg || !disc) return; svg.innerHTML = ''; if (matchMedia('(max-width:1100px)').matches) return;
+      const fr = fig.getBoundingClientRect(), dr = disc.getBoundingClientRect(), cx = dr.left + dr.width / 2 - fr.left, cy = dr.top + dr.height / 2 - fr.top, R = dr.width / 2 * 1.025;
+      $$('.co', fig).forEach((co) => { if (getComputedStyle(co).display === 'none') return; const n = $('.n', co).getBoundingClientRect(), sx = n.left + n.width / 2 - fr.left, sy = n.top + n.height / 2 - fr.top;
+        const ang = Math.atan2(sy - cy, sx - cx), ex = cx + R * Math.cos(ang), ey = cy + R * Math.sin(ang), ux = Math.cos(ang), uy = Math.sin(ang), r0 = n.width / 2;
+        const ln = document.createElementNS(NS, 'line'); ln.setAttribute('x1', sx - ux * r0); ln.setAttribute('y1', sy - uy * r0); ln.setAttribute('x2', ex); ln.setAttribute('y2', ey);
+        const dt = document.createElementNS(NS, 'circle'); dt.setAttribute('cx', ex); dt.setAttribute('cy', ey); dt.setAttribute('r', 3.2); svg.append(ln, dt); }); };
+    draw(); addEventListener('resize', draw); if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw); setTimeout(draw, 600); setTimeout(draw, 2200);
+    if ('ResizeObserver' in window && fig) new ResizeObserver(draw).observe(fig); }
 
   /* the bar steps aside on the way down */
   const top = $('#top'); let ly = 0; addEventListener('scroll', () => { const y = scrollY; top.classList.toggle('hide', y > ly && y > 240); ly = y; }, { passive: true });
@@ -156,11 +156,6 @@ const BUNBUN = {
     if (RM || !window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
     if (window.Lenis && !lenis) { lenis = new Lenis({ lerp: .1, wheelMultiplier: .9, touchMultiplier: 1.4 }); lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add((t) => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
-    /* the brand stage: the photo sinks slowly, the words lift away */
-    gsap.to('.bigword', { xPercent: -5, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
-    gsap.to('.print', { yPercent: -12, rotate: -1, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
-    gsap.to('.stamp', { rotate: 12, yPercent: 20, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
-    gsap.to('.st-l', { y: -50, ease: 'none', scrollTrigger: { trigger: '.stage', start: 'top top', end: 'bottom top', scrub: true } });
     /* the tray: the heading drifts sideways, every photo has its own depth */
     gsap.fromTo('.th h2', { xPercent: 3 }, { xPercent: -3, ease: 'none', scrollTrigger: { trigger: '.trayw', start: 'top bottom', end: 'bottom top', scrub: true } });
     $$('.cp img').forEach((im) => gsap.fromTo(im, { yPercent: -7, scale: 1.14 }, { yPercent: 7, scale: 1.14, ease: 'none', scrollTrigger: { trigger: im.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
