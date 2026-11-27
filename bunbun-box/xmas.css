@@ -1,0 +1,45 @@
+/* ===== Seasonal Editions, Christmas experiment (review copy only) =====
+   Pine, cranberry and soft gold, scoped to #seasonal. Brand cream stays the text colour. */
+#seasonal.seasonal{--pine:#1f3a2c;--pine2:#16291f;--cran:#9e2b35;--gold:#d2b273;--c:#f8f2e4;--g:#1f3a2c;
+  --ink:var(--c);--mute:color-mix(in srgb,var(--c) 74%,transparent);--line:color-mix(in srgb,var(--c) 18%,transparent);
+  position:relative;overflow:hidden;color:var(--c);
+  background:radial-gradient(70% 60% at 80% 0%,color-mix(in srgb,var(--gold) 14%,transparent),transparent 70%),
+             radial-gradient(60% 50% at 0% 100%,color-mix(in srgb,var(--cran) 22%,transparent),transparent 70%),
+             linear-gradient(180deg,var(--pine),var(--pine2))}
+#seasonal .wrap{position:relative;z-index:2}
+#seasonal .eyebrow{color:var(--gold)}
+#seasonal h2 em{color:var(--gold)}
+
+/* string of lights across the top */
+.xl{position:absolute;left:0;right:0;top:0;height:46px;z-index:1;pointer-events:none}
+.xl svg{width:100%;height:100%;overflow:visible}
+.xl path{fill:none;stroke:color-mix(in srgb,var(--c) 30%,transparent);stroke-width:1.2}
+.xl circle{animation:twk 3.2s ease-in-out infinite}
+.xl circle:nth-child(3n){animation-delay:-1.1s}.xl circle:nth-child(3n+1){animation-delay:-2.2s}
+@keyframes twk{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* snow, holly */
+.xsnow{position:absolute;inset:0;z-index:1;pointer-events:none}
+.xholly{position:absolute;right:clamp(10px,4vw,60px);top:clamp(40px,7vh,80px);width:clamp(80px,10vw,140px);z-index:1;opacity:.95;rotate:8deg}
+
+/* countdown becomes a gold seal */
+#seasonal .days{background:radial-gradient(circle at 35% 30%,#e6cd95,var(--gold) 55%,#a98a4c);color:var(--pine);box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 22%,transparent),0 18px 40px rgba(0,0,0,.35)}
+#seasonal .days svg{stroke:color-mix(in srgb,var(--pine) 25%,transparent)}#seasonal .days svg .arc{stroke:var(--cran)}
+
+
+/* plum cake as a gift tag; hamper as a wrapped box */
+#seasonal .pc{background:var(--c);color:var(--pine);--ink:var(--pine);--mute:color-mix(in srgb,var(--pine) 70%,transparent);--line:color-mix(in srgb,var(--pine) 18%,transparent);position:relative}
+#seasonal .pc::after{content:"";position:absolute;top:18px;left:50%;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--pine2);box-shadow:inset 0 0 0 3px var(--gold);z-index:3}
+#seasonal .pc .seg button[aria-pressed="true"]{background:var(--cran);color:var(--c)}
+#seasonal .pc .pb.solid{background:var(--cran);border-color:var(--cran);color:var(--c)}
+#seasonal .hamper{position:relative;border:0;background:
+  linear-gradient(90deg,transparent calc(50% - 9px),var(--cran) calc(50% - 9px),var(--cran) calc(50% + 9px),transparent calc(50% + 9px)),
+  color-mix(in srgb,var(--c) 7%,transparent);overflow:hidden}
+#seasonal .hamper::before{content:"";position:absolute;left:0;right:0;top:50%;height:18px;margin-top:-9px;background:var(--cran);opacity:.9;z-index:0}
+#seasonal .hamper>*{position:relative;z-index:1;background:color-mix(in srgb,var(--pine2) 88%,transparent);border-radius:20px;padding:clamp(14px,2vw,24px)}
+#seasonal .hamper .seg button[aria-pressed="true"]{background:var(--gold);color:var(--pine)}
+#seasonal .hamper .pb.solid{background:var(--gold);border-color:var(--gold);color:var(--pine)}
+#seasonal .hamper .hico svg{stroke:var(--gold)}
+
+@media (max-width:800px){.xholly{width:70px;top:24px;right:12px;opacity:.7}#seasonal .hamper{background:color-mix(in srgb,var(--c) 7%,transparent)}#seasonal .hamper::before{display:none}}
+@media (prefers-reduced-motion:reduce){.xl circle{animation:none}}
