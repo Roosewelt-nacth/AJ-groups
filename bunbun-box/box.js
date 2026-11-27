@@ -105,7 +105,7 @@ const BUNBUN = {
   }
 
   /* a tiny burst of crumbs when you add something */
-  const pop = (el) => { const host = el.closest('dialog') || document.body, hr = host === document.body ? { left: 0, top: 0 } : host.getBoundingClientRect(), r0 = (el.tagName === 'INPUT' ? el.parentElement : el).getBoundingClientRect(), r = { left: r0.left - hr.left, top: r0.top - hr.top + (host === document.body ? 0 : host.scrollTop), width: r0.width, height: r0.height }; for (let i = 0; i < 8; i++) { const d = document.createElement('i'); d.style.cssText = `position:${host === document.body ? 'fixed' : 'absolute'};z-index:300;left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;width:7px;height:7px;border-radius:50%;background:#4a442c;pointer-events:none`; host.append(d);
+  const pop = (el) => { const host = el.closest('dialog') || document.body, hr = host === document.body ? { left: 0, top: 0 } : host.getBoundingClientRect(), r0 = (el.tagName === 'INPUT' ? el.parentElement : el).getBoundingClientRect(), r = { left: r0.left - hr.left, top: r0.top - hr.top + (host === document.body ? 0 : host.scrollTop), width: r0.width, height: r0.height }; for (let i = 0; i < 8; i++) { const d = document.createElement('i'); d.style.cssText = `position:${host === document.body ? 'fixed' : 'absolute'};z-index:300;left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;width:7px;height:7px;border-radius:50%;background:${(getComputedStyle(el).getPropertyValue('--g').trim() || '#4a442c')};pointer-events:none`; host.append(d);
     const a = Math.random() * 6.28, k = 30 + Math.random() * 40; d.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: `translate(${Math.cos(a) * k}px,${Math.sin(a) * k - 20}px) scale(.2)`, opacity: 0 }], { duration: 700, easing: 'cubic-bezier(.2,.8,.2,1)' }).onfinish = () => d.remove(); } };
 
   /* ---------- details ---------- */
@@ -134,16 +134,65 @@ const BUNBUN = {
     const f = new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }).format(d);
     $$('#pickup').forEach((el) => { el.textContent = f; }); $$('[data-days]').forEach((el) => { el.textContent = B.noticeDays; });
     $$('[data-slip]').forEach((el) => { el.href = wa('Hi Bun Bun Cafe, I would like to place an order. The earliest date I can pick up is ' + f + '.\n\nWhat I would like:\n'); }); }
-  /* leader lines from each numbered callout to the ring: plain geometry, drawn once and on resize (no animation) */
-  { const fig = $('.fig'), svg = $('#leaders'), disc = $('.disc'); const NS = 'http://www.w3.org/2000/svg';
-    const draw = () => { if (!fig || !svg || !disc) return; svg.innerHTML = ''; if (matchMedia('(max-width:1100px)').matches) return;
-      const fr = fig.getBoundingClientRect(), dr = disc.getBoundingClientRect(), cx = dr.left + dr.width / 2 - fr.left, cy = dr.top + dr.height / 2 - fr.top, R = dr.width / 2 * 1.025;
-      $$('.co', fig).forEach((co) => { if (getComputedStyle(co).display === 'none') return; const n = $('.n', co).getBoundingClientRect(), sx = n.left + n.width / 2 - fr.left, sy = n.top + n.height / 2 - fr.top;
-        const ang = Math.atan2(sy - cy, sx - cx), ex = cx + R * Math.cos(ang), ey = cy + R * Math.sin(ang), ux = Math.cos(ang), uy = Math.sin(ang), r0 = n.width / 2;
-        const ln = document.createElementNS(NS, 'line'); ln.setAttribute('x1', sx - ux * r0); ln.setAttribute('y1', sy - uy * r0); ln.setAttribute('x2', ex); ln.setAttribute('y2', ey);
-        const dt = document.createElementNS(NS, 'circle'); dt.setAttribute('cx', ex); dt.setAttribute('cy', ey); dt.setAttribute('r', 3.2); svg.append(ln, dt); }); };
-    draw(); addEventListener('resize', draw); if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw); setTimeout(draw, 600); setTimeout(draw, 2200);
-    if ('ResizeObserver' in window && fig) new ResizeObserver(draw).observe(fig); }
+  /* the slogans on their ropes: in each side column two dough ropes twist; every numbered dot rides one rope, the slogan text swings with it
+     and comes a little forward and back as the rope turns. Leader lines follow each dot to the ring. The logo and ring are never touched. */
+  { const fig = $('.fig'), cv = $('#braids'), svg = $('#leaders'), disc = $('.disc'), wm = $('.spec .wm'); const NS = 'http://www.w3.org/2000/svg';
+    if (fig && cv && svg && disc && wm) { const g2 = cv.getContext('2d');
+      let FW = 0, FH = 0, dpr = 1, col = '#4a442c', bg = '#f8f2e4', cx = 0, cy = 0, R = 0, D = 0, items = [], axes = { '-1': 0, '1': 0 }, y0 = 0, y1 = 0, vis = true, run = false, armed = false, gs = 0, amp = RM ? 1 : 0, grow = RM ? 1 : 0, small = false;
+      const t0 = performance.now(), AM = 15, rd = () => { const cs = getComputedStyle(fig); col = cs.getPropertyValue('--g').trim() || col; bg = cs.getPropertyValue('--c').trim() || bg; };
+      const sm = (x) => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
+      const measure = () => { small = matchMedia('(max-width:1100px)').matches; cv.style.display = svg.style.display = small ? 'none' : ''; if (small) { items = []; return; }
+        const cos = $$('.co', fig).filter((co) => getComputedStyle(co).display !== 'none'); cos.forEach((co) => { co.style.transform = 'none'; });
+        const fr = fig.getBoundingClientRect(), dr = disc.getBoundingClientRect(), mr = wm.getBoundingClientRect();
+        FW = Math.round(fr.width); FH = Math.round(fr.height); dpr = Math.min(devicePixelRatio || 1, 2); cv.style.width = FW + 'px'; cv.style.height = FH + 'px'; cv.width = FW * dpr; cv.height = FH * dpr; g2.setTransform(dpr, 0, 0, dpr, 0, 0);
+        cx = dr.left + dr.width / 2 - fr.left; cy = dr.top + dr.height / 2 - fr.top; D = dr.width; R = D / 2 * 1.025; y0 = dr.top - fr.top - 40; y1 = mr.bottom - fr.top + 30;
+        const old = items; items = cos.map((co, i) => { const n = $('.n', co).getBoundingClientRect(); const it = { co, x: n.left + n.width / 2 - fr.left, y: n.top + n.height / 2 - fr.top, r: n.width / 2, side: co.classList.contains('l') ? -1 : 1 };
+          if (old[i] && old[i].ln) { it.ln = old[i].ln; it.dt = old[i].dt; } else { it.ln = document.createElementNS(NS, 'line'); it.dt = document.createElementNS(NS, 'circle'); it.dt.setAttribute('r', 3.2); it.ln.style.setProperty('--i', i); it.dt.style.setProperty('--i', i); svg.append(it.ln, it.dt); } return it; });
+        [-1, 1].forEach((s) => { const xs = items.filter((it) => it.side === s).map((it) => it.x); axes[s] = xs.length ? xs.reduce((p, q) => p + q, 0) / xs.length : (s < 0 ? cx - D : cx + D); });
+        rd(); if (!armed && items.length) { armed = true; svg.classList.add('go'); setTimeout(() => svg.classList.add('static'), 4600); } frame(performance.now()); };
+      function frame(now) { if (small || !FW) return; const t = (now - t0) / 1000, ph = t * .85, k = 2 * Math.PI / (D * .72), A = AM * amp, wv = (y, off) => Math.sin(k * y + ph + off);
+        g2.clearRect(0, 0, FW, FH);
+        /* ropes */
+        const lim = y0 + (y1 - y0) * grow; g2.lineCap = 'round'; g2.lineJoin = 'round';
+        const fade = (y) => sm((y - y0) / ((y1 - y0) * .14)) * sm((y1 - y) / ((y1 - y0) * .16));
+        [-1, 1].forEach((s) => { const ax = axes[s], off = s < 0 ? 0 : Math.PI * .6;
+          const P = (y, r) => { const p = k * y + ph + off + r * Math.PI; return [ax + AM * 1.0 * Math.sin(p), Math.cos(p)]; };
+          for (const front of [false, true]) {
+            if (front) for (let y = y0 + 8; y < lim; y += 20) { const a = P(y, 0), b = P(y, 1), f = fade(y); if (f < .02) continue; g2.globalAlpha = f * .2; g2.strokeStyle = col; g2.lineWidth = 1; g2.beginPath(); g2.moveTo(a[0], y); g2.lineTo(b[0], y); g2.stroke(); }
+            for (const r of [0, 1]) { let prev = null; for (let y = y0; y <= lim; y += 3) { const [x, z] = P(y, r), isF = z >= 0, f = fade(y); if (prev && prev.f === isF && isF === front) { g2.globalAlpha = f * (.3 + .55 * (z + 1) / 2); g2.strokeStyle = col; g2.lineWidth = 1.3 + 3 * (z + 1) / 2; g2.beginPath(); g2.moveTo(prev.x, prev.y); g2.lineTo(x, y); g2.stroke(); } prev = { x, y, f: isF }; } }
+            if (front) for (let y = y0 + 14; y < lim; y += 54) for (const r of [0, 1]) { const [x, z] = P(y, r), f = fade(y); if (f < .05) continue; g2.globalAlpha = f * (.5 + .45 * (z + 1) / 2); g2.fillStyle = bg; g2.strokeStyle = col; g2.lineWidth = 1.2; g2.beginPath(); g2.arc(x, y, 2.8 + 2 * (z + 1) / 2, 0, 6.283); g2.fill(); g2.stroke(); }
+          } });
+        g2.globalAlpha = 1;
+        /* the slogans: each dot rides rope 0 of its side; text swings and breathes with the twist; leader lines follow */
+        items.forEach((it) => { const off = it.side < 0 ? 0 : Math.PI * .6, p = k * it.y + ph + off, dx = A * Math.sin(p), z01 = (Math.cos(p) + 1) / 2;
+          it.co.style.transform = 'translateX(' + dx.toFixed(2) + 'px)'; it.co.style.setProperty('--z', z01.toFixed(3));
+          const sx = it.x + dx, sy = it.y, ang = Math.atan2(sy - cy, sx - cx), ux = Math.cos(ang), uy = Math.sin(ang), ex = cx + R * ux, ey = cy + R * uy, x1 = sx - ux * it.r, y1b = sy - uy * it.r;
+          it.ln.setAttribute('x1', x1.toFixed(1)); it.ln.setAttribute('y1', y1b.toFixed(1)); it.ln.setAttribute('x2', ex.toFixed(1)); it.ln.setAttribute('y2', ey.toFixed(1)); it.ln.style.setProperty('--len', Math.ceil(Math.hypot(ex - x1, ey - y1b)) + 60);
+          it.dt.setAttribute('cx', ex.toFixed(1)); it.dt.setAttribute('cy', ey.toFixed(1)); }); }
+      const loop = (now) => { if (!vis || document.hidden || small) { run = false; return; }
+        if (gs) { grow = 1 - Math.pow(1 - Math.min(1, Math.max(0, (now - gs) / 2000)), 3); amp = sm((now - gs - 400) / 2200); } frame(now); requestAnimationFrame(loop); };
+      const kick = () => { if (!run && vis && !small && !RM) { run = true; requestAnimationFrame(loop); } };
+      measure(); addEventListener('resize', () => { measure(); kick(); }); if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); }); setTimeout(measure, 700); setTimeout(measure, 2300);
+      if ('ResizeObserver' in window) new ResizeObserver(() => { measure(); kick(); }).observe(fig);
+      addEventListener('lookchange', () => { rd(); frame(performance.now()); });
+      if (!RM) { setTimeout(() => { gs = performance.now(); kick(); }, 1000); if ('IntersectionObserver' in window) new IntersectionObserver((es) => { vis = es[0].isIntersecting; if (vis) kick(); }).observe(fig); document.addEventListener('visibilitychange', kick); } } }
+
+  /* the flow: 01, 02, 03 take turns; each bar fills like piping, then the number settles in */
+  { const fl = $('.flow'); if (fl) { const lis = $$('li', fl); let s = -1, tm = 0, paused = false, seen = false;
+      const show = (n) => { lis.forEach((li, k) => { li.classList.toggle('on', k === n); li.classList.toggle('done', k < n || n === lis.length); }); fl.classList.add('run'); };
+      const tick = () => { clearTimeout(tm); if (paused) return; s = (s + 1) % (lis.length + 1); if (s === 0) { lis.forEach((li) => li.classList.remove('on', 'done')); void fl.offsetWidth; } show(s); tm = setTimeout(tick, s === lis.length ? 1600 : 2400); };
+      if (RM) { lis.forEach((li) => li.classList.add('done')); } else {
+        const start = () => { if (!seen) { seen = true; setTimeout(tick, 900); } };
+        if ('IntersectionObserver' in window) new IntersectionObserver((es) => { if (es[0].isIntersecting) start(); }, { threshold: .3 }).observe(fl); else start();
+        fl.addEventListener('pointerenter', () => { paused = true; clearTimeout(tm); }); fl.addEventListener('pointerleave', () => { if (paused) { paused = false; tm = setTimeout(tick, 600); } }); } } }
+
+  /* chapters take turns between the two palette colours; the look switch flips the pair */
+  { const order = ['home', 'seasonal', 'tray', 'about', 'contact'].map((id) => $('#' + id)).filter((el) => el && getComputedStyle(el).display !== 'none');
+    order.forEach((el, i) => { const alt = i % 2 === 1; el.classList.toggle('alt', alt); if (el.id === 'home') { const it = $('#intro'); if (it) it.classList.toggle('alt', alt); } });
+    const meta = $('meta[name="theme-color"]'), btns = $$('.look button');
+    const setLook = (l, save) => { root.dataset.look = l; btns.forEach((b) => b.setAttribute('aria-pressed', b.dataset.l === l)); if (meta) meta.content = l === 'green' ? '#4a442c' : '#f8f2e4';
+      if (save) { try { localStorage.setItem('bbboxlook', l); } catch (e) {} } dispatchEvent(new Event('lookchange')); };
+    btns.forEach((b) => b.addEventListener('click', () => setLook(b.dataset.l, true))); setLook(root.dataset.look === 'green' ? 'green' : 'cream', false); }
 
   /* the bar steps aside on the way down */
   const top = $('#top'); let ly = 0; addEventListener('scroll', () => { const y = scrollY; top.classList.toggle('hide', y > ly && y > 240); ly = y; }, { passive: true });

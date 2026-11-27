@@ -10,8 +10,8 @@
 <link rel="icon" href="../bunbun/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="../bunbun/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=DM+Sans:opsz,wght@9..40,400..600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./box.css?v=34">
-<script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date();document.documentElement.classList.toggle("season",q==="1"?true:q==="0"?false:d<new Date(2027,0,2));document.documentElement.classList.add("opened")}catch(e){}})();</script>
+<link rel="stylesheet" href="./box.css?v=38">
+<script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date();document.documentElement.classList.toggle("season",q==="1"?true:q==="0"?false:d<new Date(2027,0,2));try{document.documentElement.dataset.look=localStorage.getItem("bbboxlook")==="green"?"green":"cream"}catch(e){document.documentElement.dataset.look="cream"}document.documentElement.classList.add("opened")}catch(e){}})();</script>
 </head>
 <body>
 
@@ -21,6 +21,7 @@
   <a class="brand" href="#home" aria-label="Bun Bun Cafe, home"><i class="mk"></i><i class="wm"></i></a>
   <nav aria-label="Main"><a href="#home">Home</a><a class="only-season" href="#seasonal">Seasonal Editions</a><a href="#tray">Creations</a><a href="#about">About</a><a href="#contact">Contact Us</a></nav>
   <a class="wa-ico" data-wa href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.2 8.6c.3-.6.8-.5 1.1.1l.5 1.1c.1.3 0 .6-.3.9l-.4.4c.6 1.2 1.6 2.1 2.8 2.7l.5-.5c.2-.2.5-.3.8-.1l1.1.6c.5.3.6.8.1 1.3-.7.8-1.8 1-3 .5-2.4-1-4-2.7-4.7-4.8-.3-.8.1-1.5.5-2.2z"/></svg></a>
+  <div class="look" role="group" aria-label="Colour look"><button type="button" data-l="cream" aria-label="Cream look" title="Cream"><i></i></button><button type="button" data-l="green" aria-label="Green look" title="Green"><i></i></button></div>
   <a class="pb solid sm" href="#contact">Enquire</a>
 </header>
 
@@ -29,6 +30,7 @@
 <section class="fig" id="home">
   <h1 class="sr-only">Bun Bun Cafe: freshly baked treats and customised cakes</h1>
   <div class="grid0" aria-hidden="true"><i class="v1"></i><i class="v2"></i><b style="left:calc(14% - 7px);top:22%"></b><b style="right:calc(14% - 7px);top:64%"></b></div>
+  <canvas class="braids" id="braids" aria-hidden="true"></canvas>
   <svg class="leaders" id="leaders" aria-hidden="true"></svg>
   <p class="fg-top rise"><span>Bun Bun Cafe · A homegrown bakery</span><span class="mono">Fig. 01 · Fresh batch · <span data-today></span></span></p>
   <div class="spec fade">
@@ -146,6 +148,6 @@
 <script src="./vendor/gsap.min.js"></script>
 <script src="./vendor/ScrollTrigger.min.js"></script>
 <script src="./vendor/lenis.min.js"></script>
-<script src="./box.js?v=19"></script>
+<script src="./box.js?v=21"></script>
 </body>
 </html>

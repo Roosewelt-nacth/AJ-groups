@@ -543,3 +543,57 @@ html.ready .fig .cta2.rise{transition-delay:.25s}html.ready .fig .flowwrap.rise{
   .fig{min-height:100svh}
 }
 @media (max-width:1100px){html.season .co.only-season,html.season .co,.co{display:none!important}}
+
+/* ===== two looks, alternating chapters, the braid and the animated flow ===== */
+html[data-look="green"]{--c:#4a442c;--g:#f8f2e4}
+.fig,.intro,.seasonal,.trayw,.about,.contact{background:var(--c);color:var(--g);--ink:var(--g);--paper:var(--c);--mute:color-mix(in srgb,var(--g) 70%,transparent);--line:color-mix(in srgb,var(--g) 18%,transparent);transition:background-color .6s ease,color .6s ease}
+.fig{background:radial-gradient(58% 44% at 50% 38%,color-mix(in srgb,var(--g) 7%,transparent),transparent 72%),var(--c)}
+.alt{--c:#4a442c;--g:#f8f2e4}
+html[data-look="green"] .alt{--c:#f8f2e4;--g:#4a442c}
+.trayw{max-width:none;margin:0;padding-inline:max(var(--pad),calc((100% - 1500px) / 2 + var(--pad)))}
+html{transition:background-color .6s ease}
+/* the look switch */
+.look{display:flex;gap:4px;padding:3px;border-radius:999px;border:1px solid var(--line);flex:none}
+.look button{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;transition:background .3s}
+.look i{width:16px;height:16px;border-radius:50%;display:block;transition:transform .4s var(--out)}
+.look [data-l="cream"] i{background:#f8f2e4;box-shadow:inset 0 0 0 1.5px #4a442c}
+.look [data-l="green"] i{background:#4a442c;box-shadow:inset 0 0 0 1.5px #4a442c}
+.look button[aria-pressed="true"]{background:color-mix(in srgb,var(--g) 14%,transparent)}
+.look button[aria-pressed="true"] i{transform:scale(1.18)}
+@media (hover:hover){.look button:hover i{transform:scale(1.18)}}
+@media (max-width:400px){.look button{width:24px;height:24px}.look i{width:14px;height:14px}}
+/* the braid: twin dough ropes with bead pearls, drawn on a canvas behind the figure */
+.fig .spec{z-index:2}
+/* leader lines draw themselves, then their dots appear; callouts fade in one by one */
+.leaders line{stroke-dasharray:var(--len,400);stroke-dashoffset:var(--len,400)}
+.leaders circle{opacity:0}
+html.ready .leaders.go line{animation:ldraw 1.1s var(--out) forwards;animation-delay:calc(1.1s + var(--i) * .18s)}
+html.ready .leaders.go circle{animation:ldot .45s ease forwards;animation-delay:calc(1.85s + var(--i) * .18s)}
+.leaders.static line{animation:none;stroke-dashoffset:0}.leaders.static circle{animation:none;opacity:1}
+@keyframes ldraw{to{stroke-dashoffset:0}}@keyframes ldot{from{opacity:0;r:0}to{opacity:1}}
+.co{transition:opacity .9s ease}
+html:not(.ready) .co{opacity:0}
+html.ready .c1{transition-delay:.8s}html.ready .c2{transition-delay:.95s}html.ready .c3{transition-delay:1.1s}html.ready .c4{transition-delay:1.25s}
+/* the flow: each step fills like piping, then the next lights up */
+.flow li::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left}
+.flow li.on::before{animation:fbar 2.4s linear forwards}
+.flow li.done::before{transform:scaleX(1)}
+@keyframes fbar{to{transform:scaleX(1)}}
+.flow .no{justify-self:start;padding:3px 9px;margin:-3px 0 0 -9px;border-radius:999px;transition:background .5s ease,color .5s ease}
+.flow li.on .no,.flow li.done .no{background:var(--g);color:var(--c)}
+.flow li b,.flow li p{transition:opacity .6s ease}
+.flow.run li:not(.on):not(.done) b,.flow.run li:not(.on):not(.done) p{opacity:.45}
+.flow li:not(:last-child)::after{transition:background .5s ease,color .5s ease}
+.flow li.done:not(:last-child)::after{background:var(--g);color:var(--c)}
+@media (prefers-reduced-motion:reduce){.leaders line{stroke-dashoffset:0;animation:none}.leaders circle{opacity:1;animation:none}.co{transition:none}.flow li::before{transform:scaleX(1)}.flow li.on::before{animation:none}}
+
+/* the slogans ride twisting dough ropes in their own side columns; the logo stays clean */
+.braids{position:absolute;left:0;top:0;z-index:1;pointer-events:none}
+.co{will-change:transform}
+.co b,.co span{opacity:calc(.78 + .22 * var(--z,1))}
+.co .n{scale:calc(.9 + .14 * var(--z,1))}
+/* the rope runs between the slogan and the ring, not through the letters */
+.co.l b,.co.l span{margin-right:34px}
+.co.r b,.co.r span{margin-left:34px}
+.co.l b,.co.l span{margin-right:48px}
+.co.r b,.co.r span{margin-left:48px}
