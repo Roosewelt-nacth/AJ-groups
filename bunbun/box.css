@@ -699,3 +699,19 @@ html.season .c-c,.c-c{grid-column:1/13}
 @media (min-width:861px){.fig{--D:clamp(260px,47vh,600px);padding-bottom:clamp(16px,3vh,30px)}}
 @media (min-width:861px) and (max-height:780px){.fig{--D:clamp(190px,42vh,600px)}}
 @media (max-width:860px){.spec{--D:min(84vw,360px)}.spec .wm{width:min(90vw,calc(var(--D) * 1.25))}}
+/* ===== production pass, phones ===== */
+/* menu tiles: one track on phones (the Cakes card was creating 12 columns and squeezing the others) */
+html.season .c-c,.c-c{grid-column:1/-1}
+@media (max-width:800px){.tray>.cp{grid-column:1/-1!important;grid-row:auto!important}}
+@media (max-width:860px){
+/* landing: one short top line, a ring that keeps its distance from the edges, buttons with a side gutter, no stray diamonds */
+.fg-top{justify-content:center}.fg-top>span:first-child{overflow:visible;text-overflow:clip;letter-spacing:.22em}
+.spec{--D:min(78vw,340px)}
+.grid0 b{display:none}
+.cta2{width:min(calc(100% - 40px),340px)!important;padding:0!important}
+/* seasonal: the countdown label fits inside its circle; easier taps on the size and type toggles */
+.days{width:164px}.days span{font-size:9.5px;letter-spacing:.14em;max-width:78%;line-height:1.35}
+.seg button{min-height:38px;padding:0 16px}
+}
+@media (max-width:360px){.fg-top>span:first-child{letter-spacing:.16em;font-size:10px}}
+@media (min-width:861px) and (max-width:1100px){.fig{--D:clamp(180px,38vh,520px)}}
