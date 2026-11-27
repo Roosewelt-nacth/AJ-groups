@@ -8,7 +8,6 @@ const BUNBUN = {
     { id: 'w', name: 'Waffles', photo: 'menu-c/triple-choc-waffle.webp', thumb: 'menu-c/triple-choc-waffle.webp', story: 'Warm, crisp and finished with chocolate.', items: ['White Chocolate Waffle', 'Triple Chocolate Waffle'] },
     { id: 'd', name: 'Desserts', photo: 'menu-c/caramel-pudding.webp', thumb: 'menu-c/caramel-pudding.webp', story: 'Silky, chilled and made to be savoured.', items: ['Chocolate Mousse', 'Caramel Pudding'] },
     { id: 'c', name: 'Cakes', photo: null, story: 'Our cake collection is being finalised. We also create bespoke cakes for birthdays, anniversaries and special occasions.', items: [] },
-    { id: 'x', name: 'Christmas', season: true, photo: 'stock/fruit-cake.webp', thumb: 'stock/fruit-cake-sq.webp', story: 'Plum cakes and Christmas hampers for the season.', items: [] },
   ],
   /* Seasonal Editions (until 1 Jan 2027): one plum cake with a choice of type and size, and the hamper builder.
      Add, remove or rename a type here; the card, the box and the WhatsApp message follow. */
@@ -123,7 +122,7 @@ const BUNBUN = {
   setTimeout(startMotion, RM ? 0 : 3200);
 
   /* gentle reveals */
-  $$('.th, .intro .wrap > *, .seasonal .sh, .seasonal .notice, .hamper, .about h2, .about .three p, .who, .lic, .contact h2, .contact .lead, .contact .notice, .cc').forEach((el) => el.classList.add('rv'));
+  $$('.th, .intro .wrap > *, .seasonal .sh, .seasonal .notice, .hamper, .about h2, .about .three p, .who, .contact h2, .contact .lead, .contact .notice, .cc').forEach((el) => el.classList.add('rv'));
   $$('.cp').forEach((el, i) => { el.classList.add('rv'); el.style.setProperty('--dl', (i % 3) * .08 + 's'); });
   const GS = !RM && !!(window.gsap && window.ScrollTrigger);
   if (RM || !('IntersectionObserver' in window)) $$('.rv').forEach((el) => el.classList.add('in'));

@@ -691,3 +691,16 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .about .wrap>.who:nth-of-type(3){align-self:stretch;margin-top:0;padding-top:24px;border-top:1px solid var(--line)}
 .about .wrap>.who:nth-of-type(2){padding-bottom:24px}
 }
+/* landing without the 3-step strip: the logo takes the space */
+@media (min-width:861px){.fig{--D:clamp(240px,44vh,520px);justify-content:center;padding-bottom:clamp(30px,5vh,60px)}}
+/* about: fills the screen edge to edge, no empty band (top group up, bottom group down on both halves) */
+@media (min-width:861px){
+.about{align-items:stretch;padding-block:clamp(84px,11vh,120px) clamp(40px,6vh,64px)}
+.about .wrap{min-height:calc(100svh - clamp(84px,11vh,120px) - clamp(40px,6vh,64px));grid-template-rows:auto auto 1fr auto}
+.about .wrap>h2{font-size:clamp(46px,6vw,96px)}
+.about .wrap>.three.one{font-size:clamp(17px,1.4vw,21px);max-width:40ch}
+.about .wrap>.who:nth-of-type(2){grid-row:1/3;align-self:start}
+.about .wrap>.who:nth-of-type(3){grid-row:3/5;align-self:end;border-top:1px solid var(--line)}
+.about .who h3{font-size:clamp(32px,3.6vw,56px)}
+.about .who .txt{font-size:clamp(15px,1.25vw,18px)}
+}
