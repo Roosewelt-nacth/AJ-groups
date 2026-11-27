@@ -279,3 +279,10 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 - **Copy trimmed:** the 2-day notice only in the steps strip and the footer; shorter intro, seasonal and contact lines; About keeps story, founder and the philosophy (paragraph and five pills).
 - **Photos:** Brownies, Waffles and Desserts use Bun Bun's own dish photos (`assets/bunbun/menu-c/`). Christmas still uses the stock fruit cake (its tile is a very wide strip). The stock photos in `assets/bunbun/stock/` are small and heavily compressed; Unsplash blocks automated downloads, so sharper originals must be downloaded by hand.
 - **Menu sheet fix:** the sheet photo never zooms and overfills its panel by 1 px (the zoom was what showed a dark line at the edge at 125% display scaling); the sheet fades and rises without scaling, and the backdrop blur is off on phones. Tile photo zoom was cut (1.14 to 1.06; hover 1.06 to 1.03).
+
+## Bun Bun page trims, 27 Nov 2026 (testing repo, not pushed)
+- FSSAI licence number is `22426539000444` (`fssai` in `BUNBUN`, `bunbun/box.js`).
+- Removed: the Christmas tile in Creations, the Pick / We bake / Collect strip, the "Freshly baked. Beautifully made." intro block, and the "Fig. 01 · Fresh batch · date" line (now "Freshly baked · Beautifully made"). The steps survive as one line in the Contact WhatsApp card.
+- Cakes card spans the full row in the dark card style.
+- About is three matched rows sized to their content: heading beside story, founder beside philosophy (under a rule), then the pills and licence line along the bottom. All older About overrides were deleted; the one block is at the end of `box.css`.
+- Phones use native scrolling (no Lenis on touch) and the menu card title is a fixed 34 px.

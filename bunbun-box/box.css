@@ -656,20 +656,6 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .flowwrap{padding-top:8px}.flow li{padding-top:clamp(18px,2.6vh,26px)}
 @media (max-width:860px){.th h2,.about h2,.contact h2,.seasonal h2,.intro h2{font-size:30px}.who h3{font-size:26px}}
 @media (max-width:800px){.about .who{grid-template-columns:1fr}}
-/* About: two halves that fill the screen (heading and story left, founder and philosophy right) */
-@media (min-width:861px){
-.about{min-height:100svh;display:flex;align-items:center}
-.about .wrap{width:100%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto auto;column-gap:clamp(48px,7vw,120px);align-items:start}
-.about .wrap>.eyebrow{grid-column:1;grid-row:1}
-.about .wrap>h2{grid-column:1;grid-row:2;font-size:clamp(44px,5.4vw,84px);margin-top:14px}
-.about .wrap>.three.one{grid-column:1;grid-row:3;margin-top:28px;max-width:44ch;font-size:clamp(16px,1.3vw,19px)}
-.about .wrap>.lic{grid-column:1;grid-row:4;margin-top:28px}
-.about .wrap>.who{grid-column:2;grid-template-columns:1fr;margin-top:0;padding-top:clamp(22px,3.4vh,36px);gap:12px}
-.about .wrap>.who:nth-of-type(2){grid-row:1/3;align-self:start;padding-top:0;border-top:0}
-.about .wrap>.who:nth-of-type(3){grid-row:3/5;align-self:start;margin-top:8px}
-.about .who h3{font-size:clamp(30px,3.2vw,48px)}
-.about .who .txt{font-size:clamp(15px,1.15vw,17px)}
-}
 @media (min-width:861px) and (max-height:780px){.fig{--D:clamp(150px,28vh,400px)}}
 /* big landing logo: the 3-step strip is made compact on laptops so both fit on the first screen */
 @media (min-width:861px){
@@ -682,46 +668,24 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .cta2{margin-top:clamp(14px,2.4vh,26px)}
 }
 @media (min-width:861px) and (max-height:780px){.fig{--D:clamp(170px,36vh,470px)}.flow li p{display:none}.flow li:last-child p{display:block}}
-/* about: tighter, both halves share the same top and bottom lines */
-@media (min-width:861px){
-.about{padding-block:clamp(44px,6vh,72px)}
-.about .wrap{align-items:stretch;row-gap:0}
-.about .wrap>.three.one{margin-top:18px}
-.about .wrap>.lic{align-self:end;padding-top:20px;margin-top:0;border-top:1px solid var(--line)}
-.about .wrap>.who:nth-of-type(3){align-self:stretch;margin-top:0;padding-top:24px;border-top:1px solid var(--line)}
-.about .wrap>.who:nth-of-type(2){padding-bottom:24px}
-}
 /* landing without the 3-step strip: the logo takes the space */
 @media (min-width:861px){.fig{--D:clamp(240px,44vh,520px);justify-content:center;padding-bottom:clamp(30px,5vh,60px)}}
-/* about: fills the screen edge to edge, no empty band (top group up, bottom group down on both halves) */
-@media (min-width:861px){
-.about{align-items:stretch;padding-block:clamp(84px,11vh,120px) clamp(40px,6vh,64px)}
-.about .wrap{min-height:calc(100svh - clamp(84px,11vh,120px) - clamp(40px,6vh,64px));grid-template-rows:auto auto 1fr auto}
-.about .wrap>h2{font-size:clamp(46px,6vw,96px)}
-.about .wrap>.three.one{font-size:clamp(17px,1.4vw,21px);max-width:40ch}
-.about .wrap>.who:nth-of-type(2){grid-row:1/3;align-self:start}
-.about .wrap>.who:nth-of-type(3){grid-row:3/5;align-self:end;border-top:1px solid var(--line)}
-.about .who h3{font-size:clamp(32px,3.6vw,56px)}
-.about .who .txt{font-size:clamp(15px,1.25vw,18px)}
-}
 /* Cakes card: full width and the same dark card look as the other tiles */
 html.season .c-c,.c-c{grid-column:1/13}
 .c-c,html.season .c-c{background:var(--g);color:var(--c);border:0}
 .c-c h3{color:var(--c)}.c-c .go{border-color:var(--c)}.c-c .big{color:var(--c);opacity:.9}
 @media (hover:hover){.c-c:hover .go{background:var(--c);color:var(--g)}}
-/* about: content-height, so no empty band inside either half */
-@media (min-width:861px){
-.about{min-height:0;align-items:center;padding-block:clamp(70px,10vh,110px)}
-.about .wrap{min-height:0;grid-template-rows:auto auto auto auto}
-.about .wrap>.who:nth-of-type(2){grid-row:1/3;padding-bottom:0}
-.about .wrap>.who:nth-of-type(3){grid-row:3/5;align-self:start;margin-top:clamp(26px,4vh,44px)}
-.about .wrap>.lic{align-self:start;margin-top:clamp(26px,4vh,44px)}
-}
-/* about, right half: philosophy sits under a rule with equal space above and below it */
-@media (min-width:861px){
-.about .wrap>.who:nth-of-type(2){padding-bottom:clamp(24px,3.6vh,38px)}
-.about .wrap>.who:nth-of-type(3){margin-top:0;padding-top:clamp(24px,3.6vh,38px);border-top:1px solid var(--line)}
-.about .wrap>.lic{margin-top:0;align-self:end;padding-top:20px}
-}
-@media (min-width:861px){.about .wrap>.who:nth-of-type(3){padding-top:clamp(36px,7.4vh,72px)}.about .wrap>.who:nth-of-type(2){padding-bottom:0}}
-@media (min-width:861px){.about .wrap>.who:nth-of-type(3){margin-top:-14px;padding-top:calc(clamp(36px,7.4vh,72px) + 14px)}}
+@media (min-width:861px) and (max-height:780px){.fig{--D:clamp(170px,34vh,470px)}}
+/* ===== About: three matched rows, sized to their content (no empty bands) ===== */
+.about{min-height:0;padding-block:clamp(64px,9vh,104px)}
+.ab-row{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(40px,6vw,110px);align-items:end}
+.ab-1 h2{margin-top:12px;font-size:clamp(40px,5.2vw,84px);line-height:1.02}
+.ab-1 .three.one{margin:0;max-width:44ch;font-size:clamp(16px,1.35vw,20px);line-height:1.7}
+.ab-2{align-items:start;margin-top:clamp(36px,5vh,56px);padding-top:clamp(28px,4vh,44px);border-top:1px solid var(--line)}
+.about .who{display:block;margin:0;padding:0;border:0}
+.about .who h3{font-size:clamp(30px,3.2vw,52px);margin:8px 0 4px}
+.about .who .role{margin-bottom:12px}
+.about .who .txt{display:block;margin-top:12px;font-size:clamp(15px,1.15vw,18px);line-height:1.7;color:var(--mute);max-width:48ch}
+.ab-3{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px;margin-top:clamp(32px,4.4vh,48px);padding-top:clamp(24px,3.4vh,36px);border-top:1px solid var(--line)}
+.ab-3 .pills{margin:0}.ab-3 .lic{margin:0}
+@media (max-width:860px){.ab-row{grid-template-columns:1fr;row-gap:20px}.ab-2{row-gap:32px}.ab-3{flex-direction:column;align-items:flex-start}}
