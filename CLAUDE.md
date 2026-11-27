@@ -286,3 +286,9 @@ UPI deep link (`upi://pay?...` with the order number in the note) or a payment l
 - Cakes card spans the full row in the dark card style.
 - About is three matched rows sized to their content: heading beside story, founder beside philosophy (under a rule), then the pills and licence line along the bottom. All older About overrides were deleted; the one block is at the end of `box.css`.
 - Phones use native scrolling (no Lenis on touch) and the menu card title is a fixed 34 px.
+
+## Bun Bun launch lock and Christmas experiment, 27 Nov 2026
+- **Official repo now carries the Bakery Box `/bunbun/` page** (pushed 27 Nov from a commit on top of `official/main` with only site paths copied; no reels or review copies, and the official `robots.txt` was kept).
+- **Launch lock:** `/bunbun/` opens by itself on **Sun 29 Nov 2026, 6:00 pm IST** (`Date.UTC(2026,10,29,12,30)` in the script at the top of `bunbun/index.html`): before then visitors without `?preview` go to the home page; after it the redirect and `noindex` lift. A matching script after the Bun Bun chapter in the home `index.html` swaps "Coming soon" for "Visit Bun Bun Cafe" and the card label to "Now open" at the same moment. `sitemap.xml` does not list `/bunbun/` yet.
+- **Christmas experiment (testing review copy only):** `bunbun-box/xmas.css` and `xmas.js` restyle Seasonal Editions in pine `#1f3a2c`, cranberry `#9e2b35` and gold `#d2b273`: string of lights, holly, gold countdown seal, a 24-door advent calendar (doors open by date in December), gift-tag plum cake, ribbon-wrapped hamper and light snow. Review at `/bunbun-box/?season=1`. Not on `/bunbun/` or the official repo.
+- Pushing from this machine uses the GitHub CLI sign-in (`gh auth setup-git`).
