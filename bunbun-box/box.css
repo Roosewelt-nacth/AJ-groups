@@ -168,7 +168,7 @@ html.fine dialog,html.fine dialog *{cursor:auto}html.fine dialog a,html.fine dia
 .sp{position:relative;overflow:hidden}
 .sp .mk{display:none;position:absolute;inset:0;margin:auto;width:34%;height:auto;color:var(--c)}
 .sp.nophoto img{display:none}.sp.nophoto .mk{display:block}
-dialog.sheet[open] .sp img{animation:zoom 1.2s var(--out)}@keyframes zoom{from{transform:scale(1.12)}}
+
 dialog.sheet[open] .sb>*{animation:up .7s var(--out) both}
 dialog.sheet[open] .sb>:nth-child(2){animation-delay:.05s}dialog.sheet[open] .sb>:nth-child(3){animation-delay:.1s}dialog.sheet[open] .sb>:nth-child(4){animation-delay:.15s}dialog.sheet[open] .sb>:nth-child(5){animation-delay:.2s}dialog.sheet[open] .sb>:nth-child(6){animation-delay:.25s}dialog.sheet[open] .sb>:nth-child(7){animation-delay:.3s}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
@@ -188,7 +188,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 /* once the opening has played, CSS hands motion over to ScrollTrigger (no transition fighting the scrub) */
 html.settled .rise,html.settled .fl{transition:none}
 .cp img{transition:scale 1.1s var(--out)}
-@media (hover:hover){.cp:hover img{transform:none;scale:1.06}}
+@media (hover:hover){.cp:hover img{transform:none;scale:1.03}}
 .th h2{will-change:transform}
 
 /* ===== content from the original page ===== */
@@ -573,36 +573,54 @@ html.ready .c1{transition-delay:.8s}html.ready .c2{transition-delay:.95s}html.re
 .flow li.done:not(:last-child)::after{background:var(--g);color:var(--c)}
 @media (prefers-reduced-motion:reduce){.leaders line{stroke-dashoffset:0;animation:none}.leaders circle{opacity:1;animation:none}.co{transition:none}.flow li::before{transform:scaleX(1)}.flow li.on::before{animation:none}}
 
-/* ===== the ribbon is the page's one moving object (script: ribbon.js) ===== */
-/* it is painted behind all content and above every chapter's background, so it can never cover text */
-.ribbon{position:fixed;left:0;top:0;z-index:1;pointer-events:none}
-.wrap,.th,.tray,.fw{position:relative;z-index:2}
-
-/* ===== footer: the box, tied shut (centred, to sit under the bow) ===== */
-/* it takes the opposite pair of the chapter above, like the base of a gift box */
-.contact{--sc:var(--c);--sg:var(--g)}
-.ft{position:relative;display:block;margin-top:clamp(70px,10vh,120px);padding:0 0 calc(26px + env(safe-area-inset-bottom));border-radius:clamp(28px,3.4vw,48px) clamp(28px,3.4vw,48px) 0 0;background:var(--sg);color:var(--sc);font-size:14px;
-  --c:var(--sg);--g:var(--sc);--ink:var(--sc);--paper:var(--sg);--mute:color-mix(in srgb,var(--sc) 72%,transparent);--line:color-mix(in srgb,var(--sc) 24%,transparent)}
-.ft .fw{max-width:1100px;margin:0 auto;padding:clamp(130px,17vh,180px) var(--pad) 0;text-align:center}
-.fsay{font:300 clamp(36px,5vw,76px)/1.02 var(--disp);font-variation-settings:"SOFT" 100;letter-spacing:-.03em;margin:16px auto 0;max-width:16ch}
-.fsay em{color:color-mix(in srgb,var(--g) 62%,transparent)}
-.flead{margin:18px auto 0;max-width:46ch;color:var(--mute);font-size:clamp(15px,1.2vw,17px);line-height:1.65}
-.fcta{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:28px}
-.fcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,3vw,48px);margin-top:clamp(48px,8vh,80px);padding-top:clamp(26px,4vh,38px);border-top:1px solid var(--line);text-align:left}
-.ft h4{font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;margin-bottom:14px;color:var(--g)}
-.ft ul,.ft ol{list-style:none;display:grid;gap:9px;color:var(--mute);font-size:14px;line-height:1.5}
-.ft ol{counter-reset:st}.ft ol li{display:grid;grid-template-columns:22px 1fr;gap:6px}
-.ft ol li::before{counter-increment:st;content:counter(st) ".";font:500 11px 'DM Mono',monospace;color:var(--g);padding-top:3px}
-.ft ol b{color:var(--g);font-weight:600}
-.ft a:hover{color:var(--g)}
-.fbig{width:min(72%,560px);margin:clamp(44px,7vh,72px) auto 0;color:var(--g);opacity:.92}
-.ft .base{max-width:none;margin:clamp(32px,5vh,52px) 0 0;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--mute);text-align:left}
-@media (max-width:760px){.fcols{grid-template-columns:1fr 1fr}.fcols>div:last-child{grid-column:1/-1}}
-/* phones: a plain band and seal instead of the animated ribbon */
-@media (max-width:699px){.ft .fw{padding-top:100px}
-  .ft::before{content:"";position:absolute;left:0;right:0;top:40px;height:14px;background:var(--g)}
-  .ft::after{content:"";position:absolute;left:50%;top:47px;width:44px;height:44px;translate:-50% -50%;border-radius:50%;background:var(--c);border:1.5px solid var(--g);box-shadow:0 0 0 6px var(--c)}}
+/* ===== footer (the original) ===== */
+.ft{position:relative;display:block;margin-top:clamp(70px,10vh,120px);padding:84px var(--pad) calc(96px + env(safe-area-inset-bottom));font-size:13px;color:var(--mute)}
+.fg{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:clamp(20px,4vw,60px);max-width:1240px;margin:0 auto;padding-top:12px;color:var(--g)}
+.fg .brand .mk{width:40px}.fg .brand .wm{width:120px}.fg p{color:var(--mute);margin-top:14px;max-width:34ch;font-size:14px}
+.fg h4{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.fg ul{list-style:none;display:grid;gap:8px;font-size:14px;color:var(--mute)}.fg a:hover{color:var(--g)}
+.base{max-width:1240px;margin:36px auto 0;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--mute)}
+@media (max-width:800px){.fg{grid-template-columns:1fr 1fr}.fa1{grid-column:1/-1}}
 /* breathing room under the landing buttons; tidy single-paragraph about */
 .fig .cta2{margin-bottom:clamp(26px,4.2vh,50px)}
 @media (min-width:700px) and (max-height:820px){.fig{--D:clamp(210px,31vh,380px)}}
 .three.one{grid-template-columns:1fr;max-width:62ch;font-size:clamp(16px,1.35vw,20px)}
+
+/* landing words: small quiet text in the corners, nothing touching the logo (like the /bunbun/ landing) */
+.qa,.qb{position:absolute;z-index:2;margin:0;font:500 10.5px/1.7 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.qa{left:calc(14% + 16px);top:clamp(150px,19vh,190px)}
+.qb{right:calc(14% + 16px);top:clamp(480px,70svh,700px);text-align:right}
+@media (max-width:1100px){.qa{position:static;text-align:center;margin:clamp(14px,2.6vh,22px) auto 0}.fig .qb.qb{display:none!important}}
+
+/* ===== even spacing and one left edge for every chapter ===== */
+/* less empty space above each chapter; the landing flows straight into the intro */
+.intro{padding:clamp(32px,4.5vh,52px) 0 clamp(20px,3vh,36px)}
+.seasonal,.about{padding-block:clamp(52px,7.5vh,84px)}
+.trayw{padding-block:clamp(52px,7.5vh,84px)}
+.contact{padding:clamp(52px,7.5vh,84px) 0 0}
+.ft{margin-top:clamp(44px,6.5vh,72px);padding-top:56px}
+/* the creations tray, the footer and the base line start on the same left edge as every heading (container 1240 with the page padding inside) */
+.trayw{padding-inline:max(var(--pad),calc((100% - 1240px) / 2 + var(--pad)))}
+.fg,.base{max-width:calc(1240px - 2 * var(--pad))}
+
+/* waffle photo: frame the whole waffle in the wide tile */
+.cp.c-w img{object-position:50% 38%}
+.cp.c-d img{object-position:50% 46%}
+
+/* ===== the menu sheet: no black seam, a simpler animation, nothing that misbehaves on phones ===== */
+/* behind a photo the panel is the page cream (the photo covers it), so a fractional-pixel gap between photo and text can never show as a dark line; the dark panel stays for the Cakes sheet, which has no photo */
+.sp:not(.nophoto){background:var(--c)}
+.sp img{display:block}
+/* the sheet fades and rises, without scaling (scaling is what made the seam flicker); the photo just fades in */
+@keyframes pop{from{opacity:0;transform:translateY(22px)}}
+@keyframes zoom{from{opacity:0}}
+@keyframes out{to{opacity:0;transform:translateY(14px)}}
+dialog.sheet[open]{animation:pop .42s var(--out)}
+dialog.sheet[open] .sp img{animation:zoom .6s ease both}
+dialog.sheet[open]::backdrop{animation:backfade .35s ease both}
+@keyframes backfade{from{opacity:0}}
+dialog.sheet{overscroll-behavior:contain}
+/* on phones the blurred backdrop is the usual cause of dialogs flickering or not painting, so it is a plain tint there (same colour) */
+@media (hover:none),(max-width:800px){dialog.sheet::backdrop{-webkit-backdrop-filter:none;backdrop-filter:none}}
+/* the sheet photo never zooms and fills its panel edge to edge (one pixel of overfill, clipped by the panel), so no edge or seam can show a gap */
+.sp img{margin:-1px;width:calc(100% + 2px);max-width:none;height:calc(100% + 2px);transform:none!important;scale:none!important}

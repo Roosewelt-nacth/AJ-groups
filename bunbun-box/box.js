@@ -4,9 +4,9 @@ const BUNBUN = {
   instagram: 'https://www.instagram.com/bun.bun.bakes/?hl=en', handle: '@bun.bun.bakes',
   fssai: null, location: null, noticeDays: 2,
   cats: [
-    { id: 'b', name: 'Brownies', photo: 'stock/brownie-pour.webp', thumb: 'stock/brownie-plate-sq.webp', story: 'Rich, fudgy and made to be shared.', items: ['Nutella Brownie', 'Double Chocolate Brownie', 'Metro Chocolate Brownie'] },
-    { id: 'w', name: 'Waffles', photo: 'stock/waffle.webp', thumb: 'stock/waffle-sq.webp', story: 'Warm, crisp and finished with chocolate.', items: ['White Chocolate Waffle', 'Triple Chocolate Waffle'] },
-    { id: 'd', name: 'Desserts', photo: 'stock/flan.webp', thumb: 'stock/flan-sq.webp', story: 'Silky, chilled and made to be savoured.', items: ['Chocolate Mousse', 'Caramel Pudding'] },
+    { id: 'b', name: 'Brownies', photo: 'menu-c/double-choc-brownie.webp', thumb: 'menu-c/double-choc-brownie.webp', story: 'Rich, fudgy and made to be shared.', items: ['Nutella Brownie', 'Double Chocolate Brownie', 'Metro Chocolate Brownie'] },
+    { id: 'w', name: 'Waffles', photo: 'menu-c/triple-choc-waffle.webp', thumb: 'menu-c/triple-choc-waffle.webp', story: 'Warm, crisp and finished with chocolate.', items: ['White Chocolate Waffle', 'Triple Chocolate Waffle'] },
+    { id: 'd', name: 'Desserts', photo: 'menu-c/caramel-pudding.webp', thumb: 'menu-c/caramel-pudding.webp', story: 'Silky, chilled and made to be savoured.', items: ['Chocolate Mousse', 'Caramel Pudding'] },
     { id: 'c', name: 'Cakes', photo: null, story: 'Our cake collection is being finalised. We also create bespoke cakes for birthdays, anniversaries and special occasions.', items: [] },
     { id: 'x', name: 'Christmas', season: true, photo: 'stock/fruit-cake.webp', thumb: 'stock/fruit-cake-sq.webp', story: 'Plum cakes and Christmas hampers for the season.', items: [] },
   ],
@@ -134,8 +134,6 @@ const BUNBUN = {
     const f = new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }).format(d);
     $$('#pickup').forEach((el) => { el.textContent = f; }); $$('[data-days]').forEach((el) => { el.textContent = B.noticeDays; });
     $$('[data-slip]').forEach((el) => { el.href = wa('Hi Bun Bun Cafe, I would like to place an order. The earliest date I can pick up is ' + f + '.\n\nWhat I would like:\n'); }); }
-  /* the slogans hang from the ribbon collar on strings: see ribbon.js */
-
   /* the flow: 01, 02, 03 take turns; each bar fills like piping, then the number settles in */
   { const fl = $('.flow'); if (fl) { const lis = $$('li', fl); let s = -1, tm = 0, paused = false, seen = false;
       const show = (n) => { lis.forEach((li, k) => { li.classList.toggle('on', k === n); li.classList.toggle('done', k < n || n === lis.length); }); fl.classList.add('run'); };
@@ -166,10 +164,8 @@ const BUNBUN = {
     if (window.Lenis && !lenis) { lenis = new Lenis({ lerp: .1, wheelMultiplier: .9, touchMultiplier: 1.4 }); lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add((t) => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
     /* the tray: the heading drifts sideways, every photo has its own depth */
     gsap.fromTo('.th h2', { xPercent: 3 }, { xPercent: -3, ease: 'none', scrollTrigger: { trigger: '.trayw', start: 'top bottom', end: 'bottom top', scrub: true } });
-    $$('.cp img').forEach((im) => gsap.fromTo(im, { yPercent: -7, scale: 1.14 }, { yPercent: 7, scale: 1.14, ease: 'none', scrollTrigger: { trigger: im.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
+    $$('.cp img').forEach((im) => gsap.fromTo(im, { yPercent: -3, scale: 1.06 }, { yPercent: 3, scale: 1.06, ease: 'none', scrollTrigger: { trigger: im.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
     $$('.cp .big').forEach((m) => gsap.fromTo(m, { rotate: -10 }, { rotate: 10, ease: 'none', scrollTrigger: { trigger: m.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
-    /* about: the founder's name slides in, the pills follow one by one */
-    gsap.from('.about .pills li', { y: 30, opacity: 0, stagger: .07, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '.about .pills', start: 'top 90%', once: true } });
     /* the bar follows Lenis' direction */
     if (lenis) lenis.on('scroll', ({ direction, scroll }) => top.classList.toggle('hide', direction > 0 && scroll > 240));
     addEventListener('load', () => ScrollTrigger.refresh());

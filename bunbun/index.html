@@ -6,112 +6,135 @@
 <script>if(!/[?&]preview(=|&|$)/.test(location.search))location.replace("../");</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bun Bun Cafe | Freshly baked, beautifully made</title>
-<meta name="description" content="Bun Bun Cafe, a homegrown bakery: brownies, waffles, desserts, customised cakes and Christmas plum cakes. Order on WhatsApp.">
-<meta name="theme-color" content="#f8f2e4">
+<meta name="description" content="Bun Bun Cafe, a homegrown bakery: brownies, waffles, desserts, customised cakes and Christmas plum cakes. Enquire on WhatsApp.">
+<meta name="theme-color" content="#4a442c">
 <link rel="icon" href="./favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,0..100&family=DM+Sans:opsz,wght@9..40,400..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./site.css?v=60">
-<link rel="stylesheet" href="./premium.css?v=1">
-<link rel="stylesheet" href="./atmos.css?v=2">
-<link rel="stylesheet" href="./cream.css?v=2">
-<script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date(),on=q==="1"?true:q==="0"?false:d<new Date(2027,0,2);document.documentElement.classList.toggle("season",on)}catch(e){}})();</script>
-<script>try{var s=localStorage.getItem("bbtheme");document.documentElement.dataset.look="cream"}catch(e){}</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=DM+Sans:opsz,wght@9..40,400..600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./box.css?v=61">
+<script>(function(){try{var q=new URLSearchParams(location.search).get("season"),d=new Date();document.documentElement.classList.toggle("season",q==="1"?true:q==="0"?false:d<new Date(2027,0,2));try{document.documentElement.dataset.look=localStorage.getItem("bbboxlook")==="green"?"green":"cream"}catch(e){document.documentElement.dataset.look="cream"}document.documentElement.classList.add("opened")}catch(e){}})();</script>
 </head>
 <body>
-<main>
 
-<!-- 01 HOME: the logo entry, kept as it was -->
-<div class="chap" id="home">
-<section class="hero0" aria-label="Bun Bun Cafe">
+<div class="cur" id="cur" aria-hidden="true"><i class="mk"></i><span></span></div>
+
+<header class="top" id="top">
+  <a class="brand" href="#home" aria-label="Bun Bun Cafe, home"><i class="mk"></i><i class="wm"></i></a>
+  <nav aria-label="Main"><a href="#home">Home</a><a class="only-season" href="#seasonal">Seasonal Editions</a><a href="#tray">Creations</a><a href="#about">About</a><a href="#contact">Contact Us</a></nav>
+  <a class="wa-ico" data-wa href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.2 8.6c.3-.6.8-.5 1.1.1l.5 1.1c.1.3 0 .6-.3.9l-.4.4c.6 1.2 1.6 2.1 2.8 2.7l.5-.5c.2-.2.5-.3.8-.1l1.1.6c.5.3.6.8.1 1.3-.7.8-1.8 1-3 .5-2.4-1-4-2.7-4.7-4.8-.3-.8.1-1.5.5-2.2z"/></svg></a>
+  <div class="look" role="group" aria-label="Colour look"><button type="button" data-l="cream" aria-label="Cream look" title="Cream"><i></i></button><button type="button" data-l="green" aria-label="Green look" title="Green"><i></i></button></div>
+  <a class="pb solid sm" href="#contact">Enquire</a>
+</header>
+
+<main>
+<!-- 01 HOME: the original logo entry, annotated like a specimen plate -->
+<section class="fig" id="home">
   <h1 class="sr-only">Bun Bun Cafe: freshly baked treats and customised cakes</h1>
-  <div class="grid0" aria-hidden="true"><i class="v1"></i><i class="v2"></i><i class="h1"></i><b style="left:calc(14% - 7px);top:22%"></b><b style="right:calc(14% - 7px);bottom:calc(20% - 7px)"></b></div>
-  <div class="lock0">
-    <div class="disc0"><svg viewBox="0 0 400 400" aria-hidden="true"><defs><path id="rp" d="M200,200 m-186,0 a186,186 0 1,1 372,0 a186,186 0 1,1 -372,0"/></defs><text><textPath href="#rp">BAKED FRESH · HOMEMADE TASTE · MADE TO ORDER · BAKED WITH LOVE · </textPath></text></svg><i class="mk" role="img" aria-label="Bun Bun mark"></i></div>
+  <div class="grid0" aria-hidden="true"><i class="v1"></i><i class="v2"></i><b style="left:calc(14% - 7px);top:22%"></b><b style="right:calc(14% - 7px);top:64%"></b></div>
+  <p class="fg-top rise"><span>Bun Bun Cafe · A homegrown bakery</span><span class="mono">Fig. 01 · Fresh batch · <span data-today></span></span></p>
+  <div class="spec fade">
+    <div class="disc"><svg viewBox="0 0 400 400" aria-hidden="true"><defs><path id="rp3" d="M200,200 m-186,0 a186,186 0 1,1 372,0 a186,186 0 1,1 -372,0"/></defs><text><textPath href="#rp3" textLength="1150" lengthAdjust="spacing">BAKED FRESH · HOMEMADE TASTE · MADE TO ORDER · BAKED WITH LOVE · </textPath></text></svg><i class="mk" role="img" aria-label="Bun Bun mark"></i></div>
     <i class="wm" role="img" aria-label="Bun Bun"></i>
   </div>
-  <p class="tiny0 t-a">Homemade taste.<br>Baked to order.<br>Made for every moment.</p>
-  <p class="tiny0 t-b">Birthday cakes<br>Brownies · Desserts · Waffles</p>
-  <p class="xpill only-season"><i></i>Christmas plum cakes &amp; hampers, now taking orders</p>
-  <div class="cta0"><a class="btn" href="#menu">Discover Our Creations</a><a class="btn ghost only-season" href="#seasonal">Explore Seasonal Editions</a><a class="btn ghost only-std" data-fill="whatsapp" href="#">Enquire on WhatsApp</a></div>
+  <p class="qa fade">Homemade taste<br>Baked to order<br>Made for every moment</p>
+  <p class="qb fade only-season">Christmas editions<br>Plum cakes &amp; hampers</p>
+  <p class="qb fade only-std">Order ahead<br>At least 2 days before</p>
+  <div class="cta2 rise"><a class="pb solid" href="#tray">Discover Our Creations</a><a class="pb only-season" href="#seasonal">Explore Seasonal Editions</a><a class="pb only-std" data-wa href="#" target="_blank" rel="noopener">Enquire on WhatsApp</a></div>
+  <div class="flowwrap rise">
+    <ol class="flow">
+      <li><span class="no">01</span><b>Pick</b><p>Choose your favourites from our creations.</p></li>
+      <li><span class="no">02</span><b>We bake</b><p>Fresh for your date. Please order at least <span data-days>2</span> days ahead.</p></li>
+      <li><span class="no">03</span><b>Collect</b><p>Earliest pickup <strong id="pickup">&nbsp;</strong>. We confirm on WhatsApp.</p><a class="fl-a" data-slip href="#" target="_blank" rel="noopener">Order on WhatsApp &rarr;</a></li>
+    </ol>
+  </div>
 </section>
-<section class="intro"><div class="wrap">
-  <div class="split0">
-    <div class="rv"><span class="eyebrow">Bun Bun Cafe</span><h2>Freshly baked. Beautifully made. <em>Made for every moment.</em></h2></div>
-    <p class="lead rv">From everyday indulgences to memorable celebrations, discover freshly prepared treats and customised creations made with care at Bun Bun Cafe.</p>
-  </div>
+
+<section class="intro" id="intro"><div class="wrap">
+  <p class="eyebrow">Bun Bun Cafe</p>
+  <h2>Freshly baked. Beautifully made. <em>Made for every moment.</em></h2>
+  <p class="lead">Freshly prepared treats and customised creations, made with care.</p>
 </div></section>
-</div>
 
-<!-- 02 ABOUT -->
-<div class="chap" id="about">
-<div class="wrap">
-  <div class="split">
-    <div class="rv"><span class="eyebrow">About us</span><h2>A little interest. <em>A sweet beginning.</em></h2></div>
-    <div class="txt rv">
-      <p>Bun Bun Cafe started with something simple: Monisha Janet's personal interest in baking and her desire to turn that interest into something of her own.</p>
-      <p>With the encouragement and support of her family, Monisha took her first step towards building a home-baking venture. What began as a simple interest gradually became Bun Bun Cafe, a homegrown bakery built around creativity, passion and the love of baking.</p>
-      <p>Today, Monisha continues to develop the brand with her baking knowledge, creativity and dedication, bringing together delightful treats and personalised creations for every occasion.</p>
-    </div>
+<!-- 02 SEASONAL EDITIONS (Advent, until New Year) -->
+<section class="seasonal only-season" id="seasonal"><div class="wrap">
+  <div class="sh">
+    <div><p class="eyebrow">Seasonal Editions · Christmas 2026</p><h2>A Christmas tradition, <em>baked with love.</em></h2>
+      <p class="lead">Plum cakes and Christmas hampers, made to order.</p></div>
+    <div class="days"><b data-xdays>0</b><span>days to Christmas</span><svg viewBox="0 0 100 50" aria-hidden="true"><path d="M8 46a42 42 0 0 1 84 0"/><path class="arc" d="M8 46a42 42 0 0 1 84 0" pathLength="100"/></svg></div>
   </div>
-  <div class="split rv">
-    <div><span class="eyebrow">Meet our founder</span><h3 class="big">Monisha Janet</h3><p class="role">Founder &amp; Certified Baker</p></div>
-    <div class="txt">
-      <p>Behind Bun Bun Cafe is Monisha Janet, whose personal interest in baking inspired the beginning of this journey.</p>
-      <p>As a certified baker, Monisha leads the baking process, product preparation and creative direction of the brand. Her focus is on creating delicious products, exploring new flavours and designs, and delivering a thoughtful experience with every order.</p>
-    </div>
-  </div>
-  <div class="split rv">
-    <div><span class="eyebrow">Our philosophy</span><h3 class="big">More than just taste.</h3></div>
-    <div class="txt">
-      <p>We believe that good baking is about more than just taste. It is about quality, care, creativity and the happiness that comes with sharing something special.</p>
-      <ul class="pills"><li>Quality ingredients</li><li>Fresh preparation</li><li>Attention to detail</li><li>Food safety and hygiene</li><li>Personalised customer experience</li></ul>
-    </div>
-  </div>
-  <p class="lic rv">Bun Bun Cafe is an FSSAI-licensed food business. Licence no. <span data-fill="fssai"></span></p>
-</div>
-</div>
+  <div class="plums" id="plums"></div>
+  <div class="hamper" id="hamper"></div>
+</div></section>
 
-<!-- 04 SEASONAL (Advent, until New Year) -->
-<div class="chap only-season xmas" id="seasonal">
-<canvas class="snow" aria-hidden="true"></canvas>
-<svg class="holly" viewBox="0 0 240 160" aria-hidden="true"><path d="M20 120c40-6 80-30 112-70"/><path d="M132 50c18-24 46-34 86-34"/><path d="M70 104c-4-18 6-34 22-42c2 16-4 32-22 42zM70 104c18 2 34-6 42-22c-16-2-32 4-42 22z"/><path d="M150 40c-14-12-16-30-8-46c10 12 12 30 8 46zM150 40c16-8 34-6 46 6c-16 6-32 4-46-6z"/><path d="M106 70c-14-4-22-16-22-30c12 4 20 16 22 30z"/><circle cx="124" cy="58" r="5"/><circle cx="135" cy="64" r="5"/><circle cx="128" cy="70" r="5"/></svg>
-<div class="xbg" aria-hidden="true"><img src="../assets/bunbun/menu/plum-rum.webp" alt="" width="600" height="600"></div>
-<div class="wrap" id="xm-products">
-  <div class="head rv"><span class="eyebrow">Seasonal Editions · Christmas 2026</span><h2>A Christmas tradition, <em>baked with love.</em></h2></div>
-  <div class="shead">
-    <p class="lead rv">Celebrate the festive season with our specially prepared plum cakes, full cakes in half kg and 1 kg, and Christmas hampers made your way.</p>
-    <a class="w w1 rv" href="#xm-cards"><small>Days to Christmas</small><b data-xdays>31</b><svg viewBox="0 0 100 50" aria-hidden="true"><path d="M8 46a42 42 0 0 1 84 0"/><path class="arc" d="M8 46a42 42 0 0 1 84 0" pathLength="100"/></svg></a>
+<!-- 03 CREATIONS: the tray -->
+<section class="trayw" id="tray">
+  <div class="th"><p class="eyebrow">Our creations</p><h2>Crafted fresh. <em>Loved every bite.</em></h2>
+    <p class="lead">Brownies, waffles and desserts, made by hand and baked to order.</p></div>
+  <div class="tray" id="trayg"></div>
+</section>
+
+<!-- 04 ABOUT -->
+<section class="about" id="about"><div class="wrap">
+  <p class="eyebrow">About us</p>
+  <h2>A little interest. <em>A sweet beginning.</em></h2>
+  <div class="three one"><p>Bun Bun Cafe began with Monisha Janet's love of baking. With her family's support it grew into a homegrown bakery built on creativity, care and the joy of sharing something special.</p></div>
+  <div class="who">
+    <div><p class="eyebrow">Meet our founder</p><h3>Monisha Janet</h3><p class="role">Founder &amp; Certified Baker</p></div>
+    <div class="txt"><p>A certified baker, Monisha leads every bake, from new flavours and designs to a thoughtful experience with every order.</p></div>
   </div>
-    <div class="notice rv" role="note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><p><b>Plan ahead. Celebrate better.</b> Please order at least 2 days before your date.</p></div>
-  <div class="sgrid" id="xm-cards" data-list="seasonal"></div>
-</div>
-</div>
+  <div class="who">
+    <div><p class="eyebrow">Our philosophy</p><h3>More than just taste.</h3></div>
+    <div class="txt"><p>We believe that good baking is about more than just taste. It is about quality, care, creativity and the happiness that comes with sharing something special.</p>
+      <ul class="pills"><li>Quality ingredients</li><li>Fresh preparation</li><li>Attention to detail</li><li>Food safety and hygiene</li><li>Personalised customer experience</li></ul></div>
+  </div>
+  <p class="lic">Bun Bun Cafe is an FSSAI-licensed food business. Licence no. <span data-fill="fssai"></span></p>
+</div></section>
 
-<!-- 03 MENU -->
-<div class="chap" id="menu">
-<div class="wrap">
-  <div class="head rv"><span class="eyebrow">Our creations</span><h2>Crafted fresh. <em>Loved every bite.</em></h2><p class="lead">Brownies, waffles and desserts, made by hand and baked to order.</p></div>
-  <div class="notice rv" role="note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><p><b>Plan ahead. Celebrate better.</b> Please order at least 2 days before your date.</p></div>
-  <div class="mgrid" data-list="menu"></div>
-</div>
-</div>
-
-<!-- 05 CONTACT -->
-<div class="chap" id="contact">
-<div class="wrap">
-  <div class="head rv"><span class="eyebrow">Contact us</span><h2>We'd love to <em>hear from you!</em></h2>
-    <p class="lead">Have a question, planning a celebration or looking to place an order? Get in touch with Bun Bun Cafe.</p></div>
-  <div class="notice rv" role="note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><p><b>Plan ahead. Celebrate better.</b> Please order at least 2 days before your date.</p></div>
-  <div class="cgrid">
-    <div class="cc rv"><span class="eyebrow">WhatsApp</span><h3 data-fill="wa-number"></h3><p>The quickest way to enquire or place an order.</p><a class="btn sm" data-fill="whatsapp" href="#">Enquire on WhatsApp</a></div>
-    <div class="cc rv"><span class="eyebrow">Instagram</span><h3>Send a DM</h3><p>See our latest bakes and message us there.</p><a class="btn sm ghost" data-fill="instagram" href="#">Instagram</a></div>
-    <div class="cc rv"><span class="eyebrow">Location</span><h3 data-fill="location"></h3><p>Collection details are shared when your order is confirmed.</p></div>
+<!-- 05 CONTACT US -->
+<section class="contact" id="contact"><div class="wrap">
+  <p class="eyebrow">Contact us</p>
+  <h2>We'd love to <em>hear from you!</em></h2>
+  <p class="lead">Questions, celebrations or an order: message us and we reply on WhatsApp.</p>
+  <div class="cg">
+    <div class="cc"><span class="eyebrow">WhatsApp</span><b data-fill="wa-number"></b><span>The quickest way to enquire or order.</span><a class="pb solid sm" data-wa href="#" target="_blank" rel="noopener">Enquire on WhatsApp</a></div>
+    <div class="cc"><span class="eyebrow">Instagram</span><b>Send a DM</b><span>See our latest bakes.</span><a class="pb sm" data-fill="instagram" href="#" target="_blank" rel="noopener">Instagram</a></div>
+    <div class="cc"><span class="eyebrow">Location</span><b data-fill="location"></b><span>Shared when your order is confirmed.</span></div>
   </div>
 </div>
-</div>
-
+<footer class="ft">
+  <div class="fg">
+    <div class="fa1"><a class="brand" href="#home" aria-label="Bun Bun Cafe, home"><i class="mk"></i><i class="wm"></i></a><p>A homegrown bakery making fresh treats and personalised cakes with care.</p></div>
+    <div><h4>Explore</h4><ul><li><a href="#home">Home</a></li><li class="only-season"><a href="#seasonal">Seasonal Editions</a></li><li><a href="#tray">Creations</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact Us</a></li></ul></div>
+    <div><h4>Order</h4><ul><li><a data-wa href="#" target="_blank" rel="noopener">WhatsApp</a></li><li><a data-fill="instagram" href="#" target="_blank" rel="noopener">Instagram</a></li><li><span>FSSAI licence: <span data-fill="fssai"></span></span></li></ul></div>
+  </div>
+  <div class="base"><span>© 2026 Bun Bun Cafe · by AJ GROUPS. All rights reserved.</span><span><a href="../privacy/">Privacy</a> · <a href="../terms/">Terms</a></span></div>
+</footer>
+</section>
 </main>
-<script src="./site.js?v=38"></script>
+
+<!-- your box pill -->
+<div class="bx" id="bx" role="status"><span class="ct"><b id="bn">0</b> in your box</span><button type="button" id="mk" class="pb">Make my card</button><a class="pb solid" id="eq" target="_blank" rel="noopener" href="#">Enquire</a><button type="button" id="clr" class="x" aria-label="Empty my box">&times;</button></div>
+
+<!-- a dish opens in a sheet -->
+<dialog class="sheet" id="sheet" aria-label="Creation details">
+  <button class="close" type="button" aria-label="Close" data-close>&times;</button>
+  <div class="sp"><img id="sImg" alt="" width="640" height="640"><i class="mk" aria-hidden="true"></i></div>
+  <div class="sb"><span class="fn" id="sNo"></span><h3 id="sTitle"></h3><p id="sText"></p>
+    <span class="lb" id="sLb">Choose your favourites</span><div class="chk" id="sChk"></div>
+    <a class="pb solid" id="sGo" target="_blank" rel="noopener" href="#">Enquire on WhatsApp</a></div>
+</dialog>
+
+<!-- the share card -->
+<dialog class="sheet card" id="cardD" aria-label="Your box card">
+  <button class="close" type="button" aria-label="Close" data-close>&times;</button>
+  <canvas id="cv" width="1080" height="1350"></canvas>
+  <div class="sb"><h3>Your Bun Bun box</h3><p>Save your card or share it. Anyone can enquire in one tap.</p>
+    <button class="pb solid" id="cSave" type="button">Share or save</button></div>
+</dialog>
+
+<script src="./vendor/gsap.min.js"></script>
+<script src="./vendor/ScrollTrigger.min.js"></script>
+<script src="./vendor/lenis.min.js"></script>
+<script src="./box.js?v=30"></script>
 </body>
 </html>
