@@ -611,3 +611,7 @@ html.ready .c1{transition-delay:.8s}html.ready .c2{transition-delay:.95s}html.re
 @media (max-width:699px){.tagf{display:none}.ft .fw{padding-top:100px}.fcols{grid-template-columns:1fr 1fr}.fcols>div:last-child{grid-column:1/-1}
   .ft::before{content:"";position:absolute;left:0;right:0;top:40px;height:14px;background:var(--g)}
   .ft::after{content:"";position:absolute;left:50%;top:47px;width:44px;height:44px;translate:-50% -50%;border-radius:50%;background:var(--c);border:1.5px solid var(--g);box-shadow:0 0 0 6px var(--c)}}
+/* breathing room under the landing buttons; tidy single-paragraph about */
+.fig .cta2{margin-bottom:clamp(26px,4.2vh,50px)}
+@media (min-width:700px) and (max-height:820px){.fig{--D:clamp(210px,31vh,380px)}}
+.three.one{grid-template-columns:1fr;max-width:62ch;font-size:clamp(16px,1.35vw,20px)}
