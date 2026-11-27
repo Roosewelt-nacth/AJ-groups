@@ -689,3 +689,9 @@ html.season .c-c,.c-c{grid-column:1/13}
 .ab-3{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px;margin-top:clamp(32px,4.4vh,48px);padding-top:clamp(24px,3.4vh,36px);border-top:1px solid var(--line)}
 .ab-3 .pills{margin:0}.ab-3 .lic{margin:0}
 @media (max-width:860px){.ab-row{grid-template-columns:1fr;row-gap:20px}.ab-2{row-gap:32px}.ab-3{flex-direction:column;align-items:flex-start}}
+/* landing: the top line stays pinned under the nav; the corner words sit just under it (no overlap when the logo group is centred) */
+@media (min-width:1101px){
+.fig .fg-top{position:absolute;top:clamp(86px,11.5vh,104px);left:50%;translate:-50% 0;width:72%}
+.fig .qa{top:calc(clamp(86px,11.5vh,104px) + 40px)}
+.fig{padding-top:calc(clamp(86px,11.5vh,104px) + 30px)}
+}
