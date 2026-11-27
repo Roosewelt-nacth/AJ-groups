@@ -162,7 +162,7 @@ html.opened .fa{transition-delay:.7s}html.opened .fb{transition-delay:.85s}html.
 @media (hover:hover){.cp:hover .lab{transform:translateY(-4px)}}
 
 /* sheets: lock the page behind, show the native pointer inside, two-colour cakes panel */
-html:has(dialog[open]){overflow:hidden}
+html.modal{overflow:hidden;scrollbar-gutter:stable}
 html.modal .cur{opacity:0!important}
 html.fine dialog,html.fine dialog *{cursor:auto}html.fine dialog a,html.fine dialog button,html.fine dialog label,html.fine dialog input{cursor:pointer}
 .sp{position:relative;overflow:hidden}
@@ -624,3 +624,17 @@ dialog.sheet{overscroll-behavior:contain}
 @media (hover:none),(max-width:800px){dialog.sheet::backdrop{-webkit-backdrop-filter:none;backdrop-filter:none}}
 /* the sheet photo never zooms and fills its panel edge to edge (one pixel of overfill, clipped by the panel), so no edge or seam can show a gap */
 .sp img{margin:-1px;width:calc(100% + 2px);max-width:none;height:calc(100% + 2px);transform:none!important;scale:none!important}
+
+/* ===== menu sheet: quick and smooth ===== */
+/* while a sheet is open the page keeps its scrollbar space (scrollbar-gutter above), so nothing reflows on open or close; no live blur over the page; one light animation instead of ten */
+dialog.sheet::backdrop{-webkit-backdrop-filter:none;backdrop-filter:none}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}}
+@keyframes out{to{opacity:0;transform:translateY(10px)}}
+@keyframes backfade{from{opacity:0}}
+dialog.sheet[open]{animation:pop .3s var(--out)}
+dialog.sheet[open] .sb>*,dialog.sheet[open] .sp img{animation:none}
+dialog.sheet[open]::backdrop{animation:backfade .25s ease both}
+dialog.sheet.closing{animation:out .2s ease forwards}
+dialog.sheet.closing::backdrop{opacity:0;transition:opacity .2s}
+/* the open sheet gets its own layer, so its fade and rise never repaint the page behind it */
+dialog.sheet[open]{will-change:opacity,transform}
