@@ -638,3 +638,21 @@ dialog.sheet.closing{animation:out .2s ease forwards}
 dialog.sheet.closing::backdrop{opacity:0;transition:opacity .2s}
 /* the open sheet gets its own layer, so its fade and rise never repaint the page behind it */
 dialog.sheet[open]{will-change:opacity,transform}
+/* ===== mobile fixes and tidier headings ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.fig{--D:clamp(240px,38vh,440px)}
+.spec .wm{width:calc(var(--D) * 1.4)}
+@media (max-width:860px){.spec{--D:min(76vw,320px)}.spec .wm{width:min(84vw,calc(var(--D) * 1.3))}
+ .fig .flow li.done::before{transform:scaleX(1)}
+ #sheet{max-height:calc(100svh - 20px);contain:layout}
+ #sheet .sp{aspect-ratio:auto;height:clamp(200px,34svh,300px);min-height:0}
+ .sb h3{font-size:34px;line-height:1.05}.sb{padding:22px 22px 26px}}
+.th h2,.about h2,.contact h2,.seasonal h2{font-size:clamp(32px,4.6vw,68px);line-height:1.04}
+.intro h2{font-size:clamp(32px,4.8vw,70px)}
+.who h3{font-size:clamp(28px,3vw,44px)}
+.about .who{margin-top:40px;padding-top:28px;gap:14px clamp(24px,5vw,72px)}
+.about .who .txt{font-size:clamp(14.5px,1.05vw,16.5px);line-height:1.65}
+.three.one{font-size:clamp(15px,1.15vw,17.5px)}
+.flowwrap{padding-top:8px}.flow li{padding-top:clamp(18px,2.6vh,26px)}
+@media (max-width:860px){.th h2,.about h2,.contact h2,.seasonal h2,.intro h2{font-size:30px}.who h3{font-size:26px}}
+@media (max-width:800px){.about .who{grid-template-columns:1fr}}

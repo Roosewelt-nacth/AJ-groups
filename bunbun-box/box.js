@@ -2,7 +2,7 @@
 const BUNBUN = {
   whatsapp: '918807893624',            // AJ GROUPS business number for now; replace with Bun Bun's own (country code, no + or spaces)
   instagram: 'https://www.instagram.com/bun.bun.bakes/?hl=en', handle: '@bun.bun.bakes',
-  fssai: null, location: null, noticeDays: 2,
+  fssai: '22426539000444', location: null, noticeDays: 2,
   cats: [
     { id: 'b', name: 'Brownies', photo: 'menu-c/double-choc-brownie.webp', thumb: 'menu-c/double-choc-brownie.webp', story: 'Rich, fudgy and made to be shared.', items: ['Nutella Brownie', 'Double Chocolate Brownie', 'Metro Chocolate Brownie'] },
     { id: 'w', name: 'Waffles', photo: 'menu-c/triple-choc-waffle.webp', thumb: 'menu-c/triple-choc-waffle.webp', story: 'Warm, crisp and finished with chocolate.', items: ['White Chocolate Waffle', 'Triple Chocolate Waffle'] },
@@ -138,7 +138,7 @@ const BUNBUN = {
   { const fl = $('.flow'); if (fl) { const lis = $$('li', fl); let s = -1, tm = 0, paused = false, seen = false;
       const show = (n) => { lis.forEach((li, k) => { li.classList.toggle('on', k === n); li.classList.toggle('done', k < n || n === lis.length); }); fl.classList.add('run'); };
       const tick = () => { clearTimeout(tm); if (paused) return; s = (s + 1) % (lis.length + 1); if (s === 0) { lis.forEach((li) => li.classList.remove('on', 'done')); void fl.offsetWidth; } show(s); tm = setTimeout(tick, s === lis.length ? 1600 : 2400); };
-      if (RM) { lis.forEach((li) => li.classList.add('done')); } else {
+      if (RM || innerWidth < 860) { lis.forEach((li) => li.classList.add('done')); } else {
         const start = () => { if (!seen) { seen = true; setTimeout(tick, 900); } };
         if ('IntersectionObserver' in window) new IntersectionObserver((es) => { if (es[0].isIntersecting) start(); }, { threshold: .3 }).observe(fl); else start();
         fl.addEventListener('pointerenter', () => { paused = true; clearTimeout(tm); }); fl.addEventListener('pointerleave', () => { if (paused) { paused = false; tm = setTimeout(tick, 600); } }); } } }
@@ -161,7 +161,7 @@ const BUNBUN = {
     root.classList.add('settled');
     if (RM || !window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
-    if (window.Lenis && !lenis) { lenis = new Lenis({ lerp: .1, wheelMultiplier: .9, touchMultiplier: 1.4 }); lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add((t) => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
+    if (window.Lenis && !lenis && !matchMedia('(pointer:coarse)').matches) { lenis = new Lenis({ lerp: .1, wheelMultiplier: .9, touchMultiplier: 1.4 }); lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add((t) => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
     /* the tray: the heading drifts sideways, every photo has its own depth */
     gsap.fromTo('.th h2', { xPercent: 3 }, { xPercent: -3, ease: 'none', scrollTrigger: { trigger: '.trayw', start: 'top bottom', end: 'bottom top', scrub: true } });
     $$('.cp img').forEach((im) => gsap.fromTo(im, { yPercent: -3, scale: 1.06 }, { yPercent: 3, scale: 1.06, ease: 'none', scrollTrigger: { trigger: im.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
