@@ -43,3 +43,9 @@
 
 @media (max-width:800px){.xholly{width:70px;top:24px;right:12px;opacity:.7}#seasonal .hamper{background:color-mix(in srgb,var(--c) 7%,transparent)}#seasonal .hamper::before{display:none}}
 @media (prefers-reduced-motion:reduce){.xl circle{animation:none}}
+/* plum cake card is cream here: every text and outline in it uses pine (the description and Enquire were cream on cream) */
+#seasonal .pc .pdesc{color:var(--pine);border-color:var(--cran)}
+#seasonal .pc .pb:not(.solid){color:var(--pine);border-color:color-mix(in srgb,var(--pine) 35%,transparent);background:transparent}
+@media (hover:hover){#seasonal .pc .pb:not(.solid):hover{background:var(--pine);color:var(--c)}}
+#seasonal .pc .seg{border-color:color-mix(in srgb,var(--pine) 22%,transparent)}
+#seasonal .pc::after{display:none}
