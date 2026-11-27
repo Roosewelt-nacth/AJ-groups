@@ -1,7 +1,7 @@
 /* Bun Bun Cafe, the satin ribbon. No libraries.
    One ribbon hangs from the top of the page and flows down the margin through every chapter, then runs across the footer and ties a bow.
    It reads each chapter's real margin, so it never crowds the content; it is painted behind all content (canvas z-index 1, content z-index 2),
-   takes the contrasting colour of each chapter, turns slowly like satin, catches a soft travelling sheen, and draws itself as you scroll.
+   takes the contrasting colour of each chapter, keeps one calm width, and draws itself as you scroll.
    The landing keeps its slogans with thin lines to the ring (the helix is gone). */
 (() => {
   const cv = document.getElementById('ribbon'); if (!cv) return;
@@ -12,10 +12,10 @@
   const pr = (el) => { let x = 0, y = 0, e = el; while (e) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { x, y, w: el.offsetWidth, h: el.offsetHeight }; };
   const shown = (el) => !!el && getComputedStyle(el).display !== 'none';
   /* a long, unhurried S: two slow waves on top of each other, so it never repeats visibly */
-  const sway = (y) => .72 * Math.sin(y * TAU / 1150 + .6) + .28 * Math.sin(y * TAU / 470 + 2.1);
-  const twist = (s) => .42 + .58 * Math.pow(Math.abs(Math.cos(s * TAU / 1900 + .4)), .7);
+  const sway = (y) => Math.sin(y * TAU / 1500 + .6);
+  const twist = () => 1;
 
-  let VW = 0, VH = 0, dpr = 1, on = false, raf = 0, timer = 0, armed = false, S = [], M = [], RV = [], KN = [], FBOW = null;
+  let VW = 0, VH = 0, dpr = 1, on = false, raf = 0, timer = 0, armed = false, S = [], M = [], RV = [], FBOW = null;
   const LN = [], T0 = performance.now();
 
   /* the slogans: a thin line from each number to the ring, as before */
@@ -39,7 +39,7 @@
     const col = (el) => { const cs = getComputedStyle(el); return { fg: cs.getPropertyValue('--g').trim() || cs.color, bg: cs.getPropertyValue('--c').trim() || cs.backgroundColor }; };
     const padL = (sel) => { const w = $(sel); return shown(w) ? pr(w).x + parseFloat(getComputedStyle(w).paddingLeft || 0) : 40; };
     const ft = $('.ft'), ftr = shown(ft) ? pr(ft) : null; S = [];
-    const add = (el, L) => { if (!shown(el)) return; const r = pr(el), m = Math.max(14, L), W = cl(m * .2, 6, 12); S.push(Object.assign({ el, top: r.y, xc: m * .5, W, amp: Math.max(0, m * .5 - W / 2 - 8) }, col(el))); };
+    const add = (el, L) => { if (!shown(el)) return; const r = pr(el), m = Math.max(14, L), W = cl(m * .24, 10, 16); S.push(Object.assign({ el, top: r.y, xc: m * .5, W, amp: Math.max(0, (m * .5 - W / 2 - 8) * .6) }, col(el))); };
     const v1 = fig && $('.v1', fig); if (fig) add(fig, v1 ? pr(v1).x : VW * .14);
     add($('#intro'), padL('#intro .wrap')); add($('#seasonal'), padL('#seasonal .wrap')); add($('#tray'), (() => { const t = $('.th'); return t ? pr(t).x : 56; })());
     add($('#about'), padL('#about .wrap')); add($('#contact'), padL('#contact .wrap')); if (ftr) add(ft, padL('.ft .fw'));
@@ -60,7 +60,6 @@
     for (let i = 0; i < P.length; i++) { const a = P[Math.max(0, i - 2)], b = P[Math.min(P.length - 1, i + 2)], dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy) || 1, p = P[i];
       p.nx = -dy / l; p.ny = dx / l; p.tw = p.k ? .85 + .15 * twist(p.s) : twist(p.s); p.hw = p.W / 2 * p.tw; p.si = secIdx(p.y); }
     M = P; RV = []; { let mx = -1e9, cum = 0; for (let i = 0; i < M.length; i++) { const p = M[i], q = M[i - 1]; if (q && p.k) cum += Math.abs(p.x - q.x); mx = Math.max(mx, p.y + .14 * cum); RV[i] = mx; } }
-    KN = []; for (let i = 1; i < S.length; i++) { const idx = M.findIndex((p) => p.y >= S[i].top); if (idx > 0) KN.push({ idx, a: i - 1, b: i }); }
     if (FBOW) FBOW.si = S.length - 1;
     draw(performance.now());
   }
@@ -82,16 +81,13 @@
     for (let i = 0; i <= n;) { if (M[i].y < lo || M[i].y > hi) { i++; continue; } let j = i; while (j < n && M[j + 1].y >= lo && M[j + 1].y <= hi) j++;
       for (let a = i; a < j; a += 10) { const b = Math.min(j, a + 11), m = M[(a + b) >> 1], c = S[m.si] || S[0];
         strip(a, b, 1, -1); g.fillStyle = c.fg; g.fill();
-        /* satin: a soft light band that travels slowly along the ribbon, brighter where it lies flat */
-        strip(a, b, .7, .05); g.fillStyle = c.bg; g.globalAlpha = (.08 + .2 * m.tw) * (.55 + .45 * Math.sin((m.s - t * 90) / 70)); g.fill(); g.globalAlpha = 1; }
+        /* satin: one soft highlight along the ribbon */
+        strip(a, b, .7, .05); g.fillStyle = c.bg; g.globalAlpha = .18; g.fill(); g.globalAlpha = 1; }
       i = j + 1; }
-    /* small two-tone knots where one chapter hands the ribbon to the next */
-    KN.forEach((k) => { if (k.idx > idx) return; const p = M[k.idx], y = p.y - sy; if (y < -30 || y > VH + 30) return; const a = S[k.a], b = S[k.b], r = p.W * .55 + 2.5;
-      g.beginPath(); g.arc(p.x, y, r, 0, TAU); g.fillStyle = a.fg; g.fill(); g.lineWidth = 2; g.strokeStyle = b.fg; g.stroke(); });
     if (FBOW && FBOW.idx >= 0 && idx >= FBOW.idx) { const c = S[FBOW.si], q = cl((M[idx].s - M[FBOW.idx].s + 40) / 170); bow(FBOW.x, FBOW.y - sy, RM ? 1 : back(q), c.fg, c.bg); }
   }
 
-  const frame = (now) => { raf = 0; if (!on) return; draw(now); if (!RM && !document.hidden) raf = requestAnimationFrame(frame); };
+  const frame = (now) => { raf = 0; if (!on) return; draw(now); if (!RM && !document.hidden && now - T0 < 3000) raf = requestAnimationFrame(frame); };
   const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
   const remeasure = (ms) => { clearTimeout(timer); timer = setTimeout(() => { measure(); kick(); }, ms); };
   measure(); kick();
